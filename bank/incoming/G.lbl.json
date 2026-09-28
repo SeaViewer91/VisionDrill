@@ -1,0 +1,875 @@
+{
+  "format": "visiondrill-bank-exchange",
+  "format_version": 1,
+  "terms": [
+    {
+      "id": "yolo-format",
+      "term_en": "YOLO Format",
+      "term_ko": "YOLO 라벨 형식",
+      "abbreviation": "YOLO txt",
+      "definition": "이미지마다 txt 파일 하나에 객체 한 줄씩 \"클래스번호 중심x 중심y 너비 높이\"를 이미지 너비·높이로 나눈 0~1 값으로 적는 라벨 형식(클래스 번호는 0부터)",
+      "usage_example": "COCO json 받은 거 YOLO txt로 바꿀 때 category_id는 0부터 다시 매겨.",
+      "origin": "standard",
+      "track": "G"
+    },
+    {
+      "id": "coco-format",
+      "term_en": "COCO Format",
+      "term_ko": "COCO 라벨 형식",
+      "abbreviation": "COCO JSON",
+      "definition": "데이터셋 전체를 JSON 파일 하나에 images·annotations·categories로 담고, 박스를 좌상단 기준 [x, y, width, height] 절대 픽셀로 적는 라벨 형식",
+      "usage_example": "슬라이싱 추론 도구 쓰려면 COCO json이 편하니까 라벨은 그쪽으로 모아.",
+      "origin": "standard",
+      "track": "G"
+    },
+    {
+      "id": "pascal-voc-format",
+      "term_en": "Pascal VOC Format",
+      "term_ko": "Pascal VOC 라벨 형식",
+      "abbreviation": "VOC XML",
+      "definition": "이미지마다 XML 파일 하나에 객체별 클래스 이름과 <bndbox>의 xmin·ymin·xmax·ymax 절대 픽셀 좌표를 적는 라벨 형식",
+      "usage_example": "예전 라벨이 VOC XML이라 xmin, xmax 읽어서 중심 좌표로 변환해야 해.",
+      "origin": "standard",
+      "track": "G"
+    },
+    {
+      "id": "geojson",
+      "term_en": "GeoJSON",
+      "term_ko": "GeoJSON",
+      "abbreviation": null,
+      "definition": "점·선·폴리곤 피처의 지오메트리와 속성을 JSON으로 담는 벡터 형식으로, 표준(RFC 7946)에서는 WGS 84 좌표를 [경도, 위도] 순서로 적는다",
+      "usage_example": "건물 라벨은 GeoJSON으로 받고, 학습 직전에 영상 좌표계로 바꿔서 픽셀 좌표로 뽑자.",
+      "origin": "standard",
+      "track": "G"
+    },
+    {
+      "id": "labeling-guideline",
+      "term_en": "Labeling Guideline",
+      "term_ko": "라벨링 가이드",
+      "abbreviation": null,
+      "definition": "클래스 정의, 박스·폴리곤을 긋는 기준, 가림·잘림·애매한 사례의 처리 규칙을 예시와 함께 정리해 모든 라벨러가 같은 기준으로 작업하게 하는 문서",
+      "usage_example": "선박 박스에 항적 포함할지 말지 가이드에 예시 그림으로 박아 둬.",
+      "origin": "standard",
+      "track": "G"
+    },
+    {
+      "id": "label-noise",
+      "term_en": "Label Noise",
+      "term_ko": "라벨 노이즈",
+      "abbreviation": null,
+      "definition": "라벨에 섞인 오류의 통칭으로, 클래스를 잘못 붙인 경우(클래스 노이즈)와 박스 위치·크기가 부정확한 경우(위치 노이즈) 등을 포함한다",
+      "usage_example": "바지선이랑 예인선 라벨이 섞여 있어. 라벨 노이즈부터 정리하고 다시 학습하자.",
+      "origin": "standard",
+      "track": "G"
+    },
+    {
+      "id": "missing-label",
+      "term_en": "Missing Label",
+      "term_ko": "누락 라벨",
+      "abbreviation": null,
+      "definition": "영상에 존재하는 객체인데 라벨이 달리지 않은 상태로, 학습에서는 그 객체를 배경으로 가르치고 평가에서는 올바른 탐지를 오탐으로 집계하게 만든다",
+      "usage_example": "고신뢰 FP 절반이 진짜 선박이야. 누락 라벨이니까 그 타일들 다시 검수해.",
+      "origin": "standard",
+      "track": "G"
+    },
+    {
+      "id": "label-quality-assurance",
+      "term_en": "Label Quality Assurance",
+      "term_ko": "라벨 검수",
+      "abbreviation": "Label QA",
+      "definition": "라벨을 원본 영상에 겹쳐 보며 가이드 위반·오분류·박스 오차·누락을 찾아 고치는 품질 점검 절차",
+      "usage_example": "이번 주 라벨 중 10% 샘플링해서 검수하고 오류율 보고해.",
+      "origin": "standard",
+      "track": "G"
+    }
+  ],
+  "questions": [
+    {
+      "id": "G-LBL-001",
+      "type": "short",
+      "chapter": "G.lbl",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "이미지마다 txt 파일 하나를 두고, 객체 하나를 \"클래스번호 중심x 중심y 너비 높이\" 한 줄로 적되 좌표를 이미지 크기로 나눈 0~1 값으로 쓰는 라벨 형식은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "YOLO format",
+          "YOLO txt",
+          "YOLO label format",
+          "YOLO"
+        ],
+        "ko": [
+          "YOLO 형식",
+          "욜로 형식",
+          "YOLO 포맷",
+          "욜로 포맷",
+          "YOLO 라벨 형식"
+        ]
+      },
+      "primary": "YOLO format",
+      "explanation_short": "YOLO 형식은 이미지와 같은 이름의 txt에 \"class cx cy w h\"를 적습니다. 중심 좌표와 너비·높이를 이미지 너비·높이로 나눠 0~1로 정규화하고, 클래스 번호는 0부터 셉니다.",
+      "explanation_full": "정규화 좌표라서 이미지를 리사이즈해도 라벨을 고칠 필요가 없지만, 타일을 잘라 낼 때는 타일 크기 기준으로 다시 계산해야 합니다. 객체가 없는 이미지는 빈 txt(또는 txt 없음)로 두면 배경 이미지로 처리됩니다. 분할(segmentation)용 YOLO 형식은 박스 대신 정규화된 폴리곤 꼭짓점 좌표를 나열합니다.",
+      "tags": [
+        "labeling",
+        "format"
+      ],
+      "terms": [
+        "yolo-format"
+      ],
+      "source_ref": "Ultralytics 문서 Object Detection Datasets Overview (YOLO format)",
+      "status": "draft"
+    },
+    {
+      "id": "G-LBL-002",
+      "type": "mcq",
+      "chapter": "G.lbl",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "512×512 타일의 Pascal VOC 라벨에 선박(클래스 번호 0)이 xmin=128, ymin=64, xmax=192, ymax=160으로 적혀 있다. 이를 YOLO 형식 한 줄로 바르게 바꾼 것은?",
+      "choices": [
+        {
+          "text": "0 0.25 0.125 0.125 0.1875",
+          "rationale": "좌상단 (xmin, ymin)을 그대로 정규화했습니다(128/512, 64/512). YOLO는 박스 중심 좌표를 씁니다."
+        },
+        {
+          "text": "0 0.3125 0.21875 0.125 0.1875",
+          "rationale": null
+        },
+        {
+          "text": "0 0.3125 0.21875 0.375 0.3125",
+          "rationale": "너비·높이 자리에 xmax/512, ymax/512를 넣었습니다. 너비는 xmax − xmin = 64, 높이는 ymax − ymin = 96입니다."
+        },
+        {
+          "text": "0 160 112 64 96",
+          "rationale": "중심·크기 계산은 맞지만 이미지 크기로 나누지 않았습니다. YOLO 좌표는 0~1로 정규화해야 합니다."
+        },
+        {
+          "text": "0 0.21875 0.3125 0.1875 0.125",
+          "rationale": "x와 y 값이 서로 뒤바뀌었습니다. YOLO는 cx cy w h 순서입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "중심 x = (128 + 192)/2 = 160, 중심 y = (64 + 160)/2 = 112, 너비 = 64, 높이 = 96입니다. 각각 512로 나누면 0.3125, 0.21875, 0.125, 0.1875이므로 \"0 0.3125 0.21875 0.125 0.1875\"입니다.",
+      "explanation_full": "변환식은 cx = (xmin + xmax)/2/W, cy = (ymin + ymax)/2/H, w = (xmax − xmin)/W, h = (ymax − ymin)/H입니다. 타일이 정사각형이 아니면 x 쪽은 너비 W, y 쪽은 높이 H로 따로 나눠야 합니다. 변환 뒤에는 라벨을 영상 위에 다시 그려 보는 것이 가장 확실한 검산입니다.",
+      "tags": [
+        "labeling",
+        "format",
+        "calculation"
+      ],
+      "terms": [
+        "yolo-format",
+        "pascal-voc-format"
+      ],
+      "source_ref": "Ultralytics 문서 Object Detection Datasets Overview (YOLO format); PASCAL VOC Development Kit 문서 (annotation XML)",
+      "status": "draft"
+    },
+    {
+      "id": "G-LBL-003",
+      "type": "short",
+      "chapter": "G.lbl",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "데이터셋 전체의 라벨을 JSON 파일 하나에 images·annotations·categories 목록으로 담고, 박스를 [x, y, width, height] 픽셀 값으로 적는 라벨 형식은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "COCO format",
+          "COCO JSON",
+          "MS COCO format",
+          "COCO"
+        ],
+        "ko": [
+          "COCO 형식",
+          "코코 형식",
+          "COCO 포맷",
+          "코코 포맷"
+        ]
+      },
+      "primary": "COCO format",
+      "explanation_short": "COCO 형식은 데이터셋 단위 JSON 하나에 이미지 목록(images), 객체 라벨(annotations), 클래스 목록(categories)을 담습니다. bbox는 좌상단 x, y와 너비, 높이를 절대 픽셀로 적습니다.",
+      "explanation_full": "annotation마다 image_id로 이미지와, category_id로 클래스와 연결됩니다. 박스 외에 segmentation(폴리곤 또는 RLE), area, iscrowd 필드를 가질 수 있어 인스턴스 분할 라벨도 함께 담습니다. 공식 COCO 데이터셋의 category_id는 1부터 시작하고 중간에 빈 번호가 있으므로, 0부터 연속 번호를 쓰는 YOLO로 바꿀 때는 번호를 다시 매겨야 합니다.",
+      "tags": [
+        "labeling",
+        "format"
+      ],
+      "terms": [
+        "coco-format"
+      ],
+      "source_ref": "COCO dataset format 문서 (cocodataset.org, Data format)",
+      "status": "draft"
+    },
+    {
+      "id": "G-LBL-004",
+      "type": "mcq",
+      "chapter": "G.lbl",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "COCO 라벨의 bbox가 [300, 150, 40, 20]이다. 이 박스를 (xmin, ymin, xmax, ymax) 픽셀 좌표로 바꾼 것은?",
+      "choices": [
+        {
+          "text": "(280, 140, 320, 160)",
+          "rationale": "[300, 150]을 박스 중심으로 보고 너비·높이의 절반을 빼고 더했습니다. COCO bbox의 앞 두 값은 좌상단 좌표입니다."
+        },
+        {
+          "text": "(300, 150, 40, 20)",
+          "rationale": "[x, y, w, h]의 w, h를 xmax, ymax로 착각해 그대로 옮겼습니다. xmax(40)가 xmin(300)보다 작은 잘못된 박스가 됩니다."
+        },
+        {
+          "text": "(150, 300, 170, 340)",
+          "rationale": "x와 y를 바꿔 읽었습니다. COCO bbox는 가로 방향 x가 먼저입니다."
+        },
+        {
+          "text": "(300, 150, 320, 190)",
+          "rationale": "너비와 높이를 바꿔 더했습니다(300 + 20, 150 + 40). w = 40은 x 방향, h = 20은 y 방향입니다."
+        },
+        {
+          "text": "(300, 150, 340, 170)",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "COCO bbox는 [좌상단 x, 좌상단 y, 너비, 높이]입니다. 따라서 xmin = 300, ymin = 150, xmax = 300 + 40 = 340, ymax = 150 + 20 = 170입니다.",
+      "explanation_full": "형식별 박스 표기를 정리하면 COCO는 [x_min, y_min, w, h] 절대 픽셀, Pascal VOC는 [xmin, ymin, xmax, ymax] 절대 픽셀, YOLO는 [cx, cy, w, h]를 0~1로 정규화한 값입니다. 변환 스크립트를 짤 때는 몇 장이라도 영상 위에 박스를 그려 객체에 맞는지 확인하는 습관이 가장 많은 사고를 막습니다.",
+      "tags": [
+        "labeling",
+        "format",
+        "calculation"
+      ],
+      "terms": [
+        "coco-format",
+        "pascal-voc-format"
+      ],
+      "source_ref": "COCO dataset format 문서 (cocodataset.org, Data format)",
+      "status": "draft"
+    },
+    {
+      "id": "G-LBL-005",
+      "type": "short",
+      "chapter": "G.lbl",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "이미지마다 XML 파일 하나를 두고, 객체마다 클래스 이름(<name>)과 <bndbox>의 xmin, ymin, xmax, ymax 픽셀 좌표를 적는 라벨 형식은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Pascal VOC format",
+          "Pascal VOC",
+          "VOC XML",
+          "VOC format",
+          "VOC"
+        ],
+        "ko": [
+          "파스칼 VOC 형식",
+          "Pascal VOC 형식",
+          "VOC 형식",
+          "파스칼 VOC",
+          "VOC 포맷"
+        ]
+      },
+      "primary": "Pascal VOC format",
+      "explanation_short": "Pascal VOC 형식은 이미지별 XML에 객체의 클래스 이름과 박스의 좌상단(xmin, ymin)·우하단(xmax, ymax) 절대 픽셀 좌표를 적습니다.",
+      "explanation_full": "XML에는 이미지 크기(<size>), 잘림·판독 난이도 표시(<truncated>, <difficult>) 같은 부가 정보도 들어갑니다. 클래스를 번호가 아닌 이름 문자열로 적기 때문에 다른 형식으로 바꿀 때 이름 → 번호 매핑표가 필요합니다. LabelImg 같은 라벨링 도구가 기본 저장 형식으로 지원합니다.",
+      "tags": [
+        "labeling",
+        "format"
+      ],
+      "terms": [
+        "pascal-voc-format"
+      ],
+      "source_ref": "PASCAL VOC Development Kit 문서 (annotation XML)",
+      "status": "draft"
+    },
+    {
+      "id": "G-LBL-006",
+      "type": "short",
+      "chapter": "G.lbl",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "클래스 정의, 박스를 긋는 기준(그림자·항적 포함 여부, 가려진 객체 처리 등), 애매한 사례 예시를 문서로 정리해 모든 라벨러가 같은 기준으로 작업하게 하는 문서는? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Labeling guideline",
+          "Annotation guideline",
+          "Labeling guide",
+          "Annotation guide",
+          "Labeling instructions"
+        ],
+        "ko": [
+          "라벨링 가이드",
+          "라벨링 가이드라인",
+          "어노테이션 가이드",
+          "라벨링 지침",
+          "작업 지침서",
+          "라벨링 매뉴얼"
+        ]
+      },
+      "primary": "Labeling guideline",
+      "explanation_short": "라벨링 가이드(labeling guideline)는 라벨러마다 다른 판단을 하나의 기준으로 묶는 문서입니다. 이 기준이 흔들리면 같은 객체에 다른 박스·클래스가 붙어 라벨 노이즈가 됩니다.",
+      "explanation_full": "좋은 가이드는 글보다 \"이렇게 / 이렇게 하지 말 것\" 예시 이미지가 많고, 최소 라벨 크기(예: 8 px 미만 제외), 잘린 객체·가려진 객체 규칙, 판독이 애매할 때 쓰는 처리(무시 영역 등)를 명시합니다. 라벨링 도중 새로운 애매한 사례가 나오면 가이드에 추가하고 버전을 올립니다.",
+      "tags": [
+        "labeling",
+        "guideline"
+      ],
+      "terms": [
+        "labeling-guideline"
+      ],
+      "source_ref": "데이터 라벨링 품질 관리 일반 (라벨링 가이드·검수·라벨러 간 일치도)",
+      "status": "draft"
+    },
+    {
+      "id": "G-LBL-007",
+      "type": "mcq",
+      "chapter": "G.lbl",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "선박 라벨링을 두 명이 나눠 했는데, 한 명은 선체만, 다른 한 명은 선미의 항적(wake)까지 박스에 포함했다. 이 데이터로 학습한 모델에서 가장 직접적으로 나타날 문제는?",
+      "choices": [
+        {
+          "text": "박스 경계 기준이 흔들려 위치 예측이 불안정해지고 mAP50-95가 특히 낮게 나온다",
+          "rationale": null
+        },
+        {
+          "text": "선박을 다른 클래스로 잘못 분류하는 오류가 크게 늘어나고, 클래스 간 혼동행렬이 흐트러진다",
+          "rationale": "두 라벨러 모두 같은 \"선박\" 클래스를 붙였으므로 클래스 혼동은 늘지 않습니다. 흔들리는 것은 박스 위치·크기입니다."
+        },
+        {
+          "text": "두 기준이 자연스럽게 평균되어 모델이 중간 크기 박스를 정확한 정답으로 배우게 된다",
+          "rationale": "모델이 평균 쪽으로 예측하더라도 어느 기준의 시험 라벨과도 IoU가 낮아집니다. \"정확히 배운다\"는 틀렸습니다."
+        },
+        {
+          "text": "라벨 파일의 형식이 서로 달라져 학습 도중 파싱 오류가 발생한다",
+          "rationale": "기준 차이는 좌표 값의 차이일 뿐 파일 형식은 같습니다. 학습은 정상적으로 돌아갑니다."
+        },
+        {
+          "text": "배경 타일 비율이 늘어나 오탐이 오히려 줄어든다",
+          "rationale": "박스를 긋는 기준은 배경 타일 수와 관계가 없습니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "같은 객체에 두 가지 박스 기준이 섞이면 박스 회귀가 일관된 목표를 배우지 못합니다. 객체는 찾더라도 박스가 헐겁거나 짧아져 IoU 0.75 이상 같은 엄격한 기준에서 점수가 크게 떨어집니다.",
+      "explanation_full": "이런 박스 기준 불일치는 라벨 노이즈 중 위치 노이즈(box noise)에 해당합니다. 예방은 라벨링 가이드에 \"선체만, 항적 제외\"처럼 예시 그림으로 못 박는 것이고, 이미 섞였다면 라벨러별 박스 크기·종횡비 분포를 비교해 기준에서 벗어난 쪽을 찾아 재작업합니다.",
+      "tags": [
+        "labeling",
+        "guideline",
+        "label-noise"
+      ],
+      "terms": [
+        "labeling-guideline",
+        "label-noise",
+        "map"
+      ],
+      "source_ref": "데이터 라벨링 품질 관리 일반 (라벨링 가이드·검수·라벨러 간 일치도)",
+      "status": "draft"
+    },
+    {
+      "id": "G-LBL-008",
+      "type": "short",
+      "chapter": "G.lbl",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "라벨 데이터에 클래스가 잘못 붙거나 박스 위치·크기가 부정확한 오류가 섞여 있는 상태를 통칭하는 용어는? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Label noise",
+          "Noisy labels",
+          "Annotation noise",
+          "Noisy label"
+        ],
+        "ko": [
+          "라벨 노이즈",
+          "라벨 잡음",
+          "노이즈 라벨",
+          "레이블 노이즈",
+          "라벨 오류"
+        ]
+      },
+      "primary": "Label noise",
+      "explanation_short": "라벨 노이즈(label noise)는 정답으로 믿고 학습하는 라벨 자체에 섞인 오류입니다. 클래스를 잘못 붙인 클래스 노이즈와 박스가 부정확한 위치 노이즈가 대표적입니다.",
+      "explanation_full": "딥러닝 모델은 잘못된 라벨까지 외워 버릴 수 있어 학습셋에 노이즈가 많으면 일반화 성능이 떨어지고, 시험셋에 노이즈가 있으면 평가 자체가 왜곡됩니다. 원격탐사에서는 해상도가 낮아 사람도 판독이 애매한 객체(예: 10 m 영상의 소형 선박)에서 노이즈가 많이 생기므로, 판독이 애매한 객체를 어떻게 처리할지 가이드에 규칙을 둡니다.",
+      "tags": [
+        "labeling",
+        "label-noise"
+      ],
+      "terms": [
+        "label-noise"
+      ],
+      "source_ref": "데이터 라벨링 품질 관리 일반 (라벨링 가이드·검수·라벨러 간 일치도)",
+      "status": "draft"
+    },
+    {
+      "id": "G-LBL-009",
+      "type": "mcq",
+      "chapter": "G.lbl",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "시험셋 라벨에서 실제 선박의 15%가 누락되어 있다. 모델이 누락된 선박까지 정확히 탐지한다고 할 때, 이 시험셋으로 계산한 지표에 나타나는 영향은?",
+      "choices": [
+        {
+          "text": "누락된 선박이 FN으로 집계되어 재현율이 실제보다 낮게 나온다",
+          "rationale": "FN은 라벨이 있는데 못 찾은 경우입니다. 라벨이 없는 객체는 재현율의 분모(TP + FN)에 들어가지 않습니다."
+        },
+        {
+          "text": "라벨이 없는 객체는 평가에서 자동으로 제외되므로 지표에는 아무런 영향이 없다",
+          "rationale": "평가 코드는 라벨이 빠졌다는 사실을 알 수 없습니다. 짝이 없는 탐지는 모두 FP로 처리됩니다."
+        },
+        {
+          "text": "누락 선박을 맞힌 탐지가 FP로 집계되어 정밀도가 실제보다 낮게 나온다",
+          "rationale": null
+        },
+        {
+          "text": "정밀도와 재현율이 모두 실제보다 높게 나와 모델이 과대평가된다",
+          "rationale": "누락 라벨은 FP를 늘리므로 정밀도는 낮아지는 방향입니다."
+        },
+        {
+          "text": "매칭된 박스들의 IoU가 전반적으로 낮아져 mAP50-95만 떨어진다",
+          "rationale": "누락은 매칭 여부의 문제이지, 이미 매칭된 박스의 IoU를 바꾸지 않습니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "평가는 라벨과 예측을 짝지어 TP·FP·FN을 셉니다. 라벨이 빠진 선박을 맞힌 예측은 짝이 없어 FP가 되므로, 모델이 잘해도 정밀도(와 AP)가 과소평가됩니다.",
+      "explanation_full": "그래서 고신뢰 FP를 모아 보면 누락 라벨을 효율적으로 찾을 수 있습니다. 학습셋의 누락 라벨은 또 다른 문제를 만듭니다. 그 객체를 배경으로 가르치므로 모델이 비슷한 객체를 덜 찾게 되어 재현율이 떨어집니다.",
+      "tags": [
+        "labeling",
+        "missing-label",
+        "metric"
+      ],
+      "terms": [
+        "missing-label",
+        "precision",
+        "recall"
+      ],
+      "source_ref": "데이터 라벨링 품질 관리 일반 (라벨링 가이드·검수·라벨러 간 일치도); COCO detection evaluation",
+      "status": "draft"
+    },
+    {
+      "id": "G-LBL-010",
+      "type": "short",
+      "chapter": "G.lbl",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "영상에 분명히 있는 객체인데 라벨러가 박스를 치지 않아 라벨에서 빠져 있는 상태를 무엇이라 하는가? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Missing label",
+          "Missing annotation",
+          "Unlabeled object",
+          "Missed annotation"
+        ],
+        "ko": [
+          "누락 라벨",
+          "라벨 누락",
+          "누락된 라벨",
+          "미라벨 객체",
+          "어노테이션 누락"
+        ]
+      },
+      "primary": "Missing label",
+      "explanation_short": "누락 라벨(missing label)은 존재하는 객체에 라벨이 없는 상태입니다. 학습에서는 그 객체를 배경으로 가르치고, 평가에서는 올바른 탐지를 오탐(FP)으로 만듭니다.",
+      "explanation_full": "작은 객체, 영상 가장자리, 밀집 구역(양식장 부표 수백 개 등)에서 특히 잘 생깁니다. 탐지 데이터에서 가장 흔한 라벨 노이즈 가운데 하나이므로, 라벨 검수 체크리스트에 \"빠진 객체가 없는지\"를 별도 항목으로 둡니다.",
+      "tags": [
+        "labeling",
+        "missing-label"
+      ],
+      "terms": [
+        "missing-label"
+      ],
+      "source_ref": "데이터 라벨링 품질 관리 일반 (라벨링 가이드·검수·라벨러 간 일치도)",
+      "status": "draft"
+    },
+    {
+      "id": "G-LBL-011",
+      "type": "mcq",
+      "chapter": "G.lbl",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "다음 중 라벨 검수(label QA)에 해당하는 활동은?",
+      "choices": [
+        {
+          "text": "학습 영상에 좌우 반전과 밝기 변화를 적용해 데이터 양을 늘린다",
+          "rationale": "데이터 증강입니다. 라벨의 품질을 점검하는 작업이 아닙니다."
+        },
+        {
+          "text": "예측 박스 중 많이 겹치는 것을 신뢰도 순으로 골라 나머지를 제거한다",
+          "rationale": "NMS 후처리입니다. 모델 출력을 정리하는 단계로, 라벨과는 무관합니다."
+        },
+        {
+          "text": "COCO JSON 라벨을 스크립트로 YOLO txt 형식에 맞게 일괄 변환한다",
+          "rationale": "형식 변환입니다. 변환 결과를 그려 확인하는 것은 검수에 가깝지만 변환 자체는 검수가 아닙니다."
+        },
+        {
+          "text": "라벨 일부를 표본으로 뽑아 원본 영상 위에 겹쳐 보며 오류를 기록한다",
+          "rationale": null
+        },
+        {
+          "text": "검증셋 mAP가 가장 높은 체크포인트를 골라 최종 모델로 정한다",
+          "rationale": "모델 선택 절차입니다. 라벨 자체의 오류를 찾지 않습니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "라벨 검수는 라벨을 원본 영상과 대조해 가이드 위반·오분류·박스 오차·누락을 찾아 고치는 품질 관리입니다. 표본을 뽑아 오류 유형별로 기록하면 오류율과 라벨러별 경향도 알 수 있습니다.",
+      "explanation_full": "예를 들어 배치마다 5~10%를 무작위 표본으로 보고, 오류율이 정한 기준을 넘으면 그 배치를 전수 재검수하는 식으로 운영합니다. 원격탐사 라벨은 벡터로 관리되는 경우가 많으므로 GIS 도구에서 영상 위에 벡터를 띄워 보는 것이 가장 빠른 검수 방법입니다.",
+      "tags": [
+        "labeling",
+        "qa"
+      ],
+      "terms": [
+        "label-quality-assurance"
+      ],
+      "source_ref": "데이터 라벨링 품질 관리 일반 (라벨링 가이드·검수·라벨러 간 일치도)",
+      "status": "draft"
+    },
+    {
+      "id": "G-LBL-012",
+      "type": "mcq",
+      "chapter": "G.lbl",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "라벨러 세 명이 같은 기준으로 작업하고 있는지 라벨러 간 일치도(inter-annotator agreement)로 정량 확인하려고 한다. 가장 적절한 방법은?",
+      "choices": [
+        {
+          "text": "라벨러별로 하루에 작업한 타일 수를 비교해 작업량이 비슷한지 본다",
+          "rationale": "작업량은 속도 지표일 뿐 판단 기준이 같은지와는 관계가 없습니다."
+        },
+        {
+          "text": "같은 타일 묶음을 세 명이 각자 라벨링하고 박스 IoU·클래스 일치율을 비교한다",
+          "rationale": null
+        },
+        {
+          "text": "각자 만든 라벨로 모델을 따로 학습시켜 검증 mAP가 비슷하게 나오는지 비교한다",
+          "rationale": "비용이 크고, mAP 차이에는 맡은 데이터의 양·내용 차이가 섞여 기준 일치 여부를 직접 보여 주지 못합니다."
+        },
+        {
+          "text": "한 라벨러의 결과를 다른 라벨러가 고치게 하고, 고친 건수만 세어 순위를 매긴다",
+          "rationale": "수정 건수는 고치는 사람의 기준에 좌우되고, 같은 타일을 독립적으로 라벨링한 비교가 아니어서 일치도를 직접 재지 못합니다."
+        },
+        {
+          "text": "라벨러별 클래스 비율이 전체 데이터의 클래스 비율과 같은지 확인한다",
+          "rationale": "맡은 지역이 다르면 클래스 비율은 원래 다를 수 있습니다. 같은 객체에 같은 라벨을 붙이는지는 알 수 없습니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "라벨러 간 일치도(inter-annotator agreement)는 같은 데이터를 독립적으로 라벨링한 결과를 비교해야 잴 수 있습니다. 탐지에서는 짝지은 박스끼리의 IoU 분포, 클래스 일치율, 한쪽에만 있는 박스 수를 봅니다.",
+      "explanation_full": "평균 IoU가 낮으면 박스 경계 기준이, 클래스 불일치가 많으면 클래스 정의가, 한쪽에만 있는 박스가 많으면 최소 크기·판독 가능 기준이 가이드에서 모호하다는 뜻입니다. 결과를 가이드 개정에 반영하고, 본 작업 전에 이런 파일럿 라벨링을 한 번 거치는 것이 좋습니다.",
+      "tags": [
+        "labeling",
+        "qa",
+        "guideline"
+      ],
+      "terms": [
+        "label-quality-assurance",
+        "labeling-guideline",
+        "iou"
+      ],
+      "source_ref": "데이터 라벨링 품질 관리 일반 (라벨링 가이드·검수·라벨러 간 일치도)",
+      "status": "draft"
+    },
+    {
+      "id": "G-LBL-013",
+      "type": "mcq",
+      "chapter": "G.lbl",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "라벨 파일로 받은 GeoJSON에 대한 설명으로 옳은 것은?",
+      "choices": [
+        {
+          "text": ".shp·.shx·.dbf 등 여러 파일이 한 묶음으로 있어야 열리는 벡터 형식이다",
+          "rationale": "Shapefile의 설명입니다. GeoJSON은 텍스트 파일 하나입니다."
+        },
+        {
+          "text": "좌표를 영상의 가로·세로 크기로 나눈 0~1 정규화 값으로 적는다",
+          "rationale": "YOLO 라벨 형식의 설명입니다. GeoJSON 좌표는 경위도 같은 지도 좌표입니다."
+        },
+        {
+          "text": "피처마다 지오메트리와 속성을 JSON으로 담고, 좌표는 지도 좌표로 적는다",
+          "rationale": null
+        },
+        {
+          "text": "픽셀 격자에 값을 저장하고 지리 좌표 정보를 태그로 붙인 래스터 형식이다",
+          "rationale": "GeoTIFF의 설명입니다. GeoJSON은 벡터 형식입니다."
+        },
+        {
+          "text": "images·annotations·categories 세 목록으로 데이터셋 전체를 한 파일에 담는다",
+          "rationale": "COCO 형식의 설명입니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "GeoJSON은 Feature마다 geometry(점·선·폴리곤 등)와 properties(클래스 등 속성)를 갖는 JSON 기반 벡터 형식입니다. 좌표가 픽셀이 아니라 지도 좌표라서 학습에 쓰려면 영상의 픽셀 좌표로 변환해야 합니다.",
+      "explanation_full": "표준 GeoJSON(RFC 7946)은 좌표계를 WGS 84 경위도로 정하고 [경도, 위도] 순서로 적습니다. 파일 하나로 끝나고 사람이 읽을 수 있어 라벨 교환에 편하지만, 피처가 수십만 개로 많아지면 파일이 커져 GeoPackage 같은 형식을 쓰기도 합니다.",
+      "tags": [
+        "labeling",
+        "format",
+        "gis"
+      ],
+      "terms": [
+        "geojson"
+      ],
+      "source_ref": "RFC 7946 The GeoJSON Format; ESRI Shapefile Technical Description; rasterio 문서 (georeferencing)",
+      "status": "draft"
+    },
+    {
+      "id": "G-LBL-014",
+      "type": "mcq",
+      "chapter": "G.lbl",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "RFC 7946 표준 GeoJSON으로 받은 양식장 폴리곤 좌표가 [126.62, 34.71] 형태로 적혀 있다. 이것을 EPSG:5186 GeoTIFF 위의 픽셀 좌표 라벨로 만드는 올바른 순서는?",
+      "choices": [
+        {
+          "text": "[위도, 경도]로 읽어 EPSG:5186으로 재투영한 뒤, 지오트랜스폼으로 픽셀 좌표로 바꾼다",
+          "rationale": "RFC 7946 GeoJSON의 좌표 순서는 [경도, 위도]입니다. 순서를 바꿔 읽으면 전혀 다른 위치로 갑니다."
+        },
+        {
+          "text": "좌표 값을 영상의 가로·세로 픽셀 수로 나눠 곧바로 0~1 정규화 좌표로 쓴다",
+          "rationale": "경위도는 픽셀 단위가 아니므로 영상 크기로 나눠도 의미 있는 값이 되지 않습니다. 재투영과 지오트랜스폼 변환이 필요합니다."
+        },
+        {
+          "text": "GeoTIFF를 EPSG:4326으로 재투영하면 경위도 값이 곧 픽셀 좌표가 되므로 그대로 쓴다",
+          "rationale": "영상을 4326으로 바꿔도 픽셀 좌표를 얻으려면 지오트랜스폼(원점·픽셀 크기)을 적용해야 합니다. 경위도가 픽셀 번호가 되지는 않습니다."
+        },
+        {
+          "text": "경위도에 111,000을 곱해 미터로 바꾼 뒤 GeoTIFF의 픽셀 크기로 나눠 픽셀 좌표를 얻는다",
+          "rationale": "경도 1°의 길이는 위도에 따라 달라지고, TM 투영의 원점·축척도 반영되지 않습니다. 정식 좌표 변환(재투영)을 써야 합니다."
+        },
+        {
+          "text": "[경도, 위도]로 읽어 EPSG:5186으로 재투영한 뒤, 지오트랜스폼의 역변환으로 픽셀 좌표를 구한다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "표준 GeoJSON 좌표는 WGS 84 [경도, 위도]입니다. 먼저 영상과 같은 좌표계(EPSG:5186)로 재투영하고, 그 뒤 GeoTIFF의 지오트랜스폼(원점 좌표·픽셀 크기)을 역으로 적용해야 픽셀 행·열 좌표가 나옵니다.",
+      "explanation_full": "Python에서는 geopandas의 to_crs로 재투영하고, rasterio 변환 행렬의 역(~transform)이나 rasterio.features로 픽셀 좌표·마스크를 만듭니다. 흔한 사고는 (1) 좌표 순서 뒤바뀜, (2) 좌표계 정보가 없어 추정해야 하는 경우, (3) 영상과 라벨의 좌표계가 다른데 그대로 겹치는 경우입니다. 변환 후에는 영상 위에 폴리곤을 겹쳐 그려 확인합니다.",
+      "tags": [
+        "labeling",
+        "gis",
+        "crs"
+      ],
+      "terms": [
+        "geojson",
+        "coordinate-transformation",
+        "geotransform"
+      ],
+      "source_ref": "RFC 7946 The GeoJSON Format; ESRI Shapefile Technical Description; rasterio 문서 (georeferencing)",
+      "status": "draft"
+    },
+    {
+      "id": "G-LBL-015",
+      "type": "scenario",
+      "chapter": "G.lbl",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"COCO json으로 받은 차량 라벨 YOLO로 변환해서 학습 돌려. 영상은 전부 1280×720이야.\"\n\n변환할 때 반드시 해야 할 처리로 옳은 것은?",
+      "choices": [
+        {
+          "text": "bbox 좌상단에 w/2, h/2를 더해 중심을 구하고 x는 1280, y는 720으로 나누며, category_id는 0부터 다시 매긴다",
+          "rationale": null
+        },
+        {
+          "text": "bbox 네 값을 모두 1280으로 나눠 정규화하고, category_id는 COCO 파일에 적힌 번호를 그대로 쓴다",
+          "rationale": "y와 높이는 720으로 나눠야 하고, 좌상단 좌표를 중심으로 바꾸지도 않았습니다. COCO category_id는 1부터이거나 번호가 비어 있을 수 있어 그대로 쓰면 클래스가 어긋납니다."
+        },
+        {
+          "text": "bbox의 x, y를 그대로 중심 좌표로 보고 x는 1280, y는 720으로 나눈다",
+          "rationale": "COCO의 x, y는 좌상단입니다. 중심으로 바꾸지 않으면 모든 박스가 왼쪽 위로 반 박스씩 밀립니다."
+        },
+        {
+          "text": "bbox를 (xmin, ymin, xmax, ymax)로 바꿔 픽셀 값 그대로 txt에 적는다",
+          "rationale": "그것은 VOC식 절대 좌표입니다. YOLO는 중심·크기를 0~1로 정규화한 값을 씁니다."
+        },
+        {
+          "text": "영상을 640×640으로 리사이즈해 저장하고, 원래 bbox 값을 640으로 나눠 정규화한다",
+          "rationale": "원본 bbox를 640으로 나누면 크기가 맞지 않습니다. YOLO 좌표는 원본 크기 기준 정규화 값이라 리사이즈가 필요 없고, 1280×720을 정사각형으로 늘리면 종횡비도 왜곡됩니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "COCO bbox [x, y, w, h]는 좌상단 기준 절대 픽셀입니다. YOLO로 바꾸려면 cx = (x + w/2)/1280, cy = (y + h/2)/720, w/1280, h/720을 계산하고, 클래스 번호를 0부터 연속되게 다시 매깁니다.",
+      "explanation_full": "COCO의 category_id는 1부터 시작하거나 중간 번호가 빠질 수 있으므로, categories 목록을 순회해 {category_id: 새 인덱스} 매핑표를 만들고 data.yaml의 names 순서와 맞춥니다. 영상 크기가 제각각이면 images 항목의 width·height를 이미지마다 써야 합니다. iscrowd = 1 라벨을 어떻게 다룰지도 정해 둡니다.",
+      "tags": [
+        "labeling",
+        "format",
+        "conversion"
+      ],
+      "terms": [
+        "coco-format",
+        "yolo-format"
+      ],
+      "source_ref": "COCO dataset format 문서 (cocodataset.org, Data format); Ultralytics 문서 Object Detection Datasets Overview (YOLO format)",
+      "status": "draft"
+    },
+    {
+      "id": "G-LBL-016",
+      "type": "scenario",
+      "chapter": "G.lbl",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"건물 폴리곤 Shapefile 받았는데 GeoTIFF 위에 올리면 전체가 엉뚱한 데 찍혀. 라벨러 탓하기 전에 확인해 봐.\"\n\n가장 먼저 확인할 것은?",
+      "choices": [
+        {
+          "text": "라벨을 YOLO 정규화 좌표로 바꿨을 때 값이 0~1 범위를 벗어나는지 확인한다",
+          "rationale": "정규화는 영상과 벡터가 제자리에 겹친 다음 단계입니다. 위치가 통째로 어긋나는 원인은 그 전 단계에 있습니다."
+        },
+        {
+          "text": "GeoTIFF를 더 높은 해상도로 리샘플링해 건물 경계가 선명하게 보이게 만든다",
+          "rationale": "리샘플링은 픽셀 크기를 바꿀 뿐, 좌표계 불일치로 인한 위치 어긋남을 해결하지 못합니다."
+        },
+        {
+          "text": "라벨러별 작업 구역을 나눠 누가 어느 폴리곤을 그렸는지부터 추적한다",
+          "rationale": "전체가 통째로 어긋나는 현상은 사람보다 데이터 처리 문제일 가능성이 큽니다. 지시도 라벨러 탓 전에 확인하라는 것입니다."
+        },
+        {
+          "text": ".prj에 적힌 좌표계와 GeoTIFF의 좌표계(EPSG)를 비교하고, 다르면 벡터를 재투영한다",
+          "rationale": null
+        },
+        {
+          "text": "건물 폴리곤을 단순화(simplify)해 꼭짓점 수를 줄인 뒤 다시 겹쳐 본다",
+          "rationale": "꼭짓점 단순화는 모양을 거칠게 할 뿐 위치를 옮기지 않습니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "라벨 전체가 엉뚱한 곳에 찍히는 것은 대개 좌표계 불일치입니다. Shapefile의 .prj와 GeoTIFF의 EPSG를 비교하고, 다르면 벡터를 영상 좌표계로 재투영합니다.",
+      "explanation_full": ".prj가 없으면 도구가 좌표계를 모르거나 잘못 가정합니다. 이때는 좌표 값의 크기로 추정합니다(예: 경도 124~132, 위도 33~39 범위의 소수면 경위도, 수십만~백만 단위의 큰 수면 미터 단위 투영 좌표(TM·UTM-K 등)). 같은 한국 TM 계열이라도 EPSG 코드마다 타원체·원점 값이 달라 코드를 혼동하면 크게 어긋나므로, 어긋난 거리와 방향도 원인을 좁히는 단서가 됩니다.",
+      "tags": [
+        "labeling",
+        "gis",
+        "crs",
+        "qa"
+      ],
+      "terms": [
+        "coordinate-transformation",
+        "label-quality-assurance"
+      ],
+      "source_ref": "RFC 7946 The GeoJSON Format; ESRI Shapefile Technical Description; rasterio 문서 (georeferencing)",
+      "status": "draft"
+    },
+    {
+      "id": "G-LBL-017",
+      "type": "scenario",
+      "chapter": "G.lbl",
+      "cognitive_level": 3,
+      "difficulty": 2,
+      "stem": "지시: \"라벨러 3명이 나눠서 칠 거니까 시작 전에 가이드부터 만들어. 특히 부두에 붙어 있는 선박이랑 다른 배에 가려진 선박.\"\n\n가이드에 들어갈 내용으로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "애매한 경우는 라벨러 각자 판단에 맡기고, 나중에 모델이 평균적인 기준을 학습하게 한다",
+          "rationale": "기준이 섞이면 라벨 노이즈가 되어 박스 위치 학습이 흔들립니다. 가이드를 만드는 목적과 반대입니다."
+        },
+        {
+          "text": "클래스 이름 목록과 라벨 파일 저장 경로, 파일 이름 규칙만 간단히 정리한다",
+          "rationale": "형식 정보만으로는 지시가 짚은 애매한 사례의 판단 기준이 생기지 않습니다."
+        },
+        {
+          "text": "가림·접안 선박의 박스 규칙을 예시 이미지로 정하고 파일럿으로 일치도를 확인한다",
+          "rationale": null
+        },
+        {
+          "text": "가려지거나 부두에 붙은 선박은 모두 라벨 없이 남겨 두어 작업을 단순하게 만든다",
+          "rationale": "라벨이 없으면 그 선박이 배경으로 학습되는 누락 라벨이 됩니다. 제외하려면 무시 영역(ignore) 처리 같은 별도 규칙이 필요합니다."
+        },
+        {
+          "text": "선박 크기 순으로 라벨러를 나눠 큰 선박과 작은 선박을 각기 다른 사람이 맡게 한다",
+          "rationale": "작업 분담 방식일 뿐, 박스를 긋는 기준은 여전히 사람마다 다를 수 있습니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "라벨링 가이드는 애매한 사례의 판단 규칙을 예시와 함께 고정하는 문서입니다. 가림·접안처럼 지시가 짚은 사례를 명시하고, 파일럿 라벨링으로 세 명의 결과가 일치하는지 확인해야 기준이 실제로 공유됩니다.",
+      "explanation_full": "가려진 객체를 \"보이는 부분만\" 칠지 \"가려진 부분까지 추정한 전체(amodal)\"로 칠지는 데이터셋마다 규칙이 다르므로 과제 목적에 맞게 하나를 고릅니다. 부두에 붙은 선박은 선체 윤곽이 부두와 섞이므로, 판독이 어려운 경우 무시 영역(ignore region)으로 표시하는 규칙을 두면 평가 때 억울한 FP·FN을 줄일 수 있습니다.",
+      "tags": [
+        "labeling",
+        "guideline"
+      ],
+      "terms": [
+        "labeling-guideline",
+        "label-noise"
+      ],
+      "source_ref": "데이터 라벨링 품질 관리 일반 (라벨링 가이드·검수·라벨러 간 일치도)",
+      "status": "draft"
+    },
+    {
+      "id": "G-LBL-018",
+      "type": "scenario",
+      "chapter": "G.lbl",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"외주 라벨 이번 배치 검수 결과 나왔어. 무작위 5% 표본에서 오류율이 12%인데 계약 기준은 3% 이하야. 처리 방안 정리해.\"\n\n가장 적절한 처리는?",
+      "choices": [
+        {
+          "text": "표본에서 발견한 오류만 고치고 검수하지 않은 나머지 95%는 그대로 받아들인다",
+          "rationale": "표본 오류율이 12%라면 검수하지 않은 95%에도 비슷한 비율의 오류가 남아 있다고 봐야 합니다."
+        },
+        {
+          "text": "배치를 반려해 전수 재검수를 받고, 오류 유형을 집계해 가이드를 보완한다",
+          "rationale": null
+        },
+        {
+          "text": "딥러닝은 라벨 노이즈에 강하므로 오류율 12%는 학습에 문제없다고 보고 수용한다",
+          "rationale": "모델은 잘못된 라벨도 외울 수 있고, 시험셋에 섞인 오류는 평가를 직접 왜곡합니다. 계약 기준도 어기는 판단입니다."
+        },
+        {
+          "text": "오류율이 3% 이하로 나올 때까지 표본을 새로 뽑아 검수를 여러 번 반복한다",
+          "rationale": "원하는 결과가 나올 때까지 표본을 다시 뽑는 것은 검수 결과를 골라 쓰는 것과 같습니다. 오류는 그대로 남습니다."
+        },
+        {
+          "text": "배치 전체를 폐기하고 다른 업체에 같은 가이드로 처음부터 다시 맡긴다",
+          "rationale": "대부분의 라벨은 쓸 수 있는데 모두 버리는 것은 낭비이고, 가이드가 모호했다면 새 업체에서도 같은 오류가 반복됩니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "무작위 표본의 오류율은 배치 전체 오류율의 추정치이므로 12%는 기준(3%)을 크게 넘습니다. 배치를 반려해 전수 재검수를 받고, 오류 유형(누락·박스·클래스)을 집계해 원인이 가이드의 모호함이면 가이드부터 고쳐야 같은 오류가 반복되지 않습니다.",
+      "explanation_full": "표본이 작으면 오류율 추정의 불확실성이 크므로 표본 수와 함께 신뢰구간을 보고하면 판단 근거가 분명해집니다. 오류가 특정 라벨러·클래스·지역에 몰려 있다면 그 부분을 우선 재작업하도록 요청할 수 있습니다. 반려·재검수 기준(표본 비율, 허용 오류율)은 작업 시작 전에 계약과 가이드에 명시해 둡니다.",
+      "tags": [
+        "labeling",
+        "qa",
+        "guideline"
+      ],
+      "terms": [
+        "label-quality-assurance",
+        "labeling-guideline"
+      ],
+      "source_ref": "데이터 라벨링 품질 관리 일반 (라벨링 가이드·검수·라벨러 간 일치도)",
+      "status": "draft"
+    },
+    {
+      "id": "G-LBL-019",
+      "type": "scenario",
+      "chapter": "G.lbl",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"양식장 GeoJSON 라벨을 512 타일에 맞게 YOLO 라벨로 뽑아. 타일 경계에 걸친 폴리곤도 제대로 처리하고.\"\n\n가장 적절한 처리 방법은?",
+      "choices": [
+        {
+          "text": "경위도 좌표를 원본 영상 전체의 가로·세로 픽셀 수로 나눠 한 번에 정규화한다",
+          "rationale": "경위도는 픽셀이 아니고, YOLO 라벨은 원본 전체가 아니라 각 타일 기준으로 정규화해야 합니다."
+        },
+        {
+          "text": "타일 경계에 걸친 폴리곤은 판단이 애매하므로 라벨에서 모두 삭제한다",
+          "rationale": "경계 객체가 배경으로 학습되는 누락 라벨이 생깁니다. 잘린 부분을 라벨로 남기거나 면적 비율 규칙으로 판단해야 합니다."
+        },
+        {
+          "text": "경계에 걸친 폴리곤도 잘라내지 않고 원래 박스를 그대로 타일 좌표로 옮겨 적는다",
+          "rationale": "박스가 타일 밖으로 나가 0~1 범위를 벗어난 좌표가 생깁니다. 도구에 따라 오류가 나거나 잘못된 박스로 학습됩니다."
+        },
+        {
+          "text": "픽셀 좌표 폴리곤을 타일별로 잘라 남은 부분의 박스를 512로 정규화한다",
+          "rationale": null
+        },
+        {
+          "text": "폴리곤 중심점이 들어 있는 타일 하나에만 원래 크기의 박스를 그대로 적는다",
+          "rationale": "중심점 타일에서도 박스가 타일 밖으로 넘칠 수 있고, 다른 타일에 걸친 부분은 라벨 없이 남아 누락 라벨이 됩니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "순서는 좌표계 맞춤 → 픽셀 좌표 변환 → 타일별 클리핑 → 타일 기준 박스 계산 → 512로 정규화입니다. 경계 객체는 타일에 걸린 부분만 남겨 라벨로 쓰고, 너무 작게 잘린 조각은 면적 비율 기준으로 버립니다.",
+      "explanation_full": "shapely의 intersection으로 타일 사각형과 폴리곤을 교차시키면 잘린 부분을 얻을 수 있습니다. 잘린 조각이 원래 면적의 일정 비율(예: 30%) 미만이면 버리거나 무시 영역으로 두는 규칙을 가이드에 적습니다. overlap을 두고 잘랐다면 같은 양식장이 여러 타일에 라벨로 들어가는 것이 정상입니다.",
+      "tags": [
+        "labeling",
+        "gis",
+        "tiling",
+        "conversion"
+      ],
+      "terms": [
+        "geojson",
+        "yolo-format",
+        "tiling"
+      ],
+      "source_ref": "RFC 7946 The GeoJSON Format; ESRI Shapefile Technical Description; rasterio 문서 (georeferencing); Ultralytics 문서 Object Detection Datasets Overview (YOLO format)",
+      "status": "draft"
+    }
+  ]
+}

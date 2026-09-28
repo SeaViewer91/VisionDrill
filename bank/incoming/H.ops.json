@@ -1,0 +1,960 @@
+{
+  "format": "visiondrill-bank-exchange",
+  "format_version": 1,
+  "terms": [
+    {
+      "id": "deployment-gate-function",
+      "term_en": "Go/No-Go Deployment Gate Function",
+      "term_ko": "종합 배포 적격성 판정식",
+      "abbreviation": null,
+      "definition": "신규 모델이 운영 모델을 대체하려면 거시 성능(G_macro), 최악 슬라이스(G_slice), 환경 강건성(G_robust), 신뢰도 보정(G_calib), 온디바이스 지연(G_latency) 다섯 게이트를 모두 동시에 만족해야(논리곱) 1이 되는 배포 판정 함수. Diagnostics 노트가 소프트웨어 품질 게이트 개념을 비전 모델에 적용해 정의했다",
+      "usage_example": "v5는 mAP는 올랐는데 야간 슬라이스 게이트에서 떨어졌어. 판정식이 0이니 배포 못 해.",
+      "origin": "project",
+      "track": "H"
+    },
+    {
+      "id": "gate-waiver-protocol",
+      "term_en": "Gate Waiver Protocol",
+      "term_ko": "게이트 예외 승인 절차",
+      "abbreviation": null,
+      "definition": "배포 게이트를 무관용 차단인 Hard Gate(거시 mAP 하락, 안전필수 클래스 N10 > 0, VRAM 초과)와 조건부 심의가 가능한 Soft Gate(지연시간·ECE 미세 초과, 비핵심 슬라이스 경미한 하락)로 나누고, Soft Gate만 위반한 경우 트레이드오프 이득과 테크리드 서명을 조건으로 조건부 배포(Conditional Go)를 허용하는 Diagnostics 노트의 절차",
+      "usage_example": "지연만 2 ms 넘은 거면 Soft Gate야. mAP 이득 근거 붙여서 waiver 올려.",
+      "origin": "project",
+      "track": "H"
+    },
+    {
+      "id": "error-inheritance-matrix",
+      "term_en": "Error Inheritance Matrix",
+      "term_ko": "오차 상속 행렬",
+      "abbreviation": null,
+      "definition": "검증 세트의 정답 객체마다 기존 모델과 신규 모델의 탐지 성공(1)·실패(0)를 짝지어 N11(성공 보존), N10(기존 성공→신규 실패, 치명적 회귀), N01(신규 해결), N00(만성적 지속)의 네 칸으로 나눈 2×2 행렬. Diagnostics 노트가 회귀 검증용으로 정의했다",
+      "usage_example": "v1, v2 오차 상속 행렬 뽑아 봐. N10 칸에 들어간 건물 목록이 이번 리뷰 핵심이야.",
+      "origin": "project",
+      "track": "H"
+    },
+    {
+      "id": "negative-flip",
+      "term_en": "Negative Flip (Flipped-FN)",
+      "term_ko": "플립 오차",
+      "abbreviation": null,
+      "definition": "모델을 업데이트했을 때 기존 모델은 맞히던 표본(객체)을 신규 모델이 틀리게 되는 경우. 전체 정확도나 mAP가 올라도 발생할 수 있어, 현장에서 '어제까지 잡던 것을 오늘 못 잡는' 신뢰성 문제를 만든다. 노트는 오차 상속 행렬의 N10 칸으로 센다",
+      "usage_example": "mAP는 3%p 올랐는데 flip이 120건이야. 운영팀이 체감하는 건 이쪽이니까 따로 보고해.",
+      "origin": "standard",
+      "track": "H"
+    },
+    {
+      "id": "regression-rate",
+      "term_en": "Regression Rate",
+      "term_ko": "회귀율",
+      "abbreviation": "RR",
+      "definition": "기존 모델이 맞히던 객체 중 신규 모델이 틀리게 된 비율 RR = N10 / (N11 + N10) × 100 [%]. Diagnostics 노트가 정의했으며 일반 상용 도메인에서 2.0% 이하를 허용, 5.0% 초과면 ΔmAP가 양수여도 배포를 거부한다(잠정치)",
+      "usage_example": "RR 6%면 기존에 잡던 것 중 6%를 잃은 거야. mAP 올랐어도 이건 못 올린다.",
+      "origin": "project",
+      "track": "H"
+    },
+    {
+      "id": "canary-deployment",
+      "term_en": "Canary Deployment",
+      "term_ko": "카나리 배포",
+      "abbreviation": null,
+      "definition": "신규 모델에 실제 트래픽의 일부(예: 10%)만 보내 실제로 서빙하면서 지표를 감시하고, 이상이 없으면 점차 비율을 늘려 전면 승격하는 단계적 배포 방식. 이상이 감지되면 곧바로 트래픽을 운영 모델로 되돌린다",
+      "usage_example": "새 선박 모델은 위성 장면 10%만 카나리로 먼저 돌려. 48시간 조용하면 전면 전환하자.",
+      "origin": "standard",
+      "track": "H"
+    },
+    {
+      "id": "shadow-deployment",
+      "term_en": "Shadow Deployment",
+      "term_ko": "섀도우 배포",
+      "abbreviation": null,
+      "definition": "실제 입력을 신규 모델에도 똑같이 복제(미러링)해 추론시키되, 그 결과는 사용자에게 내보내지 않고 운영 모델 결과와 비교·기록만 하는 배포 방식. 사용자 영향 없이 실환경 성능을 볼 수 있다",
+      "usage_example": "고객 화면엔 v3 결과만 나가게 두고, v4는 섀도우로 붙여서 일주일 치 비교만 쌓아.",
+      "origin": "standard",
+      "track": "H"
+    },
+    {
+      "id": "tail-latency",
+      "term_en": "Tail Latency (P99 Latency)",
+      "term_ko": "꼬리 지연시간(99분위 지연)",
+      "abbreviation": "P99",
+      "definition": "지연시간 분포의 상위 꼬리를 나타내는 분위수로, P99는 요청(프레임)의 99%가 그 시간 안에 처리되는 값이다. 평균이 가리는 간헐적 지연 폭증을 잡아내므로 실시간 처리 기준에 쓴다",
+      "usage_example": "평균 18 ms면 뭐 해, P99가 31 ms라 실시간 기준 25 ms를 못 맞춰.",
+      "origin": "standard",
+      "track": "H"
+    }
+  ],
+  "questions": [
+    {
+      "id": "H-OPS-001",
+      "type": "mcq",
+      "chapter": "H.ops",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "노트의 종합 배포 적격성 판정식(Go/No-Go Gate Function)은 거시 성능·최악 슬라이스·환경 강건성·신뢰도 보정·지연시간의 다섯 게이트를 어떻게 결합하는가?",
+      "choices": [
+        {
+          "text": "논리곱(AND): 다섯 게이트 모두 만족해야 1",
+          "rationale": null
+        },
+        {
+          "text": "논리합(OR): 다섯 게이트 중 하나만 만족해도 1(배포 승인)",
+          "rationale": "하나만 통과해도 되면 최악 슬라이스나 지연 기준을 어긴 모델도 배포됩니다. 노트는 모두 만족을 요구합니다."
+        },
+        {
+          "text": "가중 평균: 게이트 점수의 가중 평균이 0.8 이상이면 1",
+          "rationale": "가중 평균은 한 게이트의 큰 결함을 다른 게이트의 여유로 덮을 수 있습니다. 노트는 점수 합산이 아니라 논리곱을 씁니다."
+        },
+        {
+          "text": "다수결: 다섯 중 세 게이트 이상 통과하면 1",
+          "rationale": "다수결 역시 일부 게이트 탈락을 허용합니다. 노트 판정식에는 없는 방식입니다."
+        },
+        {
+          "text": "거시 성능 게이트만 필수이고 나머지는 참고 지표",
+          "rationale": "노트가 비판하는 것이 바로 평균 지표에만 의존하는 배포입니다. 다섯 게이트 모두 필수입니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "Gate = 𝕀(G_macro ∧ G_slice ∧ G_robust ∧ G_calib ∧ G_latency) ∈ {0, 1}입니다. 하나라도 불만족이면 0(No-Go)이고, CI/CD 러너는 빌드를 실패 처리합니다.",
+      "explanation_full": "노트는 평균 mAP가 올라도 야간·저대비 소형 표적 같은 취약 슬라이스가 크게 무너지거나 교란 강건성이 붕괴된 채 배포되는 사고를 막으려고 논리곱 게이트를 둡니다. 다만 실무 유연성을 위해 Hard/Soft Gate로 나누고 Soft Gate 단독 위반은 예외 승인(Waiver)으로 심의할 수 있게 했습니다. 외부와 소통할 때는 \"평균 성능·최악 조건·강건성·확신도 보정·지연시간을 모두 통과해야 배포하는 규칙\"처럼 풀어서 말합니다.",
+      "tags": [
+        "mlops",
+        "gate"
+      ],
+      "terms": [
+        "deployment-gate-function"
+      ],
+      "source_ref": "Diagnostics/research/note/09_mlops_deployment_gatekeeper/01_deployment_gate_metrics.md#2",
+      "status": "draft"
+    },
+    {
+      "id": "H-OPS-002",
+      "type": "mcq",
+      "chapter": "H.ops",
+      "cognitive_level": 2,
+      "difficulty": 4,
+      "stem": "위성 영상 선박 탐지 신규 모델의 검증 결과가 다음과 같다. 전체 mAP50:95 +0.02(기존 대비), 최악 슬라이스 mAP 0.38(τ_slice = 0.35), 슬라이스별 최대 퇴보폭 0.05(ε_regress = 0.03), mCE 92, ECE 0.06, P99 지연 22 ms(기준 25 ms), 피크 메모리는 VRAM 이내. 노트 판정식의 값과 그 이유로 옳은 것은? (RDI 조건은 충족했다고 가정)",
+      "choices": [
+        {
+          "text": "Gate = 1, 다섯 게이트를 모두 만족",
+          "rationale": "G_slice는 최저선(≥ τ_slice)과 퇴보폭(≤ ε_regress)을 모두 만족해야 합니다. 퇴보폭 0.05가 0.03을 넘습니다."
+        },
+        {
+          "text": "Gate = 0, mCE 92가 기준을 넘어 G_robust 불만족",
+          "rationale": "노트 기준은 mCE ≤ 100입니다. 92는 기준 이내입니다."
+        },
+        {
+          "text": "Gate = 0, 최악 슬라이스 mAP 0.38이 τ_slice 미만이라 G_slice 불만족",
+          "rationale": "0.38은 τ_slice = 0.35 이상이므로 최저선 조건은 만족합니다. 걸린 것은 퇴보폭 조건입니다."
+        },
+        {
+          "text": "Gate = 0, 한 슬라이스의 퇴보폭 0.05가 허용치 0.03을 넘어 G_slice 불만족",
+          "rationale": null
+        },
+        {
+          "text": "Gate = 0, ECE 0.06이 기준을 넘어 G_calib 불만족",
+          "rationale": "노트 기준은 ECE ≤ 0.080입니다. 0.06은 기준 이내입니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "G_slice는 '최악 슬라이스 mAP ≥ τ_slice'와 '기존 대비 슬라이스별 최대 퇴보폭 ≤ ε_regress'를 동시에 요구합니다. 퇴보폭 0.05 > 0.03이므로 G_slice = 0이고, 논리곱이라 Gate = 0입니다.",
+      "explanation_full": "나머지 조건: ΔmAP ≥ 0(만족), mCE ≤ 100(만족), ECE ≤ 0.080(만족), P99 ≤ 25 ms와 피크 메모리 ≤ VRAM(만족). 판정식 값은 0이지만, 해당 슬라이스가 비핵심이고 영향 데이터가 5% 미만이면 Soft Gate 예외 심의 대상이 될 수 있습니다. τ_slice 0.35, ε 0.03 등은 노트의 예시·잠정 기준입니다. 한편 노트는 G_robust에 'min RDI_k ≥ 0.60'을 적는데, 04장의 RDI는 낮을수록 좋은 하락률이라 방향이 맞지 않아 이 문항에서는 가정으로 처리했습니다. 외부와 소통할 때는 \"평균 성능·최악 조건·강건성·확신도 보정·지연시간을 모두 통과해야 배포하는 규칙\"처럼 풀어서 말합니다.",
+      "tags": [
+        "mlops",
+        "gate",
+        "calculation"
+      ],
+      "terms": [
+        "deployment-gate-function",
+        "min-slice-map"
+      ],
+      "source_ref": "Diagnostics/research/note/09_mlops_deployment_gatekeeper/01_deployment_gate_metrics.md#3.2",
+      "status": "draft"
+    },
+    {
+      "id": "H-OPS-003",
+      "type": "short",
+      "chapter": "H.ops",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "엣지 보드에서 프레임별 추론 지연을 모아 정렬했을 때, 전체 프레임의 99%가 그 시간 안에 처리되는 지연 값을 가리키는 이름은? 노트의 지연시간 게이트가 평균 대신 이 값을 쓴다. (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "P99 Latency",
+          "99th Percentile Latency",
+          "Tail Latency"
+        ],
+        "ko": [
+          "99분위 지연시간",
+          "꼬리 지연시간",
+          "P99 지연시간",
+          "99퍼센타일 지연시간"
+        ]
+      },
+      "primary": "P99 Latency",
+      "explanation_short": "P99 지연시간은 지연 분포의 99번째 백분위수로, 가끔 튀는 느린 프레임까지 반영합니다. 노트의 G_latency는 타깃 보드에서 측정한 P99가 기준(예: 25 ms) 이하일 것을 요구합니다.",
+      "explanation_full": "평균 지연은 간헐적인 지연 폭증을 가립니다. 실시간 영상 처리에서는 느린 프레임 몇 개가 프레임 드롭이나 추적 끊김으로 이어지므로 꼬리 지연을 봅니다. 노트는 INT8/FP16으로 컴파일한 뒤 실제 타깃 보드(Jetson, NPU 등)에서 재라고 명시합니다. 25 ms는 40 FPS에 해당합니다.",
+      "tags": [
+        "mlops",
+        "latency"
+      ],
+      "terms": [
+        "tail-latency",
+        "latency"
+      ],
+      "source_ref": "Diagnostics/research/note/09_mlops_deployment_gatekeeper/01_deployment_gate_metrics.md#3.5",
+      "status": "draft"
+    },
+    {
+      "id": "H-OPS-004",
+      "type": "mcq",
+      "chapter": "H.ops",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "드론 실시간 차량 탐지 모델을 타깃 보드에서 측정했더니 평균 지연 18 ms, P99 지연 31 ms였다. 노트의 지연시간 게이트 기준이 P99 ≤ 25 ms일 때 판정으로 옳은 것은? (다른 게이트는 모두 통과, 예외 승인 절차는 아직 밟지 않음)",
+      "choices": [
+        {
+          "text": "평균 18 ms가 25 ms 이내이므로 G_latency 만족",
+          "rationale": "노트의 게이트는 평균이 아니라 99분위 지연(P99)을 봅니다. 평균은 간헐적 지연 폭증을 가립니다."
+        },
+        {
+          "text": "P99 31 ms가 25 ms를 넘으므로 G_latency 불만족",
+          "rationale": null
+        },
+        {
+          "text": "31 ms는 약 32 FPS로 30 FPS를 넘으므로 G_latency 만족",
+          "rationale": "기준은 30 FPS가 아니라 P99 ≤ 25 ms(40 FPS)입니다. 임의의 FPS 기준으로 바꿔 판정할 수 없습니다."
+        },
+        {
+          "text": "Soft Gate 허용 폭(+15%) 이내이므로 자동으로 통과",
+          "rationale": "25 ms × 1.15 = 28.75 ms로 31 ms는 허용 폭도 넘습니다. 게다가 예외는 ΔmAP ≥ +0.03과 테크리드 서명이 있어야 하는 심의 절차이지 자동 통과가 아닙니다."
+        },
+        {
+          "text": "평균과 P99의 차이가 13 ms로 10 ms를 넘으므로 G_latency 불만족",
+          "rationale": "평균과 P99의 차이는 노트의 판정 기준이 아닙니다. 판정은 P99 ≤ τ_lat 한 가지입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "G_latency는 Latency_P99 ≤ τ_lat(예: 25 ms)과 피크 메모리 ≤ VRAM을 요구합니다. P99가 31 ms이므로 불만족이며, 평균이 기준 안이라는 사실은 판정에 영향을 주지 않습니다.",
+      "explanation_full": "Soft Gate로 예외 심의를 올리더라도 노트의 허용 폭은 최대 +15%(28.75 ms)이고 ΔmAP ≥ +0.03이 전제이므로, 31 ms는 예외 대상도 되지 않습니다. 느린 프레임의 원인(메모리 병목, 후처리 NMS 폭증, 열 스로틀링 등)을 먼저 확인합니다. 25 ms·15%는 노트의 예시 기준(잠정치)입니다.",
+      "tags": [
+        "mlops",
+        "latency"
+      ],
+      "terms": [
+        "tail-latency"
+      ],
+      "source_ref": "Diagnostics/research/note/09_mlops_deployment_gatekeeper/01_deployment_gate_metrics.md#3.5",
+      "status": "draft"
+    },
+    {
+      "id": "H-OPS-005",
+      "type": "short",
+      "chapter": "H.ops",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "노트의 배포 게이트 체계에서, 지연시간·ECE 미세 초과 같은 Soft Gate만 단독으로 위반했을 때 트레이드오프 이득(예: ΔmAP ≥ +0.03)과 테크리드 전자 서명을 조건으로 조건부 배포(Conditional Go)를 허용하는 절차를 무엇이라 하는가? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Waiver Protocol",
+          "Waiver",
+          "Gate Waiver Protocol"
+        ],
+        "ko": [
+          "예외 승인 절차",
+          "예외 승인",
+          "게이트 예외 승인 절차"
+        ]
+      },
+      "primary": "Waiver Protocol",
+      "explanation_short": "Soft Gate 단독 위반을 조건부로 심의하는 절차를 예외 승인(Waiver Protocol)이라 합니다. Hard Gate 위반은 예외 없이 즉시 거부됩니다.",
+      "explanation_full": "노트의 Hard Gate: 거시 mAP 하락(ΔmAP < 0), 안전필수 클래스 회귀 N10^critical > 0, VRAM 초과(OOM). Soft Gate: 지연시간(최대 +15% 초과까지, ΔmAP ≥ +0.03 전제), ECE(사후 Temperature Scaling 재튜닝 조건), 비핵심 슬라이스 퇴보(영향 데이터 < 5%). 엄격한 논리곱이 '지연 1 ms 초과지만 정확도 +5%'인 모델을 불합리하게 기각하는 것을 막기 위한 장치입니다. 외부와 소통할 때는 \"절대 넘으면 안 되는 기준과, 이득이 크면 책임자 승인으로 예외를 둘 수 있는 기준을 나눈 절차\"처럼 풀어서 말합니다.",
+      "tags": [
+        "mlops",
+        "gate",
+        "waiver"
+      ],
+      "terms": [
+        "gate-waiver-protocol"
+      ],
+      "source_ref": "Diagnostics/research/note/09_mlops_deployment_gatekeeper/01_deployment_gate_metrics.md#5",
+      "status": "draft"
+    },
+    {
+      "id": "H-OPS-006",
+      "type": "mcq",
+      "chapter": "H.ops",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "다음 게이트 평가 결과 중 노트의 예외 승인(Waiver)으로도 배포할 수 없는 경우는?",
+      "choices": [
+        {
+          "text": "P99 지연이 26 ms로 기준 25 ms를 4% 넘었고, ΔmAP는 +0.04이다",
+          "rationale": "지연시간은 Soft Gate입니다. +15% 이내이고 ΔmAP ≥ +0.03이므로 예외 심의 대상입니다."
+        },
+        {
+          "text": "ECE가 0.09로 기준 0.08을 조금 넘었다",
+          "rationale": "ECE는 Soft Gate로, 사후 Temperature Scaling 재튜닝을 조건으로 승인할 수 있습니다."
+        },
+        {
+          "text": "비핵심 슬라이스 하나가 0.04 하락했고, 그 슬라이스는 전체 데이터의 3%이다",
+          "rationale": "비핵심 슬라이스 퇴보는 Soft Gate이며, 영향 데이터 비율이 5% 미만이면 승인할 수 있습니다."
+        },
+        {
+          "text": "회귀율 RR이 1.5%로 일반 허용선 2.0% 이내이다",
+          "rationale": "RR 1.5%는 노트의 허용선 안이라 애초에 위반이 아닙니다. 예외 승인 없이도 이 항목은 통과합니다."
+        },
+        {
+          "text": "타깃 보드에서 피크 메모리가 VRAM을 초과했다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "VRAM 초과는 실행 자체가 크래시(OOM)로 이어지므로 노트에서 '절대 불가' Hard Gate입니다. 나머지는 모두 Soft Gate로 조건부 심의가 가능합니다.",
+      "explanation_full": "Hard Gate 세 가지(거시 mAP 하락, 안전필수 클래스 N10 > 0, VRAM 초과)는 이득이 아무리 커도 예외가 없습니다. Soft Gate 예외 조건(지연 +15%, ΔmAP ≥ +0.03, 영향 데이터 < 5%)은 노트의 예시 기준(잠정치)으로 조직 사정에 맞게 정합니다. 위성 영상처럼 타일이 큰 입력은 배치·타일 크기에 따라 피크 메모리가 달라지므로 실제 운영 설정으로 재야 합니다. 외부와 소통할 때는 \"절대 넘으면 안 되는 기준과, 이득이 크면 책임자 승인으로 예외를 둘 수 있는 기준을 나눈 절차\"처럼 풀어서 말합니다.",
+      "tags": [
+        "mlops",
+        "gate",
+        "waiver"
+      ],
+      "terms": [
+        "gate-waiver-protocol"
+      ],
+      "source_ref": "Diagnostics/research/note/09_mlops_deployment_gatekeeper/01_deployment_gate_metrics.md#5",
+      "status": "draft"
+    },
+    {
+      "id": "H-OPS-007",
+      "type": "short",
+      "chapter": "H.ops",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "검증 세트의 정답 객체마다 기존 모델과 신규 모델의 탐지 성공(1)·실패(0)를 짝지어 N11, N10, N01, N00의 네 칸으로 나눈 2×2 행렬을 노트는 무엇이라 부르는가? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Error Inheritance Matrix"
+        ],
+        "ko": [
+          "오차 상속 행렬",
+          "오류 상속 행렬"
+        ]
+      },
+      "primary": "Error Inheritance Matrix",
+      "explanation_short": "기존·신규 모델의 객체별 성공/실패를 교차 집계한 표를 노트는 오차 상속 행렬(Error Inheritance Matrix)이라 부릅니다. 평균 지표가 가리는 '무엇을 잃고 무엇을 얻었는지'를 드러냅니다.",
+      "explanation_full": "네 칸: N11 성공 보존군, N10 치명적 회귀군(Flipped-FN, 기존 성공→신규 실패), N01 신규 해결군, N00 만성적 지속군(둘 다 실패하는 고난도 표적). 노트는 N10을 회귀 검증의 핵심 감시 대상으로 봅니다. 형태는 분류 모델 비교에 쓰는 맥니마 검정(McNemar)의 2×2 분할표와 같습니다. 외부와 소통할 때는 \"이전 버전과 새 버전이 각 대상을 맞혔는지 여부를 네 칸으로 나눈 표\"처럼 풀어서 말합니다.",
+      "tags": [
+        "mlops",
+        "regression"
+      ],
+      "terms": [
+        "error-inheritance-matrix"
+      ],
+      "source_ref": "Diagnostics/research/note/09_mlops_deployment_gatekeeper/02_regression_testing_and_flip_analysis.md#2",
+      "status": "draft"
+    },
+    {
+      "id": "H-OPS-008",
+      "type": "mcq",
+      "chapter": "H.ops",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "건물 탐지 모델 v1→v2의 오차 상속 행렬이 N11 = 900, N10 = 40, N01 = 70, N00 = 90이다. 노트의 순수 순증치 ΔN_net은?",
+      "choices": [
+        {
+          "text": "110",
+          "rationale": "N01 + N10을 더한 값입니다. 순수 순증치는 새로 맞힌 수에서 잃은 수를 뺀 N01 − N10입니다."
+        },
+        {
+          "text": "−30",
+          "rationale": "N10 − N01로 순서를 뒤집었습니다. 새로 해결한 수가 더 많으므로 순증치는 양수입니다."
+        },
+        {
+          "text": "30",
+          "rationale": null
+        },
+        {
+          "text": "970",
+          "rationale": "N11 + N01은 v2가 맞힌 전체 객체 수입니다. 순증치가 아닙니다."
+        },
+        {
+          "text": "160",
+          "rationale": "N01 + N00은 v1이 놓친 객체 수입니다. 순증치와 관계없습니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "ΔN_net = N01 − N10 = 70 − 40 = 30입니다. 전체로는 30개를 더 맞혔지만, 그 뒤에 v1이 맞히던 40개를 잃은 사실이 숨어 있습니다.",
+      "explanation_full": "순증치가 양수여도 N10(40개)은 별도로 봐야 합니다. 이 예의 회귀율은 RR = 40 / (900 + 40) ≈ 4.3%로, 노트의 일반 허용선 2.0%를 넘고 즉시 거부선 5.0%에는 못 미칩니다(두 기준 모두 잠정치). 운영자가 체감하는 것은 순증치가 아니라 '잡던 건물을 못 잡게 된' 40건입니다. 외부와 소통할 때는 \"이전 버전과 새 버전이 각 대상을 맞혔는지 여부를 네 칸으로 나눈 표\"처럼 풀어서 말합니다.",
+      "tags": [
+        "mlops",
+        "regression",
+        "calculation"
+      ],
+      "terms": [
+        "error-inheritance-matrix"
+      ],
+      "source_ref": "Diagnostics/research/note/09_mlops_deployment_gatekeeper/02_regression_testing_and_flip_analysis.md#2.2",
+      "status": "draft"
+    },
+    {
+      "id": "H-OPS-009",
+      "type": "short",
+      "chapter": "H.ops",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "모델을 업데이트한 뒤, 기존 모델은 정확히 탐지하던 객체를 신규 모델이 놓치거나 틀리게 되는 경우를 가리키는 용어는? 노트는 이를 오차 상속 행렬의 N10 칸으로 센다. (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Negative Flip",
+          "Flipped-FN",
+          "Flip Error"
+        ],
+        "ko": [
+          "플립 오차",
+          "음성 플립",
+          "치명적 회귀"
+        ]
+      },
+      "primary": "Negative Flip",
+      "explanation_short": "기존 정답이 신규 모델에서 오답으로 뒤집히는 것을 플립 오차(Negative Flip, 노트 표기 Flipped-FN)라 합니다. 전체 mAP가 올라도 생길 수 있습니다.",
+      "explanation_full": "노트는 이를 성능 회귀(Performance Regression)라고도 부르며, 현장 운용자에게 '어제까지 잘 잡던 물체를 업데이트 후 갑자기 못 잡는다'는 신뢰성 붕괴를 일으킨다고 설명합니다. 학계에서는 모델 업데이트 호환성(backward compatibility) 문제로 다루며, 플립을 줄이도록 학습하는 기법(예: positive-congruent training)도 연구되어 있습니다.",
+      "tags": [
+        "mlops",
+        "regression"
+      ],
+      "terms": [
+        "negative-flip"
+      ],
+      "source_ref": "Diagnostics/research/note/09_mlops_deployment_gatekeeper/02_regression_testing_and_flip_analysis.md#1",
+      "status": "draft"
+    },
+    {
+      "id": "H-OPS-010",
+      "type": "mcq",
+      "chapter": "H.ops",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "플립 오차(Negative Flip)에 대한 설명으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "mAP가 올라도 기존에 맞히던 객체를 놓칠 수 있어 객체 단위로 따로 추적해야 한다",
+          "rationale": null
+        },
+        {
+          "text": "전체 mAP가 올랐다면 플립 오차는 0이므로 객체 단위로 따로 셀 필요가 없다",
+          "rationale": "mAP 상승은 신규 해결(N01)이 회귀(N10)보다 많다는 뜻일 뿐, N10이 0이라는 뜻이 아닙니다."
+        },
+        {
+          "text": "데이터셋 버전이 바뀌면서 라벨이 수정된 객체의 수를 말한다",
+          "rationale": "라벨 수정은 데이터 쪽 변경입니다. 플립은 같은 정답에 대해 모델 판정이 바뀐 경우입니다."
+        },
+        {
+          "text": "신규 모델이 새로 만든 오탐(FP) 박스의 수만 센다",
+          "rationale": "노트의 N10은 정답 객체가 기존 성공에서 신규 실패(미탐 또는 오분류)로 바뀐 경우입니다. 오탐 박스 수와 다릅니다."
+        },
+        {
+          "text": "클래스별 AP를 비교해 하락한 클래스가 하나도 없으면 플립 오차도 없다고 볼 수 있다",
+          "rationale": "클래스 AP가 유지돼도 같은 클래스 안에서 맞히는 객체가 바뀌면 플립은 생깁니다. 집계 지표로는 드러나지 않습니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "플립 오차는 집계 지표로는 보이지 않습니다. 새로 맞힌 객체가 잃은 객체보다 많으면 mAP는 오르지만 N10은 그대로 남으므로, 정답 객체 단위로 기존·신규 판정을 짝지어 봐야 합니다.",
+      "explanation_full": "노트는 '전체 mAP 0.55 → 0.58 상승이니 무조건 우수하다'는 믿음을 가장 위험한 착시로 꼽습니다. 변화탐지·시설물 탐지처럼 같은 지역을 반복 촬영해 결과를 비교하는 업무에서는 이전에 잡히던 대상이 사라지면 '변화'로 오인될 수 있어 특히 중요합니다.",
+      "tags": [
+        "mlops",
+        "regression"
+      ],
+      "terms": [
+        "negative-flip"
+      ],
+      "source_ref": "Diagnostics/research/note/09_mlops_deployment_gatekeeper/02_regression_testing_and_flip_analysis.md#1",
+      "status": "draft"
+    },
+    {
+      "id": "H-OPS-011",
+      "type": "short",
+      "chapter": "H.ops",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "기존 모델이 맞히던 객체(N11 + N10) 중 신규 모델이 틀리게 된 객체(N10)의 비율, 즉 N10 / (N11 + N10) × 100 [%]로 정의되는 노트의 지표 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Regression Rate (RR)"
+        ],
+        "ko": [
+          "회귀율",
+          "성능 회귀율"
+        ]
+      },
+      "primary": "Regression Rate (RR)",
+      "explanation_short": "RR = N10 / (N11 + N10) × 100 [%]로, 기존 정답 가운데 잃은 비율입니다. 분모는 전체 객체 수가 아니라 기존 모델이 맞힌 객체 수입니다.",
+      "explanation_full": "노트의 판정(잠정치): 일반 상용 도메인 RR ≤ 2.0%(기존 정답 98% 이상 유지)를 허용, RR > 5.0%면 ΔmAP가 양수여도 즉시 배포 거부(파괴적 망각으로 판정). 2~5% 구간의 처리는 노트에 명시되어 있지 않으며, CI 예시 스크립트는 --max-flip-rate 0.020으로 2%에서 차단합니다. 통계의 상대위험(RR, Relative Risk)과 약어가 같으니 문서에서는 풀어 씁니다. 외부와 소통할 때는 \"이전 버전이 맞히던 것 중 새 버전이 놓치게 된 비율\"처럼 풀어서 말합니다.",
+      "tags": [
+        "mlops",
+        "regression"
+      ],
+      "terms": [
+        "regression-rate"
+      ],
+      "source_ref": "Diagnostics/research/note/09_mlops_deployment_gatekeeper/02_regression_testing_and_flip_analysis.md#2.2",
+      "status": "draft"
+    },
+    {
+      "id": "H-OPS-012",
+      "type": "mcq",
+      "chapter": "H.ops",
+      "cognitive_level": 2,
+      "difficulty": 4,
+      "stem": "선박 탐지 모델 업데이트의 오차 상속 행렬이 N11 = 900, N10 = 60, N01 = 70, N00 = 70이다. 회귀율 RR과 노트의 판정으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "RR ≈ 5.45%, 5.0%를 넘어 배포 거부",
+          "rationale": "60 / 1100으로 전체 객체 수를 분모로 썼습니다. RR의 분모는 기존 모델이 맞힌 객체 수 N11 + N10 = 960입니다."
+        },
+        {
+          "text": "RR ≈ 46.2%, 신규 해결보다 회귀가 적어 배포 가능",
+          "rationale": "60 / (60 + 70)은 뒤집힌 객체들끼리의 비율입니다. RR 정의와 다릅니다."
+        },
+        {
+          "text": "RR = 6.25%이지만 순증치 ΔN_net = +10이므로 배포 가능",
+          "rationale": "노트는 RR > 5.0%이면 ΔmAP(순증)가 양수여도 즉시 거부한다고 명시합니다."
+        },
+        {
+          "text": "RR = 6.25%, 2.0~5.0% 사이라 조건부 검토 대상",
+          "rationale": "6.25%는 5.0%를 넘으므로 조건부 구간이 아니라 즉시 거부 대상입니다."
+        },
+        {
+          "text": "RR = 6.25%, 5.0%를 넘어 ΔmAP가 양수여도 배포 거부",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "RR = 60 / (900 + 60) × 100 = 6.25%입니다. 노트 기준 RR > 5.0%는 순증치나 ΔmAP가 양수여도 기존 지식을 파괴적으로 잊은 것으로 보고 배포를 거부합니다.",
+      "explanation_full": "계산: 60 ÷ 960 = 0.0625. 순증치 ΔN_net = 70 − 60 = +10으로 겉보기엔 개선이지만, 기존에 잡던 선박 60척을 잃었습니다. 2.0%·5.0% 기준은 잠정치입니다. 다음 단계는 N10 객체를 NMS 억제, 소형 객체 스케일 손실, 배경 맥락 간섭 중 어디에 해당하는지 역추적하는 것입니다. 외부와 소통할 때는 \"이전 버전이 맞히던 것 중 새 버전이 놓치게 된 비율\"처럼 풀어서 말합니다.",
+      "tags": [
+        "mlops",
+        "regression",
+        "calculation"
+      ],
+      "terms": [
+        "regression-rate",
+        "error-inheritance-matrix"
+      ],
+      "source_ref": "Diagnostics/research/note/09_mlops_deployment_gatekeeper/02_regression_testing_and_flip_analysis.md#3.1",
+      "status": "draft"
+    },
+    {
+      "id": "H-OPS-013",
+      "type": "short",
+      "chapter": "H.ops",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "신규 모델에 실제 입력 트래픽의 일부(예: 10%)만 보내 실제로 서빙하면서 지표를 감시하고, 일정 기간 이상이 없으면 전면 승격하는 단계적 배포 방식의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Canary Deployment",
+          "Canary Release"
+        ],
+        "ko": [
+          "카나리 배포",
+          "카나리 릴리스"
+        ]
+      },
+      "primary": "Canary Deployment",
+      "explanation_short": "일부 트래픽으로 먼저 실서비스를 해 보는 방식을 카나리 배포(Canary Deployment)라 합니다. 문제가 생겨도 영향 범위가 그 일부로 제한됩니다.",
+      "explanation_full": "노트의 구성은 90% 운영 모델, 10% 카나리(또는 미러링)이며, 실시간 비교 모니터링(예측 상호 일치율, 광학 특성 W1 드리프트, 신뢰도 엔트로피)에서 이상이 감지되면 즉시 중단(Auto Kill), 48시간 무결하면 100% 승격(Promote)합니다. 이름은 탄광에서 유독가스를 먼저 감지하던 카나리아에서 왔습니다.",
+      "tags": [
+        "mlops",
+        "canary"
+      ],
+      "terms": [
+        "canary-deployment"
+      ],
+      "source_ref": "Diagnostics/research/note/09_mlops_deployment_gatekeeper/03_canary_monitoring_and_cicd_pipeline.md#2",
+      "status": "draft"
+    },
+    {
+      "id": "H-OPS-014",
+      "type": "mcq",
+      "chapter": "H.ops",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "카나리 배포(Canary)와 섀도우 배포(Shadow)의 차이로 옳은 것은?",
+      "choices": [
+        {
+          "text": "카나리는 결과를 내보내지 않고 비교만 하며, 섀도우는 일부 사용자에게 결과를 실제로 서빙한다",
+          "rationale": "두 방식을 뒤바꿨습니다. 섀도우(그림자)는 사용자 눈에 보이지 않게 뒤에서 도는 방식입니다."
+        },
+        {
+          "text": "카나리는 오프라인 검증 세트로, 섀도우는 실시간 스트림으로 평가한다",
+          "rationale": "둘 다 실제 입력 스트림을 씁니다. 차이는 신규 모델 결과가 사용자에게 나가느냐입니다."
+        },
+        {
+          "text": "카나리는 일부 사용자에게 결과를 실제로 내보내고, 섀도우는 내보내지 않고 비교만 한다",
+          "rationale": null
+        },
+        {
+          "text": "섀도우는 신규 모델을 학습 서버에서만 돌리는 것이라 추론 비용이 들지 않는다",
+          "rationale": "섀도우도 실제 입력 전체(또는 일부)를 신규 모델로 추론하므로 추론 비용이 추가로 듭니다."
+        },
+        {
+          "text": "카나리는 트래픽을 100% 신규 모델로 한꺼번에 전환하는 방식이다",
+          "rationale": "한꺼번에 전환하는 것은 일괄(빅뱅) 배포입니다. 카나리는 일부 트래픽으로 시작합니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "핵심 차이는 '신규 모델의 출력이 사용자에게 가느냐'입니다. 카나리는 일부 트래픽을 실제로 서빙해 실사용 영향까지 보고, 섀도우는 입력을 복제해 추론만 하고 결과는 비교용으로만 씁니다.",
+      "explanation_full": "섀도우는 사용자 영향이 전혀 없어 위험이 가장 낮지만, 사용자 반응이나 후속 시스템과의 상호작용은 볼 수 없습니다. 노트의 그림은 10% 카나리 또는 미러링(섀도우)을 같은 분기로 그렸는데, 둘 중 무엇을 쓰는지에 따라 롤백 SOP의 긴급도가 다릅니다. 위성 영상 분석 서비스라면 고객 보고서에 들어가기 전 섀도우로 한 주기 비교하는 방식이 흔합니다.",
+      "tags": [
+        "mlops",
+        "canary",
+        "shadow"
+      ],
+      "terms": [
+        "canary-deployment",
+        "shadow-deployment"
+      ],
+      "source_ref": "Diagnostics/research/note/09_mlops_deployment_gatekeeper/03_canary_monitoring_and_cicd_pipeline.md#2",
+      "status": "draft"
+    },
+    {
+      "id": "H-OPS-015",
+      "type": "short",
+      "chapter": "H.ops",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "실제 입력을 신규 모델에도 똑같이 복제(미러링)해 추론시키되, 그 결과는 사용자에게 내보내지 않고 운영 모델 결과와 비교·기록만 하는 배포 방식의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Shadow Deployment",
+          "Shadow Mode",
+          "Shadow Testing"
+        ],
+        "ko": [
+          "섀도우 배포",
+          "그림자 배포",
+          "섀도 배포",
+          "섀도우 테스트"
+        ]
+      },
+      "primary": "Shadow Deployment",
+      "explanation_short": "결과를 서빙하지 않고 뒤에서 병행 추론만 하는 방식을 섀도우 배포(Shadow Deployment)라 합니다. 사용자 영향 없이 실제 데이터에서의 성능을 확인할 수 있습니다.",
+      "explanation_full": "노트의 비교 진단 엔진은 섀도우(미러링) 결과로 예측 상호 일치율, 광학 특성 분포의 W1 드리프트, 신뢰도 엔트로피 변화를 실시간으로 봅니다. 섀도우에서 문제가 없으면 카나리로 일부 트래픽을 실제로 넘기는 순서가 일반적입니다.",
+      "tags": [
+        "mlops",
+        "shadow"
+      ],
+      "terms": [
+        "shadow-deployment"
+      ],
+      "source_ref": "Diagnostics/research/note/09_mlops_deployment_gatekeeper/03_canary_monitoring_and_cicd_pipeline.md#2",
+      "status": "draft"
+    },
+    {
+      "id": "H-OPS-016",
+      "type": "mcq",
+      "chapter": "H.ops",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "연안 감시 드론 영상 스트림에 카나리로 붙인 신규 모델의 모니터링 값이 '조도·대비 분포의 1D 바서슈타인 거리 W1 = 0.31, 신뢰도 엔트로피 증가 ΔH = 0.10'이다. 노트 기준에 따른 해석으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "ΔH가 0.4를 넘어 모델이 판단 마비 상태에 빠졌다고 진단한다",
+          "rationale": "ΔH = 0.10은 노트의 판단 마비 기준 0.4에 못 미칩니다."
+        },
+        {
+          "text": "W1이 0.25를 넘어 현장 입력 분포에 큰 변화가 생긴 것으로 경고한다",
+          "rationale": null
+        },
+        {
+          "text": "W1은 모델 예측의 정확도 지표이므로 값이 클수록 성능이 좋다",
+          "rationale": "W1은 입력 광학 특성 분포 사이의 거리입니다. 정확도가 아니라 분포 변화의 크기를 나타냅니다."
+        },
+        {
+          "text": "두 지표 모두 기준 이내이므로 48시간 관찰이 끝나면 그대로 100% 승격한다",
+          "rationale": "W1 0.31은 노트의 경고선 0.25를 넘습니다. 이상 징후가 있으므로 승격 조건(48시간 무결)을 만족하지 못합니다."
+        },
+        {
+          "text": "W1은 정답 라벨이 있어야 계산할 수 있으므로 라벨링 후 다시 판단한다",
+          "rationale": "W1은 기준선 영상과 현재 스트림의 조도·대비·블러 분포만으로 계산합니다. 라벨이 필요 없어 실시간 감시에 씁니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "노트는 W1 = ∫|F_base(t) − F_stream(t)| dt > 0.25를 안개·야간·센서 오염 같은 심각한 도메인 변화 경고로 봅니다. 엔트로피 증가 0.10은 판단 마비 기준(ΔH > 0.4)에 못 미칩니다.",
+      "explanation_full": "W1은 라벨 없이 입력 분포만으로 드리프트를 잡는 지표입니다. 0.25·0.4 기준은 노트의 잠정치이며, W1 값의 크기는 조도·대비 특성을 어떻게 정규화했는지에 따라 달라지므로 기준선 데이터로 먼저 척도를 맞춰야 합니다. 노트의 롤백 SOP는 W1 > 0.25를 카나리 즉시 롤백의 방아쇠로 씁니다.",
+      "tags": [
+        "mlops",
+        "drift",
+        "canary"
+      ],
+      "terms": [
+        "wasserstein-distance",
+        "canary-deployment"
+      ],
+      "source_ref": "Diagnostics/research/note/09_mlops_deployment_gatekeeper/03_canary_monitoring_and_cicd_pipeline.md#3.1",
+      "status": "draft"
+    },
+    {
+      "id": "H-OPS-017",
+      "type": "scenario",
+      "chapter": "H.ops",
+      "cognitive_level": 3,
+      "difficulty": 2,
+      "stem": "지시: \"항공사진 건물 탐지 v2가 mAP 0.02 올랐다고 바로 올리지 말자. v1이 맞히던 건물 중에 v2가 놓친 게 몇 개고 어떤 건지부터 전수로 뽑아.\"\n\n가장 적절한 작업은?",
+      "choices": [
+        {
+          "text": "클래스별 AP를 v1·v2로 나란히 비교한 표를 만들어 떨어진 클래스를 찾는다",
+          "rationale": "클래스 AP는 집계 지표라 같은 클래스 안에서 어떤 건물을 잃었는지 보여주지 않습니다."
+        },
+        {
+          "text": "타일별 mAP를 계산해 v2가 더 낮은 타일을 표시한다",
+          "rationale": "타일 단위 집계도 잃은 객체와 얻은 객체가 상쇄되어 개별 회귀가 가려질 수 있습니다."
+        },
+        {
+          "text": "v2의 ECE를 계산해 신뢰도가 잘 보정되었는지 본다",
+          "rationale": "ECE는 신뢰도 보정 지표로, 어떤 객체를 잃었는지와는 다른 질문입니다."
+        },
+        {
+          "text": "건물별 v1·v2 성공 여부로 오차 상속 행렬을 만들어 N10과 RR을 뽑는다",
+          "rationale": null
+        },
+        {
+          "text": "v2를 카나리 10%로 먼저 배포해 현장 사용자 불만이 들어오는 건물을 모은다",
+          "rationale": "지시는 배포 전에 오프라인 검증 세트로 회귀를 전수 확인하라는 것입니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "지시의 'v1이 맞히던 것 중 v2가 놓친 것'은 오차 상속 행렬의 N10 칸입니다. 객체 단위로 짝지어야 목록을 뽑을 수 있고, RR = N10 / (N11 + N10)로 규모를 보고합니다.",
+      "explanation_full": "노트는 N10에 대해 NMS 억제, 소형 객체 스케일 손실, 배경 맥락 간섭 중 어디에 해당하는지 역추적하라고 권합니다. 건물 탐지라면 N10 건물을 지도 위에 찍어 특정 지역(예: 밀집 주거지, 신축 단지)에 몰려 있는지 보는 것도 원인 파악에 도움이 됩니다. 외부와 소통할 때는 \"이전 버전과 새 버전이 각 대상을 맞혔는지 여부를 네 칸으로 나눈 표\"처럼 풀어서 말합니다.",
+      "tags": [
+        "mlops",
+        "regression"
+      ],
+      "terms": [
+        "error-inheritance-matrix",
+        "negative-flip"
+      ],
+      "source_ref": "Diagnostics/research/note/09_mlops_deployment_gatekeeper/02_regression_testing_and_flip_analysis.md#2",
+      "status": "draft"
+    },
+    {
+      "id": "H-OPS-018",
+      "type": "scenario",
+      "chapter": "H.ops",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"이번 선박 모델 업데이트에서 N10으로 뽑힌 선박 대부분이 32 px 미만 소형이래. 노트의 원인 역추적 분류대로 다음에 확인할 걸 정해.\"\n\n가장 먼저 확인할 것은?",
+      "choices": [
+        {
+          "text": "NMS 억제에 의한 회귀로 보고 NMS 임계치와 Soft-NMS를 조정한다",
+          "rationale": "NMS 억제는 Pre-NMS 단계에서 높은 점수였는데 NMS에서 삭제된 경우입니다. 지시의 단서는 '객체 크기'입니다."
+        },
+        {
+          "text": "소형 객체 스케일 표현력 손실로 보고 FPN P2 헤드 연결성을 검토한다",
+          "rationale": null
+        },
+        {
+          "text": "배경 맥락 간섭으로 보고 인과적 셔플링 증강이 충분했는지 확인한다",
+          "rationale": "배경이 조금 달라지며 신뢰도가 떨어진 경우의 분류입니다. 크기에 몰린 회귀와는 다른 원인입니다."
+        },
+        {
+          "text": "신뢰도 보정 문제로 보고 Temperature Scaling을 다시 맞춘다",
+          "rationale": "Temperature Scaling은 점수 보정 기법으로, 소형 객체를 새로 잡게 만들지 않습니다. 노트의 역추적 분류에도 없습니다."
+        },
+        {
+          "text": "회귀율 허용 기준을 소형 객체에 한해 5%로 완화한다",
+          "rationale": "기준을 완화하는 것은 원인 진단이 아닙니다. 지시는 원인 확인 순서를 정하라는 것입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "노트의 역추적 분류에서 '소형 객체(< 32 px)에만 집중 발생'하는 회귀는 스케일 표현력 손실이며, 처방 방향은 FPN P2 헤드 연결성 검토입니다.",
+      "explanation_full": "노트의 세 분류: ① NMS 억제에 의한 회귀 → NMS 임계치/Soft-NMS, ② 스케일 표현력 손실(< 32 px 집중) → FPN P2 헤드, ③ 배경 맥락 간섭 → 인과적 셔플링 증강. 위성 영상의 소형 선박은 수 픽셀~수십 픽셀이라 백본 다운샘플링 구조가 조금만 바뀌어도 회귀가 몰리기 쉽습니다.",
+      "tags": [
+        "mlops",
+        "regression",
+        "small-object"
+      ],
+      "terms": [
+        "negative-flip",
+        "feature-pyramid-network"
+      ],
+      "source_ref": "Diagnostics/research/note/09_mlops_deployment_gatekeeper/02_regression_testing_and_flip_analysis.md#4",
+      "status": "draft"
+    },
+    {
+      "id": "H-OPS-019",
+      "type": "scenario",
+      "chapter": "H.ops",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"재난 대응용 드론 영상 탐지 모델에서 '인명'은 안전필수 클래스로 지정돼 있어. v3가 전체 RR 1.2%인데 인명 클래스 N10이 2건 나왔어. 노트 기준대로 처리해.\"\n\n가장 적절한 처리는?",
+      "choices": [
+        {
+          "text": "안전필수 클래스 무관용 원칙에 따라 배포를 자동 차단하고, 두 샘플을 긴급 패치 학습 세트에 넣는다",
+          "rationale": null
+        },
+        {
+          "text": "전체 RR이 2.0% 이내이므로 배포를 승인한다",
+          "rationale": "안전필수 클래스는 전체 RR과 별개로 N10^critical = 0을 요구합니다. 한 건이라도 있으면 차단입니다."
+        },
+        {
+          "text": "테크리드 서명을 받아 예외 승인(Waiver)으로 조건부 배포한다",
+          "rationale": "안전필수 클래스 회귀는 Hard Gate로, 예외 승인이 절대 불가합니다."
+        },
+        {
+          "text": "카나리 10%로 배포해 실제 현장에서 인명 미탐이 반복되는지 지켜본다",
+          "rationale": "Hard Gate 위반 모델은 카나리 단계로도 넘어갈 수 없습니다. 실제 인명 미탐 위험을 감수하는 셈입니다."
+        },
+        {
+          "text": "2건은 표본 오차 수준이므로 무시하고 다음 버전에서 다시 본다",
+          "rationale": "노트의 무관용 원칙은 '단 1건'도 허용하지 않습니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "노트는 안전필수 클래스에 N10^critical = 0 무관용 원칙을 적용합니다. 단 1건의 플립이라도 생기면 배포 게이트가 자동 차단되고, 해당 샘플은 긴급 패치(Hotfix) 훈련 세트에 강제 편입됩니다.",
+      "explanation_full": "이 원칙은 Hard Gate 표에서도 '절대 불가(무관용)'로 분류됩니다. 전체 RR이 허용선 2.0%(잠정치) 안이라도 클래스별로 따로 봐야 하는 이유입니다. 재난 현장 영상처럼 놓침의 비용이 극단적으로 큰 클래스는 배포 전에 안전필수 목록을 명시해 두어야 게이트가 자동으로 동작합니다. 외부와 소통할 때는 \"절대 넘으면 안 되는 기준과, 이득이 크면 책임자 승인으로 예외를 둘 수 있는 기준을 나눈 절차\"처럼 풀어서 말합니다.",
+      "tags": [
+        "mlops",
+        "gate",
+        "safety"
+      ],
+      "terms": [
+        "gate-waiver-protocol",
+        "negative-flip"
+      ],
+      "source_ref": "Diagnostics/research/note/09_mlops_deployment_gatekeeper/02_regression_testing_and_flip_analysis.md#3.2",
+      "status": "draft"
+    },
+    {
+      "id": "H-OPS-020",
+      "type": "scenario",
+      "chapter": "H.ops",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"위성 선박 탐지 엣지 모델 v4가 P99 27 ms로 기준 25 ms를 넘었는데 mAP는 +0.04야. 나머지 게이트는 다 통과했고. 그냥 떨어뜨리지 말고 노트 절차대로 처리해.\"\n\n가장 적절한 처리는?",
+      "choices": [
+        {
+          "text": "지연시간 게이트 위반이므로 즉시 영구 거부한다",
+          "rationale": "지연시간은 Soft Gate입니다. 즉시 영구 거부는 Hard Gate(거시 mAP 하락, 안전필수 N10 > 0, VRAM 초과)에 해당합니다."
+        },
+        {
+          "text": "+15% 이내이므로 서명 없이 자동으로 배포한다",
+          "rationale": "노트의 예외 승인은 트레이드오프 이득 확인과 테크리드 전자 서명을 거쳐야 하는 심의 절차입니다."
+        },
+        {
+          "text": "Soft Gate 단독 위반이고 +15% 이내·ΔmAP ≥ +0.03이므로 예외 심의 후 테크리드 서명으로 조건부 배포한다",
+          "rationale": null
+        },
+        {
+          "text": "P99 대신 평균 지연으로 다시 판정해 기준을 맞춘다",
+          "rationale": "판정 지표를 바꿔 통과시키는 것은 게이트를 무력화하는 것입니다. 노트의 기준은 P99입니다."
+        },
+        {
+          "text": "25 ms 이내가 나올 때까지 측정을 반복해 가장 좋은 값을 보고한다",
+          "rationale": "유리한 측정값만 고르는 것은 체리피킹입니다. 실제 운영 지연을 대표하지 않습니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "27 ms는 25 ms의 +8%로 Soft Gate 허용 폭(+15%, 28.75 ms) 이내이고, ΔmAP +0.04는 전제 조건(≥ +0.03)을 만족합니다. 노트 절차상 예외 승인 심의를 거쳐 테크리드 서명으로 조건부 배포(Conditional Go)할 수 있습니다.",
+      "explanation_full": "계산: 27 ÷ 25 = 1.08(+8%), 25 × 1.15 = 28.75 ms. 허용 폭과 ΔmAP 조건은 노트의 예시 기준(잠정치)입니다. 조건부 배포 후에도 실제 운영 중 P99를 계속 감시하고, 지연 원인(메모리 병목 등)을 다음 버전에서 줄이는 계획을 함께 남기는 것이 좋습니다. 외부와 소통할 때는 \"절대 넘으면 안 되는 기준과, 이득이 크면 책임자 승인으로 예외를 둘 수 있는 기준을 나눈 절차\"처럼 풀어서 말합니다.",
+      "tags": [
+        "mlops",
+        "gate",
+        "waiver",
+        "latency"
+      ],
+      "terms": [
+        "gate-waiver-protocol",
+        "tail-latency"
+      ],
+      "source_ref": "Diagnostics/research/note/09_mlops_deployment_gatekeeper/01_deployment_gate_metrics.md#5",
+      "status": "draft"
+    },
+    {
+      "id": "H-OPS-021",
+      "type": "scenario",
+      "chapter": "H.ops",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"연안 감시 드론 영상 스트림에 새 선박 모델을 카나리 10%로 돌리는 중인데, 해무 시즌 들어서 조도·대비 분포 W1이 0.32로 튀었어. 노트 롤백 SOP대로 움직여.\"\n\n가장 먼저 할 일은?",
+      "choices": [
+        {
+          "text": "해무에서는 신규 모델이 더 나을 수도 있으니 100%로 승격한다",
+          "rationale": "이상 징후가 감지된 상태에서의 승격은 SOP와 정반대입니다. 신규 모델이 해무에서 어떻게 동작하는지 검증되지 않았습니다."
+        },
+        {
+          "text": "48시간 관찰 기간이 끝날 때까지 그대로 둔다",
+          "rationale": "48시간 무결은 승격 조건입니다. 이상이 감지되면 기간과 관계없이 즉시 중단합니다."
+        },
+        {
+          "text": "해무 영상으로 먼저 재학습하고, 재학습이 끝나면 롤백 여부를 정한다",
+          "rationale": "재학습은 원인 진단 후의 일입니다. SOP 1단계는 사용자 영향을 막는 즉시 롤백입니다."
+        },
+        {
+          "text": "카나리 비율을 50%로 늘려 해무 데이터를 더 빨리 모은다",
+          "rationale": "이상 징후가 있는 모델의 노출을 늘리는 것은 위험을 키웁니다."
+        },
+        {
+          "text": "카나리 라우팅을 끊어 트래픽 100%를 운영 모델로 되돌린다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "노트의 비상 롤백 SOP 1단계는 W1 > 0.25 같은 이상 징후가 잡히면 카나리 트래픽을 0%로 돌리고 100%를 운영 모델로 원복하는 자동 페일오버입니다.",
+      "explanation_full": "SOP 다음 단계: ② 이상 스트림 1,000건을 격리 버킷에 스냅샷 저장, ③ 4계층 진단 엔진으로 10대 교란 요인 분해·슬라이스 추출, ④ 원인 진단서와 재학습 데이터셋을 개발팀에 전달. W1 0.25 기준은 잠정치입니다. 해무처럼 계절적으로 반복되는 변화라면 기준선 분포에 해당 계절 데이터를 포함하도록 모니터링 설계를 보완합니다.",
+      "tags": [
+        "mlops",
+        "canary",
+        "rollback",
+        "drift"
+      ],
+      "terms": [
+        "canary-deployment",
+        "wasserstein-distance"
+      ],
+      "source_ref": "Diagnostics/research/note/09_mlops_deployment_gatekeeper/03_canary_monitoring_and_cicd_pipeline.md#5",
+      "status": "draft"
+    },
+    {
+      "id": "H-OPS-022",
+      "type": "scenario",
+      "chapter": "H.ops",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"토지피복 분할 모델 가중치 PR이 올라올 때마다 배포 게이트가 자동으로 돌게 CI 붙여. 하나라도 떨어지면 머지 못 하게 하고, 결과는 PR에 남겨.\"\n\n노트의 CI/CD 명세에 맞는 구성은?",
+      "choices": [
+        {
+          "text": "매일 밤 정해진 시각에 최신 가중치로 재학습하고, 결과 mAP만 메신저 채널로 자동 알린다",
+          "rationale": "정기 재학습·알림은 PR 단위 품질 게이트가 아닙니다. 게이트 불합격 시 머지를 막는 장치도 없습니다."
+        },
+        {
+          "text": "PR에서 전체 mAP만 계산해 기존 모델보다 낮을 때만 빌드를 실패시키고 나머지는 통과시킨다",
+          "rationale": "노트가 비판하는 평균 지표 단일 게이트입니다. 슬라이스·강건성·보정·지연 게이트가 빠져 있습니다."
+        },
+        {
+          "text": "머지 후 운영 환경에 먼저 배포하고 카나리 모니터링에서 문제를 잡는다",
+          "rationale": "지시는 머지 전에 막으라는 것입니다. 카나리 감시는 배포 후 단계의 안전장치입니다."
+        },
+        {
+          "text": "가중치 변경 PR마다 게이트를 평가해 불합격 시 종료 코드 1로 실패시키고 결과를 PR에 코멘트한다",
+          "rationale": null
+        },
+        {
+          "text": "리뷰어가 게이트 체크리스트를 보고 모든 항목을 확인한 뒤 수동으로 승인 버튼을 누르게 한다",
+          "rationale": "수동 체크리스트는 자동 진단·자동 차단이 아닙니다. 노트는 불합격 시 러너가 즉시 빌드를 실패 처리하도록 합니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "노트의 워크플로 템플릿은 models/**·weights/** 경로가 바뀐 PR에서 진단 엔진을 돌리고 게이트 평가 스크립트로 판정해, 불합격이면 빌드를 실패(Exit Code 1)시키고 결과 요약을 PR 코멘트로 남깁니다.",
+      "explanation_full": "노트 예시 스크립트의 인자는 --min-slice-map 0.35, --max-mce 100.0, --max-ece 0.080, --max-flip-rate 0.020입니다. 다만 예시에는 지연시간 인자가 없고, 보고서를 JSON으로 쓴 뒤 코멘트 단계에서는 .md 파일을 읽는 등 그대로 쓰기에는 맞지 않는 부분이 있어 실제 적용 시 보완이 필요합니다. 토지피복 분할이라면 mAP 대신 mIoU 등 과제에 맞는 지표로 게이트를 바꿔 씁니다. 외부와 소통할 때는 \"평균 성능·최악 조건·강건성·확신도 보정·지연시간을 모두 통과해야 배포하는 규칙\"처럼 풀어서 말합니다.",
+      "tags": [
+        "mlops",
+        "cicd",
+        "gate"
+      ],
+      "terms": [
+        "deployment-gate-function"
+      ],
+      "source_ref": "Diagnostics/research/note/09_mlops_deployment_gatekeeper/03_canary_monitoring_and_cicd_pipeline.md#4",
+      "status": "draft"
+    }
+  ]
+}

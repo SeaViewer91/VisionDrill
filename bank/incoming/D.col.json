@@ -1,0 +1,724 @@
+{
+  "format": "visiondrill-bank-exchange",
+  "format_version": 1,
+  "terms": [
+    {
+      "id": "rgb-color-space",
+      "term_en": "RGB Color Space",
+      "term_ko": "RGB 색공간",
+      "abbreviation": "RGB",
+      "definition": "빨강(R)·초록(G)·파랑(B) 세 원색 빛의 세기를 더해 색을 표현하는 가산 혼합 색공간",
+      "usage_example": "라벨링 툴은 RGB 3채널 8비트만 받으니까 표시용 영상은 따로 만들어.",
+      "origin": "standard",
+      "track": "D"
+    },
+    {
+      "id": "hsv-color-space",
+      "term_en": "HSV Color Space",
+      "term_ko": "HSV 색공간",
+      "abbreviation": "HSV",
+      "definition": "색상(Hue)·채도(Saturation)·명도(Value)로 색을 표현해 색 정보와 밝기를 분리한 원통형 색공간",
+      "usage_example": "주황색 부표는 HSV로 바꿔서 Hue 범위로 먼저 걸러봐.",
+      "origin": "standard",
+      "track": "D"
+    },
+    {
+      "id": "cielab-color-space",
+      "term_en": "CIELAB Color Space",
+      "term_ko": "Lab 색공간",
+      "abbreviation": "L*a*b*",
+      "definition": "밝기(L*)와 두 색 대립축(a*: 초록–빨강, b*: 파랑–노랑)으로 색을 표현하며, 좌표 간 거리가 사람이 느끼는 색 차이에 가깝도록 설계된 색공간",
+      "usage_example": "두 모자이크 구간 색감 차이는 Lab으로 바꿔서 ΔE로 비교해.",
+      "origin": "standard",
+      "track": "D"
+    },
+    {
+      "id": "grayscale-conversion",
+      "term_en": "Grayscale Conversion",
+      "term_ko": "그레이스케일 변환",
+      "abbreviation": null,
+      "definition": "컬러 영상의 여러 채널을 가중합해 밝기 한 채널짜리 영상으로 바꾸는 변환",
+      "usage_example": "특징점 매칭은 그레이스케일로 바꿔서 돌려.",
+      "origin": "standard",
+      "track": "D"
+    },
+    {
+      "id": "gamma-correction",
+      "term_en": "Gamma Correction",
+      "term_ko": "감마 보정",
+      "abbreviation": null,
+      "definition": "0~1로 정규화한 밝기 값에 거듭제곱(out = in^γ)을 적용해 밝기 응답을 비선형으로 조정하는 처리",
+      "usage_example": "그늘진 해안 절벽이 너무 어두우니까 감마 0.7 정도로 올려서 판독해봐.",
+      "origin": "standard",
+      "track": "D"
+    },
+    {
+      "id": "true-color-composite",
+      "term_en": "True Color Composite",
+      "term_ko": "트루컬러 합성",
+      "abbreviation": null,
+      "definition": "빨강·초록·파랑 가시광 밴드를 각각 R·G·B 채널에 배정해 사람 눈으로 본 것과 비슷한 색으로 표시한 합성 영상",
+      "usage_example": "보고서 표지에는 트루컬러로 넣고, 분석 그림은 폴스컬러로 따로 붙여.",
+      "origin": "standard",
+      "track": "D"
+    },
+    {
+      "id": "false-color-composite",
+      "term_en": "False Color Composite",
+      "term_ko": "폴스컬러 합성",
+      "abbreviation": null,
+      "definition": "근적외선 등 눈에 보이지 않는 밴드를 포함하거나 밴드를 원래 색과 다른 채널에 배정해 특정 대상이 잘 드러나게 만든 합성 영상",
+      "usage_example": "식생 경계 보려면 NIR-Red-Green 폴스컬러로 띄워.",
+      "origin": "standard",
+      "track": "D"
+    },
+    {
+      "id": "histogram-stretching",
+      "term_en": "Histogram Stretching",
+      "term_ko": "히스토그램 스트레칭",
+      "abbreviation": null,
+      "definition": "좁은 범위에 몰린 픽셀값 분포를 표시 범위(예: 0~255) 전체로 선형 매핑해 대비를 높이는 처리(대비 스트레칭)",
+      "usage_example": "기본 min-max 말고 2~98% 스트레칭으로 다시 띄워봐.",
+      "origin": "standard",
+      "track": "D"
+    }
+  ],
+  "questions": [
+    {
+      "id": "D-COL-001",
+      "type": "short",
+      "chapter": "D.col",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "색을 색상·채도·명도(R·G·B 중 최댓값으로 정의하는 밝기)의 세 성분으로 나타내, 색 정보와 밝기를 분리한 원통형 색공간은? (영문 약어 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "HSV",
+          "HSB"
+        ],
+        "ko": [
+          "HSV 색공간",
+          "색상 채도 명도"
+        ]
+      },
+      "primary": "HSV",
+      "explanation_short": "HSV는 색상(Hue)·채도(Saturation)·명도(Value)로 색을 표현합니다. 색상 성분이 밝기와 분리되어 있어 “특정 색 물체 찾기”에 편리합니다.",
+      "explanation_full": "명도 V는 R·G·B 중 최댓값, 채도 S는 최댓값 대비 최솟값과의 차이 비율로 정의됩니다. OpenCV는 8비트 영상의 Hue를 0~179(360°의 절반)로 저장하므로 다른 도구의 0~360 값과 섞지 않도록 주의합니다. 비슷한 HSL(HLS)은 밝기를 최댓값·최솟값의 평균으로 정의한다는 점이 다릅니다.",
+      "tags": [
+        "color-space"
+      ],
+      "terms": [
+        "hsv-color-space"
+      ],
+      "source_ref": "OpenCV 문서 Color conversions",
+      "status": "draft"
+    },
+    {
+      "id": "D-COL-002",
+      "type": "mcq",
+      "chapter": "D.col",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "Lab(CIELAB) 색공간의 특징으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "빨강·초록·파랑 빛의 세기를 더해 색을 만드는 가산 혼합 방식이다",
+          "rationale": "RGB 색공간의 설명입니다."
+        },
+        {
+          "text": "밝기(L*)와 두 색 대립축(a*, b*)으로 이루어지며, 좌표 간 거리가 지각적 색 차이에 가깝다",
+          "rationale": null
+        },
+        {
+          "text": "색상을 0~360° 각도로 표현하는 원통형 색공간이라 색 종류를 각도로 바로 읽을 수 있다",
+          "rationale": "HSV·HSL 같은 원통형 색공간의 설명입니다. Lab의 색 정보는 a*·b* 평면의 직교 좌표로 표현됩니다."
+        },
+        {
+          "text": "인쇄용 잉크 네 가지(청록·자홍·노랑·검정)의 비율로 색을 표현한다",
+          "rationale": "CMYK 색 모델의 설명입니다."
+        },
+        {
+          "text": "모니터 특성에 따라 같은 값의 의미가 달라지는 장치 의존(device-dependent) 색공간이다",
+          "rationale": "Lab은 사람 시각 기준으로 정의된 장치 독립(device-independent) 색공간입니다. 장치에 따라 의미가 달라지는 것은 보정되지 않은 RGB 값입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "Lab은 밝기 L*과 초록–빨강(a*), 파랑–노랑(b*) 대립축으로 색을 나타냅니다. 좌표 간 유클리드 거리가 지각적 색 차이에 가깝도록(지각적 균일성) 설계된 것이 핵심입니다.",
+      "explanation_full": "완벽히 균일하지는 않아 CIEDE2000 같은 개선된 색차 공식도 쓰이지만, 실무에서는 Lab 거리(ΔE)만으로도 색 차이 비교에 충분한 경우가 많습니다. 원격탐사에서는 여러 날짜·여러 장의 항공 영상을 모자이크할 때 색감을 맞추거나(색 균형) 색 기반 군집화를 할 때 Lab으로 변환해 작업하곤 합니다.",
+      "tags": [
+        "color-space"
+      ],
+      "terms": [
+        "cielab-color-space"
+      ],
+      "source_ref": "Gonzalez & Woods, Digital Image Processing(컬러 영상처리 장)",
+      "status": "draft"
+    },
+    {
+      "id": "D-COL-003",
+      "type": "short",
+      "chapter": "D.col",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "컬러(RGB) 영상의 세 채널을 가중합해 밝기 한 채널짜리 영상으로 바꾸는 변환을 무엇이라 하는가? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Grayscale conversion",
+          "Greyscale conversion",
+          "Grayscale"
+        ],
+        "ko": [
+          "그레이스케일 변환",
+          "흑백 변환",
+          "회색조 변환",
+          "그레이스케일"
+        ]
+      },
+      "primary": "Grayscale conversion",
+      "explanation_short": "그레이스케일 변환은 R·G·B를 가중합해 밝기 채널 하나로 만드는 변환입니다. 일반적으로 사람 눈의 민감도를 반영해 G에 가장 큰 가중치를 줍니다.",
+      "explanation_full": "대표적인 가중치는 ITU-R BT.601 기준 Y = 0.299R + 0.587G + 0.114B이며, OpenCV의 RGB→GRAY 변환도 이 계수를 씁니다. 채널을 단순 평균하면 같은 밝기로 느껴지는 색도 서로 다른 회색값이 나올 수 있습니다. 다중분광 영상에서는 그레이스케일 변환보다 목적에 맞는 밴드 하나를 골라 단일 밴드 영상으로 보는 경우가 더 많습니다.",
+      "tags": [
+        "color-space",
+        "grayscale"
+      ],
+      "terms": [
+        "grayscale-conversion"
+      ],
+      "source_ref": "OpenCV 문서 Color conversions",
+      "status": "draft"
+    },
+    {
+      "id": "D-COL-004",
+      "type": "mcq",
+      "chapter": "D.col",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "감마 보정(gamma correction)을 가장 바르게 설명한 것은?",
+      "choices": [
+        {
+          "text": "모든 픽셀 값에 같은 상수를 더해 영상 전체의 밝기를 끌어올린다",
+          "rationale": "밝기 오프셋(brightness) 조정입니다. 감마 보정은 더하기가 아닌 거듭제곱 형태의 비선형 변환입니다."
+        },
+        {
+          "text": "픽셀 값의 최솟값·최댓값을 0~255로 선형 확장한다",
+          "rationale": "선형(min-max) 히스토그램 스트레칭입니다."
+        },
+        {
+          "text": "누적 히스토그램이 직선이 되도록 픽셀 값을 재배치한다",
+          "rationale": "히스토그램 평활화(equalization)입니다."
+        },
+        {
+          "text": "정규화한 밝기에 out = in^γ 거듭제곱을 적용해 밝기 응답을 비선형으로 바꾼다",
+          "rationale": null
+        },
+        {
+          "text": "밝기 성분은 고정한 채 색상(Hue) 성분만 일정 각도 회전시켜 색감을 바꾼다",
+          "rationale": "색상(Hue) 회전 조정입니다. 감마 보정은 밝기 응답 곡선을 바꿉니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "감마 보정은 0~1로 정규화한 값에 거듭제곱(in^γ)을 적용하는 비선형 밝기 변환입니다. 0과 1은 그대로 두고 중간 밝기를 올리거나 내립니다.",
+      "explanation_full": "out = in^γ 기준으로 γ < 1이면 어두운 영역이 밝아지고, γ > 1이면 어두워집니다. 도구에 따라 γ를 역수로 정의하기도(out = in^(1/γ)) 하므로 값을 주고받을 때는 어느 식인지 확인하세요. 원래는 모니터의 비선형 응답을 보정하려던 개념이며, sRGB 영상은 이미 감마가 적용된 값으로 저장됩니다.",
+      "tags": [
+        "intensity-transform"
+      ],
+      "terms": [
+        "gamma-correction"
+      ],
+      "source_ref": "Gonzalez & Woods, Digital Image Processing(밝기 변환·히스토그램 처리 장)",
+      "status": "draft"
+    },
+    {
+      "id": "D-COL-005",
+      "type": "short",
+      "chapter": "D.col",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "가시광의 빨강·초록·파랑 밴드를 각각 R·G·B 채널에 배정해, 사람 눈으로 본 것과 비슷한 색으로 표시한 합성 영상을 무엇이라 하는가? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "True color composite",
+          "True colour composite",
+          "True color",
+          "Natural color composite"
+        ],
+        "ko": [
+          "트루컬러 합성",
+          "트루컬러",
+          "천연색 합성",
+          "실제색 합성",
+          "자연색 합성"
+        ]
+      },
+      "primary": "True color composite",
+      "explanation_short": "트루컬러(true color) 합성은 Red→R, Green→G, Blue→B로 배정한 합성입니다. 사람이 보는 색과 비슷해 판독·보고용으로 많이 씁니다.",
+      "explanation_full": "Sentinel-2라면 B4·B3·B2, Landsat 8/9라면 밴드 4·3·2를 R·G·B에 배정합니다. 대기 산란 때문에 푸르스름하고 뿌옇게 보이기 쉬워, 표시용으로는 대기보정 영상에 스트레칭을 더해 쓰는 경우가 많습니다. 청색 밴드가 없는 센서에서는 다른 밴드 조합으로 비슷한 색을 흉내 낸 합성을 만들기도 합니다.",
+      "tags": [
+        "composite",
+        "multispectral"
+      ],
+      "terms": [
+        "true-color-composite"
+      ],
+      "source_ref": "원격탐사 개론 일반(컬러 합성·영상 강조)",
+      "status": "draft"
+    },
+    {
+      "id": "D-COL-006",
+      "type": "mcq",
+      "chapter": "D.col",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "폴스컬러(false color) 합성에 대한 설명으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "근적외 등 보이지 않는 밴드를 넣거나 밴드를 원래와 다른 색 채널에 배정한 합성이다",
+          "rationale": null
+        },
+        {
+          "text": "RGB 영상의 색이 실제와 다르게 찍힌 것을 바로잡는 색 보정(color correction) 처리이다",
+          "rationale": "색 보정·색 균형 설명입니다. 폴스컬러는 일부러 밴드를 다른 색에 배정하는 표시 방식입니다."
+        },
+        {
+          "text": "여러 날짜 영상을 픽셀별로 모아 구름 없는 한 장으로 만든 시계열 합성 영상이다",
+          "rationale": "여러 시기 영상으로 구름 없는 영상을 만드는 시계열 합성(예: 중앙값 합성) 설명입니다. 색 표시 방식인 폴스컬러와는 다른 의미의 “합성”입니다."
+        },
+        {
+          "text": "구름·그림자처럼 잘못 분류된 픽셀만 눈에 띄는 다른 색으로 표시한 오류 지도이다",
+          "rationale": "분류 오류 지도는 합성 영상이 아니라 결과 검증용 산출물입니다."
+        },
+        {
+          "text": "빨강·초록·파랑 밴드를 각각 R·G·B 채널에 그대로 배정한 합성이다",
+          "rationale": "트루컬러 합성의 설명입니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "폴스컬러 합성은 보이지 않는 밴드(근적외·단파적외 등)를 R·G·B 중 하나에 배정하거나, 밴드를 원래 색과 다르게 배정해 특정 대상이 잘 드러나게 한 표시 방식입니다.",
+      "explanation_full": "가장 흔한 표준 폴스컬러(적외 컬러, CIR)는 NIR→R, Red→G, Green→B 배정으로 식생이 붉게 보입니다. 단파적외(SWIR)를 넣은 조합은 수분·화재 피해지·토양 구분에 쓰입니다. 폴스컬러는 “색이 틀린 영상”이 아니라 목적에 맞게 설계한 표시라는 점을 기억하세요.",
+      "tags": [
+        "composite",
+        "multispectral"
+      ],
+      "terms": [
+        "false-color-composite"
+      ],
+      "source_ref": "원격탐사 개론 일반(컬러 합성·영상 강조)",
+      "status": "draft"
+    },
+    {
+      "id": "D-COL-007",
+      "type": "short",
+      "chapter": "D.col",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "값이 좁은 범위에 몰린 영상의 픽셀값 분포를 표시 범위(예: 0~255) 전체로 선형 매핑해 펼쳐서 대비를 높이는 처리를 무엇이라 하는가? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Histogram stretching",
+          "Contrast stretching",
+          "Linear stretch",
+          "Linear stretching",
+          "Contrast stretch",
+          "Histogram stretch",
+          "Linear contrast stretch",
+          "Linear contrast stretching"
+        ],
+        "ko": [
+          "히스토그램 스트레칭",
+          "대비 스트레칭",
+          "명암 대비 스트레칭",
+          "선형 스트레칭",
+          "히스토그램 늘이기",
+          "선형 대비 스트레칭",
+          "명암 스트레칭"
+        ]
+      },
+      "primary": "Histogram stretching",
+      "explanation_short": "히스토그램(대비) 스트레칭은 입력 값 범위 [a, b]를 출력 범위 [0, 255] 등으로 선형 매핑해 대비를 높입니다. 원래 값의 순서와 상대 간격은 유지됩니다.",
+      "explanation_full": "식은 out = (in − a) ÷ (b − a) × 255이고, 범위 밖 값은 0 또는 255로 잘라냅니다(클리핑). a·b를 최솟값·최댓값으로 잡으면 min-max 스트레칭, 2%·98% 백분위수로 잡으면 백분위 스트레칭입니다. 누적분포를 평평하게 만드는 비선형 처리인 히스토그램 평활화(equalization)와는 다릅니다.",
+      "tags": [
+        "contrast",
+        "visualization"
+      ],
+      "terms": [
+        "histogram-stretching"
+      ],
+      "source_ref": "Gonzalez & Woods, Digital Image Processing(밝기 변환·히스토그램 처리 장)",
+      "status": "draft"
+    },
+    {
+      "id": "D-COL-008",
+      "type": "short",
+      "chapter": "D.col",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "채널당 8비트인 RGB 영상에서 픽셀 하나가 표현할 수 있는 서로 다른 색의 개수는? (숫자로)",
+      "accepted_answers": {
+        "en": [
+          "16777216",
+          "2^24",
+          "256^3"
+        ],
+        "ko": [
+          "16777216",
+          "1677만7216",
+          "약 1677만",
+          "1677만"
+        ]
+      },
+      "primary": "16777216",
+      "explanation_short": "채널마다 2⁸ = 256단계이고 세 채널을 조합하므로 256³ = 2²⁴ = 16,777,216가지 색을 표현할 수 있습니다.",
+      "explanation_full": "이런 영상을 24비트 컬러 영상이라고도 부릅니다. 원격탐사 원본은 밴드당 12~16비트인 경우가 많아, 화면 표시·라벨링용 8비트 RGB로 만들 때 스트레칭으로 정보를 압축하게 됩니다. 이때 사라진 미세한 값 차이는 8비트 영상에서 되살릴 수 없으므로, 학습 입력은 가능하면 원본 비트 심도에서 정규화해 쓰는 것이 좋습니다.",
+      "tags": [
+        "color-space",
+        "bit-depth",
+        "calculation"
+      ],
+      "terms": [
+        "rgb-color-space"
+      ],
+      "source_ref": "Gonzalez & Woods, Digital Image Processing(컬러 영상처리 장)",
+      "status": "draft"
+    },
+    {
+      "id": "D-COL-009",
+      "type": "mcq",
+      "chapter": "D.col",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "드론 영상에서 주황색 부표를 색으로 골라내려 한다. RGB 값에 직접 임계값을 거는 것보다 HSV로 바꿔 색상(Hue) 범위로 거르는 방법이 흔히 더 안정적인 이유는?",
+      "choices": [
+        {
+          "text": "HSV는 채널이 두 개뿐이라 계산량이 적고 임계값도 두 개만 정하면 되기 때문",
+          "rationale": "HSV도 H·S·V 세 채널입니다."
+        },
+        {
+          "text": "HSV로 바꾸면 공간해상도가 높아져 작은 부표까지 선명하게 드러나기 때문",
+          "rationale": "색공간 변환은 픽셀 단위 값 변환이라 공간해상도를 바꾸지 않습니다."
+        },
+        {
+          "text": "HSV는 사람이 느끼는 색 차이를 거리로 정확히 재도록 설계된 지각 균일 색공간이기 때문",
+          "rationale": "지각적 균일성을 목표로 설계된 것은 Lab 색공간입니다. HSV는 지각적으로 균일하지 않습니다."
+        },
+        {
+          "text": "HSV 변환 과정에서 구름 그림자와 수면 반사광이 자동으로 제거되기 때문",
+          "rationale": "그림자 속 픽셀은 V가 낮아지고 H·S도 불안정해질 수 있습니다. 변환만으로 그림자나 반사광이 제거되지는 않습니다."
+        },
+        {
+          "text": "색 종류(Hue)가 밝기(Value)와 분리되어, 조명이 달라져도 색상 값은 덜 변하기 때문",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "RGB에서는 밝기가 바뀌면 세 채널이 함께 변해 한 가지 색을 임계값 하나로 잡기 어렵습니다. HSV는 색상과 밝기를 분리하므로 Hue 범위에 채도·명도 하한 조건을 더해 특정 색을 비교적 안정적으로 거를 수 있습니다.",
+      "explanation_full": "다만 채도가 매우 낮거나(회색·흰색) 아주 어두운 픽셀은 Hue가 불안정하므로 S·V에 하한을 함께 거는 것이 보통입니다. 빨강 계열은 Hue가 0° 근처라 0°와 360°(OpenCV 8비트는 0과 179) 양 끝으로 나뉘어 범위를 두 번 잡아야 할 수 있습니다. 조명 조건이 크게 다른 영상이 섞이면 색 규칙보다 학습 기반 분할이 더 견고합니다.",
+      "tags": [
+        "color-space",
+        "segmentation"
+      ],
+      "terms": [
+        "hsv-color-space"
+      ],
+      "source_ref": "OpenCV 문서 Color conversions",
+      "status": "draft"
+    },
+    {
+      "id": "D-COL-010",
+      "type": "mcq",
+      "chapter": "D.col",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "RGB 픽셀 (R, G, B) = (100, 200, 50)을 Y = 0.299R + 0.587G + 0.114B 식으로 그레이스케일 변환한 값에 가장 가까운 것은?",
+      "choices": [
+        {
+          "text": "117",
+          "rationale": "세 채널을 단순 평균한 값((100 + 200 + 50) ÷ 3 ≈ 116.7)입니다. 문제의 식은 초록에 가장 큰 가중치를 줍니다."
+        },
+        {
+          "text": "144",
+          "rationale": "빨강과 파랑의 가중치를 서로 바꿔 적용한 값(0.114×100 + 0.587×200 + 0.299×50 ≈ 143.8)입니다."
+        },
+        {
+          "text": "153",
+          "rationale": null
+        },
+        {
+          "text": "200",
+          "rationale": "세 채널 중 최댓값으로, HSV의 명도(V)에 해당합니다. 가중합이 아닙니다."
+        },
+        {
+          "text": "350",
+          "rationale": "가중치 없이 세 값을 더하기만 한 값으로, 8비트 범위(0~255)를 벗어납니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "0.299×100 + 0.587×200 + 0.114×50 = 29.9 + 117.4 + 5.7 = 153.0입니다. 초록 가중치가 가장 커서 초록이 강한 픽셀은 단순 평균(약 117)보다 밝게 변환됩니다.",
+      "explanation_full": "가중치 합이 1(0.299 + 0.587 + 0.114 = 1.000)이라 결과가 0~255 범위를 벗어나지 않습니다. 사람 눈이 초록 파장에 가장 민감하고 파랑에 가장 둔감하다는 점을 반영한 계수입니다. HDTV 기준(BT.709)은 0.2126·0.7152·0.0722로 계수가 조금 다르므로, 결과를 다른 도구와 맞출 때는 어떤 기준을 쓰는지 확인합니다.",
+      "tags": [
+        "grayscale",
+        "calculation"
+      ],
+      "terms": [
+        "grayscale-conversion"
+      ],
+      "source_ref": "OpenCV 문서 Color conversions",
+      "status": "draft"
+    },
+    {
+      "id": "D-COL-011",
+      "type": "mcq",
+      "chapter": "D.col",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "두 정사영상 모자이크의 인접 구간 색감 차이를 수치로 비교하려 한다. RGB 값의 유클리드 거리보다 Lab 색공간의 거리(ΔE)를 쓰는 이유로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "Lab은 좌표 간 거리가 사람이 느끼는 색 차이에 가깝도록 설계되었기 때문",
+          "rationale": null
+        },
+        {
+          "text": "Lab 값은 모두 0~255 범위의 정수라서 거리 계산이 RGB보다 빠르기 때문",
+          "rationale": "Lab의 L*은 0~100, a*·b*는 음수를 포함하는 실수 범위입니다(8비트로 저장할 때만 도구가 따로 변환합니다)."
+        },
+        {
+          "text": "RGB에는 밝기 정보가 전혀 없어서 두 영상의 밝기 차이를 잴 수 없기 때문",
+          "rationale": "RGB에도 밝기 정보는 세 채널에 섞여 있습니다. 문제는 밝기가 분리되어 있지 않고 거리가 지각과 맞지 않는다는 점입니다."
+        },
+        {
+          "text": "Lab으로 바꾸면 두 영상 사이의 기하 오차(위치 어긋남)도 함께 보정되기 때문",
+          "rationale": "색공간 변환은 픽셀 값만 바꾸며 위치(기하) 오차와는 무관합니다."
+        },
+        {
+          "text": "Lab은 색상을 0~360° 각도 하나로 표현해 색 차이를 각도 차로 바로 읽을 수 있기 때문",
+          "rationale": "색상 각도 표현은 HSV·HSL의 특징입니다. ΔE는 L*·a*·b* 직교 좌표에서 잰 거리입니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "RGB 공간에서는 같은 거리라도 색 영역에 따라 느껴지는 차이가 크게 다릅니다. Lab은 거리(ΔE)가 지각적 색 차이에 가깝도록 설계되어 “얼마나 달라 보이는가”를 비교하기에 적합합니다.",
+      "explanation_full": "대략적인 기준으로, 가장 단순한 CIE76 ΔE에서 약 2.3이 “겨우 알아챌 수 있는 차이(JND)”로 흔히 인용되며, 이보다 작으면 대부분의 사람이 차이를 알아채기 어렵다고 봅니다(색차 공식·관찰 조건에 따라 달라지는 경험적 기준). 모자이크 색 균형 작업에서는 겹침 구간의 Lab 통계(평균·표준편차)를 맞추는 방식이 자주 쓰입니다. Lab 변환은 기준 백색점(예: D65)을 가정하므로, 비교하는 영상들에 같은 변환 기준을 써야 합니다.",
+      "tags": [
+        "color-space",
+        "mosaic"
+      ],
+      "terms": [
+        "cielab-color-space",
+        "rgb-color-space"
+      ],
+      "source_ref": "Gonzalez & Woods, Digital Image Processing(컬러 영상처리 장)",
+      "status": "draft"
+    },
+    {
+      "id": "D-COL-012",
+      "type": "mcq",
+      "chapter": "D.col",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "0~1로 정규화한 영상에 out = in^γ, γ = 0.5인 감마 보정을 적용했다. 입력 0.25인 픽셀의 출력값과 영상 전체에 나타나는 효과로 옳은 것은?",
+      "choices": [
+        {
+          "text": "0.125, 어두운 영역이 더 어두워진다",
+          "rationale": "0.25 × 0.5처럼 곱셈을 한 값입니다. 감마는 곱이 아니라 거듭제곱이며, γ < 1이면 어두운 영역이 밝아집니다."
+        },
+        {
+          "text": "0.0625, 어두운 영역이 더 어두워진다",
+          "rationale": "0.25²(γ = 2)를 계산한 값입니다. γ = 0.5는 제곱근입니다."
+        },
+        {
+          "text": "0.5, 밝은 영역만 밝아지고 어두운 영역은 변하지 않는다",
+          "rationale": "출력값은 맞지만 효과 설명이 틀렸습니다. γ < 1에서는 어두운~중간 영역이 특히 크게 밝아집니다."
+        },
+        {
+          "text": "0.5, 어두운 영역이 밝아진다",
+          "rationale": null
+        },
+        {
+          "text": "0.75, 전체 밝기가 같은 양만큼 올라간다",
+          "rationale": "0.25 + 0.5처럼 더하기로 계산한 값입니다. 감마는 값에 따라 변화량이 다른 비선형 변환입니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "0.25^0.5 = √0.25 = 0.5입니다. γ < 1이면 0~1 사이 값이 커지므로 어두운 영역이 밝아지고, 0과 1은 그대로 유지됩니다.",
+      "explanation_full": "변화량을 보면 0.04 → 0.2(+0.16), 0.25 → 0.5(+0.25), 0.81 → 0.9(+0.09)처럼 중간 이하 밝기에서 크게 올라갑니다. 그늘진 사면이나 어두운 수면의 디테일을 판독하기 좋게 만들 때 쓰지만, 값의 물리적 의미가 바뀌므로 분석용 반사율 데이터에는 적용하지 않고 표시용에만 씁니다.",
+      "tags": [
+        "intensity-transform",
+        "calculation"
+      ],
+      "terms": [
+        "gamma-correction"
+      ],
+      "source_ref": "Gonzalez & Woods, Digital Image Processing(밝기 변환·히스토그램 처리 장)",
+      "status": "draft"
+    },
+    {
+      "id": "D-COL-013",
+      "type": "mcq",
+      "chapter": "D.col",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "해상 위성 영상을 min-max 스트레칭으로 표시했는데 바다 부분이 여전히 거의 검고 대비가 늘지 않았다. 가장 가능성 높은 원인은?",
+      "choices": [
+        {
+          "text": "영상의 비트 심도가 높으면 min-max 스트레칭 자체가 적용되지 않기 때문",
+          "rationale": "스트레칭은 비트 심도와 관계없이 적용됩니다. 비트 심도가 높을수록 오히려 스트레칭이 더 필요합니다."
+        },
+        {
+          "text": "구름·태양 반사광 같은 소수의 극단값이 최댓값을 차지해 바다 값이 아래쪽에 몰렸기 때문",
+          "rationale": null
+        },
+        {
+          "text": "min-max 스트레칭은 픽셀 값의 순서를 뒤바꾸어 어두운 곳을 더 어둡게 만들기 때문",
+          "rationale": "선형 스트레칭은 값의 순서와 상대 간격을 유지합니다."
+        },
+        {
+          "text": "영상에 좌표계 정보가 없어서 스트레칭 범위를 제대로 계산하지 못했기 때문",
+          "rationale": "스트레칭은 픽셀 값 분포만으로 계산하며 좌표계와 무관합니다."
+        },
+        {
+          "text": "min-max 스트레칭은 히스토그램 평활화와 같아서 넓은 영역의 대비를 오히려 줄이기 때문",
+          "rationale": "min-max 스트레칭은 선형 매핑이고, 평활화는 누적분포 기반 비선형 매핑으로 서로 다른 처리입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "min-max 스트레칭은 최솟값·최댓값을 기준으로 하므로, 구름·태양 반사광(sun glint) 같은 극단값 몇 개가 범위를 넓혀 버리면 대부분의 픽셀은 좁은 출력 구간에 머뭅니다. 이때는 2%·98% 같은 백분위수로 범위를 잡는 스트레칭이 효과적입니다.",
+      "explanation_full": "바다처럼 어두운 대상이 넓게 분포하는 영상은 특히 이 문제가 심합니다. 밴드별 히스토그램을 먼저 그려 보고 극단값 꼬리가 있는지 확인하는 습관을 들이세요. 여러 장을 모자이크·비교할 때 영상마다 따로 스트레칭하면 색감이 달라지므로, 공통 범위를 정해 같은 기준으로 스트레칭하는 것이 좋습니다.",
+      "tags": [
+        "contrast",
+        "visualization"
+      ],
+      "terms": [
+        "histogram-stretching"
+      ],
+      "source_ref": "Gonzalez & Woods, Digital Image Processing(밝기 변환·히스토그램 처리 장)",
+      "status": "draft"
+    },
+    {
+      "id": "D-COL-014",
+      "type": "mcq",
+      "chapter": "D.col",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "Sentinel-2 영상으로 트루컬러 합성을 만들 때 R·G·B 채널에 배정할 밴드 조합으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "R←B4, G←B3, B←B8",
+          "rationale": "파랑 채널에 근적외(B8)를 넣은 폴스컬러입니다. 트루컬러는 가시광 세 밴드만 씁니다."
+        },
+        {
+          "text": "R←B2, G←B3, B←B4",
+          "rationale": "파랑·빨강 밴드를 뒤바꾼 배정으로, 색이 뒤틀린 폴스컬러가 됩니다."
+        },
+        {
+          "text": "R←B12, G←B8A, B←B4",
+          "rationale": "단파적외·근적외를 쓴 폴스컬러 조합으로, 수분·화재 피해지 판독 등에 씁니다."
+        },
+        {
+          "text": "R←B3, G←B2, B←B1",
+          "rationale": "한 칸씩 밀린 배정입니다. B3은 초록, B2는 파랑, B1은 연안·에어로졸 밴드(60 m)입니다."
+        },
+        {
+          "text": "R←B4, G←B3, B←B2",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "Sentinel-2에서 B4는 빨강, B3는 초록, B2는 파랑 밴드이므로 R←B4, G←B3, B←B2가 트루컬러입니다. 가시광 밴드를 원래 색에 그대로 배정한 조합입니다.",
+      "explanation_full": "세 밴드 모두 10 m라 리샘플링 없이 바로 합성할 수 있습니다. 가시광이 아닌 밴드가 들어가거나 배정 순서가 바뀌면 모두 폴스컬러가 됩니다. 밴드 번호는 위성마다 다르므로(예: Landsat 8/9는 4·3·2가 트루컬러) 번호만 외우기보다 각 밴드의 파장을 확인하는 습관이 중요합니다.",
+      "tags": [
+        "composite",
+        "sentinel-2"
+      ],
+      "terms": [
+        "true-color-composite",
+        "false-color-composite"
+      ],
+      "source_ref": "ESA Sentinel-2 사용자 핸드북(밴드 구성)",
+      "status": "draft"
+    },
+    {
+      "id": "D-COL-015",
+      "type": "scenario",
+      "chapter": "D.col",
+      "cognitive_level": 3,
+      "difficulty": 2,
+      "stem": "지시: \"Sentinel-2 영상에서 논·산림 같은 식생 경계가 잘 보이게 표준 폴스컬러로 띄워서 캡처해 줘.\"\n\n밴드 배정으로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "R←B4, G←B3, B←B2",
+          "rationale": "트루컬러 조합입니다. 식생 경계를 강조하는 표준 폴스컬러라는 지시에 맞지 않습니다."
+        },
+        {
+          "text": "R←B3, G←B4, B←B8",
+          "rationale": "근적외를 파랑 채널에 넣고 순서를 뒤집은 배정입니다. 관례적인 표준 폴스컬러가 아니며 식생이 붉게 보이지 않습니다."
+        },
+        {
+          "text": "R←B8, G←B4, B←B3",
+          "rationale": null
+        },
+        {
+          "text": "R←B8, G←B8, B←B8",
+          "rationale": "근적외 한 밴드를 세 채널에 복사하면 흑백 영상이 됩니다. 색 대비로 경계를 강조하지 못합니다."
+        },
+        {
+          "text": "R·G·B 대신 NDVI 한 장을 계산해 회색조로 표시",
+          "rationale": "NDVI도 식생 판독에 유용하지만 지시한 “표준 폴스컬러 합성”이 아닙니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "표준 폴스컬러(적외 컬러, CIR)는 NIR→R, Red→G, Green→B 배정이며 Sentinel-2에서는 B8·B4·B3입니다. 건강한 식생은 근적외 반사가 강해 붉게 보이므로 식생 경계가 뚜렷해집니다.",
+      "explanation_full": "식생은 엽록소가 빨강 빛을 흡수하고 잎 내부 구조가 근적외를 강하게 반사합니다. 그래서 R 채널(NIR)은 밝고 G 채널(Red)은 어두워져 붉게 표시되고, 물은 근적외를 거의 반사하지 않아 짙은 색으로 보입니다. 표준 폴스컬러는 항공 적외 필름 시절부터 쓰인 관례라 “식생 = 빨강”이라는 판독 약속으로 통합니다.",
+      "tags": [
+        "composite",
+        "sentinel-2",
+        "vegetation"
+      ],
+      "terms": [
+        "false-color-composite"
+      ],
+      "source_ref": "ESA Sentinel-2 사용자 핸드북(밴드 구성)",
+      "status": "draft"
+    },
+    {
+      "id": "D-COL-016",
+      "type": "scenario",
+      "chapter": "D.col",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"12비트 영상을 라벨링 툴용 8비트 PNG로 바꿔 줘. 그냥 16으로 나누면 너무 어두우니까, 밴드별로 2~98% 스트레칭해서 변환해.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "밴드마다 2·98 백분위수를 구해 그 범위를 0~255로 선형 매핑하고 바깥은 클리핑한다",
+          "rationale": null
+        },
+        {
+          "text": "모든 밴드를 0~4095 범위에서 0~255 범위로 선형 매핑한 뒤 8비트로 저장한다",
+          "rationale": "0~4095를 0~255로 매핑하는 것은 16으로 나누는 것과 같습니다. 지시에서 피하라고 한 방법입니다."
+        },
+        {
+          "text": "밴드마다 누적 히스토그램이 평평해지도록 히스토그램 평활화를 적용한다",
+          "rationale": "평활화는 비선형 재배치로 백분위 선형 스트레칭과 다른 처리이며, 색 관계가 크게 왜곡될 수 있습니다."
+        },
+        {
+          "text": "픽셀 값이 2~98 사이인 것만 남기고 나머지 픽셀은 모두 0으로 만든 뒤 저장한다",
+          "rationale": "“2~98%”는 픽셀 값 2~98이 아니라 값 분포의 백분위수를 뜻합니다."
+        },
+        {
+          "text": "상위 2% 픽셀만 255로 잘라내고 나머지 값은 12비트 그대로 PNG에 저장한다",
+          "rationale": "8비트 PNG에는 0~255만 담을 수 있어 12비트 값을 그대로 넣을 수 없고, 하위 2% 클리핑과 선형 매핑도 빠졌습니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "“2~98% 스트레칭”은 각 밴드 값 분포의 2번째·98번째 백분위수를 하한·상한으로 잡아 0~255로 선형 매핑하고, 바깥 값은 클리핑하는 처리입니다. 극단값 영향을 줄여 대부분의 픽셀이 출력 범위를 고르게 쓰게 됩니다.",
+      "explanation_full": "식은 out = clip((in − p2) ÷ (p98 − p2), 0, 1) × 255입니다. 백분위수는 nodata(0 등) 픽셀을 제외하고 계산해야 하며, 여러 장을 같은 색감으로 라벨링하려면 장마다 따로 구하지 말고 전체 영상에서 공통 백분위수를 구해 쓰는 것이 좋습니다. 이렇게 만든 8비트 영상은 표시·라벨링용이고, 모델 학습 입력은 원본 12비트에서 정규화하는 편이 정보 손실이 적습니다.",
+      "tags": [
+        "contrast",
+        "bit-depth",
+        "labeling"
+      ],
+      "terms": [
+        "histogram-stretching"
+      ],
+      "source_ref": "Gonzalez & Woods, Digital Image Processing(밝기 변환·히스토그램 처리 장)",
+      "status": "draft"
+    }
+  ]
+}

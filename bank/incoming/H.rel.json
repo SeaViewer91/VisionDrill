@@ -1,0 +1,1294 @@
+{
+  "format": "visiondrill-bank-exchange",
+  "format_version": 1,
+  "terms": [
+    {
+      "id": "overconfidence",
+      "term_en": "Overconfidence",
+      "term_ko": "과신",
+      "abbreviation": null,
+      "definition": "모델이 출력하는 확신도(신뢰도 점수)가 실제 정답 확률보다 체계적으로 높은 현상. 틀린 예측에도 0.9 이상의 점수를 내는 경우가 대표적이다",
+      "usage_example": "토지피복 모델이 구름 그림자 픽셀까지 0.98로 찍어. 과신이 심하니 점수 보정부터 해.",
+      "origin": "standard",
+      "track": "H"
+    },
+    {
+      "id": "expected-calibration-error",
+      "term_en": "Expected Calibration Error",
+      "term_ko": "기대 보정 오차",
+      "abbreviation": "ECE",
+      "definition": "신뢰도 [0, 1]을 M개 구간으로 나눠 구간별 |정확도 − 평균 신뢰도|를 구간 표본 비율로 가중 평균한 보정 오차 지표. 구간 차이의 최댓값을 취하면 MCE(최대 보정 오차)가 된다",
+      "usage_example": "건물 추출 모델 ECE가 0.15야. 이 점수 그대로 위험도 지도에 쓰면 안 되겠다.",
+      "origin": "standard",
+      "track": "H"
+    },
+    {
+      "id": "temperature-scaling",
+      "term_en": "Temperature Scaling",
+      "term_ko": "온도 스케일링",
+      "abbreviation": null,
+      "definition": "학습된 모델의 로짓을 단일 스칼라 T로 나누고(z/T) 검증 세트의 음의 로그우도가 최소가 되도록 T만 맞추는 사후 신뢰도 보정 기법. 예측 순위(정확도)는 바뀌지 않는다",
+      "usage_example": "재학습할 시간 없으니 검증 타일로 temperature scaling만 맞춰서 배포본에 넣자.",
+      "origin": "standard",
+      "track": "H"
+    },
+    {
+      "id": "mc-dropout",
+      "term_en": "Monte Carlo Dropout",
+      "term_ko": "몬테카를로 드롭아웃",
+      "abbreviation": "MC Dropout",
+      "definition": "추론 시에도 드롭아웃을 켠 채 T회 확률적 순방향 패스를 반복해 예측 분포를 얻고, 이로부터 총·우연적·인지적 불확실성을 추정하는 기법",
+      "usage_example": "새 지역 타일은 MC Dropout 20회 돌려서 불확실성 지도도 같이 뽑아줘.",
+      "origin": "standard",
+      "track": "H"
+    },
+    {
+      "id": "aleatoric-uncertainty",
+      "term_en": "Aleatoric Uncertainty",
+      "term_ko": "우연적 불확실성",
+      "abbreviation": null,
+      "definition": "센서 노이즈·모션 블러·모호한 경계처럼 관측 자체에 내재한 노이즈에서 오는 불확실성. 데이터를 더 모아도 잘 줄지 않으며, MC Dropout 분해에서는 패스별 엔트로피의 평균(기대 엔트로피)으로 추정한다",
+      "usage_example": "해안선 경계 픽셀은 우연적 불확실성이 커. 데이터 더 모으기 전에 라벨 기준부터 맞추자.",
+      "origin": "standard",
+      "track": "H"
+    },
+    {
+      "id": "epistemic-uncertainty",
+      "term_en": "Epistemic Uncertainty",
+      "term_ko": "인지적 불확실성",
+      "abbreviation": null,
+      "definition": "학습 데이터 부족·처음 보는 도메인(OOD)처럼 모델 지식의 한계에서 오는 불확실성. 데이터를 더 모으면 줄어들며, MC Dropout 분해에서는 총 엔트로피 − 기대 엔트로피(상호정보량)로 추정한다",
+      "usage_example": "사막 지역 타일에서 인지적 불확실성이 튀네. 그 지역 라벨 데이터를 더 모으자.",
+      "origin": "standard",
+      "track": "H"
+    },
+    {
+      "id": "effective-rank",
+      "term_en": "Effective Rank",
+      "term_ko": "유효 랭크",
+      "abbreviation": null,
+      "definition": "특이값을 합이 1이 되게 정규화한 분포의 샤논 엔트로피에 지수를 취한 값 exp(H)(Roy & Vetterli, 2007). 피처가 실제로 쓰는 차원 수를 연속값으로 나타낸다",
+      "usage_example": "백본 layer3 유효 랭크가 채널 수에 비해 너무 낮아. 차원 붕괴인지 확인해봐.",
+      "origin": "standard",
+      "track": "H"
+    },
+    {
+      "id": "dimensional-collapse",
+      "term_en": "Dimensional Collapse",
+      "term_ko": "차원 붕괴",
+      "abbreviation": null,
+      "definition": "채널 수는 많지만 피처가 좁은 부분공간(초평면)으로 몰려 실제로 쓰이는 차원이 극히 적어지는 현상. 유효 랭크와 이를 채널 수로 나눈 CUR로 정량화한다",
+      "usage_example": "layer3 CUR이 15%야. 차원 붕괴니까 직교 규제 넣고 다시 돌려봐.",
+      "origin": "standard",
+      "track": "H"
+    },
+    {
+      "id": "dead-channel-ratio",
+      "term_en": "Dead Channel Ratio",
+      "term_ko": "비활성 채널 비율",
+      "abbreviation": "DCR",
+      "definition": "검증 세트 전체에서 평균 절댓값 활성화가 ε(10⁻⁴) 미만인 채널의 비율. Diagnostics 노트가 정의한 지표로, 15% 초과(잠정치)면 Dying ReLU·초기화 불량·학습률 과열을 의심한다. 환경 강건성 장의 다크 채널 잔류도(Dark Channel Residual)도 약어가 DCR이므로 혼동하지 않도록 풀네임을 함께 쓴다",
+      "usage_example": "SAR 분류 모델 DCR이 20%가 넘어. 활성화 함수랑 warmup 설정부터 봐.",
+      "origin": "project",
+      "track": "H"
+    },
+    {
+      "id": "neural-collapse",
+      "term_en": "Neural Collapse",
+      "term_ko": "뉴럴 콜랩스",
+      "abbreviation": "NC",
+      "definition": "학습 종반에 같은 클래스 피처의 클래스 내 분산이 클래스 간 분산에 비해 0으로 수렴하는 현상(Papyan et al., 2020). NC1 = (1/K)·Tr(Σ_W Σ_B†)로 측정한다",
+      "usage_example": "NC1이 거의 0이야. 학습 지역에만 딱 맞춰진 건 아닌지 다른 지역 타일로 검증해봐.",
+      "origin": "standard",
+      "track": "H"
+    },
+    {
+      "id": "effective-receptive-field",
+      "term_en": "Effective Receptive Field",
+      "term_ko": "유효 수용영역",
+      "abbreviation": "ERF",
+      "definition": "출력 한 점에 실제로 의미 있게 기여하는 입력 영역. 이론적 수용영역(TRF)보다 훨씬 작고 중심에 몰린 2차원 가우시안 형태를 띤다(Luo et al., 2016)",
+      "usage_example": "탐지 레이어 ERF가 저장탱크 크기에 비해 너무 작아. 확장 합성곱 넣어볼까?",
+      "origin": "standard",
+      "track": "H"
+    },
+    {
+      "id": "receptive-field-mismatch",
+      "term_en": "Receptive Field Mismatch",
+      "term_ko": "수용영역-객체 스케일 불일치 지수",
+      "abbreviation": "RFM",
+      "definition": "ln(2R₉₅ / S). 해당 레이어 ERF의 실효 직경(2R₉₅)과 정답 객체 대각선 S의 비에 자연로그를 취한 값. Diagnostics 노트가 정의한 지표로 RFM ≪ −0.5면 수용영역 결핍, RFM ≫ 1.0이면 수용영역 과다로 본다",
+      "usage_example": "소형 선박은 RFM이 2가 넘어. 배경이 특징을 다 먹어버리니까 P2 헤드 붙여보자.",
+      "origin": "project",
+      "track": "H"
+    },
+    {
+      "id": "attention-entropy",
+      "term_en": "Attention Entropy",
+      "term_ko": "어텐션 엔트로피",
+      "abbreviation": null,
+      "definition": "Self-Attention 가중치 행렬의 행별 엔트로피 평균으로, 어텐션이 얼마나 흩어져 있는지 나타내는 지표. ln N에 가까우면 전역 분산(Diffuse), 0에 가까우면 소수 토큰 고착(Attention Sink)",
+      "usage_example": "SegFormer 헤드 몇 개가 엔트로피 0 근처야. 타일 모서리 토큰만 보고 있는지 어텐션 맵 찍어봐.",
+      "origin": "standard",
+      "track": "H"
+    }
+  ],
+  "questions": [
+    {
+      "id": "H-REL-001",
+      "type": "short",
+      "chapter": "H.rel",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "신뢰도 구간 [0, 1]을 M개의 균등 구간으로 나누고, 구간마다 |정확도 − 평균 신뢰도|를 구한 뒤 구간 표본 비율로 가중 평균한 신뢰도 보정 지표의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Expected Calibration Error (ECE)"
+        ],
+        "ko": [
+          "기대 보정 오차",
+          "기대 보정 오류",
+          "기대 캘리브레이션 오차"
+        ]
+      },
+      "primary": "Expected Calibration Error (ECE)",
+      "explanation_short": "ECE = Σ(|B_m|/N)·|acc(B_m) − conf(B_m)|로, 확신도가 실제 정답률과 얼마나 어긋나는지를 표본 수 가중 평균으로 요약합니다. 0이면 완벽히 보정된 모델입니다.",
+      "explanation_full": "구간 B_m = ((m−1)/M, m/M]마다 평균 신뢰도 conf(B_m)와 실제 정확도 acc(B_m)를 비교합니다. 가중 평균 대신 구간 차이의 최댓값을 취하면 MCE(Maximum Calibration Error)입니다. 토지피복 분류 결과의 확신도를 '불확실 지역 표시'에 쓰려면 ECE가 낮아야 합니다. 노트의 처방 매트릭스는 ECE > 0.12를 과신 징후로 보는데, 이 컷오프는 경험적 잠정치입니다.",
+      "tags": [
+        "calibration",
+        "reliability"
+      ],
+      "terms": [
+        "expected-calibration-error"
+      ],
+      "source_ref": "Diagnostics/research/note/03_representation_reliability_diagnostics/01_calibration_and_uncertainty.md#2.1",
+      "status": "draft"
+    },
+    {
+      "id": "H-REL-002",
+      "type": "mcq",
+      "chapter": "H.rel",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "정확도가 높은 심층 신경망이 틀린 예측에도 0.9~0.99의 높은 확신도를 출력하는 현상, 즉 예측 점수가 실제 정답 확률보다 체계적으로 높은 현상을 가리키는 용어는?",
+      "choices": [
+        {
+          "text": "과적합 (Overfitting)",
+          "rationale": "과적합은 학습 데이터에만 잘 맞고 새 데이터에서 성능이 떨어지는 현상으로, 정확도 격차를 가리킵니다. 확신도와 정답률의 불일치를 직접 뜻하지는 않습니다."
+        },
+        {
+          "text": "차원 붕괴 (Dimensional Collapse)",
+          "rationale": "차원 붕괴는 중간 피처가 좁은 부분공간으로 몰려 유효 랭크가 낮아지는 표현 공간의 문제입니다."
+        },
+        {
+          "text": "과신 (Overconfidence)",
+          "rationale": null
+        },
+        {
+          "text": "클래스 불균형 (Class Imbalance)",
+          "rationale": "클래스 불균형은 클래스별 표본 수 차이입니다. 보정 문제의 한 원인이 될 수는 있어도 현상의 이름은 아닙니다."
+        },
+        {
+          "text": "라벨 노이즈 (Label Noise)",
+          "rationale": "라벨 노이즈는 정답 라벨 자체의 오류입니다. 모델 출력 점수가 부풀려졌는지와는 다른 개념입니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "예측 확신도가 실제 정답률보다 높게 나오는 현상을 과신(Overconfidence)이라 합니다. Guo et al.(ICML 2017)이 ResNet 등 최신 심층 신경망에서 이 현상이 심하다는 것을 보였습니다.",
+      "explanation_full": "노트는 회귀분석의 신뢰구간이 불확실성을 나타내듯, 비전 모델의 점수 s가 실제 정답 확률 P(Correct | s)와 맞는지 정량 진단해야 한다고 봅니다. 과신 여부는 ECE·MCE로 재고, Temperature Scaling으로 사후 보정합니다. 위성 영상 토지피복 모델이 구름 그림자처럼 헷갈리는 픽셀까지 0.98로 찍는다면 과신을 의심합니다.",
+      "tags": [
+        "calibration",
+        "reliability"
+      ],
+      "terms": [
+        "overconfidence"
+      ],
+      "source_ref": "Diagnostics/research/note/03_representation_reliability_diagnostics/01_calibration_and_uncertainty.md#1",
+      "status": "draft"
+    },
+    {
+      "id": "H-REL-003",
+      "type": "mcq",
+      "chapter": "H.rel",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "신뢰도 구간 B_m별 차이 |acc(B_m) − conf(B_m)|로 계산하는 ECE와 MCE의 차이로 옳은 것은?",
+      "choices": [
+        {
+          "text": "ECE는 구간 차이를 표본 비율로 가중 평균하고, MCE는 구간 차이의 최댓값을 취한다",
+          "rationale": null
+        },
+        {
+          "text": "ECE는 구간 차이의 절댓값 평균이고, MCE는 구간 차이의 제곱 평균이다",
+          "rationale": "두 지표 모두 절댓값 차이를 씁니다. MCE는 제곱 평균이 아니라 구간 차이의 최댓값입니다."
+        },
+        {
+          "text": "MCE는 클래스별로 따로 계산한 ECE를 클래스 수로 평균한 값이다",
+          "rationale": "노트 정의의 MCE는 클래스 평균이 아니라 신뢰도 구간 중 가장 어긋난 구간의 오차입니다."
+        },
+        {
+          "text": "ECE는 과신 방향 구간만, MCE는 과소신뢰 방향 구간만 골라 합산한다",
+          "rationale": "둘 다 절댓값을 쓰므로 과신·과소신뢰 방향을 구분하지 않습니다."
+        },
+        {
+          "text": "ECE는 표본 수와 무관하게 모든 구간을 동등하게 평균하고, MCE는 구간 표본 수로 가중 평균한다",
+          "rationale": "반대에 가깝습니다. 표본 비율로 가중하는 쪽이 ECE이고, MCE는 표본 수와 무관하게 최악 구간 하나를 봅니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "ECE는 Σ(|B_m|/N)·|acc − conf|로 전체적인 어긋남의 가중 평균이고, MCE는 max_m |acc − conf|로 최악 구간의 어긋남입니다.",
+      "explanation_full": "MCE는 표본이 적은 구간 하나에도 크게 튈 수 있어, 선박 경보처럼 '가장 위험한 점수대'가 중요할 때 ECE와 함께 봅니다. 두 지표 모두 신뢰도 구간 분할 방식(M 값)에 따라 달라지므로 비교할 때는 같은 M을 써야 합니다.",
+      "tags": [
+        "calibration",
+        "metric"
+      ],
+      "terms": [
+        "expected-calibration-error"
+      ],
+      "source_ref": "Diagnostics/research/note/03_representation_reliability_diagnostics/01_calibration_and_uncertainty.md#2.1",
+      "status": "draft"
+    },
+    {
+      "id": "H-REL-004",
+      "type": "mcq",
+      "chapter": "H.rel",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "M = 5 균등 구간으로 선박 분류기의 신뢰도를 집계했더니 전체 100개 예측이 아래와 같았다(나머지 구간은 비어 있음). ECE는?\n- (0.4, 0.6]: 20개, 평균 신뢰도 0.50, 정확도 0.55\n- (0.6, 0.8]: 20개, 평균 신뢰도 0.70, 정확도 0.65\n- (0.8, 1.0]: 60개, 평균 신뢰도 0.95, 정확도 0.80",
+      "choices": [
+        {
+          "text": "약 0.083",
+          "rationale": "세 구간 차이(0.05, 0.05, 0.15)를 표본 수와 무관하게 단순 평균한 값입니다. ECE는 구간 표본 비율로 가중해야 합니다."
+        },
+        {
+          "text": "0.09",
+          "rationale": "부호를 살려 합하면 0.2×(+0.05) + 0.2×(−0.05) + 0.6×(−0.15) = −0.09로 일부가 상쇄됩니다. ECE는 구간마다 절댓값을 먼저 취합니다."
+        },
+        {
+          "text": "0.15",
+          "rationale": "0.15는 구간 차이의 최댓값, 즉 MCE입니다."
+        },
+        {
+          "text": "0.11",
+          "rationale": null
+        },
+        {
+          "text": "약 0.015",
+          "rationale": "구간 차이를 제곱해 가중 평균한 값(0.0145)입니다. ECE는 절댓값 차이를 씁니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "ECE = 0.2×|0.55−0.50| + 0.2×|0.65−0.70| + 0.6×|0.80−0.95| = 0.01 + 0.01 + 0.09 = 0.11입니다. 표본이 많은 고신뢰 구간의 과신(0.95 vs 0.80)이 오차 대부분을 차지합니다.",
+      "explanation_full": "고신뢰 구간에서 평균 신뢰도가 정확도보다 0.15나 높은 전형적 과신 패턴입니다. 같은 데이터의 MCE는 0.15입니다. 노트 처방 매트릭스는 ECE > 0.12(잠정 기준)를 과신 처방 대상으로 삼으므로 0.11은 그 바로 아래이지만, 고신뢰 구간 과신은 뚜렷하므로 Temperature Scaling을 해 볼 만합니다.",
+      "tags": [
+        "calibration",
+        "calculation"
+      ],
+      "terms": [
+        "expected-calibration-error"
+      ],
+      "source_ref": "Diagnostics/research/note/03_representation_reliability_diagnostics/01_calibration_and_uncertainty.md#2.1",
+      "status": "draft"
+    },
+    {
+      "id": "H-REL-005",
+      "type": "scenario",
+      "chapter": "H.rel",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"해상 선박 탐지 모델이 파도 백파 위에 0.9 넘는 오탐 박스를 자꾸 올려. 점수 보정 상태를 검출 기준으로 뽑아줘.\"\n\n가장 적절한 방법은?",
+      "choices": [
+        {
+          "text": "모든 예측 박스를 이미지 단위로 묶어 '선박 있음/없음' 분류 정확도로 ECE를 계산한다",
+          "rationale": "이미지 단위로 묶으면 박스 하나하나의 점수와 정답 여부를 대응시킬 수 없어, 백파 위 고점수 오탐이 드러나지 않습니다."
+        },
+        {
+          "text": "IoU ≥ 0.5이면서 클래스가 맞는 박스를 정답으로 두는 D-ECE를 구하고, 배경 오탐의 평균 신뢰도가 높은 구간을 찾는다",
+          "rationale": null
+        },
+        {
+          "text": "클래스만 맞으면 IoU와 무관하게 정답으로 세어 신뢰도 구간별 정확도를 구한다",
+          "rationale": "위치를 무시하면 엉뚱한 곳에 그린 박스도 정답으로 세어 보정 상태가 실제보다 좋아 보입니다. 노트의 D-ECE는 IoU ≥ 0.5 조건을 함께 씁니다."
+        },
+        {
+          "text": "픽셀별 소프트맥스 최대 확률로 경계면과 내부를 나눠 ECE를 계산한다",
+          "rationale": "그것은 세그멘테이션용 Pixel-wise Spatial ECE입니다. 박스 단위 검출 모델에는 D-ECE가 맞습니다."
+        },
+        {
+          "text": "mAP50을 다시 계산해 이전 버전 모델과 비교한다",
+          "rationale": "mAP는 점수의 순위만 쓰는 지표라, 점수 값이 실제 정답 확률과 맞는지는 알려주지 않습니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "검출 모델의 보정은 무엇을 정답으로 볼지부터 정해야 합니다. 노트의 D-ECE는 IoU ≥ 0.5이고 클래스가 일치하는 박스를 정답(1)으로 두고 점수와의 정렬을 검정하며, 배경 오탐(E_bkg)의 평균 신뢰도가 비정상적으로 높은 구간을 찾아냅니다.",
+      "explanation_full": "백파처럼 고휘도 텍스처가 반복되는 해상에서는 배경 오탐이 높은 점수로 나오기 쉽습니다. D-ECE로 0.9 이상 구간의 실제 정답률이 얼마인지 보여주면, 임계값 조정만으로 될지 Hard Negative 추가 학습이 필요한지 판단하는 근거가 됩니다.",
+      "tags": [
+        "calibration",
+        "detection"
+      ],
+      "terms": [
+        "expected-calibration-error",
+        "overconfidence",
+        "iou"
+      ],
+      "source_ref": "Diagnostics/research/note/03_representation_reliability_diagnostics/01_calibration_and_uncertainty.md#2.2",
+      "status": "draft"
+    },
+    {
+      "id": "H-REL-006",
+      "type": "scenario",
+      "chapter": "H.rel",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"수계 추출 모델이 호수 안쪽은 괜찮은데 수변 경계 픽셀에서 점수가 너무 높게 나오는 것 같아. 이걸 숫자로 보여줄 수 있게 정리해.\"\n\n가장 적절한 방법은?",
+      "choices": [
+        {
+          "text": "경계를 포함한 전체 영상의 mIoU를 구해 이전 모델과 비교한다",
+          "rationale": "mIoU는 예측 마스크의 겹침 정확도로, 점수가 정답 확률과 맞는지는 보여주지 못합니다."
+        },
+        {
+          "text": "D-ECE를 계산해 IoU ≥ 0.5인 예측만 정답으로 센다",
+          "rationale": "D-ECE는 박스 단위 검출용입니다. 픽셀 확률을 내는 세그멘테이션에는 픽셀 단위 확장 ECE가 맞습니다."
+        },
+        {
+          "text": "NDWI 임계값을 바꿔 가며 수계 면적이 어떻게 변하는지 본다",
+          "rationale": "NDWI는 분광 지수 기반 수계 추출 방법입니다. 딥러닝 모델의 확신도 보정 상태와는 무관합니다."
+        },
+        {
+          "text": "중간 레이어의 유효 랭크를 경계·내부 픽셀로 나눠 비교한다",
+          "rationale": "유효 랭크는 피처 공간의 차원 활용도를 보는 지표로, 출력 점수의 보정과는 다른 대상입니다."
+        },
+        {
+          "text": "픽셀별 소프트맥스 최대 확률로 Spatial ECE를 구하되 전역 값과 경계면·내부 값을 따로 산출한다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "노트의 세그멘테이션용 확장 ECE(Pixel-wise Spatial ECE)는 각 픽셀의 소프트맥스 최대 확률을 신뢰도로 삼고 전역과 영역별(경계면 vs 내부)로 나눠 계산합니다. 경계 ECE가 내부보다 크게 나오면 지시의 의심이 수치로 확인됩니다.",
+      "explanation_full": "수변 경계는 혼합 화소(mixed pixel)와 라벨러 간 경계 불일치 때문에 본래 모호한 영역이라 과신이 드러나기 쉽습니다. 경계 과신이 확인되면 Temperature Scaling 같은 점수 보정과 함께, 경계 라벨 기준 정비(우연적 불확실성 대응)를 검토합니다.",
+      "tags": [
+        "calibration",
+        "segmentation"
+      ],
+      "terms": [
+        "expected-calibration-error",
+        "overconfidence"
+      ],
+      "source_ref": "Diagnostics/research/note/03_representation_reliability_diagnostics/01_calibration_and_uncertainty.md#2.2",
+      "status": "draft"
+    },
+    {
+      "id": "H-REL-007",
+      "type": "short",
+      "chapter": "H.rel",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "학습이 끝난 모델의 로짓 z를 단일 스칼라 T로 나눈 z/T를 소프트맥스에 넣고, 검증 세트의 음의 로그우도가 최소가 되도록 T 하나만 최적화하는 사후 신뢰도 보정 기법은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Temperature Scaling"
+        ],
+        "ko": [
+          "온도 스케일링",
+          "온도 보정",
+          "온도 스케일 보정"
+        ]
+      },
+      "primary": "Temperature Scaling",
+      "explanation_short": "Temperature Scaling은 검증 세트로 스칼라 T 하나만 맞춰 로짓을 z/T로 나누는 사후 보정입니다. 과신 모델에서는 T > 1이 나와 점수가 완만해집니다.",
+      "explanation_full": "모든 로짓을 같은 T로 나누므로 클래스 순위가 바뀌지 않아 Top-1 정확도나 mAP 순위를 해치지 않으며, 연산 비용도 사실상 0입니다. 노트 처방 매트릭스에서 ECE 과다(과신)의 추론 후처리 처방으로 Isotonic Regression과 함께 제시됩니다.",
+      "tags": [
+        "calibration",
+        "prescription"
+      ],
+      "terms": [
+        "temperature-scaling"
+      ],
+      "source_ref": "Diagnostics/research/note/03_representation_reliability_diagnostics/04_representation_prescriptions.md#3",
+      "status": "draft"
+    },
+    {
+      "id": "H-REL-008",
+      "type": "mcq",
+      "chapter": "H.rel",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "과신이 심한 분류 모델에 Temperature Scaling을 적용해 검증 세트에서 T = 1.8을 얻었다. 이 결과에 대한 설명으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "T > 1이므로 소프트맥스 분포가 더 뾰족해져 확신도가 높아진다",
+          "rationale": "로짓을 1보다 큰 T로 나누면 분포가 완만해집니다. 분포가 뾰족해지는 것은 T < 1일 때입니다."
+        },
+        {
+          "text": "확신도는 낮아지지만 로짓 순서가 그대로라 Top-1 정확도는 변하지 않는다",
+          "rationale": null
+        },
+        {
+          "text": "확신도가 낮아지는 만큼 오분류가 줄어들어 Top-1 정확도가 함께 오른다",
+          "rationale": "모든 로짓을 같은 T로 나누므로 가장 큰 로짓(예측 클래스)이 바뀌지 않습니다. 정확도는 그대로입니다."
+        },
+        {
+          "text": "T는 학습 세트의 손실로 최적화해야 새 데이터에도 일반화된다",
+          "rationale": "노트는 학습 후 별도의 검증 세트로 T를 맞춥니다. 모델이 거의 다 맞히는 학습 세트에서는 과신이 드러나지 않아 보정이 제대로 되지 않습니다."
+        },
+        {
+          "text": "클래스마다 서로 다른 T가 얻어지므로 소수 클래스의 점수 보정이 특히 좋아진다",
+          "rationale": "Temperature Scaling은 모든 클래스에 공통인 스칼라 T 하나만 씁니다. 클래스별 파라미터를 두는 것은 벡터·행렬 스케일링 같은 다른 기법입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "T > 1로 로짓을 나누면 분포가 완만해져 과도한 확신이 줄어듭니다. 모든 로짓에 같은 T를 적용하므로 argmax가 바뀌지 않아 정확도는 유지됩니다.",
+      "explanation_full": "노트는 T > 1로 최적화되면 '과도하게 치솟았던 로짓을 완만하게 억제해 예측 점수가 실제 정답 확률에 정합되도록 교정한다'고 설명합니다. 연산 비용이 사실상 0이고 정확도·mAP 순위를 해치지 않으면서 ECE를 크게 줄일 수 있어, 재학습이 어려운 배포 직전 단계에서 특히 유용합니다.",
+      "tags": [
+        "calibration",
+        "prescription"
+      ],
+      "terms": [
+        "temperature-scaling",
+        "overconfidence"
+      ],
+      "source_ref": "Diagnostics/research/note/03_representation_reliability_diagnostics/04_representation_prescriptions.md#3",
+      "status": "draft"
+    },
+    {
+      "id": "H-REL-009",
+      "type": "scenario",
+      "chapter": "H.rel",
+      "cognitive_level": 3,
+      "difficulty": 2,
+      "stem": "지시: \"토지피복 모델이 틀린 픽셀에도 0.97씩 찍어. 정확도는 건드리지 말고 점수만 믿을 만하게 만들어서 내일 배포본에 넣어.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "신뢰도 임계값을 0.97 이상으로 올려 확실한 픽셀만 결과 지도에 남긴다",
+          "rationale": "임계값을 올리면 출력 픽셀이 줄 뿐, 남은 점수가 정답 확률과 맞게 되지는 않습니다. 결과 지도에 빈 곳도 생깁니다."
+        },
+        {
+          "text": "Label Smoothing(ε = 0.1)을 넣어 처음부터 다시 학습한다",
+          "rationale": "과신 처방이긴 하지만 재학습이 필요해 '내일 배포'에 맞지 않고, 재학습 과정에서 정확도도 달라질 수 있습니다."
+        },
+        {
+          "text": "검증 세트로 Temperature Scaling의 T를 맞추고 추론 코드에서 로짓을 z/T로 나눈다",
+          "rationale": null
+        },
+        {
+          "text": "추론 때 MC Dropout을 켜고 30회 예측한 확률의 평균을 최종 점수로 쓴다",
+          "rationale": "MC Dropout은 불확실성 분해 도구로, 추론 비용이 30배로 늘고 예측이 바뀔 수 있어 '정확도 유지'도 보장하지 못합니다."
+        },
+        {
+          "text": "마지막 분류 층만 미세조정(fine-tuning)해 전체 점수 분포를 낮춘다",
+          "rationale": "미세조정도 학습이라 시간이 들고 가중치가 바뀌면서 예측 클래스와 정확도가 달라질 수 있습니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "재학습 없이 정확도를 유지하면서 점수만 보정하는 방법이 Temperature Scaling입니다. 검증 세트로 스칼라 T 하나를 맞추고 추론 시 로짓을 T로 나누면 되며, 과신 모델에서는 T > 1이 나와 점수가 완만해집니다.",
+      "explanation_full": "보정 전후 ECE를 함께 보고하면 효과를 수치로 보여줄 수 있습니다. 검증 세트는 학습에 쓰지 않은 타일이어야 하고, 가능하면 배포 지역과 비슷한 지역·계절의 타일로 구성합니다. Label Smoothing·Focal Loss는 다음 학습 주기의 근본 처방으로 따로 계획합니다.",
+      "tags": [
+        "calibration",
+        "prescription"
+      ],
+      "terms": [
+        "temperature-scaling",
+        "overconfidence"
+      ],
+      "source_ref": "Diagnostics/research/note/03_representation_reliability_diagnostics/04_representation_prescriptions.md#3",
+      "status": "draft"
+    },
+    {
+      "id": "H-REL-010",
+      "type": "scenario",
+      "chapter": "H.rel",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"건물 추출 모델 ECE가 0.18이야. 다음 학습 때 반영할 손실·정규화 처방을 노트 처방 매트릭스 기준으로 정리해 줘.\"\n\n가장 적절한 처방은?",
+      "choices": [
+        {
+          "text": "직교 규제(‖WᵀW − I‖²)와 채널 탈상관 손실을 추가한다",
+          "rationale": "차원 붕괴(CUR < 20%)에 대한 손실·정규화 처방입니다."
+        },
+        {
+          "text": "활성화 함수를 SiLU/GELU로 바꾸고 LR Warmup 스케줄러를 적용한다",
+          "rationale": "비활성 채널(DCR > 15%)에 대한 처방입니다."
+        },
+        {
+          "text": "P2(1/4 스케일) 검출 헤드를 달고 Small Object Loss 가중치를 올린다",
+          "rationale": "수용영역 과다(RFM ≫ 0)로 극소형 객체가 사라질 때의 처방입니다."
+        },
+        {
+          "text": "Label Smoothing(ε = 0.1)과 Focal Loss를 결합하고 Dropout/DropPath를 0.05 올린다",
+          "rationale": null
+        },
+        {
+          "text": "CutMix·Background Shuffle과 전경 어텐션 감독 손실을 추가한다",
+          "rationale": "어텐션 누수(ASAI < 0.35)에 대한 처방입니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "ECE > 0.12(잠정 기준)는 매트릭스의 '과신' 징후이고 근본 결함은 소프트맥스 로짓 스케일 과열입니다. 학습 쪽 처방은 Label Smoothing(ε = 0.1)·Focal Loss와 Dropout/DropPath 상향(+0.05)이며, 추론 쪽은 Temperature Scaling·Isotonic Regression입니다.",
+      "explanation_full": "처방 매트릭스는 징후마다 손실·정규화 / 아키텍처 / 추론 후처리 세 열로 처방을 나눕니다. 지시가 '다음 학습 때 반영할 손실·정규화'를 물었으므로 Label Smoothing·Focal Loss가 핵심이고, 당장의 배포본에는 Temperature Scaling을 따로 적용할 수 있습니다. DCR은 이 노트가 정의한 지표이므로 외부와 소통할 때는 '검증 데이터 전체에서 거의 활성화되지 않는 채널의 비율'처럼 풀어서 말한다. RFM·ASAI도 이 노트가 정의한 지표이므로 외부와 소통할 때는 '수용영역과 객체 크기의 불일치', '어텐션이 객체 마스크 안에 들어간 비율'처럼 풀어서 말한다.",
+      "tags": [
+        "calibration",
+        "prescription"
+      ],
+      "terms": [
+        "expected-calibration-error",
+        "overconfidence"
+      ],
+      "source_ref": "Diagnostics/research/note/03_representation_reliability_diagnostics/04_representation_prescriptions.md#2",
+      "status": "draft"
+    },
+    {
+      "id": "H-REL-011",
+      "type": "short",
+      "chapter": "H.rel",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "추론 단계에서도 드롭아웃을 켠 채 같은 입력으로 T회 확률적 순방향 패스를 반복해 예측 분포를 얻고, 이를 이용해 불확실성을 추정하는 기법은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Monte Carlo Dropout (MC Dropout)"
+        ],
+        "ko": [
+          "몬테카를로 드롭아웃",
+          "MC 드롭아웃"
+        ]
+      },
+      "primary": "Monte Carlo Dropout (MC Dropout)",
+      "explanation_short": "MC Dropout은 추론 시 드롭아웃을 켠 채 T회 예측해 분포 {p⁽ᵗ⁾}를 얻는 기법입니다. 노트는 이 분포로 총 불확실성을 우연적·인지적 불확실성으로 나눕니다.",
+      "explanation_full": "평균 예측 p̄ = (1/T)Σp⁽ᵗ⁾의 엔트로피가 총 불확실성, 패스별 엔트로피의 평균이 우연적 불확실성, 그 차이(상호정보량)가 인지적 불확실성입니다. 추론 비용이 T배로 늘므로 실무에서는 새 지역·새 센서 타일처럼 진단이 필요한 구간에 한정해 돌리는 경우가 많습니다.",
+      "tags": [
+        "uncertainty"
+      ],
+      "terms": [
+        "mc-dropout"
+      ],
+      "source_ref": "Diagnostics/research/note/03_representation_reliability_diagnostics/01_calibration_and_uncertainty.md#3.1",
+      "status": "draft"
+    },
+    {
+      "id": "H-REL-012",
+      "type": "mcq",
+      "chapter": "H.rel",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "노트의 불확실성 이원화 분해에서 '우연적 불확실성(Aleatoric Uncertainty)'의 원천에 해당하는 것은?",
+      "choices": [
+        {
+          "text": "학습 데이터에 거의 없던 희귀 지형",
+          "rationale": "학습 데이터 부족·희귀 샘플은 인지적(Epistemic) 불확실성의 원천입니다."
+        },
+        {
+          "text": "처음 보는 센서·지역에서 들어온 분포 밖(OOD) 영상",
+          "rationale": "OOD는 모델 지식의 한계로 생기는 인지적 불확실성의 대표 원천입니다."
+        },
+        {
+          "text": "모델 파라미터 공간의 사후 분산",
+          "rationale": "파라미터 사후 분산은 노트가 인지적 불확실성으로 분류하는 항목입니다."
+        },
+        {
+          "text": "앙상블 멤버끼리 예측이 서로 엇갈리는 정도",
+          "rationale": "모델 간 불일치는 모델 지식의 불확실성, 즉 인지적 불확실성을 반영합니다."
+        },
+        {
+          "text": "센서 노이즈·모션 블러 같은 관측 자체의 노이즈",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "우연적 불확실성은 센서 노이즈·모션 블러·모호한 경계처럼 관측 자체에 내재한 노이즈에서 옵니다. 나머지 보기는 모두 모델 지식의 한계, 즉 인지적 불확실성에 속합니다.",
+      "explanation_full": "노트의 분해도에서 우연적 불확실성은 '관측 자체의 고유한 엔트로피'로, 해결책은 센서 개선이나 확률적 헤드입니다. 인지적 불확실성은 학습 데이터 부족(OOD·희귀 샘플)과 파라미터 사후 분산에서 오며, 추가 데이터 학습과 앙상블로 줄입니다. 드론 영상의 블러 구간은 우연적, 학습에 없던 사막 지역 타일은 인지적 불확실성의 전형입니다.",
+      "tags": [
+        "uncertainty"
+      ],
+      "terms": [
+        "aleatoric-uncertainty",
+        "epistemic-uncertainty"
+      ],
+      "source_ref": "Diagnostics/research/note/03_representation_reliability_diagnostics/01_calibration_and_uncertainty.md#3",
+      "status": "draft"
+    },
+    {
+      "id": "H-REL-013",
+      "type": "mcq",
+      "chapter": "H.rel",
+      "cognitive_level": 2,
+      "difficulty": 4,
+      "stem": "이진 분류에서 MC Dropout을 T = 2회 수행했더니 1회차 예측이 (1.0, 0.0), 2회차 예측이 (0.0, 1.0)이었다. 노트의 분해식(자연로그, 0·ln 0 = 0)으로 구한 결과는?",
+      "choices": [
+        {
+          "text": "총 불확실성 ≈ 0.693, 우연적 ≈ 0, 인지적 ≈ 0.693",
+          "rationale": null
+        },
+        {
+          "text": "총 불확실성 ≈ 0.693, 우연적 ≈ 0.693, 인지적 ≈ 0",
+          "rationale": "각 패스는 한 클래스에 확률 1을 주므로 패스별 엔트로피가 0이고, 그 평균인 우연적 불확실성도 0입니다. 이 결과는 두 패스가 모두 (0.5, 0.5)를 낼 때에 해당합니다."
+        },
+        {
+          "text": "총 불확실성 ≈ 0, 우연적 ≈ 0, 인지적 ≈ 0",
+          "rationale": "각 패스가 확신에 차 있어도 평균 예측은 (0.5, 0.5)이므로 총 엔트로피는 ln 2입니다."
+        },
+        {
+          "text": "총 불확실성 ≈ 1.386, 우연적 ≈ 0.693, 인지적 ≈ 0.693",
+          "rationale": "이진 분류의 엔트로피는 최대 ln 2 ≈ 0.693이므로 총 불확실성이 1.386이 될 수 없습니다."
+        },
+        {
+          "text": "총 불확실성 ≈ 0.693, 우연적 ≈ 0.347, 인지적 ≈ 0.347",
+          "rationale": "총 불확실성을 반씩 나눈 값으로 분해식과 무관합니다. 패스별 엔트로피가 0이므로 우연적 불확실성은 0입니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "평균 예측이 (0.5, 0.5)이므로 총 엔트로피 = ln 2 ≈ 0.693입니다. 각 패스의 엔트로피는 0이라 우연적(기대 엔트로피) = 0이고, 인지적(상호정보량) = 0.693 − 0 = 0.693입니다.",
+      "explanation_full": "패스마다 확신은 강한데 서로 정반대라는 것은 모델이 이 입력을 어떻게 볼지 정하지 못했다는 뜻으로, 전형적인 인지적 불확실성 신호입니다. 반대로 모든 패스가 일관되게 (0.5, 0.5)를 내면 우연적 불확실성이 ln 2, 인지적은 0이 됩니다. 식: H_total = −Σ p̄_c ln p̄_c, U_aleatoric = (1/T)Σ_t(−Σ_c p_c⁽ᵗ⁾ ln p_c⁽ᵗ⁾), U_epistemic = H_total − U_aleatoric.",
+      "tags": [
+        "uncertainty",
+        "calculation"
+      ],
+      "terms": [
+        "mc-dropout",
+        "epistemic-uncertainty",
+        "aleatoric-uncertainty"
+      ],
+      "source_ref": "Diagnostics/research/note/03_representation_reliability_diagnostics/01_calibration_and_uncertainty.md#3.1",
+      "status": "draft"
+    },
+    {
+      "id": "H-REL-014",
+      "type": "scenario",
+      "chapter": "H.rel",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"학습 때 없던 사막 지대 Sentinel-2 타일에서 오분류가 몰려. MC Dropout 돌려보니 그 구간 상호정보량이 유독 크게 나왔어. 다음 액션 정해 줘.\"\n\n노트 기준 가장 적절한 처방은?",
+      "choices": [
+        {
+          "text": "해당 구간 라벨을 재검수하고 Gaussian BBox Loss 같은 확률적 손실을 도입한다",
+          "rationale": "라벨 정제·확률적 손실은 우연적 불확실성이 높을 때의 처방입니다. 상호정보량은 인지적 불확실성을 나타냅니다."
+        },
+        {
+          "text": "사막 지대 데이터를 추가 수집하고 불확실성이 큰 타일부터 라벨링하는 능동 학습을 적용한다",
+          "rationale": null
+        },
+        {
+          "text": "Temperature Scaling으로 해당 구간의 점수를 낮춘다",
+          "rationale": "점수 보정은 확신도 표시를 고칠 뿐, 모델이 사막 지대를 모르는 지식 부족 자체는 해결하지 못합니다."
+        },
+        {
+          "text": "20 m 밴드를 빼고 10 m 밴드만으로 다시 추론한다",
+          "rationale": "밴드 구성 변경은 지식 부족과 무관하며, 학습 때와 입력 구성이 달라져 분포 차이가 오히려 커집니다."
+        },
+        {
+          "text": "센서 노이즈가 원인이므로 추론 전에 노이즈 제거 필터를 적용한다",
+          "rationale": "센서 노이즈는 우연적 불확실성의 원천입니다. 상호정보량이 크다는 것은 노이즈보다 모델 지식 부족을 가리킵니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "MC Dropout 분해에서 상호정보량은 인지적(Epistemic) 불확실성입니다. 노트는 인지적 불확실성이 높고 오차가 난 경우를 '본 적 없는 도메인(OOD)'으로 보고 데이터 수집과 능동 학습(Active Learning)을 처방합니다.",
+      "explanation_full": "능동 학습에서는 불확실성 지도를 라벨링 우선순위로 씁니다. 상호정보량이 큰 타일부터 라벨을 붙이면 같은 라벨링 비용으로 지식 공백을 빨리 메울 수 있습니다. 지역별 성능 비교 시에는 공간 자기상관을 고려해 지역 단위로 검증 세트를 나누는 것이 좋습니다.",
+      "tags": [
+        "uncertainty",
+        "prescription"
+      ],
+      "terms": [
+        "epistemic-uncertainty",
+        "mc-dropout"
+      ],
+      "source_ref": "Diagnostics/research/note/03_representation_reliability_diagnostics/01_calibration_and_uncertainty.md#3.2",
+      "status": "draft"
+    },
+    {
+      "id": "H-REL-015",
+      "type": "scenario",
+      "chapter": "H.rel",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"드론 정사영상에서 블러가 낀 구간이랑 라벨러끼리 경계를 다르게 그은 구간에 오탐이 몰려. MC Dropout 돌려보니 기대 엔트로피는 크고 상호정보량은 작아. 처방 정리해.\"\n\n노트 기준 가장 적절한 처방은?",
+      "choices": [
+        {
+          "text": "해당 지역 영상을 대량으로 추가 수집해 능동 학습을 돌린다",
+          "rationale": "데이터 추가·능동 학습은 인지적 불확실성 처방입니다. 상호정보량이 작으므로 지식 부족이 주원인이 아닙니다."
+        },
+        {
+          "text": "여러 모델을 학습해 앙상블로 예측을 평균한다",
+          "rationale": "노트는 앙상블을 인지적 불확실성의 해결책으로 분류합니다."
+        },
+        {
+          "text": "백본을 더 큰 모델로 교체해 표현력을 높인다",
+          "rationale": "관측 자체의 모호함(우연적 불확실성)은 모델 용량을 키워도 줄지 않습니다."
+        },
+        {
+          "text": "라벨 기준을 통일해 경계 라벨을 정제하고 Gaussian BBox Loss 같은 확률적 손실을 도입한다",
+          "rationale": null
+        },
+        {
+          "text": "Temperature Scaling으로 전체 점수를 보정한다",
+          "rationale": "점수 보정은 확신도를 믿을 만하게 할 뿐, 블러·라벨 불일치로 생긴 오탐의 원인은 다루지 않습니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "기대 엔트로피(우연적)가 크고 상호정보량(인지적)이 작으면 우연적 불확실성이 지배적입니다. 노트는 이를 해상도 저하·라벨러 간 의견 불일치 구간으로 보고 라벨 정제와 확률적 손실(Gaussian BBox Loss / Lovász)을 처방합니다.",
+      "explanation_full": "우연적 불확실성은 데이터를 더 모아도 잘 줄지 않는 관측 고유의 모호함입니다. 노트 분해도는 그 해결책으로 센서 개선이나 확률적 헤드(DFL)도 제시하므로, 블러가 잦다면 촬영 조건(셔터 속도, 짐벌 안정화) 점검을 함께 요청할 수 있습니다.",
+      "tags": [
+        "uncertainty",
+        "prescription"
+      ],
+      "terms": [
+        "aleatoric-uncertainty",
+        "mc-dropout"
+      ],
+      "source_ref": "Diagnostics/research/note/03_representation_reliability_diagnostics/01_calibration_and_uncertainty.md#3.2",
+      "status": "draft"
+    },
+    {
+      "id": "H-REL-016",
+      "type": "short",
+      "chapter": "H.rel",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "피처 행렬을 특이값 분해해 얻은 특이값을 합이 1이 되게 정규화한 뒤, 그 분포의 샤논 엔트로피에 지수(exp)를 취해 피처가 실제로 쓰는 차원 수를 나타내는 지표는? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Effective Rank"
+        ],
+        "ko": [
+          "유효 랭크",
+          "유효 계수",
+          "실효 랭크"
+        ]
+      },
+      "primary": "Effective Rank",
+      "explanation_short": "유효 랭크 Rank_eff = exp(H_spectral), H_spectral = −Σ p_k ln p_k, p_k = σ_k / Σσ_i입니다(Roy & Vetterli, 2007). 특이값이 고르게 퍼질수록 채널 수 C에 가까워지고, 한 방향에 몰리면 1에 가까워집니다.",
+      "explanation_full": "노트는 특성 텐서 F(B×C×H×W)를 (B·H·W)×C 행렬로 펼쳐 SVD를 합니다. 회귀분석에서 설계 행렬의 랭크 결손·다중공선성을 보듯, 백본 피처가 채널을 얼마나 독립적으로 쓰는지 봅니다. 유효 랭크를 채널 수로 나눈 비율이 CUR입니다.",
+      "tags": [
+        "representation"
+      ],
+      "terms": [
+        "effective-rank"
+      ],
+      "source_ref": "Diagnostics/research/note/03_representation_reliability_diagnostics/02_feature_space_and_collapse.md#2.1",
+      "status": "draft"
+    },
+    {
+      "id": "H-REL-017",
+      "type": "mcq",
+      "chapter": "H.rel",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "채널 수 C = 256인 중간 레이어의 유효 랭크가 40으로 나왔다. 노트의 특성 용량 활용률(CUR)과 판정으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "약 84.4% — 60% 이상이므로 이상적인 특성 분산",
+          "rationale": "1 − 40/256을 계산한 값입니다. CUR은 Rank_eff / C × 100%입니다."
+        },
+        {
+          "text": "약 6.4 — 채널 수가 유효 랭크의 6.4배이므로 정상",
+          "rationale": "C / Rank_eff를 계산한 값이며, 노트의 판정 기준은 Rank_eff / C 비율(%)입니다."
+        },
+        {
+          "text": "약 15.6% — 20% 미만이므로 심각한 차원 붕괴",
+          "rationale": null
+        },
+        {
+          "text": "약 15.6% — 채널 대부분이 죽어 있으므로 SiLU로 교체",
+          "rationale": "낮은 CUR은 채널이 죽었다기보다 피처가 좁은 방향으로 몰렸다는 뜻입니다. 처방도 직교 규제·탈상관 손실이며, SiLU 교체는 DCR 과다 처방입니다."
+        },
+        {
+          "text": "40% — 유효 랭크 값을 그대로 읽어 보통 수준",
+          "rationale": "유효 랭크는 차원 수(개수)이므로 채널 수로 나눠야 CUR이 됩니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "CUR = Rank_eff / C × 100% = 40 / 256 ≈ 15.6%입니다. 노트 기준 20% 미만은 심각한 차원 붕괴로, 채널의 80% 이상이 사실상 낭비되는 상태입니다.",
+      "explanation_full": "노트는 CUR ≥ 60%를 이상적 분산, CUR < 20%를 심각한 차원 붕괴로 봅니다. 다만 20% 컷오프는 ResNet·ConvNeXt·Swin 등 백본의 채널 폭에 따라 달라지는 사전 잠정 기준치이므로, 실데이터로 백본별 기준을 다시 잡아야 합니다. CUR은 이 노트가 정의한 비율이므로 외부와 소통할 때는 '유효 랭크를 채널 수로 나눈 채널 활용률'처럼 풀어서 말한다.",
+      "tags": [
+        "representation",
+        "calculation"
+      ],
+      "terms": [
+        "effective-rank",
+        "dimensional-collapse"
+      ],
+      "source_ref": "Diagnostics/research/note/03_representation_reliability_diagnostics/02_feature_space_and_collapse.md#2.2",
+      "status": "draft"
+    },
+    {
+      "id": "H-REL-018",
+      "type": "mcq",
+      "chapter": "H.rel",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "'차원 붕괴(Dimensional Collapse)'에 대한 설명으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "같은 클래스 피처들의 클래스 내 분산이 클래스 간 중심점 분산에 비해 0으로 수렴하는 현상",
+          "rationale": "뉴럴 콜랩스(Neural Collapse, NC1)의 정의입니다."
+        },
+        {
+          "text": "검증 세트 전체에서 평균 활성화가 거의 0인 채널이 생기는 현상",
+          "rationale": "비활성(죽은) 채널로, DCR로 진단합니다. 차원 붕괴는 채널이 살아 있어도 서로 비슷한 방향으로 몰리면 생깁니다."
+        },
+        {
+          "text": "실제 기여 영역이 이론적 수용영역보다 훨씬 좁은 가우시안이 되는 현상",
+          "rationale": "유효 수용영역(ERF)의 일반적 성질입니다."
+        },
+        {
+          "text": "어텐션이 1~2개 토큰에만 병적으로 고착되는 현상",
+          "rationale": "어텐션 싱크(Attention Sink)로, 어텐션 엔트로피가 0에 가깝게 나옵니다."
+        },
+        {
+          "text": "채널이 많아도 피처가 좁은 부분공간에 몰려 유효 랭크가 채널 수보다 훨씬 작아지는 현상",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "차원 붕괴는 수백~수천 채널을 갖고도 피처가 좁은 초평면으로 찌그러져 일부 차원만 쓰이는 현상입니다. 유효 랭크와 CUR로 정량화합니다.",
+      "explanation_full": "죽은 채널(DCR)과 차원 붕괴는 자주 함께 나타나지만 다른 현상입니다. 모든 채널이 활성화되어 있어도 서로 강하게 상관되어 있으면 유효 랭크는 낮습니다. 뉴럴 콜랩스는 클래스 구조(클래스 내/간 분산)를 보는 개념이고, 차원 붕괴는 피처 행렬 전체의 특이값 분포를 봅니다. DCR은 이 노트가 정의한 지표이므로 외부와 소통할 때는 '검증 데이터 전체에서 거의 활성화되지 않는 채널의 비율'처럼 풀어서 말한다.",
+      "tags": [
+        "representation"
+      ],
+      "terms": [
+        "dimensional-collapse"
+      ],
+      "source_ref": "Diagnostics/research/note/03_representation_reliability_diagnostics/02_feature_space_and_collapse.md#1",
+      "status": "draft"
+    },
+    {
+      "id": "H-REL-019",
+      "type": "scenario",
+      "chapter": "H.rel",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"Sentinel-1 선박 분류 백본 layer3 유효 랭크를 뽑아보니 1024채널 중 150이야. 다음 학습에 넣을 개선안 가져와.\"\n\n노트 처방 매트릭스 기준 가장 적절한 처방은?",
+      "choices": [
+        {
+          "text": "직교 규제(‖WᵀW − I‖²_F)나 채널 탈상관 손실을 추가한다",
+          "rationale": null
+        },
+        {
+          "text": "검증 세트로 Temperature Scaling의 T를 맞춘다",
+          "rationale": "점수 보정(ECE 과다) 처방으로, 피처 공간 붕괴와는 무관합니다."
+        },
+        {
+          "text": "Mixup·CutMix 강도를 높여 클래스 내부 다양성을 유지한다",
+          "rationale": "NC1 ≈ 0(과도한 뉴럴 콜랩스)에 대한 처방입니다."
+        },
+        {
+          "text": "ASPP 같은 확장 모듈을 넣어 수용영역을 넓힌다",
+          "rationale": "수용영역 결핍(RFM ≪ 0)에 대한 처방입니다."
+        },
+        {
+          "text": "입력 영상에 Lee 필터로 스페클을 줄인 뒤 다시 학습한다",
+          "rationale": "SAR 입력 노이즈를 줄이는 전처리일 수는 있지만, 노트 매트릭스가 차원 붕괴에 제시한 처방은 아닙니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "CUR = 150 / 1024 ≈ 14.6%로 20% 미만(잠정 기준)이므로 심각한 차원 붕괴입니다. 매트릭스의 손실·정규화 처방은 직교 규제와 채널 탈상관 손실(Decorrelation Loss)입니다.",
+      "explanation_full": "근본 결함은 '피처 채널 간 높은 공분산, 특성 초평면 압축'입니다. 매트릭스는 아키텍처 쪽으로 채널 가지치기와 Residual 폭 확장·Bottleneck 재설계, 후처리 쪽으로 SVD 저순위 근사(Low-rank Compression)도 제시합니다. 20% 컷오프는 백본 폭에 따라 달라지는 잠정치입니다. CUR은 이 노트가 정의한 비율이므로 외부와 소통할 때는 '유효 랭크를 채널 수로 나눈 채널 활용률'처럼 풀어서 말한다.",
+      "tags": [
+        "representation",
+        "prescription"
+      ],
+      "terms": [
+        "effective-rank",
+        "dimensional-collapse"
+      ],
+      "source_ref": "Diagnostics/research/note/03_representation_reliability_diagnostics/04_representation_prescriptions.md#2",
+      "status": "draft"
+    },
+    {
+      "id": "H-REL-020",
+      "type": "short",
+      "chapter": "H.rel",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "검증 세트 전체에서 채널별 평균 절댓값 활성화 μ_c를 구해, μ_c < ε(= 10⁻⁴)인 채널이 전체 채널에서 차지하는 비율로 정의한 노트의 지표 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Dead Channel Ratio (DCR)"
+        ],
+        "ko": [
+          "비활성 채널 비율",
+          "죽은 채널 비율",
+          "사멸 채널 비율"
+        ]
+      },
+      "primary": "Dead Channel Ratio (DCR)",
+      "explanation_short": "DCR = (1/C)·Σ_c 1(μ_c < ε)입니다. 노트는 DCR > 15%(잠정치)를 초기화 불량·Dying ReLU·학습률 과열의 신호로 봅니다.",
+      "explanation_full": "μ_c는 검증 세트 모든 이미지·위치에서 채널 c의 |활성값|을 평균한 값입니다. 환경 강건성 장(04)에서도 'DCR'이라는 약어가 다크 채널 잔류도(Dark Channel Residual)로 쓰이므로, 보고서에는 풀네임을 함께 적는 것이 안전합니다. DCR은 이 노트가 정의한 지표이므로 외부와 소통할 때는 '검증 데이터 전체에서 거의 활성화되지 않는 채널의 비율'처럼 풀어서 말한다.",
+      "tags": [
+        "representation"
+      ],
+      "terms": [
+        "dead-channel-ratio"
+      ],
+      "source_ref": "Diagnostics/research/note/03_representation_reliability_diagnostics/02_feature_space_and_collapse.md#3.1",
+      "status": "draft"
+    },
+    {
+      "id": "H-REL-021",
+      "type": "mcq",
+      "chapter": "H.rel",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "어떤 백본의 DCR이 22%로 나왔다. 노트가 이 징후(DCR > 15%)에 대해 지목하는 원인과 처방의 짝으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "소프트맥스 로짓 과열 — Label Smoothing과 Temperature Scaling",
+          "rationale": "ECE 과다(과신)의 원인과 처방입니다."
+        },
+        {
+          "text": "피처 채널 간 높은 공분산 — 직교 규제와 채널 탈상관 손실",
+          "rationale": "차원 붕괴(낮은 CUR)의 원인과 처방입니다."
+        },
+        {
+          "text": "Dying ReLU·초기화 불량·학습률 과열 — SiLU/GELU 교체와 LR Warmup",
+          "rationale": null
+        },
+        {
+          "text": "조기 다운샘플링으로 인한 고주파 손실 — P2 검출 헤드 추가",
+          "rationale": "수용영역 과다(RFM ≫ 0)의 원인과 처방입니다."
+        },
+        {
+          "text": "클래스 내부 피처 분산 소실 — Mixup·CutMix 강도 상향",
+          "rationale": "NC1 ≈ 0(과도한 뉴럴 콜랩스)의 해석과 처방입니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "노트는 DCR > 15%(잠정치)의 원인으로 초기화 불량, 과도한 ReLU 죽음(Dying ReLU), 학습률 과열로 인한 그래디언트 소실·폭발을 듭니다. 처방은 SiLU/GELU 전환, LR Warmup, 정규화 위치 재조정(Pre-LayerNorm) 등입니다.",
+      "explanation_full": "처방 매트릭스는 손실·정규화 쪽으로 LR Warmup과 Weight Decay 감쇠, 아키텍처 쪽으로 SiLU/GELU 전면 교체와 Pre-LayerNorm, 후처리 쪽으로 죽은 필터 가지치기(Pruning)를 제시합니다. 죽은 채널을 잘라내면 성능 손실 없이 모델을 가볍게 할 수도 있어, 엣지 배포 전에 DCR을 확인하는 것도 좋습니다. DCR은 이 노트가 정의한 지표이므로 외부와 소통할 때는 '검증 데이터 전체에서 거의 활성화되지 않는 채널의 비율'처럼 풀어서 말한다.",
+      "tags": [
+        "representation",
+        "prescription"
+      ],
+      "terms": [
+        "dead-channel-ratio"
+      ],
+      "source_ref": "Diagnostics/research/note/03_representation_reliability_diagnostics/02_feature_space_and_collapse.md#3.2",
+      "status": "draft"
+    },
+    {
+      "id": "H-REL-022",
+      "type": "short",
+      "chapter": "H.rel",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "학습 종반부에 같은 클래스 피처들의 클래스 내 분산이 클래스 간 중심점 분산에 비해 0으로 수렴하는 현상(Papyan et al., PNAS 2020)은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Neural Collapse"
+        ],
+        "ko": [
+          "뉴럴 콜랩스",
+          "신경 붕괴",
+          "신경망 붕괴"
+        ]
+      },
+      "primary": "Neural Collapse",
+      "explanation_short": "뉴럴 콜랩스는 학습 종반에 클래스 내 분산 Σ_W가 클래스 간 분산 Σ_B에 비해 0으로 수렴하는 현상입니다. 노트는 NC1 = (1/K)·Tr(Σ_W Σ_B†)로 측정합니다.",
+      "explanation_full": "Σ_B†는 Σ_B의 유사역행렬(pseudo-inverse)이고 K는 클래스 수입니다. NC1이 작을수록 같은 클래스 피처가 한 점으로 뭉쳐 있다는 뜻입니다. 노트는 NC1 ≈ 0을 미세한 변형·도메인 변화에 취약한 과적합(over-collapse) 신호로 해석합니다.",
+      "tags": [
+        "representation"
+      ],
+      "terms": [
+        "neural-collapse"
+      ],
+      "source_ref": "Diagnostics/research/note/03_representation_reliability_diagnostics/02_feature_space_and_collapse.md#4",
+      "status": "draft"
+    },
+    {
+      "id": "H-REL-023",
+      "type": "mcq",
+      "chapter": "H.rel",
+      "cognitive_level": 2,
+      "difficulty": 4,
+      "stem": "NC1 = (1/K)·Tr(Σ_W Σ_B†) 값이 거의 0으로 나왔다. 노트의 해석과 처방으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "클래스 중심이 서로 겹쳐 구분이 안 되는 과소적합 상태 — 학습 에폭을 늘린다",
+          "rationale": "NC1 ≈ 0은 클래스 내 분산이 클래스 간 분산에 비해 매우 작다는 뜻으로, 학습 데이터에서는 클래스가 오히려 잘 분리된 상태입니다."
+        },
+        {
+          "text": "채널 대부분이 죽은 상태 — 활성화 함수를 SiLU로 바꾼다",
+          "rationale": "죽은 채널은 DCR로 진단하며, NC1과는 다른 지표입니다."
+        },
+        {
+          "text": "이상적인 일반화 상태 — 추가 조치가 필요 없다",
+          "rationale": "노트는 NC1 ≈ 0을 학습 데이터에 과도하게 수렴한 상태로 보고 처방을 붙입니다."
+        },
+        {
+          "text": "학습 데이터에 과도하게 수렴한 과적합 — Mixup·CutMix 강도 상향",
+          "rationale": null
+        },
+        {
+          "text": "피처가 좁은 부분공간으로 몰린 차원 붕괴 — 직교 규제를 추가한다",
+          "rationale": "차원 붕괴는 유효 랭크·CUR로 진단합니다. NC1은 클래스 내/간 분산의 비입니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "노트는 NC1 ≈ 0을 학습 데이터셋에는 최적화되었지만 미세한 변형이나 도메인 변화에 취약한 과적합(Over-collapse) 상태로 해석합니다. 처방은 Mixup·CutMix 증강 강도를 높여 클래스 내부 피처 다양성을 인위적으로 유지하는 것입니다.",
+      "explanation_full": "Papyan et al.은 뉴럴 콜랩스를 학습 종반에 널리 나타나는 현상으로 보고했고, 일반화와의 관계는 연구가 진행 중인 주제입니다. 이 노트는 진단 관점에서 과도한 붕괴를 취약성 신호로 다룹니다. 원격탐사에서는 지역·계절·센서가 바뀌는 도메인 이동이 잦으므로, NC1이 매우 작게 나오면 학습에 쓰지 않은 지역 타일로 성능을 따로 확인해 보는 것이 좋습니다.",
+      "tags": [
+        "representation",
+        "prescription"
+      ],
+      "terms": [
+        "neural-collapse"
+      ],
+      "source_ref": "Diagnostics/research/note/03_representation_reliability_diagnostics/02_feature_space_and_collapse.md#4",
+      "status": "draft"
+    },
+    {
+      "id": "H-REL-024",
+      "type": "short",
+      "chapter": "H.rel",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "출력 한 점에 실제로 의미 있게 기여하는 입력 영역으로, 모든 연결 경로로 계산한 이론적 수용영역(TRF)보다 훨씬 작고 중심에 몰린 2차원 가우시안 분포를 따르는 것은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Effective Receptive Field (ERF)"
+        ],
+        "ko": [
+          "유효 수용영역",
+          "유효 수용장",
+          "실효 수용영역"
+        ]
+      },
+      "primary": "Effective Receptive Field (ERF)",
+      "explanation_short": "유효 수용영역(ERF)은 출력에 대한 입력 기울기 ∂y/∂x가 중심에서 가우시안 형태로 감쇠하는 실제 기여 영역입니다(Luo et al., NeurIPS 2016). 이론적 수용영역보다 훨씬 작습니다.",
+      "explanation_full": "노트는 중심에서 활성화 강도의 95%가 포함되는 반경을 실효 반경 R₉₅로 정의하고, 2R₉₅를 객체 크기와 비교해 수용영역-객체 스케일 불일치(RFM)를 진단합니다. 위성 영상의 대형 저장탱크나 긴 방파제처럼 큰 객체를 다룰 때는 ERF가 객체를 덮는지부터 확인합니다.",
+      "tags": [
+        "receptive-field"
+      ],
+      "terms": [
+        "effective-receptive-field"
+      ],
+      "source_ref": "Diagnostics/research/note/03_representation_reliability_diagnostics/03_attention_and_receptive_field.md#2.1",
+      "status": "draft"
+    },
+    {
+      "id": "H-REL-025",
+      "type": "short",
+      "chapter": "H.rel",
+      "cognitive_level": 1,
+      "difficulty": 3,
+      "stem": "정답 객체의 대각선 길이 S와 해당 피처 레이어 유효 수용영역의 실효 직경 2R₉₅를 이용해 ln(2R₉₅ / S)로 정의한 노트의 지표 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Receptive Field Mismatch (RFM)"
+        ],
+        "ko": [
+          "수용영역-객체 스케일 불일치 지수",
+          "수용영역 불일치 지수",
+          "수용영역 불일치"
+        ]
+      },
+      "primary": "Receptive Field Mismatch (RFM)",
+      "explanation_short": "RFM(G_j) = ln(2R₉₅ / S_j), S_j = √(w_j² + h_j²)입니다. 0 근처면 수용영역과 객체 크기가 맞고, 음수로 크면 결핍, 양수로 크면 과다입니다.",
+      "explanation_full": "노트는 RFM ≪ −0.5를 수용영역 결핍(대형 객체 실패), RFM ≫ 1.0을 수용영역 과다(극소형 객체 소실)로 판정하며, 이 경계값은 경험적 잠정치입니다. RFM은 이 노트가 정의한 지표이므로 외부와 소통할 때는 '유효 수용영역 지름과 객체 대각선 길이의 로그 비'처럼 풀어서 말한다.",
+      "tags": [
+        "receptive-field"
+      ],
+      "terms": [
+        "receptive-field-mismatch"
+      ],
+      "source_ref": "Diagnostics/research/note/03_representation_reliability_diagnostics/03_attention_and_receptive_field.md#2.2",
+      "status": "draft"
+    },
+    {
+      "id": "H-REL-026",
+      "type": "mcq",
+      "chapter": "H.rel",
+      "cognitive_level": 2,
+      "difficulty": 4,
+      "stem": "위성 영상의 대형 저장탱크 정답 박스가 80 × 60 px(대각선 100 px)이고, 이를 담당하는 피처 레이어의 ERF 실효 반경 R₉₅가 20 px이다. RFM과 노트의 판정으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "약 +0.92 — 수용영역 과다이므로 P2 헤드 추가",
+          "rationale": "ln(S / 2R₉₅)로 분자·분모를 뒤집은 값입니다. RFM = ln(2R₉₅ / S) = ln(40 / 100) < 0입니다."
+        },
+        {
+          "text": "약 −0.92 — 수용영역 결핍이므로 확장 합성곱·ASPP 도입",
+          "rationale": null
+        },
+        {
+          "text": "약 −0.92 — 수용영역 과다이므로 조기 다운샘플링 억제",
+          "rationale": "음수 RFM은 수용영역이 객체보다 작다는 뜻(결핍)입니다. 과다는 RFM ≫ 1.0일 때입니다."
+        },
+        {
+          "text": "약 −1.61 — 수용영역 결핍이므로 확장 합성곱·ASPP 도입",
+          "rationale": "직경 2R₉₅(40) 대신 반경 R₉₅(20)를 넣은 ln(0.2)입니다. 판정 방향은 같지만 값이 틀립니다."
+        },
+        {
+          "text": "0.40 — 정상 범위이므로 조치 불필요",
+          "rationale": "로그를 취하지 않은 비율 2R₉₅ / S입니다. RFM은 이 비의 자연로그입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "RFM = ln(2R₉₅ / S) = ln(40 / 100) = ln 0.4 ≈ −0.92입니다. 결핍 기준(RFM ≪ −0.5) 쪽으로 −0.5 아래에 있으므로 수용영역 결핍(Under-receptive)이며, 확장 합성곱(Dilated/Atrous Conv)·ASPP/PPM이 노트의 처방입니다.",
+      "explanation_full": "수용영역이 객체보다 작으면 전체 윤곽·전역 문맥을 보지 못하고 국소 텍스처만 보게 되어 대형 객체 검출이 실패합니다. 처방 매트릭스는 Deformable Convolution(DCNv3/v4) 전환, Multi-scale Scale Jittering, 멀티스케일 TTA도 함께 제시합니다. 판정 경계(−0.5, 1.0)는 잠정치입니다. RFM은 이 노트가 정의한 지표이므로 외부와 소통할 때는 '유효 수용영역 지름과 객체 대각선 길이의 로그 비'처럼 풀어서 말한다.",
+      "tags": [
+        "receptive-field",
+        "calculation"
+      ],
+      "terms": [
+        "receptive-field-mismatch",
+        "effective-receptive-field"
+      ],
+      "source_ref": "Diagnostics/research/note/03_representation_reliability_diagnostics/03_attention_and_receptive_field.md#2.2",
+      "status": "draft"
+    },
+    {
+      "id": "H-REL-027",
+      "type": "scenario",
+      "chapter": "H.rel",
+      "cognitive_level": 3,
+      "difficulty": 5,
+      "stem": "지시: \"저해상도 위성 영상에서 소형 어선이 6 × 8 px(대각선 10 px)밖에 안 되는데, 탐지 레이어 R₉₅가 60 px로 나왔어. RFM 기준으로 어떻게 할지 정리해.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "RFM ≈ −2.5로 수용영역 결핍이므로 ASPP를 추가해 수용영역을 넓힌다",
+          "rationale": "ln(120 / 10) = ln 12 ≈ +2.48로 양수입니다. 부호를 반대로 읽었습니다."
+        },
+        {
+          "text": "RFM ≈ +2.5로 수용영역 과다지만, 문맥이 많을수록 좋으므로 확장 합성곱을 더 넣는다",
+          "rationale": "수용영역 과다에서는 이미 넓은 배경 노이즈가 소형 객체 특징을 압도하고 있어, 수용영역을 더 넓히면 악화됩니다."
+        },
+        {
+          "text": "RFM ≈ +1.8로 경계 수준이므로 Temperature Scaling만 적용한다",
+          "rationale": "1.8은 직경 대신 반경을 넣은 ln(60 / 10)이고, 점수 보정은 특징 맵에서 사라진 객체를 되살리지 못합니다."
+        },
+        {
+          "text": "RFM ≈ +2.5이므로 Deformable Convolution(DCNv3/v4)으로 전환한다",
+          "rationale": "처방 매트릭스에서 DCN 전환은 수용영역 결핍(RFM ≪ 0) 쪽 처방입니다."
+        },
+        {
+          "text": "RFM ≈ +2.5로 수용영역 과다이므로 조기 다운샘플링을 줄이고 P2 헤드를 붙인다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "RFM = ln(2 × 60 / 10) = ln 12 ≈ 2.48로 1.0을 크게 넘는 수용영역 과다(Over-receptive)입니다. 작은 객체 주변의 넓은 배경이 특징 맵을 압도하므로, 조기 다운샘플링 억제와 P2(1/4 스케일) 고해상도 헤드 연결이 노트의 처방입니다.",
+      "explanation_full": "처방 매트릭스는 수용영역 과다에 대해 Small Object Loss 가중치 상향, 얕은 레이어 Skip-connection, 추론 쪽 SAHI(Slice Inference)도 제시합니다. 원격탐사에서는 GSD가 큰 영상일수록 소형 선박·차량이 수 픽셀로 줄어 이 문제가 흔합니다. 판정 경계(1.0)는 잠정치입니다. RFM은 이 노트가 정의한 지표이므로 외부와 소통할 때는 '유효 수용영역 지름과 객체 대각선 길이의 로그 비'처럼 풀어서 말한다.",
+      "tags": [
+        "receptive-field",
+        "prescription"
+      ],
+      "terms": [
+        "receptive-field-mismatch",
+        "effective-receptive-field"
+      ],
+      "source_ref": "Diagnostics/research/note/03_representation_reliability_diagnostics/03_attention_and_receptive_field.md#2.2",
+      "status": "draft"
+    },
+    {
+      "id": "H-REL-028",
+      "type": "short",
+      "chapter": "H.rel",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "Vision Transformer 헤드 h의 Self-Attention 가중치 행렬 A에 대해 −(1/N)·Σ_i Σ_j A_ij ln(A_ij + ε)로 계산해, 어텐션이 얼마나 흩어져 있는지를 보는 지표는? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Attention Entropy",
+          "Attention Head Dispersion Entropy"
+        ],
+        "ko": [
+          "어텐션 엔트로피",
+          "어텐션 분산 엔트로피",
+          "주의 엔트로피"
+        ]
+      },
+      "primary": "Attention Entropy",
+      "explanation_short": "어텐션 엔트로피는 각 쿼리 패치의 어텐션 분포 엔트로피를 패치 수 N으로 평균한 값입니다. ln N에 가까우면 전역으로 흩어진 상태, 0에 가까우면 소수 토큰에 고착된 상태입니다.",
+      "explanation_full": "노트는 SegFormer·RT-DETR 같은 ViT 계열 모델에서 헤드별로 이 값을 계산해 분산 어텐션(Diffuse Attention)과 어텐션 싱크(Attention Sink)를 찾아냅니다. 어텐션이 실제 객체 마스크에 얼마나 들어가는지는 별도 지표(ASAI)로 봅니다. ASAI는 이 노트가 정의한 지표이므로 외부와 소통할 때는 '어텐션 가중치 중 객체 마스크 안에 들어간 비율'처럼 풀어서 말한다.",
+      "tags": [
+        "attention"
+      ],
+      "terms": [
+        "attention-entropy"
+      ],
+      "source_ref": "Diagnostics/research/note/03_representation_reliability_diagnostics/03_attention_and_receptive_field.md#3.1",
+      "status": "draft"
+    },
+    {
+      "id": "H-REL-029",
+      "type": "mcq",
+      "chapter": "H.rel",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "N개 패치를 쓰는 ViT에서 어떤 헤드의 어텐션 엔트로피가 ln N에 가깝게 나왔다. 노트의 해석으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "의미 영역에 집중하지 못하고 전역으로 흩어진 분산 어텐션 상태",
+          "rationale": null
+        },
+        {
+          "text": "1~2개 토큰에 병적으로 고착된 어텐션 싱크 상태",
+          "rationale": "어텐션 싱크는 엔트로피가 0에 가까울 때입니다."
+        },
+        {
+          "text": "객체 마스크 안쪽 영역에만 어텐션이 고르게 모여 있는 이상적인 집중 상태",
+          "rationale": "ln N은 모든 패치에 균등하게 퍼졌을 때의 최댓값으로, 어디에도 모이지 않았다는 뜻입니다. 마스크 정렬은 ASAI로 따로 봅니다."
+        },
+        {
+          "text": "피처 채널이 좁은 부분공간으로 몰린 차원 붕괴 상태",
+          "rationale": "차원 붕괴는 피처 행렬의 유효 랭크로 진단하며, 어텐션 분포와는 다른 대상입니다."
+        },
+        {
+          "text": "수용영역이 객체보다 작은 수용영역 결핍 상태",
+          "rationale": "수용영역 결핍은 CNN의 ERF와 객체 크기의 비(RFM)로 진단합니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "한 행의 어텐션이 N개 패치에 균등할 때 엔트로피가 최대 ln N입니다. 노트는 엔트로피가 ln N에 가까우면 어텐션이 특정 의미 영역에 집중하지 못하고 흩어진 무작위 분산 상태(Diffuse Attention)로 봅니다.",
+      "explanation_full": "반대로 엔트로피가 0에 가까우면 이미지 모서리 픽셀 같은 1~2개 토큰에만 병적으로 고착된 어텐션 싱크입니다. 두 극단 모두 문제이므로 헤드별 엔트로피 분포를 함께 봅니다. ASAI는 이 노트가 정의한 지표이므로 외부와 소통할 때는 '어텐션 가중치 중 객체 마스크 안에 들어간 비율'처럼 풀어서 말한다. RFM은 이 노트가 정의한 지표이므로 외부와 소통할 때는 '유효 수용영역 지름과 객체 대각선 길이의 로그 비'처럼 풀어서 말한다.",
+      "tags": [
+        "attention"
+      ],
+      "terms": [
+        "attention-entropy"
+      ],
+      "source_ref": "Diagnostics/research/note/03_representation_reliability_diagnostics/03_attention_and_receptive_field.md#3.1",
+      "status": "draft"
+    },
+    {
+      "id": "H-REL-030",
+      "type": "scenario",
+      "chapter": "H.rel",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"SegFormer 도로 추출 모델 어텐션 맵을 찍어 보니 헤드 7번이랑 11번이 모든 패치에서 타일 좌상단 모서리 토큰 하나에만 가중치를 0.99 넘게 주고 있어. 어텐션 엔트로피로 수치화해서 보고해.\"\n\n보고 내용으로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "두 헤드의 엔트로피가 ln N에 가깝게 나오는 분산 어텐션으로 보고한다",
+          "rationale": "가중치가 한 토큰에 몰리면 엔트로피는 오히려 0에 가까워집니다. ln N 근처는 전역으로 흩어진 경우입니다."
+        },
+        {
+          "text": "엔트로피가 높을수록 집중이 잘 된 것이므로 두 헤드를 우수 헤드로 보고한다",
+          "rationale": "엔트로피는 낮을수록 집중된 것이며, 의미 없는 모서리 토큰 하나에 고착된 것은 병적인 상태입니다."
+        },
+        {
+          "text": "두 헤드의 엔트로피가 0에 가깝게 나오는 어텐션 싱크 현상으로 보고한다",
+          "rationale": null
+        },
+        {
+          "text": "어텐션이 한곳에 모였으므로 도로 마스크 정렬도(ASAI)가 높은 정상 상태로 보고한다",
+          "rationale": "모서리 토큰 하나에 몰렸다는 것만으로 도로 영역에 모였다고 볼 근거가 없습니다. 마스크 정렬은 ASAI를 따로 계산해야 합니다."
+        },
+        {
+          "text": "CNN 유효 수용영역 결핍(RFM ≪ 0) 상태로 보고한다",
+          "rationale": "RFM은 CNN의 ERF로 계산하는 지표로, ViT 헤드의 어텐션 분포 진단과는 다릅니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "한 토큰에 가중치가 몰리면 각 행의 엔트로피가 0에 가까워집니다. 노트는 이를 이미지 모서리 등 1~2개 토큰에 병적으로 고착된 어텐션 싱크(Attention Sink)로 정의합니다.",
+      "explanation_full": "예를 들어 N = 256 패치에서 한 토큰에 0.99, 나머지 255개에 0.01을 고르게 나눠 주면 행 엔트로피는 약 0.11로, 최댓값 ln 256 ≈ 5.55에 비해 0에 가깝습니다. 보고서에는 헤드별 엔트로피 값과 함께, 전체 헤드 중 싱크 헤드의 비율과 고착 토큰 위치를 적으면 좋습니다. 도로처럼 가늘고 긴 객체를 분할할 때 의미 있는 헤드가 줄어들면 경계 품질이 떨어질 수 있으므로, ASAI로 어텐션이 실제 도로 마스크에 얼마나 들어가는지도 함께 확인합니다. ASAI는 이 노트가 정의한 지표이므로 외부와 소통할 때는 '어텐션 가중치 중 객체 마스크 안에 들어간 비율'처럼 풀어서 말한다. RFM은 이 노트가 정의한 지표이므로 외부와 소통할 때는 '유효 수용영역 지름과 객체 대각선 길이의 로그 비'처럼 풀어서 말한다.",
+      "tags": [
+        "attention"
+      ],
+      "terms": [
+        "attention-entropy"
+      ],
+      "source_ref": "Diagnostics/research/note/03_representation_reliability_diagnostics/03_attention_and_receptive_field.md#3.1",
+      "status": "draft"
+    }
+  ]
+}

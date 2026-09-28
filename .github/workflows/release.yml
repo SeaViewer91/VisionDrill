@@ -30,6 +30,7 @@ jobs:
                 '- **VisionDrill** (학습 앱): Windows `VisionDrill_*_x64-setup.exe`, macOS `VisionDrill_*_aarch64.dmg`',
                 '- **VisionDrill Studio** (문제은행 관리): Windows `VisionDrill.Studio_*_x64-setup.exe`, macOS `VisionDrill.Studio_*_aarch64.dmg`',
                 '',
+                '학습 앱에는 기본 문제 팩이 들어 있음. 문항 구성과 검수 상태는 README의 문항 현황 절 참고.',
                 '서명하지 않은 앱이라 첫 실행 때 경고가 뜸. 해결 방법은 README의 설치 절 참고.',
               ].join('\n'),
               draft: true,

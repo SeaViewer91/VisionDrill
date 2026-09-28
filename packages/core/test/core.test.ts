@@ -331,4 +331,37 @@ describe('pack + learner', () => {
     expect(st.find((t) => t.id === 'F')?.unlocked).toBe(false); // 선수 E 숙련도 0
     expect(L.buildSession('daily').map((i) => i.question.id)).toEqual(['E-CNN-001']);
   });
+  it('bundled pack: install, upgrade from bundled, keep user-imported pack', async () => {
+    const bank = seedBank();
+    bank.saveQuestion(mcq('F-NMS-001'));
+    bank.setStatus('F-NMS-001', 'reviewed', '수호');
+    const sample = await makePack(bank, 'sample-0.1.0');
+    bank.saveQuestion(mcq('F-NMS-002'));
+    bank.setStatus('F-NMS-002', 'reviewed', '수호');
+    const v1 = await makePack(bank, '0.1.1-draft');
+    bank.saveQuestion(mcq('F-NMS-003'));
+    bank.setStatus('F-NMS-003', 'reviewed', '수호');
+    const mine = await makePack(bank, '2026.10.05');
+    const v2 = await makePack(bank, '0.1.2-draft');
+
+    // 새 설치
+    const A = Learner.create(SQL);
+    expect(A.applyBundledPack(SQL, v1)?.added).toBe(2);
+    expect(A.applyBundledPack(SQL, v1)).toBeNull(); // 같은 버전이면 그대로
+    expect(A.applyBundledPack(SQL, v2)?.added).toBe(1); // 앱 업데이트
+    expect(A.packInfo()?.pack_version).toBe('0.1.2-draft');
+
+    // 0.1.0 샘플 팩 설치본 → 새 기본 팩으로 교체
+    const B = Learner.create(SQL);
+    B.importPack(SQL, sample);
+    expect(B.applyBundledPack(SQL, v1)?.added).toBe(1);
+    expect(B.packInfo()?.pack_version).toBe('0.1.1-draft');
+
+    // 직접 가져온 팩은 유지
+    const C = Learner.create(SQL);
+    C.applyBundledPack(SQL, v1);
+    C.importPack(SQL, mine);
+    expect(C.applyBundledPack(SQL, v2)).toBeNull();
+    expect(C.packInfo()?.pack_version).toBe('2026.10.05');
+  });
 });

@@ -1,0 +1,575 @@
+{
+  "format": "visiondrill-bank-exchange",
+  "format_version": 1,
+  "terms": [
+    {
+      "id": "aic",
+      "term_en": "Akaike Information Criterion",
+      "term_ko": "아카이케 정보기준",
+      "abbreviation": "AIC",
+      "definition": "−2·log L + 2k. 적합도(최대 로그우도 L)와 모수 개수 k에 대한 벌점을 합한 정보기준으로, 같은 데이터에 적합한 모형끼리 비교해 작을수록 선호한다",
+      "usage_example": "후보 모형 세 개 AIC 표로 정리하고, 최솟값 대비 ΔAIC도 같이 적어줘.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "bic",
+      "term_en": "Bayesian Information Criterion",
+      "term_ko": "베이즈 정보기준",
+      "abbreviation": "BIC",
+      "definition": "−2·log L + k·ln(n). 표본 크기에 따라 커지는 벌점을 줘서 AIC보다 단순한 모형을 고르는 경향이 있는 정보기준",
+      "usage_example": "픽셀이 수만 개라 AIC로 하면 변수가 자꾸 들어가. BIC로도 비교해봐.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "stepwise-selection",
+      "term_en": "Stepwise Selection",
+      "term_ko": "단계적 선택",
+      "abbreviation": null,
+      "definition": "기준(AIC·p값 등)을 가장 크게 개선하는 변수를 하나씩 추가(전진 선택)하거나 제거(후진 제거)하며, 또는 둘을 번갈아 하며 모형을 고르는 탐욕적 변수 선택 절차",
+      "usage_example": "후진 제거로 뽑은 변수라도 성능은 선택 과정까지 포함한 CV로 다시 재.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "parsimony",
+      "term_en": "Principle of Parsimony",
+      "term_ko": "파시모니 원칙",
+      "abbreviation": null,
+      "definition": "설명력이 비슷하면 모수가 더 적은 단순한 모형을 택하라는 원칙(오컴의 면도날). 과적합을 줄이고 해석과 운영을 쉽게 한다",
+      "usage_example": "RMSE 차이가 오차 범위 안이면 파시모니 원칙대로 변수 적은 쪽으로 가자.",
+      "origin": "standard",
+      "track": "B"
+    }
+  ],
+  "questions": [
+    {
+      "id": "B-SEL-001",
+      "type": "short",
+      "chapter": "B.sel",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "모형의 최대 로그우도 log L과 모수 개수 k로 −2·log L + 2k를 계산하며, 같은 데이터에 적합한 후보 모형 중 값이 작을수록 선호하는 정보기준의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Akaike Information Criterion (AIC)"
+        ],
+        "ko": [
+          "아카이케 정보기준",
+          "아카이케 정보량 기준",
+          "아카이케 정보 척도"
+        ]
+      },
+      "primary": "Akaike Information Criterion (AIC)",
+      "explanation_short": "AIC는 −2·log L(적합이 나쁠수록 큼)에 모수당 2의 벌점을 더한 값입니다. 적합도와 복잡도를 함께 고려해 작을수록 좋은 모형으로 봅니다.",
+      "explanation_full": "AIC 값 자체는 의미가 없고, 같은 데이터(같은 관측치, 같은 종속변수)에 적합한 모형끼리의 차이(ΔAIC)만 해석합니다. 표본이 모수 수에 비해 작으면(Burnham & Anderson의 경험 규칙으로 흔히 n/k < 40) 보정판인 AICc를 권장합니다.",
+      "tags": [
+        "regression",
+        "model-selection"
+      ],
+      "terms": [
+        "aic"
+      ],
+      "source_ref": "Burnham & Anderson, Model Selection and Multimodel Inference 2장",
+      "status": "draft"
+    },
+    {
+      "id": "B-SEL-002",
+      "type": "short",
+      "chapter": "B.sel",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "−2·log L + k·ln(n)으로 계산해, 표본 크기 n이 클수록 모수 하나당 벌점이 커지는 정보기준의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Bayesian Information Criterion (BIC)",
+          "Schwarz Information Criterion (SIC)",
+          "Schwarz Bayesian Criterion (SBC)"
+        ],
+        "ko": [
+          "베이즈 정보기준",
+          "베이지안 정보기준",
+          "슈바르츠 정보기준"
+        ]
+      },
+      "primary": "Bayesian Information Criterion (BIC)",
+      "explanation_short": "BIC는 모수당 벌점이 ln(n)이라 n ≥ 8이면 AIC의 벌점(2)보다 큽니다. 그래서 AIC보다 변수가 적은 모형을 고르는 경향이 있습니다.",
+      "explanation_full": "Schwarz가 제안해 Schwarz 기준(SIC, SBC)이라고도 부릅니다. 후보 중에 참 모형이 있으면 표본이 커질수록 그 모형을 고를 확률이 1에 가까워지는 일치성(consistency)이 있어, 설명용 간결한 모형을 고를 때 자주 씁니다.",
+      "tags": [
+        "regression",
+        "model-selection"
+      ],
+      "terms": [
+        "bic"
+      ],
+      "source_ref": "Schwarz (1978), Estimating the Dimension of a Model",
+      "status": "draft"
+    },
+    {
+      "id": "B-SEL-003",
+      "type": "short",
+      "chapter": "B.sel",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "R²에 설명변수 개수에 따른 벌점을 반영해, 설명력을 충분히 올리지 못하는 변수를 추가하면 오히려 값이 줄어들 수 있도록 고친 지표의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Adjusted R-squared",
+          "Adjusted R²",
+          "Adjusted coefficient of determination"
+        ],
+        "ko": [
+          "수정 결정계수",
+          "조정 결정계수",
+          "수정된 결정계수",
+          "수정 R²"
+        ]
+      },
+      "primary": "Adjusted R-squared",
+      "explanation_short": "수정 결정계수는 1 − (1 − R²)(n − 1)/(n − p − 1)로 계산합니다. 변수를 추가해도 줄지 않는 R²와 달리, 변수 수가 다른 모형을 비교할 때 씁니다.",
+      "explanation_full": "설명변수가 1개 이상이면 adjusted R²는 R²보다 같거나 작고, 설명력이 매우 낮으면 음수가 될 수도 있습니다. 다만 변수 벌점이 약한 편이라 AIC·BIC보다 변수를 관대하게 받아들이는 경향이 있습니다.",
+      "tags": [
+        "regression",
+        "model-selection"
+      ],
+      "terms": [
+        "adjusted-r-squared",
+        "r-squared"
+      ],
+      "source_ref": "ISLR 6.1.3절",
+      "status": "draft"
+    },
+    {
+      "id": "B-SEL-004",
+      "type": "short",
+      "chapter": "B.sel",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "설명력이나 예측력이 비슷하다면 모수가 더 적은 단순한 모형을 택하라는 모형 선택의 원칙을 무엇이라 하는가? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Principle of parsimony",
+          "Parsimony",
+          "Occam's razor",
+          "Law of parsimony"
+        ],
+        "ko": [
+          "파시모니 원칙",
+          "간결성 원칙",
+          "절약의 원칙",
+          "오컴의 면도날",
+          "오캄의 면도날",
+          "간명성 원칙"
+        ]
+      },
+      "primary": "Principle of parsimony",
+      "explanation_short": "파시모니(간결성) 원칙은 성능이 비슷하면 더 단순한 모형을 고르라는 원칙입니다. 불필요한 모수를 줄여 과적합 위험과 해석·운영 비용을 낮춥니다.",
+      "explanation_full": "AIC·BIC의 모수 벌점, 1 표준오차 규칙, 규제 회귀는 모두 이 원칙을 수치로 구현한 방법이라 볼 수 있습니다. 원격탐사 모형에서는 입력 밴드·지수가 적을수록 다른 센서나 다른 시기 영상으로 옮기기도 쉬워집니다.",
+      "tags": [
+        "regression",
+        "model-selection"
+      ],
+      "terms": [
+        "parsimony"
+      ],
+      "source_ref": "Burnham & Anderson, Model Selection and Multimodel Inference 2장",
+      "status": "draft"
+    },
+    {
+      "id": "B-SEL-005",
+      "type": "mcq",
+      "chapter": "B.sel",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "표본 n = 1,000인 자료에서 AIC와 BIC로 모형을 고를 때의 차이로 옳은 것은?",
+      "choices": [
+        {
+          "text": "AIC가 BIC보다 모수 하나당 벌점이 커서 더 단순한 모형을 고르는 경향이 있다",
+          "rationale": "반대입니다. 모수당 벌점은 AIC가 2, BIC가 ln(1000) ≈ 6.9로 BIC가 더 큽니다."
+        },
+        {
+          "text": "BIC는 모수 하나당 벌점이 ln(1000) ≈ 6.9로 AIC의 2보다 커서 더 단순한 모형을 고르는 경향이 있다",
+          "rationale": null
+        },
+        {
+          "text": "AIC와 BIC 모두 값이 클수록 적합이 좋은 모형을 뜻하므로 가장 큰 모형을 고른다",
+          "rationale": "둘 다 −2·log L에 벌점을 더한 값이므로 작을수록 선호합니다."
+        },
+        {
+          "text": "BIC의 벌점은 표본 크기와 무관하게 모수 하나당 2로 고정되어 있다",
+          "rationale": "모수당 2로 고정된 것은 AIC입니다. BIC 벌점 ln(n)은 표본이 커질수록 커집니다."
+        },
+        {
+          "text": "한 모형의 AIC 값과 다른 모형의 BIC 값을 서로 비교해 더 작은 쪽의 모형을 고르면 된다",
+          "rationale": "AIC와 BIC는 벌점 척도가 달라 서로 비교할 수 없습니다. 같은 기준끼리 모형 간 차이로 비교해야 합니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "AIC = −2·log L + 2k, BIC = −2·log L + k·ln(n)입니다. n ≥ 8이면 ln(n) > 2이므로 BIC 벌점이 더 커서 변수가 적은 모형을 고르는 경향이 있습니다.",
+      "explanation_full": "AIC는 새 데이터에 대한 예측 오차(쿨백-라이블러 정보 손실)를 줄이는 관점, BIC는 후보 중 참 모형을 고르는 일치성 관점에서 유도되었습니다. 그래서 예측이 목적이면 AIC, 설명·해석용 간결한 모형이 필요하면 BIC를 많이 씁니다. 두 기준이 다른 모형을 고르면 두 결과를 함께 보고하는 것이 안전합니다.",
+      "tags": [
+        "regression",
+        "model-selection"
+      ],
+      "terms": [
+        "aic",
+        "bic"
+      ],
+      "source_ref": "Burnham & Anderson, Model Selection and Multimodel Inference 2장 · ISLR 6.1.3절",
+      "status": "draft"
+    },
+    {
+      "id": "B-SEL-006",
+      "type": "mcq",
+      "chapter": "B.sel",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "같은 데이터에 적합한 세 모형의 AIC가 A = 411.5, B = 410.1, C = 425.8이다. 가장 적절한 해석은?",
+      "choices": [
+        {
+          "text": "AIC 값이 모두 400을 넘으므로 세 모형 모두 적합도가 나쁘다",
+          "rationale": "AIC 절댓값은 자료 크기와 우도 척도에 따라 달라지므로 그 자체로는 의미가 없습니다. 모형 간 차이만 해석합니다."
+        },
+        {
+          "text": "AIC가 가장 큰 C가 가장 많은 정보를 담고 있으므로 가장 좋은 모형이다",
+          "rationale": "AIC는 작을수록 선호합니다. C는 최솟값보다 15.7이나 커서 사실상 지지되지 않습니다."
+        },
+        {
+          "text": "B의 AIC가 가장 작으므로 B가 참 모형(true model)이라는 것이 확인되었다",
+          "rationale": "AIC는 후보들 사이의 상대 비교일 뿐 참 모형 여부를 확인해 주지 않습니다. 후보에 참 모형이 없어도 최솟값은 존재합니다."
+        },
+        {
+          "text": "B가 가장 선호되지만 A와의 차이(1.4)는 작아 A도 상당히 지지되고, C는 거의 지지되지 않는다",
+          "rationale": null
+        },
+        {
+          "text": "A와 B의 AIC 차이 1.4는 p < 0.05에 해당하므로 B가 A보다 통계적으로 유의하게 좋다",
+          "rationale": "AIC 차이는 p값이 아니며 유의성 검정으로 해석하지 않습니다. 차이 2 이내는 보통 '거의 동등한 지지'로 봅니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "AIC는 최솟값 대비 차이(ΔAIC)로 해석합니다. 흔히 쓰는 경험 기준으로 Δ ≤ 2는 거의 동등한 지지, Δ > 10은 사실상 지지 없음으로 봅니다(A: 1.4, C: 15.7).",
+      "explanation_full": "Akaike 가중치 w = exp(−Δ/2) / Σexp(−Δ/2)로 바꾸면 B ≈ 0.67, A ≈ 0.33, C ≈ 0.0003으로, 'B가 가장 나을 가능성이 높지만 A도 무시할 수 없다'고 설명할 수 있습니다. 이 Δ 기준은 교과서에서 쓰는 경험적 가이드이지 엄밀한 임계값이 아닙니다. A와 B가 비슷하면 더 단순한 쪽을 고르거나 두 모형의 결과를 함께 보고합니다.",
+      "tags": [
+        "regression",
+        "model-selection",
+        "interpretation"
+      ],
+      "terms": [
+        "aic"
+      ],
+      "source_ref": "Burnham & Anderson, Model Selection and Multimodel Inference 2장",
+      "status": "draft"
+    },
+    {
+      "id": "B-SEL-007",
+      "type": "mcq",
+      "chapter": "B.sel",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "n = 100인 자료에서 설명변수 5개 모형에 변수 하나를 더 넣었더니 R²는 0.720 → 0.721로, 수정 결정계수(adjusted R²)는 0.705 → 0.703으로 바뀌었다. 올바른 해석은?",
+      "choices": [
+        {
+          "text": "추가한 변수가 올린 설명력이 자유도 하나를 잃는 대가를 보상하지 못했다",
+          "rationale": null
+        },
+        {
+          "text": "R²가 올랐으므로 추가한 변수는 모형을 개선했다고 볼 수 있다",
+          "rationale": "OLS에서 변수를 추가하면 R²는 줄어들지 않으므로, R² 증가는 개선의 근거가 되지 못합니다."
+        },
+        {
+          "text": "adjusted R²는 변수를 추가하면 줄어들 수 없으므로 계산 오류이다",
+          "rationale": "adjusted R²는 변수 수에 벌점을 주므로 설명력이 충분히 늘지 않으면 줄어듭니다. 정상적인 결과입니다."
+        },
+        {
+          "text": "adjusted R²는 항상 R²보다 커야 하므로 0.703은 잘못 계산된 값이다",
+          "rationale": "설명변수가 1개 이상이면 adjusted R²는 R²보다 같거나 작습니다. 음수가 될 수도 있습니다."
+        },
+        {
+          "text": "추가한 변수와 종속변수의 상관이 음수여서 adjusted R²가 줄어든 것이다",
+          "rationale": "상관의 부호는 관계없습니다. 음의 관계도 설명력을 높일 수 있으며, adjusted R²는 설명력 증가량과 자유도 손실만 비교합니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "adjusted R² = 1 − (1 − R²)(n − 1)/(n − p − 1)입니다. p = 5: 1 − 0.280 × 99/94 ≈ 0.705, p = 6: 1 − 0.279 × 99/93 ≈ 0.703으로, R² 증가(0.001)가 자유도 손실을 메우지 못해 감소했습니다.",
+      "explanation_full": "OLS에서 변수 하나를 추가할 때 adjusted R²가 오르는 것은 그 변수의 t 통계량 절댓값이 1보다 클 때와 같습니다. 즉 adjusted R²는 꽤 관대한 기준이라, 이것이 떨어졌다면 추가 변수의 기여가 매우 작다는 뜻입니다. 변수 선택의 최종 판단은 AIC·BIC나 교차검증 오차와 함께 봅니다.",
+      "tags": [
+        "regression",
+        "model-selection",
+        "calculation",
+        "interpretation"
+      ],
+      "terms": [
+        "adjusted-r-squared",
+        "r-squared"
+      ],
+      "source_ref": "ISLR 6.1.3절 · Greene, Econometric Analysis 3장",
+      "status": "draft"
+    },
+    {
+      "id": "B-SEL-008",
+      "type": "mcq",
+      "chapter": "B.sel",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "전진 선택(forward selection) 절차를 올바르게 설명한 것은?",
+      "choices": [
+        {
+          "text": "모든 변수를 넣은 모형에서 시작해 기준을 가장 적게 해치는 변수를 하나씩 빼 나간다",
+          "rationale": "후진 제거(backward elimination)의 설명입니다."
+        },
+        {
+          "text": "가능한 모든 변수 조합을 하나하나 적합해 기준이 가장 좋은 조합을 고른다",
+          "rationale": "최량 부분집합 선택(best subset selection)입니다. 변수가 p개면 2^p개 모형을 적합해야 합니다."
+        },
+        {
+          "text": "L1 패널티로 일부 계수를 정확히 0으로 만들어 남길 변수를 한 번에 고른다",
+          "rationale": "Lasso의 변수 선택 방식입니다. 단계적 절차가 아니라 하나의 최적화 문제로 동시에 고릅니다."
+        },
+        {
+          "text": "변수를 무작위 순서로 하나씩 넣어 보고, 기준이 좋아지면 남기고 아니면 버린다",
+          "rationale": "전진 선택은 무작위가 아니라 매 단계 남은 후보를 모두 시험해 가장 크게 개선하는 변수를 넣습니다."
+        },
+        {
+          "text": "변수 없는 모형에서 시작해 기준을 가장 크게 개선하는 변수를 하나씩 추가한다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "전진 선택은 절편만 있는 모형에서 출발해, 매 단계 남은 후보 중 기준(AIC, p값, 검증 오차 등)을 가장 크게 개선하는 변수 하나를 추가하고, 더 이상 개선이 없으면 멈춥니다.",
+      "explanation_full": "후진 제거는 반대로 전체 모형에서 하나씩 빼고, 양방향(stepwise) 선택은 추가와 제거를 번갈아 합니다. 모두 탐욕적(greedy) 절차라 최량 부분집합을 보장하지 않지만 계산량이 p(p+1)/2 + 1 수준으로 적습니다. 전진 선택은 변수 수가 표본 수보다 많아도 쓸 수 있습니다.",
+      "tags": [
+        "regression",
+        "model-selection"
+      ],
+      "terms": [
+        "stepwise-selection"
+      ],
+      "source_ref": "ISLR 6.1절(Subset Selection)",
+      "status": "draft"
+    },
+    {
+      "id": "B-SEL-009",
+      "type": "mcq",
+      "chapter": "B.sel",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "단계적 선택(stepwise selection)으로 고른 최종 모형의 계수 p값과 신뢰구간을 같은 데이터로 계산해 그대로 보고할 때의 주된 문제는?",
+      "choices": [
+        {
+          "text": "단계적 선택은 계수를 0 쪽으로 수축시키므로 p값이 지나치게 크게 나온다",
+          "rationale": "수축은 Lasso·Ridge 같은 규제의 특성입니다. 단계적 선택으로 남은 계수는 오히려 크게 추정되는 경향이 있습니다."
+        },
+        {
+          "text": "전진 선택과 후진 제거는 항상 같은 모형을 고르므로 한쪽 결과만으로는 정보가 부족하다",
+          "rationale": "두 절차는 서로 다른 모형을 고를 수 있습니다. 탐욕적 절차라 경로에 따라 결과가 달라집니다."
+        },
+        {
+          "text": "선택과 추론을 같은 데이터로 하므로 p값은 너무 작고 신뢰구간은 너무 좁게 나온다",
+          "rationale": null
+        },
+        {
+          "text": "후진 제거는 변수 수가 표본 수보다 많아도 바로 시작할 수 있어서 과적합 위험이 없다",
+          "rationale": "후진 제거는 전체 모형을 먼저 적합해야 하므로 변수 수가 표본 수보다 많으면 시작할 수 없습니다. 과적합 위험도 여전합니다."
+        },
+        {
+          "text": "단계적 선택을 거친 모형에서는 결정계수(R²)를 계산할 수 없다",
+          "rationale": "R²는 계산할 수 있습니다. 다만 선택 과정 때문에 낙관적으로 부풀려질 뿐입니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "단계적 선택은 데이터에서 우연히 강해 보이는 변수를 골라내므로, 같은 데이터로 계산한 p값은 '선택되었다'는 사실을 반영하지 못해 과도하게 유의하게 나옵니다. 남은 계수의 크기도 부풀려지는 경향이 있습니다.",
+      "explanation_full": "대응 방법: 선택용 데이터와 추론용 데이터를 나누기(표본 분할), 부트스트랩으로 선택 안정성 확인, 도메인 지식으로 변수를 미리 정하기, 규제 회귀 사용 등이 있습니다. 보고서에는 변수 선택 절차를 거쳤다는 사실과 후보 변수 수를 함께 밝혀야 합니다.",
+      "tags": [
+        "regression",
+        "model-selection",
+        "inference"
+      ],
+      "terms": [
+        "stepwise-selection",
+        "overfitting"
+      ],
+      "source_ref": "Harrell, Regression Modeling Strategies(단계적 변수 선택 부분) · ISLR 6.1절(Subset Selection)",
+      "status": "draft"
+    },
+    {
+      "id": "B-SEL-010",
+      "type": "mcq",
+      "chapter": "B.sel",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "공간 블록 교차검증 결과 변수 5개 모형의 RMSE는 3.10, 변수 18개 모형은 3.08이며, RMSE 추정의 표준오차는 약 0.06이다. 파시모니 원칙에 따른 선택으로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "RMSE가 조금이라도 더 낮은 변수 18개 모형을 고른다",
+          "rationale": "차이 0.02는 표준오차(0.06)보다 훨씬 작아 두 모형을 구분할 근거가 없습니다. 이럴 때는 단순한 쪽을 택합니다."
+        },
+        {
+          "text": "성능 차이가 오차 범위 안이므로 변수 5개 모형을 고른다",
+          "rationale": null
+        },
+        {
+          "text": "두 모형의 예측값을 평균한 앙상블 모형을 만들어 쓴다",
+          "rationale": "앙상블도 하나의 방법이지만 모형이 더 복잡해져 파시모니 원칙과 반대 방향입니다."
+        },
+        {
+          "text": "훈련 데이터 R²가 더 높게 나오는 모형을 고른다",
+          "rationale": "훈련 R²는 변수가 많을수록 높아지므로 항상 18개 모형이 뽑히며 과적합을 가려내지 못합니다."
+        },
+        {
+          "text": "나중에 데이터가 늘어날 것에 대비해 변수가 많은 모형을 고른다",
+          "rationale": "근거 없는 가정입니다. 지금 자료로 구분되지 않는 추가 변수는 과적합 위험과 유지·관리 비용만 늘립니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "파시모니 원칙은 성능이 비슷하면 모수가 적은 모형을 택하라는 원칙입니다. 차이(0.02)가 표준오차(0.06)보다 작으므로 두 모형은 사실상 동등하고, 5개 변수 모형이 과적합 위험과 해석·운영 비용이 적습니다.",
+      "explanation_full": "변수 18개 모형은 입력 밴드·보조 자료를 더 많이 확보해야 하므로 다른 지역이나 센서로 옮길 때 실패할 지점도 많아집니다. 교차검증의 1 표준오차 규칙도 같은 발상에서 나온 실무 규칙입니다.",
+      "tags": [
+        "regression",
+        "model-selection"
+      ],
+      "terms": [
+        "parsimony",
+        "overfitting"
+      ],
+      "source_ref": "ESL 7.10절 · Burnham & Anderson, Model Selection and Multimodel Inference 2장",
+      "status": "draft"
+    },
+    {
+      "id": "B-SEL-011",
+      "type": "scenario",
+      "chapter": "B.sel",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"후보 회귀모형 중에 보고서 설명용으로 하나만 골라. 학습 픽셀이 5만 개라 AIC로 고르면 효과 작은 변수까지 계속 들어가니까, 좀 더 보수적인 기준으로 골라봐.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "훈련 데이터 R²가 가장 높은 모형을 고른다",
+          "rationale": "R²는 변수를 늘릴수록 커지므로 가장 복잡한 모형이 뽑혀 지시와 반대입니다."
+        },
+        {
+          "text": "AIC는 그대로 쓰되 변수 투입 p값 기준을 0.10으로 완화한다",
+          "rationale": "기준을 완화하면 변수가 더 많이 들어가 '보수적 선택'이라는 지시와 반대입니다."
+        },
+        {
+          "text": "훈련 데이터 RMSE가 가장 낮은 모형을 고른다",
+          "rationale": "훈련 오차도 변수가 많을수록 줄어들어 과적합된 모형을 고르게 됩니다."
+        },
+        {
+          "text": "adjusted R²가 가장 높은 모형을 고른다",
+          "rationale": "adjusted R²의 변수 벌점은 약해서 AIC보다도 관대하게 변수를 받아들이는 경향이 있습니다."
+        },
+        {
+          "text": "BIC로 후보 모형을 비교해 BIC가 가장 작은 모형을 고른다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "n = 50,000이면 BIC의 모수당 벌점은 ln(50,000) ≈ 10.8로 AIC(2)의 5배가 넘습니다. 효과가 작은 변수는 이 벌점을 넘지 못해 걸러지므로 더 간결한 모형이 선택됩니다.",
+      "explanation_full": "주의할 점: 위성영상 픽셀은 공간 자기상관이 있어 5만 개가 서로 독립인 관측이 아닙니다. 실효 표본 수가 더 작기 때문에 우도 기반 기준(AIC·BIC) 모두 모형을 과신할 수 있으므로, 공간 블록 교차검증 결과를 함께 보고하는 것이 좋습니다.",
+      "tags": [
+        "regression",
+        "model-selection",
+        "prescription"
+      ],
+      "terms": [
+        "bic",
+        "aic",
+        "parsimony"
+      ],
+      "source_ref": "Burnham & Anderson, Model Selection and Multimodel Inference 2장 · Schwarz (1978)",
+      "status": "draft"
+    },
+    {
+      "id": "B-SEL-012",
+      "type": "scenario",
+      "chapter": "B.sel",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"구름 마스킹 전 데이터(12,000 픽셀)로 적합한 모형은 AIC가 1,250이고, 마스킹 후 데이터(8,000 픽셀)로 적합한 모형은 AIC가 830이야. 마스킹 후 모형이 더 좋다고 보고서에 써줘.\"\n\n이 보고 전에 짚어야 할 점으로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "관측치가 다른 데이터의 AIC는 비교할 수 없으니, 공통 검증 픽셀에서 예측 오차로 비교해야 한다",
+          "rationale": null
+        },
+        {
+          "text": "AIC 차이가 420으로 10보다 훨씬 크므로 마스킹 후 모형이 확실히 더 좋다고 써도 된다",
+          "rationale": "ΔAIC 해석 기준은 같은 데이터에 적합한 모형들 사이에서만 성립합니다. 관측치가 적으면 로그우도 합 자체의 크기가 달라질 뿐입니다."
+        },
+        {
+          "text": "AIC 대신 BIC로 다시 계산하면 관측치 수 차이가 보정되어 공정하게 비교할 수 있다",
+          "rationale": "BIC도 같은 데이터의 우도에 기반하므로 관측치가 다른 데이터끼리는 비교할 수 없습니다. ln(n) 벌점은 모수에 대한 것이지 관측치 차이를 보정하지 않습니다."
+        },
+        {
+          "text": "두 AIC를 각각 픽셀 수로 나눈 픽셀당 AIC로 바꿔 비교하면 문제가 해결된다",
+          "rationale": "픽셀 수로 나누면 값의 크기는 맞춰지지만(여기서는 둘 다 약 0.104), 두 로그우도는 여전히 서로 다른 픽셀 집합(마스킹 후에는 흐린·예측하기 어려운 픽셀이 빠짐)에 대한 값이라 같은 기준의 비교가 아닙니다. 모형 비교는 공통 관측치에서 해야 합니다."
+        },
+        {
+          "text": "두 모형의 설명변수 개수가 같다면 AIC를 그대로 비교해도 문제가 없다",
+          "rationale": "변수 수가 같아도 적합한 관측치가 다르면 로그우도가 서로 다른 데이터에 대한 값이라 비교할 수 없습니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "AIC의 로그우도는 적합에 쓴 관측치 전체에 대한 합이라 관측치가 적으면 값의 크기가 저절로 달라집니다. 관측치가 다른 데이터 사이의 AIC 비교는 의미가 없고, 같은 관측치나 공통 검증셋으로 비교해야 합니다.",
+      "explanation_full": "같은 이유로 종속변수를 변환한 모형(예: y와 log y)의 AIC도 그대로 비교할 수 없습니다. 이 사례의 질문은 사실 '구름 마스킹이라는 전처리가 성능을 높이는가'이므로, 두 전처리 방식으로 각각 학습한 모형을 같은 (구름 없는) 검증 픽셀에서 RMSE 등으로 비교하는 것이 맞습니다.",
+      "tags": [
+        "regression",
+        "model-selection",
+        "interpretation"
+      ],
+      "terms": [
+        "aic",
+        "bic"
+      ],
+      "source_ref": "Burnham & Anderson, Model Selection and Multimodel Inference 2장",
+      "status": "draft"
+    },
+    {
+      "id": "B-SEL-013",
+      "type": "scenario",
+      "chapter": "B.sel",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"변수 60개 넣고 후진 제거로 p < 0.05인 것만 남긴 다음, 같은 데이터에서 R²가 0.93 나왔으니까 그걸 성능으로 보고하자.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "p 기준을 0.01로 더 엄격하게 바꿔 다시 선택하고, 같은 데이터의 R²를 보고한다",
+          "rationale": "기준을 바꿔도 선택과 평가를 같은 데이터로 하는 문제는 그대로라 R²는 여전히 낙관적입니다."
+        },
+        {
+          "text": "후진 제거 대신 전진 선택으로 바꿔 다시 고르고, 같은 데이터의 R²를 보고한다",
+          "rationale": "선택 방향만 바뀔 뿐 선택 편향(과적합)은 그대로 남습니다."
+        },
+        {
+          "text": "같은 데이터에서 R² 대신 adjusted R²를 계산해 성능으로 보고한다",
+          "rationale": "adjusted R²는 최종 변수 수만 벌점으로 반영하고, 60개 중에서 골랐다는 탐색 과정은 반영하지 못해 여전히 낙관적입니다."
+        },
+        {
+          "text": "변수 선택까지 각 fold 안에서 반복하는 교차검증으로 성능을 평가한다",
+          "rationale": null
+        },
+        {
+          "text": "선택된 변수들의 VIF가 모두 10 미만인지 확인되면 R² 0.93을 그대로 보고한다",
+          "rationale": "VIF는 다중공선성 진단이지 과적합이나 선택 편향을 확인해 주지 않습니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "변수를 고른 데이터로 성능까지 재면 우연히 잘 맞은 변수 조합의 이득이 그대로 성능에 섞여 과대평가됩니다. 선택 절차 전체를 각 fold의 훈련 부분에서 다시 수행하는 교차검증(또는 별도 검증셋)으로 평가해야 합니다.",
+      "explanation_full": "흔한 실수는 전체 데이터로 변수를 먼저 고른 뒤 그 변수들로만 교차검증하는 것인데, 이것도 선택 정보가 검증 fold로 새는 누수입니다. 공간 자료라면 fold를 공간 블록 단위로 나눠야 인접 픽셀로 인한 추가 누수도 막을 수 있습니다.",
+      "tags": [
+        "regression",
+        "model-selection",
+        "validation",
+        "prescription"
+      ],
+      "terms": [
+        "stepwise-selection",
+        "overfitting",
+        "k-fold-cross-validation"
+      ],
+      "source_ref": "ESL 7.10.2절(The Wrong and Right Way to Do Cross-validation)",
+      "status": "draft"
+    }
+  ]
+}

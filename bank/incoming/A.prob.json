@@ -1,0 +1,689 @@
+{
+  "format": "visiondrill-bank-exchange",
+  "format_version": 1,
+  "terms": [
+    {
+      "id": "poisson-distribution",
+      "term_en": "Poisson Distribution",
+      "term_ko": "포아송 분포",
+      "abbreviation": null,
+      "definition": "일정한 면적·시간 안에서 서로 독립적으로, 일정한 평균 비율 λ로 일어나는 사건의 개수 분포. 평균과 분산이 모두 λ",
+      "usage_example": "타일당 선박 수가 포아송이라 치면 λ=2일 때 빈 타일이 14% 정도 나와야 해. 실제랑 비교해 봐.",
+      "origin": "standard",
+      "track": "A"
+    },
+    {
+      "id": "binomial-distribution",
+      "term_en": "Binomial Distribution",
+      "term_ko": "이항분포",
+      "abbreviation": null,
+      "definition": "성공 확률이 p인 독립 시행을 n번 했을 때 성공 횟수의 분포. 평균 np, 분산 np(1−p)",
+      "usage_example": "검증 포인트 하나하나가 맞았다/틀렸다니까 정답 개수는 이항분포로 보고 구간 계산해.",
+      "origin": "standard",
+      "track": "A"
+    },
+    {
+      "id": "normal-distribution",
+      "term_en": "Normal Distribution",
+      "term_ko": "정규분포",
+      "abbreviation": null,
+      "definition": "평균 μ와 표준편차 σ로 정해지는 좌우 대칭 종 모양의 연속분포. μ±1σ에 약 68%, μ±2σ에 약 95%가 들어감",
+      "usage_example": "대기보정 잔차가 정규분포라고 치면 ±2σ 밖은 5% 정도여야 하는데, 지금 훨씬 많아.",
+      "origin": "standard",
+      "track": "A"
+    },
+    {
+      "id": "uniform-distribution",
+      "term_en": "Uniform Distribution",
+      "term_ko": "균등분포",
+      "abbreviation": null,
+      "definition": "정해진 구간 [a, b] 안의 모든 값이 같은 확률 밀도를 갖는 분포. 평균 (a+b)/2, 분산 (b−a)²/12",
+      "usage_example": "회전 증강 각도는 −15°~15° 균등분포로 뽑아. 특정 각도에 몰리면 안 돼.",
+      "origin": "standard",
+      "track": "A"
+    },
+    {
+      "id": "expected-value",
+      "term_en": "Expected Value",
+      "term_ko": "기댓값",
+      "abbreviation": "E[X]",
+      "definition": "확률변수가 가질 수 있는 값에 각 확률을 곱해 더한 값(연속형은 적분). 같은 실험을 무한히 반복했을 때의 장기 평균",
+      "usage_example": "타일당 오탐 기댓값이 0.3개면 만 장 돌렸을 때 검수할 게 3천 개쯤 나온다는 얘기야.",
+      "origin": "standard",
+      "track": "A"
+    },
+    {
+      "id": "central-limit-theorem",
+      "term_en": "Central Limit Theorem",
+      "term_ko": "중심극한정리",
+      "abbreviation": "CLT",
+      "definition": "독립·동일 분포에서 뽑은 표본의 크기가 충분히 크면, 원래 분포 모양과 관계없이 표본평균의 분포가 정규분포에 가까워진다는 정리",
+      "usage_example": "픽셀값은 치우쳐 있어도 무작위 표본 평균은 CLT 덕분에 정규 근사로 구간 잡아도 돼.",
+      "origin": "standard",
+      "track": "A"
+    },
+    {
+      "id": "statistical-independence",
+      "term_en": "Statistical Independence",
+      "term_ko": "독립",
+      "abbreviation": null,
+      "definition": "한 사건의 발생 여부가 다른 사건의 확률에 영향을 주지 않는 관계. P(A∩B) = P(A)·P(B)",
+      "usage_example": "인접 픽셀은 서로 독립이 아니야. 검증 포인트를 붙여서 뽑으면 표본 수를 부풀리는 셈이야.",
+      "origin": "standard",
+      "track": "A"
+    }
+  ],
+  "questions": [
+    {
+      "id": "A-PROB-001",
+      "type": "short",
+      "chapter": "A.prob",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "넓은 해역을 같은 크기 타일로 나눴을 때, 선박처럼 드물고 서로 독립적으로 나타나는 객체의 '타일당 개수'를 모델링할 때 흔히 쓰는 이산분포로, 평균과 분산이 같은(λ) 분포는? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Poisson distribution",
+          "Poisson"
+        ],
+        "ko": [
+          "포아송 분포",
+          "푸아송 분포",
+          "포아송",
+          "푸아송"
+        ]
+      },
+      "primary": "Poisson distribution",
+      "explanation_short": "포아송 분포(Poisson Distribution)는 일정한 면적·시간 안에서 독립적으로, 일정한 평균 비율로 일어나는 사건 수의 분포입니다. 모수 λ 하나로 정해지며 평균과 분산이 모두 λ입니다.",
+      "explanation_full": "확률질량함수는 P(X=k) = e^(−λ) λ^k / k! 입니다. 전제는 (1) 사건끼리 독립, (2) 단위 면적당 발생률이 일정하다는 것입니다. 실제 탐지 개수는 항구 근처나 양식장처럼 한곳에 몰리는 경우가 많아 분산이 평균보다 커지는 과산포(overdispersion)가 흔하며, 이때는 음이항 분포 등을 검토합니다.",
+      "tags": [
+        "probability",
+        "distribution",
+        "count"
+      ],
+      "terms": [
+        "poisson-distribution"
+      ],
+      "source_ref": "확률·분포 일반 (OpenIntro Statistics 3·4장)",
+      "status": "draft"
+    },
+    {
+      "id": "A-PROB-002",
+      "type": "mcq",
+      "chapter": "A.prob",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "어떤 해역에서 512×512 타일당 선박 수가 평균 λ = 2인 포아송 분포를 따른다고 하자. 임의의 타일에 선박이 1척 이하(0척 또는 1척)일 확률은 약 얼마인가? (e⁻² ≈ 0.135)",
+      "choices": [
+        {
+          "text": "약 0.271",
+          "rationale": "P(X=1) = λe^(−λ) = 2 × 0.135 ≈ 0.271, 즉 정확히 한 척만 있을 확률입니다. '1척 이하'는 0척일 확률도 더해야 합니다."
+        },
+        {
+          "text": "약 0.135",
+          "rationale": "P(X=0) = e^(−2) ≈ 0.135, 즉 한 척도 없을 확률만 계산한 값입니다. 1척인 경우를 빠뜨렸습니다."
+        },
+        {
+          "text": "약 0.406",
+          "rationale": null
+        },
+        {
+          "text": "약 0.865",
+          "rationale": "1 − e^(−2), 즉 한 척 이상 있을 확률(0척의 여사건)입니다."
+        },
+        {
+          "text": "약 0.594",
+          "rationale": "1 − P(X≤1), 즉 두 척 이상 있을 확률입니다. 묻는 사건의 여사건을 계산했습니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "포아송 확률 P(X=k) = e^(−λ)λ^k/k!에서 P(0) = e^(−2) ≈ 0.135, P(1) = 2e^(−2) ≈ 0.271이므로 P(X≤1) = 3e^(−2) ≈ 0.406입니다. 즉 타일의 약 40%는 선박이 한 척 이하일 것으로 기대합니다.",
+      "explanation_full": "검산: e^(−2) = 0.1353, P(0) = 0.1353, P(1) = 0.2707, P(X≤1) = 0.4060, P(X≥2) = 0.5940, P(X≥1) = 0.8647입니다(참고로 P(2)도 0.2707). 실제 탐지 결과에서 빈 타일 비율이 e^(−2) ≈ 13.5%보다 훨씬 높고 몇몇 타일에 선박이 몰려 있다면, 독립·균일 발생 가정이 깨진(군집) 상황이므로 포아송 모형을 그대로 쓰기 어렵습니다.",
+      "tags": [
+        "probability",
+        "distribution",
+        "count",
+        "calculation"
+      ],
+      "terms": [
+        "poisson-distribution"
+      ],
+      "source_ref": "확률·분포 일반 (OpenIntro Statistics 3·4장)",
+      "status": "draft"
+    },
+    {
+      "id": "A-PROB-003",
+      "type": "scenario",
+      "chapter": "A.prob",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"타일당 양식장 부표 탐지 수가 평균 3.1인데 분산이 14.8이야. 포아송으로 기대 개수 모델링하지 말고 과산포 반영되는 모형으로 바꿔.\"\n\n이 지시의 의도로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "분산이 평균보다 작은 과소산포 상태이므로, 분산이 평균보다 작은 이항분포로 바꾸라는 뜻이다",
+          "rationale": "분산 14.8이 평균 3.1보다 훨씬 크므로 과소산포가 아니라 과산포입니다. 이항분포는 분산 np(1−p)가 평균보다 작아 오히려 반대 방향입니다."
+        },
+        {
+          "text": "평균이 3을 넘으면 정규 근사가 가능하므로, 평균 3.1·분산 14.8인 정규분포를 쓰라는 뜻이다",
+          "rationale": "정규 근사는 λ가 클 때 포아송 확률을 쉽게 계산하려는 것일 뿐, 과산포 문제를 해결하지 못합니다. 또 개수 자료의 비대칭(0 근처 밀집, 긴 꼬리)과 음수 불가도 반영하지 못합니다."
+        },
+        {
+          "text": "분산이 큰 것은 일부 이상치 타일 때문이므로, 부표가 몰린 타일을 삭제한 뒤 포아송을 그대로 쓰라는 뜻이다",
+          "rationale": "부표가 몰린 타일은 실제 현상(군집)을 반영합니다. 지우면 자료를 왜곡하며, 지시는 모형을 바꾸라는 것입니다."
+        },
+        {
+          "text": "부표가 몰려 분산이 평균의 약 5배이므로, 분산 = 평균을 가정하는 포아송 대신 음이항 같은 모형을 쓰라는 뜻이다",
+          "rationale": null
+        },
+        {
+          "text": "탐지 개수는 음수가 될 수 없으므로, 0부터 최댓값 사이의 이산 균등분포로 모델링하라는 뜻이다",
+          "rationale": "균등분포는 모든 값이 같은 확률이라는 가정이라 개수 자료의 모양(0 근처에 많고 꼬리가 긴)을 전혀 반영하지 못합니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "포아송은 사건이 독립·균일하게 발생해 분산 = 평균이 된다고 가정합니다. 부표처럼 양식장 단위로 뭉쳐 있으면 분산이 평균보다 훨씬 커지는 과산포가 생기므로, 음이항 분포처럼 추가 산포 모수가 있는 모형이 필요합니다.",
+      "explanation_full": "분산/평균 비(dispersion index) = 14.8/3.1 ≈ 4.8로 1보다 크게 벗어납니다. 과산포를 무시하고 포아송을 쓰면 표준오차를 과소추정해 신뢰구간이 너무 좁아지고, 차이를 과대하게 유의하다고 판단합니다. 원격탐사 개수 자료(선박, 부표, 건물)는 공간 군집 때문에 과산포가 흔합니다. 음이항 외에 0이 과다하면 영과잉(zero-inflated) 모형도 검토합니다.",
+      "tags": [
+        "probability",
+        "distribution",
+        "count",
+        "overdispersion"
+      ],
+      "terms": [
+        "poisson-distribution",
+        "statistical-independence"
+      ],
+      "source_ref": "확률·분포 일반 (OpenIntro Statistics 3·4장)",
+      "status": "draft"
+    },
+    {
+      "id": "A-PROB-004",
+      "type": "mcq",
+      "chapter": "A.prob",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "분류 결과 검증용 포인트 50개가 있고, 각 포인트가 서로 독립적으로 정답일 확률이 0.85로 같다고 하자. '정답인 포인트 개수'가 따르는 분포는?",
+      "choices": [
+        {
+          "text": "이항분포",
+          "rationale": null
+        },
+        {
+          "text": "포아송 분포",
+          "rationale": "포아송은 상한 없이 일정 비율로 일어나는 사건 수의 분포입니다. 여기서는 시행 횟수(50)가 정해져 있고 각 시행이 성공/실패이므로 이항분포입니다."
+        },
+        {
+          "text": "기하분포",
+          "rationale": "기하분포는 '첫 성공이 나올 때까지의 시행 횟수'의 분포입니다. 정해진 n번 중 성공 횟수를 세는 것과 다릅니다."
+        },
+        {
+          "text": "정규분포",
+          "rationale": "정규분포는 연속분포입니다. n이 크면 이항분포를 정규분포로 근사할 수 있지만, 정답 개수가 정확히 따르는 분포는 이항분포입니다."
+        },
+        {
+          "text": "균등분포",
+          "rationale": "균등분포는 모든 값이 같은 확률인 분포입니다. 정답 개수는 42~43개 근처(np = 42.5)에 몰리므로 균등하지 않습니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "성공 확률 p가 같은 독립 시행을 n번 했을 때의 성공 횟수는 이항분포 B(n, p)를 따릅니다. 여기서는 B(50, 0.85)입니다.",
+      "explanation_full": "이항분포의 평균은 np = 42.5, 분산은 np(1−p) = 6.375입니다. 정확도(정답 비율)의 신뢰구간 계산이 이 분포에서 출발합니다. 단, '각 포인트가 독립'이라는 전제가 중요합니다. 인접 픽셀을 몰아서 뽑으면 정답 여부가 서로 연관되어 이항 가정이 깨집니다.",
+      "tags": [
+        "probability",
+        "distribution",
+        "binomial"
+      ],
+      "terms": [
+        "binomial-distribution"
+      ],
+      "source_ref": "확률·분포 일반 (OpenIntro Statistics 3·4장)",
+      "status": "draft"
+    },
+    {
+      "id": "A-PROB-005",
+      "type": "mcq",
+      "chapter": "A.prob",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "검증 포인트 200개가 서로 독립이고 각각 정답일 확률이 0.9라고 하자. 정답 포인트 수의 (기댓값, 분산)은?",
+      "choices": [
+        {
+          "text": "(180, 180)",
+          "rationale": "평균과 분산이 같다는 것은 포아송 분포의 성질입니다. 이항분포의 분산은 np(1−p)로 평균보다 작습니다."
+        },
+        {
+          "text": "(0.9, 0.09)",
+          "rationale": "포인트 하나(베르누이 시행)의 평균 p와 분산 p(1−p)입니다. 200개 합계의 평균·분산은 각각 n배가 됩니다."
+        },
+        {
+          "text": "(180, 4.24)",
+          "rationale": "4.24는 분산 18의 제곱근인 표준편차입니다. 분산을 물었으므로 18이 맞습니다."
+        },
+        {
+          "text": "(20, 18)",
+          "rationale": "20은 오답 포인트 수의 기댓값 n(1−p)입니다. 정답 수의 기댓값은 np = 180입니다."
+        },
+        {
+          "text": "(180, 18)",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "이항분포 B(n, p)의 기댓값은 np = 200 × 0.9 = 180, 분산은 np(1−p) = 200 × 0.9 × 0.1 = 18입니다.",
+      "explanation_full": "표준편차는 √18 ≈ 4.24개이므로 정답 수는 대략 180 ± 8.5개(±2σ) 안에서 흔들립니다. 정확도(비율)로 바꾸면 표준편차는 √(p(1−p)/n) = √(0.09/200) ≈ 0.021입니다. 같은 모델이라도 검증 포인트를 새로 뽑을 때마다 정확도가 ±4%p 정도 흔들릴 수 있다는 뜻이라, 소규모 검증셋에서 1~2%p 차이는 신중히 해석해야 합니다.",
+      "tags": [
+        "probability",
+        "distribution",
+        "binomial",
+        "calculation"
+      ],
+      "terms": [
+        "binomial-distribution"
+      ],
+      "source_ref": "확률·분포 일반 (OpenIntro Statistics 3·4장)",
+      "status": "draft"
+    },
+    {
+      "id": "A-PROB-006",
+      "type": "short",
+      "chapter": "A.prob",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "평균과 표준편차 두 모수로 완전히 정해지는 좌우 대칭의 종 모양 연속분포로, 평균 ± 1표준편차 안에 약 68%의 값이 들어가는 분포는? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Normal distribution",
+          "Gaussian distribution",
+          "Gaussian"
+        ],
+        "ko": [
+          "정규분포",
+          "가우스 분포",
+          "가우시안 분포",
+          "가우시안"
+        ]
+      },
+      "primary": "Normal distribution",
+      "explanation_short": "정규분포(Normal Distribution, 가우스 분포)는 N(μ, σ²)로 쓰며, μ±1σ에 약 68%, μ±2σ에 약 95%, μ±3σ에 약 99.7%가 들어갑니다.",
+      "explanation_full": "측정 잡음, 여러 작은 요인이 더해진 오차, 그리고 중심극한정리에 따라 표본평균의 분포가 정규분포에 가까워지는 경우가 많아 통계 전반의 기준 분포로 쓰입니다. 다만 반사율·면적·개수처럼 0 아래가 없고 한쪽으로 치우친 자료는 그 자체로는 정규가 아닌 경우가 많으니, 히스토그램·Q-Q 플롯으로 확인한 뒤 가정합니다.",
+      "tags": [
+        "probability",
+        "distribution",
+        "normal"
+      ],
+      "terms": [
+        "normal-distribution"
+      ],
+      "source_ref": "확률·분포 일반 (OpenIntro Statistics 3·4장)",
+      "status": "draft"
+    },
+    {
+      "id": "A-PROB-007",
+      "type": "mcq",
+      "chapter": "A.prob",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "대기보정 후 반사율 오차(보정값 − 현장 측정값)가 평균 0, 표준편차 0.01인 정규분포를 따른다고 가정하자. 오차의 절댓값이 0.02를 넘는 픽셀의 비율은 약 얼마인가?",
+      "choices": [
+        {
+          "text": "약 31.7%",
+          "rationale": "|오차| > 1σ(0.01)일 비율입니다. 0.02는 2σ에 해당합니다."
+        },
+        {
+          "text": "약 0.3%",
+          "rationale": "|오차| > 3σ(0.03)일 비율입니다."
+        },
+        {
+          "text": "약 4.6%",
+          "rationale": null
+        },
+        {
+          "text": "약 2.3%",
+          "rationale": "오차 > +2σ인 한쪽 꼬리만 계산한 값입니다. 절댓값 기준이므로 양쪽 꼬리를 더해야 합니다."
+        },
+        {
+          "text": "약 95.4%",
+          "rationale": "|오차| ≤ 2σ, 즉 ±0.02 안에 들어가는 비율입니다. 문제는 그 바깥 비율을 물었습니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "0.02는 2σ이므로 정규분포에서 |Z| > 2일 확률, 약 1 − 0.954 = 0.046(4.6%)입니다. 흔히 '약 5%'로 기억합니다.",
+      "explanation_full": "68-95-99.7 규칙: ±1σ 68.3%, ±2σ 95.4%, ±3σ 99.7%. 한쪽 꼬리 Z > 2는 약 2.3%입니다. 실제 검증에서 ±2σ 밖 비율이 5%보다 훨씬 크다면 오차 분포의 꼬리가 정규보다 두껍거나(초과첨도 > 0) 일부 픽셀(구름 가장자리, 인접효과)에 체계적 문제가 있다는 신호입니다.",
+      "tags": [
+        "probability",
+        "distribution",
+        "normal",
+        "calculation"
+      ],
+      "terms": [
+        "normal-distribution"
+      ],
+      "source_ref": "확률·분포 일반 (OpenIntro Statistics 3·4장)",
+      "status": "draft"
+    },
+    {
+      "id": "A-PROB-008",
+      "type": "mcq",
+      "chapter": "A.prob",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "드론 정사영상 학습용 데이터 증강에서 회전 각도를 −15°부터 +15° 사이에서 어느 값이든 같은 가능성으로 무작위 추출하려 한다. 이 각도가 따르는 분포는?",
+      "choices": [
+        {
+          "text": "평균 0, 표준편차 15인 정규분포",
+          "rationale": "정규분포는 0° 근처가 훨씬 자주 나오고, ±15°를 넘는 값도 약 32% 확률로 나옵니다. '같은 가능성'과 '범위 제한'을 만족하지 않습니다."
+        },
+        {
+          "text": "연속 균등분포 U(−15, 15)",
+          "rationale": null
+        },
+        {
+          "text": "λ = 15인 포아송 분포",
+          "rationale": "포아송은 0 이상의 정수 개수의 분포라 음수 각도나 소수 각도를 만들 수 없습니다."
+        },
+        {
+          "text": "n = 30, p = 0.5인 이항분포",
+          "rationale": "이항분포는 성공 횟수(0~30 정수)의 분포이고 가운데 값이 가장 자주 나옵니다."
+        },
+        {
+          "text": "평균 15인 지수분포",
+          "rationale": "지수분포는 0 이상의 값만 나오고 0 근처가 가장 흔한 대기시간 분포입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "구간 [a, b]의 모든 값이 같은 확률밀도를 갖는 분포는 균등분포 U(a, b)입니다. 여기서는 a = −15, b = 15입니다.",
+      "explanation_full": "균등분포의 평균은 (a+b)/2 = 0°, 분산은 (b−a)²/12 = 30²/12 = 75, 표준편차는 약 8.66°입니다. 증강 라이브러리의 '±15° 무작위 회전' 옵션은 일반적으로 이렇게 균등분포에서 뽑습니다. 북쪽이 위로 고정된 정사영상에서 회전 증강 범위를 어떻게 잡을지는 과제(방향이 의미 있는지)에 따라 정합니다.",
+      "tags": [
+        "probability",
+        "distribution",
+        "uniform",
+        "augmentation"
+      ],
+      "terms": [
+        "uniform-distribution"
+      ],
+      "source_ref": "확률·분포 일반 (OpenIntro Statistics 3·4장)",
+      "status": "draft"
+    },
+    {
+      "id": "A-PROB-009",
+      "type": "mcq",
+      "chapter": "A.prob",
+      "cognitive_level": 2,
+      "difficulty": 4,
+      "stem": "연속적인 복사휘도를 정수 DN으로 반올림해 저장하면, 반올림 오차는 −0.5~+0.5 DN 구간의 균등분포를 따른다고 볼 수 있다. 이 양자화 오차의 표준편차는 약 얼마인가?",
+      "choices": [
+        {
+          "text": "약 0.5 DN",
+          "rationale": "0.5는 오차의 최대 크기(구간의 반폭)입니다. 표준편차는 흩어진 정도의 평균적 크기라 최대값보다 작습니다."
+        },
+        {
+          "text": "약 0.083 DN²",
+          "rationale": "1/12 ≈ 0.083은 분산입니다. 표준편차는 그 제곱근 √(1/12)입니다."
+        },
+        {
+          "text": "약 0.25 DN",
+          "rationale": "0.25는 오차 절댓값의 평균(평균절대오차) E|U|입니다. 제곱 평균의 제곱근인 표준편차와 다릅니다."
+        },
+        {
+          "text": "약 0.29 DN",
+          "rationale": null
+        },
+        {
+          "text": "약 1.0 DN",
+          "rationale": "1은 양자화 간격(구간 전체 폭)입니다. 표준편차는 간격/√12입니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "U(a, b)의 분산은 (b − a)²/12이므로 (0.5 − (−0.5))²/12 = 1/12, 표준편차는 √(1/12) ≈ 0.289 DN입니다.",
+      "explanation_full": "일반적으로 간격 Δ로 양자화하면 오차 표준편차는 Δ/√12 ≈ 0.29Δ입니다. 검산: 1/12 = 0.0833, √0.0833 = 0.2887. 반사율 스케일(예: DN/10000)로 저장된 제품이라면 양자화 오차는 0.29 × 10⁻⁴ 수준이라 대부분의 분석에서 무시할 만하지만, 8비트로 강하게 압축한 영상에서는 어두운 수면처럼 대비가 작은 영역의 정보가 크게 손실될 수 있습니다.",
+      "tags": [
+        "probability",
+        "distribution",
+        "uniform",
+        "calculation",
+        "quantization"
+      ],
+      "terms": [
+        "uniform-distribution"
+      ],
+      "source_ref": "확률·분포 일반 (OpenIntro Statistics 3·4장)",
+      "status": "draft"
+    },
+    {
+      "id": "A-PROB-010",
+      "type": "short",
+      "chapter": "A.prob",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "확률변수가 가질 수 있는 각 값에 그 확률을 곱해 모두 더한 값(연속형이면 적분)으로, 같은 실험을 무한히 반복했을 때의 장기 평균을 뜻하는 것은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Expected value",
+          "Expectation",
+          "Mean"
+        ],
+        "ko": [
+          "기댓값",
+          "기대값",
+          "기대치",
+          "평균"
+        ]
+      },
+      "primary": "Expected value",
+      "explanation_short": "기댓값(Expected Value, E[X])은 Σ x·P(X=x)로 계산하는 확률분포의 평균입니다. 실제 한 번의 결과가 아니라 반복했을 때의 장기 평균입니다.",
+      "explanation_full": "예: 타일당 오탐 수가 0개(확률 0.8), 1개(0.15), 2개(0.05)라면 E[X] = 0×0.8 + 1×0.15 + 2×0.05 = 0.25개입니다. 1만 타일을 처리하면 오탐 약 2,500개를 검수해야 한다고 예측할 수 있습니다. 기댓값은 '가장 흔한 값'(최빈값)과 다를 수 있다는 점도 기억합니다(위 예의 최빈값은 0).",
+      "tags": [
+        "probability",
+        "expectation"
+      ],
+      "terms": [
+        "expected-value"
+      ],
+      "source_ref": "확률·분포 일반 (OpenIntro Statistics 3·4장)",
+      "status": "draft"
+    },
+    {
+      "id": "A-PROB-011",
+      "type": "mcq",
+      "chapter": "A.prob",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "X는 타일 A의 선박 탐지 수, Y는 바로 옆 타일 B의 탐지 수이며, 두 값은 서로 상관이 있을 수 있다. 다음 중 X와 Y가 독립인지와 관계없이 항상 성립하는 것은?",
+      "choices": [
+        {
+          "text": "E[X + Y] = E[X] + E[Y]",
+          "rationale": null
+        },
+        {
+          "text": "Var(X + Y) = Var(X) + Var(Y)",
+          "rationale": "분산의 덧셈은 X와 Y가 무상관(공분산 0)일 때만 성립합니다. 일반식은 Var(X) + Var(Y) + 2Cov(X, Y)이고, 인접 타일은 양의 상관이 흔합니다."
+        },
+        {
+          "text": "E[XY] = E[X]·E[Y]",
+          "rationale": "곱의 기댓값 분해는 X와 Y가 독립(또는 무상관)일 때 성립합니다. 일반적으로는 E[XY] = E[X]E[Y] + Cov(X, Y)입니다."
+        },
+        {
+          "text": "E[X²] = (E[X])²",
+          "rationale": "E[X²] − (E[X])² = Var(X)이므로, 분산이 0인(값이 하나로 고정된) 경우에만 성립합니다."
+        },
+        {
+          "text": "Var(2X) = 2·Var(X)",
+          "rationale": "상수배의 분산은 제곱배가 됩니다. Var(2X) = 4·Var(X)입니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "기댓값의 선형성 E[X + Y] = E[X] + E[Y]는 두 변수가 독립이든 상관이 있든 항상 성립합니다. 분산의 덧셈과 곱의 기댓값 분해는 독립(무상관) 가정이 필요합니다.",
+      "explanation_full": "실무적으로 '전체 기대 탐지 수 = 타일별 기대 탐지 수의 합'은 공간 상관이 있어도 그대로 쓸 수 있습니다. 반면 '전체 탐지 수의 분산 = 타일별 분산의 합'은 인접 타일이 양의 상관을 가지면 과소평가가 됩니다. 공간 자료에서 불확실성(분산, 신뢰구간)을 계산할 때 독립 가정을 특히 조심해야 하는 이유입니다.",
+      "tags": [
+        "probability",
+        "expectation",
+        "independence"
+      ],
+      "terms": [
+        "expected-value",
+        "statistical-independence"
+      ],
+      "source_ref": "확률·분포 일반 (OpenIntro Statistics 3·4장)",
+      "status": "draft"
+    },
+    {
+      "id": "A-PROB-012",
+      "type": "short",
+      "chapter": "A.prob",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "서로 독립이고 같은 분포에서 뽑은 표본의 크기가 충분히 크면, 원래 분포의 모양과 관계없이 표본평균의 분포가 정규분포에 가까워진다는 정리는? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Central limit theorem (CLT)"
+        ],
+        "ko": [
+          "중심극한정리"
+        ]
+      },
+      "primary": "Central limit theorem (CLT)",
+      "explanation_short": "중심극한정리(Central Limit Theorem, CLT)에 따르면 표본평균은 근사적으로 N(μ, σ²/n)을 따릅니다. 모집단이 치우쳐 있어도 표본평균에는 정규분포 기반 신뢰구간·검정을 쓸 수 있는 근거가 됩니다.",
+      "explanation_full": "전제는 (1) 관측치가 독립, (2) 같은 분포, (3) 분산이 유한하다는 것입니다. '충분히 큰 n'은 원분포가 얼마나 치우쳤는지에 따라 달라 흔히 30을 기준으로 말하지만 절대 기준은 아닙니다. 공간적으로 붙어 있는 픽셀은 독립이 아니므로, 픽셀 수만 믿고 CLT를 적용하면 불확실성을 과소평가합니다.",
+      "tags": [
+        "probability",
+        "clt"
+      ],
+      "terms": [
+        "central-limit-theorem"
+      ],
+      "source_ref": "중심극한정리 일반 (OpenIntro Statistics 5장; Wasserman, All of Statistics 5장)",
+      "status": "draft"
+    },
+    {
+      "id": "A-PROB-013",
+      "type": "mcq",
+      "chapter": "A.prob",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "넓은 장면의 픽셀 반사율 분포는 오른쪽으로 크게 치우쳐 있고 표준편차는 σ이다. 장면 전체에서 무작위로 64개 픽셀을 뽑아 평균을 내는 일을 여러 번 반복할 때, 이 '64개 평균'들의 분포에 대한 설명으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "원래 픽셀 분포처럼 오른쪽으로 치우치고, 표준편차는 σ이다",
+          "rationale": "평균을 내면 치우침이 상쇄되어 정규분포에 가까워지고, 흩어짐도 σ/√n으로 줄어듭니다."
+        },
+        {
+          "text": "정규분포에 가까워지지만, 표준편차는 σ 그대로다",
+          "rationale": "모양은 맞지만 표본평균의 표준편차(표준오차)는 σ/√n으로 줄어듭니다."
+        },
+        {
+          "text": "정규분포에 가까워지고, 표준편차는 약 σ/8이다",
+          "rationale": null
+        },
+        {
+          "text": "정규분포에 가까워지고, 표준편차는 약 σ/64이다",
+          "rationale": "n으로 나눈 것은 분산 쪽입니다. 분산이 σ²/64이므로 표준편차는 σ/√64 = σ/8입니다."
+        },
+        {
+          "text": "개별 픽셀값의 분포 자체가 정규분포로 바뀐다",
+          "rationale": "중심극한정리는 표본평균의 분포에 대한 정리입니다. 개별 픽셀값의 분포는 표본을 몇 번 뽑든 원래대로 치우친 모양입니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "중심극한정리에 따라 표본평균의 분포는 원분포가 치우쳐 있어도 정규분포에 가까워지며, 표준편차는 σ/√n = σ/√64 = σ/8입니다.",
+      "explanation_full": "여기서 '넓은 장면에서 무작위로' 뽑는다는 조건이 중요합니다. 붙어 있는 8×8 블록의 64픽셀을 평균 내면 픽셀끼리 공간 자기상관이 있어 실제 표준편차가 σ/8보다 커집니다(유효 표본 수가 64보다 작음). 원분포의 치우침이 심할수록 정규 근사가 잘 맞으려면 더 큰 n이 필요합니다.",
+      "tags": [
+        "probability",
+        "clt",
+        "sampling"
+      ],
+      "terms": [
+        "central-limit-theorem"
+      ],
+      "source_ref": "중심극한정리 일반 (OpenIntro Statistics 5장; Wasserman, All of Statistics 5장)",
+      "status": "draft"
+    },
+    {
+      "id": "A-PROB-014",
+      "type": "mcq",
+      "chapter": "A.prob",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "사건 A = '픽셀이 구름으로 판정됨', 사건 B = '픽셀이 수계로 판정됨'이라 하자. 두 사건이 통계적으로 독립(independent)이라는 것의 정의는?",
+      "choices": [
+        {
+          "text": "P(A∩B) = 0",
+          "rationale": "동시에 일어날 수 없다는 뜻으로 배반(mutually exclusive) 사건의 정의입니다. 확률이 0보다 큰 두 배반 사건은 오히려 독립이 아닙니다(하나가 일어나면 다른 하나의 확률이 0이 되므로)."
+        },
+        {
+          "text": "P(A∪B) = P(A) + P(B)",
+          "rationale": "합집합 확률을 단순히 더하는 것은 배반 사건일 때의 덧셈 법칙입니다."
+        },
+        {
+          "text": "P(A|B) = P(B|A)",
+          "rationale": "두 조건부 확률이 같다는 것은 (P(A∩B) > 0일 때) P(A) = P(B)라는 뜻일 뿐, 독립의 정의가 아닙니다."
+        },
+        {
+          "text": "P(A) + P(B) = 1",
+          "rationale": "두 확률의 합이 1인 것은 여사건 관계에서 나타나는 성질이며 독립과 관계없습니다."
+        },
+        {
+          "text": "P(A∩B) = P(A)·P(B)",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "A와 B가 독립이면 한쪽의 발생이 다른 쪽 확률을 바꾸지 않으므로 P(A|B) = P(A)이고, 이는 P(A∩B) = P(A)·P(B)와 같습니다.",
+      "explanation_full": "'독립'과 '배반'은 자주 혼동됩니다. 배반은 '같이 일어날 수 없다'(교집합 확률 0)는 뜻이고, 독립은 '서로 정보를 주지 않는다'는 뜻입니다. 원격탐사 예: 두 위성이 서로 다른 날 촬영할 때 각 날의 구름 여부가 독립이면 '둘 다 흐릴 확률 = 각 확률의 곱'이지만, 장마철처럼 날씨가 연속되면 독립 가정이 깨집니다.",
+      "tags": [
+        "probability",
+        "independence"
+      ],
+      "terms": [
+        "statistical-independence"
+      ],
+      "source_ref": "확률·분포 일반 (OpenIntro Statistics 3·4장)",
+      "status": "draft"
+    },
+    {
+      "id": "A-PROB-015",
+      "type": "scenario",
+      "chapter": "A.prob",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"정확도 검증 포인트를 한 필지 안에서 인접 픽셀로 몰아 뽑지 마. 영상 전체에서 무작위로 뽑되 포인트끼리 최소 500 m는 떨어뜨려.\"\n\n이 지시의 가장 주된 의도는?",
+      "choices": [
+        {
+          "text": "검증 포인트 수를 줄여 현장 검증에 드는 이동 시간과 비용을 낮추기 위해서다",
+          "rationale": "지시는 포인트 수가 아니라 배치 방식에 대한 것입니다. 간격 조건은 비용이 아니라 통계적 독립성을 위한 것입니다."
+        },
+        {
+          "text": "인접 픽셀은 정답 여부가 서로 연관되어 독립 가정이 깨지고, 정확도 신뢰구간이 실제보다 좁게 나오기 때문이다",
+          "rationale": null
+        },
+        {
+          "text": "클래스 경계의 혼합 화소(mixed pixel)가 검증 포인트에 들어가지 않게 하기 위해서다",
+          "rationale": "포인트끼리의 간격을 벌려도 각 포인트가 클래스 경계에 떨어지는 것은 막지 못합니다. 혼합 화소는 경계 버퍼로 따로 제외합니다."
+        },
+        {
+          "text": "클래스마다 같은 수의 포인트를 배정하는 층화 추출을 하기 위해서다",
+          "rationale": "층화 추출은 클래스(층)별 표본 수를 정하는 방법입니다. 이 지시는 클래스 비율이 아니라 공간 간격을 말하고 있습니다."
+        },
+        {
+          "text": "중심극한정리를 쓰려면 검증 포인트 수를 30개 이하로 제한해야 하기 때문이다",
+          "rationale": "중심극한정리는 오히려 표본이 클수록 잘 맞습니다. 표본 수 상한 조건은 없습니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "인접 픽셀은 공간 자기상관 때문에 함께 맞거나 함께 틀리는 경향이 있어 서로 독립이 아닙니다. 독립을 가정한 이항분포로 정확도의 표준오차를 계산하면 실제보다 작게 나와 신뢰구간이 지나치게 좁아집니다.",
+      "explanation_full": "한 필지에서 100픽셀을 뽑는 것은 정보량으로 보면 독립 포인트 100개가 아니라 몇 개에 가깝습니다(유효 표본 수 감소). 최소 간격을 두는 것은 자기상관이 줄어드는 거리 이상으로 떨어뜨려 독립에 가깝게 만들려는 조치이며, 적절한 간격은 베리오그램 등으로 자기상관 범위를 확인해 정합니다. 같은 이유로 학습·검증 분할도 공간 블록 단위로 나눕니다(공간 교차검증).",
+      "tags": [
+        "probability",
+        "independence",
+        "accuracy-assessment",
+        "spatial"
+      ],
+      "terms": [
+        "statistical-independence",
+        "binomial-distribution"
+      ],
+      "source_ref": "확률·분포 일반 (OpenIntro Statistics 3·4장)",
+      "status": "draft"
+    }
+  ]
+}

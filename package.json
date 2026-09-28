@@ -1,7 +1,7 @@
 {
   "name": "visiondrill",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Computer vision terminology & concept drill app (learner + question bank studio)",
   "license": "MIT",
   "scripts": {
@@ -14,7 +14,7 @@
     "sample-pack": "tsx tools/build-sample-pack.ts",
     "format": "prettier --write \"{apps,packages,tools}/**/*.{ts,tsx,css}\"",
     "lint:drafts": "tsx tools/lint-drafts.ts",
-    "merge:drafts": "tsx tools/merge-drafts.ts --preview-pack"
+    "merge:drafts": "tsx tools/merge-drafts.ts --bundle"
   },
   "devDependencies": {
     "@types/node": "^26.6.3",

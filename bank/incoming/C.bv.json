@@ -1,0 +1,791 @@
+{
+  "format": "visiondrill-bank-exchange",
+  "format_version": 1,
+  "terms": [
+    {
+      "id": "overfitting",
+      "term_en": "Overfitting",
+      "term_ko": "과적합",
+      "abbreviation": null,
+      "definition": "모델이 학습 데이터의 잡음·우연한 패턴까지 외워, 학습 성능은 높지만 새 데이터 성능이 크게 떨어지는 상태(분산이 큰 상태)",
+      "usage_example": "train mAP 0.95에 val 0.60이면 과적합이야. 증강이랑 weight decay부터 넣어.",
+      "origin": "standard",
+      "track": "C"
+    },
+    {
+      "id": "underfitting",
+      "term_en": "Underfitting",
+      "term_ko": "과소적합",
+      "abbreviation": null,
+      "definition": "모델이 너무 단순하거나 학습이 부족해 학습 데이터에서조차 오차가 큰 상태(편향이 큰 상태)",
+      "usage_example": "train IoU도 0.6이면 과소적합이지. 규제 풀고 인코더 키워봐.",
+      "origin": "standard",
+      "track": "C"
+    },
+    {
+      "id": "bias-variance-decomposition",
+      "term_en": "Bias-Variance Decomposition",
+      "term_ko": "편향-분산 분해",
+      "abbreviation": null,
+      "definition": "제곱오차의 기댓값을 편향의 제곱, 분산, 줄일 수 없는 오차의 합으로 나누어 오차의 원인을 구분하는 분석",
+      "usage_example": "오차가 편향 쪽인지 분산 쪽인지 먼저 갈라 보고 처방 정하자.",
+      "origin": "standard",
+      "track": "C"
+    },
+    {
+      "id": "bias-variance-tradeoff",
+      "term_en": "Bias-Variance Tradeoff",
+      "term_ko": "편향-분산 트레이드오프",
+      "abbreviation": null,
+      "definition": "모델 복잡도를 높이면 편향은 줄고 분산은 늘어, 두 오차를 동시에 줄이기 어려운 상충 관계",
+      "usage_example": "트리 깊이 무작정 늘리지 마. 편향-분산 트레이드오프 생각해서 검증 점수로 골라.",
+      "origin": "standard",
+      "track": "C"
+    },
+    {
+      "id": "irreducible-error",
+      "term_en": "Irreducible Error",
+      "term_ko": "줄일 수 없는 오차",
+      "abbreviation": null,
+      "definition": "센서 잡음·판독 불일치처럼 데이터 자체에 들어 있어 어떤 모델로도 없앨 수 없는 오차 항(잡음 분산)",
+      "usage_example": "두 판독자 불일치가 15%나 되면 그중 상당 부분은 줄일 수 없는 오차야. 정확도 목표 95%는 무리야.",
+      "origin": "standard",
+      "track": "C"
+    },
+    {
+      "id": "learning-curve",
+      "term_en": "Learning Curve",
+      "term_ko": "학습곡선",
+      "abbreviation": null,
+      "definition": "학습 데이터 양(또는 학습 반복 수)에 따라 학습 성능과 검증 성능이 어떻게 변하는지 함께 그린 곡선",
+      "usage_example": "라벨링 더 할지 결정하게 데이터 25·50·100%로 학습곡선 그려 와.",
+      "origin": "standard",
+      "track": "C"
+    },
+    {
+      "id": "regularization",
+      "term_en": "Regularization",
+      "term_ko": "정규화(규제)",
+      "abbreviation": null,
+      "definition": "가중치 패널티·드롭아웃·데이터 증강·조기 종료 등으로 모델의 실효 복잡도를 제한해 과적합(분산)을 줄이는 기법의 총칭",
+      "usage_example": "val이 벌어지니까 weight decay 1e-4 넣고 규제 강도 좀 올려.",
+      "origin": "standard",
+      "track": "C"
+    }
+  ],
+  "questions": [
+    {
+      "id": "C-BV-001",
+      "type": "short",
+      "chapter": "C.bv",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "학습 데이터에서는 성능이 매우 높지만, 학습 데이터의 잡음까지 외워 새 데이터에서는 성능이 크게 떨어지는 현상의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Overfitting",
+          "Overfit"
+        ],
+        "ko": [
+          "과적합",
+          "과대적합",
+          "오버피팅"
+        ]
+      },
+      "primary": "Overfitting",
+      "explanation_short": "과적합(overfitting)은 모델이 학습 데이터에만 지나치게 맞춰져 새 데이터로 일반화되지 못하는 상태입니다. 학습 성능과 검증 성능의 차이가 크게 벌어지는 것이 대표적인 징후입니다.",
+      "explanation_full": "편향-분산 관점에서는 분산(variance)이 큰 상태입니다. 처방은 데이터 추가, 데이터 증강, weight decay·드롭아웃 같은 규제, 조기 종료, 더 작은 모델 등입니다. 원격탐사에서는 학습 영상 수가 적고 같은 영상에서 잘린 타일끼리 비슷해 과적합이 쉽게 생깁니다.",
+      "tags": [
+        "overfitting",
+        "basics"
+      ],
+      "terms": [
+        "overfitting"
+      ],
+      "source_ref": "ISLR 2.2",
+      "status": "draft"
+    },
+    {
+      "id": "C-BV-002",
+      "type": "short",
+      "chapter": "C.bv",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "모델이 너무 단순하거나 학습이 부족해, 학습 데이터에서조차 오차가 큰 상태의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Underfitting",
+          "Underfit"
+        ],
+        "ko": [
+          "과소적합",
+          "언더피팅"
+        ]
+      },
+      "primary": "Underfitting",
+      "explanation_short": "과소적합(underfitting)은 모델이 데이터의 패턴을 충분히 담지 못해 학습 오차와 검증 오차가 모두 높은 상태입니다. 편향-분산 관점에서는 편향(bias)이 큰 상태입니다.",
+      "explanation_full": "처방은 과적합과 반대 방향입니다. 모델 용량 키우기(더 큰 백본), 규제 약화, 더 오래 학습, 유용한 입력 특징 추가 등이 있습니다. 데이터를 더 모으는 것은 과소적합에는 효과가 작은 경우가 많습니다.",
+      "tags": [
+        "underfitting",
+        "basics"
+      ],
+      "terms": [
+        "underfitting"
+      ],
+      "source_ref": "ISLR 2.2",
+      "status": "draft"
+    },
+    {
+      "id": "C-BV-003",
+      "type": "mcq",
+      "chapter": "C.bv",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "제곱오차의 기댓값을 편향-분산 분해(bias-variance decomposition)하면 어떤 항들의 합이 되는가?",
+      "choices": [
+        {
+          "text": "편향 + 분산",
+          "rationale": "편향은 제곱해서 더해야 하고, 데이터 잡음에서 오는 줄일 수 없는 오차 항도 빠졌습니다."
+        },
+        {
+          "text": "편향의 제곱 + 분산 + 줄일 수 없는 오차",
+          "rationale": null
+        },
+        {
+          "text": "편향의 제곱 + 분산의 제곱 + 줄일 수 없는 오차",
+          "rationale": "분산은 이미 제곱 단위(예측값과 그 평균 차이의 제곱 평균)이므로 다시 제곱하지 않습니다."
+        },
+        {
+          "text": "편향과 분산의 곱 + 줄일 수 없는 오차",
+          "rationale": "두 항은 곱이 아니라 합으로 분해됩니다. 전개 과정의 교차항은 기댓값을 취하면 0이 되어 사라집니다."
+        },
+        {
+          "text": "학습 오차 + 검증 오차 + 시험 오차",
+          "rationale": "데이터 분할별 오차는 평가 방법의 구분일 뿐, 한 지점의 기대 오차를 원인별로 나눈 분해가 아닙니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "기대 제곱오차 E[(y − f̂(x))²]는 편향²(평균 예측이 참값에서 벗어난 정도) + 분산(학습 데이터에 따라 예측이 흔들리는 정도) + 줄일 수 없는 오차(잡음 분산 σ²)로 나뉩니다.",
+      "explanation_full": "편향은 모델이 너무 단순해 생기는 체계적 오차, 분산은 모델이 학습 데이터에 민감해 생기는 오차, 줄일 수 없는 오차는 데이터 자체의 잡음입니다. 이 분해는 회귀의 제곱오차에서 깔끔하게 성립하며, 분류·딥러닝에서는 '편향 쪽 문제인가, 분산 쪽 문제인가'를 가르는 사고 틀로 널리 쓰입니다.",
+      "tags": [
+        "bias-variance",
+        "formula"
+      ],
+      "terms": [
+        "bias-variance-decomposition",
+        "irreducible-error"
+      ],
+      "source_ref": "Hastie et al., ESL 7.3",
+      "status": "draft"
+    },
+    {
+      "id": "C-BV-004",
+      "type": "short",
+      "chapter": "C.bv",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "모델을 복잡하게 만들면 편향은 줄지만 분산이 늘어나, 두 오차를 동시에 줄이기 어려운 관계를 무엇이라 하는가? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Bias-variance tradeoff",
+          "Bias-variance dilemma"
+        ],
+        "ko": [
+          "편향-분산 트레이드오프",
+          "편향-분산 상충관계",
+          "편향-분산 상충",
+          "편향-분산 딜레마"
+        ]
+      },
+      "primary": "Bias-variance tradeoff",
+      "explanation_short": "편향-분산 트레이드오프(bias-variance tradeoff)는 모델 복잡도를 조절할 때 편향과 분산이 서로 반대로 움직이는 관계입니다. 그래서 검증 오차가 가장 낮은 중간 복잡도를 찾아야 합니다.",
+      "explanation_full": "고전적 관점에서 시험 오차는 복잡도에 대해 U자 모양입니다. 다만 매우 큰 신경망에서는 복잡도를 더 키우면 시험 오차가 다시 내려가는 이중 하강(double descent)도 관찰되므로, 실제 선택은 항상 검증 데이터로 확인합니다.",
+      "tags": [
+        "bias-variance"
+      ],
+      "terms": [
+        "bias-variance-tradeoff"
+      ],
+      "source_ref": "ISLR 2.2",
+      "status": "draft"
+    },
+    {
+      "id": "C-BV-005",
+      "type": "short",
+      "chapter": "C.bv",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "편향-분산 분해에서, 센서 잡음이나 판독자 간 불일치처럼 데이터 자체에 들어 있어 어떤 모델을 써도 없앨 수 없는 오차 항의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Irreducible error",
+          "Bayes error"
+        ],
+        "ko": [
+          "줄일 수 없는 오차",
+          "환원 불가능한 오차",
+          "축소 불가능 오차",
+          "베이즈 오차"
+        ]
+      },
+      "primary": "Irreducible error",
+      "explanation_short": "줄일 수 없는 오차(irreducible error)는 입력만으로는 설명되지 않는 목표값의 잡음(σ²)에서 옵니다. 모델을 바꾸거나 데이터를 늘려도 이 아래로는 오차를 낮출 수 없습니다.",
+      "explanation_full": "분류에서는 같은 개념을 베이즈 오차(Bayes error)라고 부릅니다. 원격탐사에서는 혼합 픽셀 경계, 판독자 간 불일치, 센서 잡음이 대표적 원인입니다. 판독자 간 일치율을 미리 재 두면 모델 성능 목표를 현실적으로 잡을 수 있습니다. 판독 기준을 바꾸거나 더 좋은 센서를 쓰는 것처럼 '데이터 자체'를 바꾸면 이 항도 달라질 수 있습니다.",
+      "tags": [
+        "bias-variance",
+        "noise"
+      ],
+      "terms": [
+        "irreducible-error",
+        "bias-variance-decomposition"
+      ],
+      "source_ref": "Hastie et al., ESL 7.3",
+      "status": "draft"
+    },
+    {
+      "id": "C-BV-006",
+      "type": "short",
+      "chapter": "C.bv",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "학습 데이터 양(또는 학습 반복 수)을 가로축으로 두고, 학습 성능과 검증 성능의 변화를 함께 그린 그래프의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Learning curve",
+          "Learning curves",
+          "Training curve"
+        ],
+        "ko": [
+          "학습곡선",
+          "학습 곡선도",
+          "러닝 커브"
+        ]
+      },
+      "primary": "Learning curve",
+      "explanation_short": "학습곡선(learning curve)은 학습·검증 성능이 데이터 양이나 학습 반복에 따라 어떻게 변하는지 보여 줍니다. 두 곡선의 높이와 간격으로 과적합·과소적합을 진단합니다.",
+      "explanation_full": "고전적 머신러닝에서는 주로 '학습 데이터 크기'를 가로축으로 두고 데이터 추가의 효과를 판단합니다. 딥러닝 실무에서는 '에폭'을 가로축으로 둔 손실 곡선도 흔히 학습곡선이라 부르므로, 대화할 때 가로축이 무엇인지 먼저 확인하는 것이 좋습니다.",
+      "tags": [
+        "learning-curve"
+      ],
+      "terms": [
+        "learning-curve"
+      ],
+      "source_ref": "scikit-learn 문서 Validation curves / Learning curve",
+      "status": "draft"
+    },
+    {
+      "id": "C-BV-007",
+      "type": "mcq",
+      "chapter": "C.bv",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "다음 중 과적합을 줄이는 정규화(regularization, 규제) 기법에 해당하지 않는 것은?",
+      "choices": [
+        {
+          "text": "손실에 가중치 제곱합 패널티 항을 더해 가중치 크기를 억제하는 L2 weight decay",
+          "rationale": "가중치 크기를 억제해 모델의 실효 복잡도를 줄이는 대표적인 정규화 기법입니다."
+        },
+        {
+          "text": "학습 중 무작위로 일부 유닛을 끄는 드롭아웃(dropout)",
+          "rationale": "여러 부분 네트워크를 앙상블하는 효과를 내 분산을 줄이는 정규화 기법입니다."
+        },
+        {
+          "text": "검증 손실이 나빠지기 시작하면 학습을 멈추는 조기 종료",
+          "rationale": "학습 반복 수를 제한해 학습 데이터를 과하게 외우기 전에 멈추는 정규화 기법입니다."
+        },
+        {
+          "text": "입력 밴드 값을 평균 0·표준편차 1로 바꾸는 표준화(normalization)",
+          "rationale": null
+        },
+        {
+          "text": "회전·뒤집기로 학습 영상을 다양하게 늘리는 데이터 증강",
+          "rationale": "불변성을 알려 주고 사실상 데이터를 늘려 분산을 줄이므로 딥러닝에서 정규화로 분류됩니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "입력 표준화는 밴드 값의 척도를 맞춰 최적화를 안정시키는 전처리이며, 모델의 복잡도를 제한하지 않으므로 정규화(규제)가 아닙니다. 한국어로 둘 다 '정규화'라 부르기도 해 헷갈리기 쉽습니다.",
+      "explanation_full": "영어로는 regularization(규제, 과적합 억제)과 normalization(값의 척도 맞추기)이 전혀 다른 개념입니다. 배치 정규화(batch normalization)도 이름은 normalization이지만 부수적으로 약한 규제 효과가 있을 뿐, 기본 목적은 학습 안정화입니다. 업무 대화에서 '정규화'가 나오면 둘 중 무엇인지 확인하세요.",
+      "tags": [
+        "regularization",
+        "terminology"
+      ],
+      "terms": [
+        "regularization"
+      ],
+      "source_ref": "Goodfellow et al., Deep Learning 7장",
+      "status": "draft"
+    },
+    {
+      "id": "C-BV-008",
+      "type": "mcq",
+      "chapter": "C.bv",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "Sentinel-2 토지피복 분류 모델의 학습 정확도가 99%, 검증 정확도가 72%이다. 편향-분산 관점에서 가장 알맞은 진단은?",
+      "choices": [
+        {
+          "text": "분산이 큰 과적합 상태",
+          "rationale": null
+        },
+        {
+          "text": "편향이 큰 과소적합 상태",
+          "rationale": "과소적합이면 학습 정확도부터 낮아야 합니다. 학습 99%는 모델이 학습 데이터를 충분히 맞히고 있다는 뜻입니다."
+        },
+        {
+          "text": "줄일 수 없는 오차가 대부분인 상태",
+          "rationale": "줄일 수 없는 오차는 학습·검증 데이터 모두에 공통으로 깔린 바닥이라, 27%p나 되는 학습–검증 격차 자체를 설명하지 못합니다."
+        },
+        {
+          "text": "편향과 분산이 모두 작은 이상적 상태",
+          "rationale": "검증 정확도가 학습보다 27%p 낮으므로 분산이 작다고 볼 수 없습니다."
+        },
+        {
+          "text": "학습 데이터가 너무 많아서 생긴 상태",
+          "rationale": "데이터가 많을수록 분산은 줄어드는 것이 일반적입니다. 큰 격차는 오히려 데이터가 모델 복잡도에 비해 부족할 때 나타납니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "학습 성능은 매우 높고 검증 성능과의 격차가 크면, 모델이 학습 데이터에 과하게 맞춰져 데이터가 바뀌면 예측이 크게 흔들리는 분산이 큰 상태, 즉 과적합입니다.",
+      "explanation_full": "진단 순서를 기억해 두면 좋습니다. (1) 학습 오차가 높다 → 편향(과소적합) 의심. (2) 학습 오차는 낮은데 검증 오차가 훨씬 높다 → 분산(과적합) 의심. (3) 둘 다 낮고 비슷하다 → 양호. 원격탐사에서는 검증셋이 학습 타일과 인접하면 격차가 실제보다 작게 보이므로 분할 방식도 함께 확인합니다.",
+      "tags": [
+        "overfitting",
+        "diagnosis"
+      ],
+      "terms": [
+        "overfitting",
+        "bias-variance-decomposition"
+      ],
+      "source_ref": "ISLR 2.2",
+      "status": "draft"
+    },
+    {
+      "id": "C-BV-009",
+      "type": "mcq",
+      "chapter": "C.bv",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "학습 오차와 검증 오차가 모두 높고 둘의 차이가 거의 없는 과소적합(underfitting) 상태를 편향-분산 관점에서 옳게 설명한 것은?",
+      "choices": [
+        {
+          "text": "편향이 작고 분산이 크다",
+          "rationale": "그것은 학습–검증 격차가 크게 벌어지는 과적합의 특징입니다."
+        },
+        {
+          "text": "편향과 분산이 모두 크다",
+          "rationale": "분산이 크면 학습 오차와 검증 오차가 크게 벌어집니다. 두 오차가 비슷하다는 것은 분산이 작다는 신호입니다."
+        },
+        {
+          "text": "분산이 커서 데이터만 늘리면 바로 해결된다",
+          "rationale": "분산 문제라면 학습–검증 격차가 커야 합니다. 과소적합에서는 데이터를 늘려도 두 오차가 함께 높은 수준에 머무는 경우가 많습니다."
+        },
+        {
+          "text": "편향과 분산이 모두 작아 더 개선할 수 없다",
+          "rationale": "과소적합은 모델이 단순해 생기는 체계적 오차, 즉 편향이 큰 상태입니다. 용량을 키우는 방향으로 개선할 수 있습니다."
+        },
+        {
+          "text": "편향이 크고 분산은 작다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "과소적합은 모델이 너무 단순해 데이터의 패턴을 체계적으로 놓치는 상태이므로 편향이 크고, 학습·검증 오차가 비슷하므로 분산은 작습니다.",
+      "explanation_full": "처방은 편향을 줄이는 쪽입니다. 더 큰 모델, 규제 약화, 더 긴 학습, 유용한 특징(예: 분광 지수, 추가 밴드) 투입을 검토합니다. 데이터 추가는 분산을 줄이는 처방이라 이 상태에서는 효과가 작습니다.",
+      "tags": [
+        "underfitting",
+        "bias-variance"
+      ],
+      "terms": [
+        "underfitting",
+        "bias-variance-decomposition"
+      ],
+      "source_ref": "Hastie et al., ESL 7.3",
+      "status": "draft"
+    },
+    {
+      "id": "C-BV-010",
+      "type": "mcq",
+      "chapter": "C.bv",
+      "cognitive_level": 2,
+      "difficulty": 4,
+      "stem": "고전적인 편향-분산 트레이드오프 관점에서, 모델 복잡도를 점점 높일 때 일반적으로 나타나는 경향은?",
+      "choices": [
+        {
+          "text": "편향은 늘고 분산은 줄어, 시험 오차가 복잡도에 따라 계속 줄어든다",
+          "rationale": "방향이 반대입니다. 복잡한 모델은 학습 데이터에 유연하게 맞춰 편향이 줄고, 학습 데이터에 따라 결과가 크게 흔들려 분산이 늘어납니다."
+        },
+        {
+          "text": "편향과 분산이 함께 줄어 시험 오차가 복잡도에 대해 단조 감소한다",
+          "rationale": "고전적 관점에서 두 항은 상충해 함께 줄지 않으며, 그래서 시험 오차가 U자 모양이 됩니다."
+        },
+        {
+          "text": "편향은 줄고 분산은 늘어, 시험 오차는 줄다가 어느 지점부터 다시 늘어난다",
+          "rationale": null
+        },
+        {
+          "text": "학습 오차가 U자 모양을 그리며 줄다가 어느 지점부터 다시 늘어난다",
+          "rationale": "학습 오차는 복잡도가 커질수록 대체로 계속 줄어듭니다. U자 모양은 시험(검증) 오차의 특징입니다."
+        },
+        {
+          "text": "줄일 수 없는 오차가 점점 작아져 시험 오차의 하한이 낮아진다",
+          "rationale": "줄일 수 없는 오차는 데이터 잡음에서 오므로 모델 복잡도와 무관하게 일정합니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "복잡도가 커지면 편향은 줄고 분산은 늘어납니다. 처음에는 편향 감소가 커서 시험 오차가 줄지만, 어느 지점부터 분산 증가가 더 커져 시험 오차가 다시 늘어나는 U자 모양이 됩니다.",
+      "explanation_full": "U자의 바닥이 최적 복잡도이며, 이를 검증 데이터(또는 교차검증)로 찾습니다. 참고로 파라미터가 매우 많은 현대 신경망에서는 학습 데이터를 완전히 맞히는 지점을 지나 복잡도를 더 키우면 시험 오차가 다시 내려가는 이중 하강(double descent)이 보고되어 있어, '고전적 관점'이라는 단서를 붙였습니다.",
+      "tags": [
+        "bias-variance",
+        "complexity"
+      ],
+      "terms": [
+        "bias-variance-tradeoff"
+      ],
+      "source_ref": "ISLR 2.2; Belkin et al. 2019 (double descent)",
+      "status": "draft"
+    },
+    {
+      "id": "C-BV-011",
+      "type": "mcq",
+      "chapter": "C.bv",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "학습 데이터 양을 늘려 가며 그린 학습곡선에서, 학습 오차는 낮게 유지되고 검증 오차는 훨씬 높지만 데이터가 늘수록 두 곡선의 간격이 계속 좁혀지고 있다. 가장 알맞은 해석은?",
+      "choices": [
+        {
+          "text": "편향이 큰 상태로, 데이터를 더 모아도 검증 오차는 거의 줄지 않고 평평하게 유지된다",
+          "rationale": "그것은 두 곡선이 높은 오차에서 이미 붙어 평평해진 경우의 해석입니다. 여기서는 간격이 크고 계속 좁혀지고 있습니다."
+        },
+        {
+          "text": "학습 오차가 낮으므로 이미 최적 상태이며 추가 조치가 필요 없다",
+          "rationale": "학습 오차만 낮고 검증 오차가 훨씬 높으면 일반화가 되지 않은 것입니다."
+        },
+        {
+          "text": "분산이 큰 상태로, 데이터를 더 모으면 검증 오차가 더 내려갈 여지가 크다",
+          "rationale": null
+        },
+        {
+          "text": "검증 데이터가 학습 데이터와 겹쳐 누수가 생긴 상태이다",
+          "rationale": "누수가 있으면 검증 오차가 학습 오차만큼 낮게 나와 간격이 작아 보입니다. 큰 간격은 누수와 반대되는 신호입니다."
+        },
+        {
+          "text": "모델 용량이 부족하므로 더 깊은 모델로 바꿔야 한다",
+          "rationale": "학습 오차가 이미 낮으므로 용량 부족(편향) 신호가 아닙니다. 더 복잡한 모델은 분산을 더 키울 수 있습니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "학습–검증 간격이 크면 분산(과적합) 문제이고, 데이터가 늘수록 간격이 계속 좁혀지고 있으므로 데이터를 더 모으면 검증 오차가 추가로 내려갈 가능성이 큽니다.",
+      "explanation_full": "학습곡선은 '레이블링을 더 할 가치가 있는가'를 판단하는 도구입니다. 곡선 끝이 아직 내려가는 중이면 데이터 추가가 유효하고, 이미 평평하면 효과가 작습니다. 데이터를 당장 늘릴 수 없다면 증강·규제로 분산을 줄이는 것이 대안입니다.",
+      "tags": [
+        "learning-curve",
+        "overfitting"
+      ],
+      "terms": [
+        "learning-curve",
+        "overfitting"
+      ],
+      "source_ref": "scikit-learn 문서 Learning curve; Ng, Machine Learning Yearning",
+      "status": "draft"
+    },
+    {
+      "id": "C-BV-012",
+      "type": "mcq",
+      "chapter": "C.bv",
+      "cognitive_level": 2,
+      "difficulty": 4,
+      "stem": "학습 데이터 크기를 가로축으로 둔 학습곡선에서, 모델을 고정하고 데이터를 늘려 갈 때 일반적으로 나타나는 경향은?",
+      "choices": [
+        {
+          "text": "학습 오차와 검증 오차가 함께 줄어 결국 둘 다 0으로 수렴한다",
+          "rationale": "줄일 수 없는 오차와 모델 편향 때문에 검증 오차는 보통 0보다 높은 수준에서 평평해집니다."
+        },
+        {
+          "text": "학습 오차는 줄고 검증 오차는 늘어 두 곡선이 점점 멀어진다",
+          "rationale": "그것은 에폭을 가로축으로 둔 곡선에서 오래 학습해 과적합될 때의 모습에 가깝습니다. 데이터가 늘면 외우기 어려워져 격차는 줄어드는 것이 일반적입니다."
+        },
+        {
+          "text": "학습 오차는 그대로이고 검증 오차만 선형으로 계속 줄어든다",
+          "rationale": "데이터가 적을 때는 학습 샘플을 쉽게 외우지만 데이터가 늘면 다 맞히기 어려워져 학습 오차가 올라갑니다. 검증 오차의 감소도 점차 둔화됩니다."
+        },
+        {
+          "text": "두 곡선이 데이터 양과 무관하게 일정한 간격을 유지한다",
+          "rationale": "간격(일반화 격차)은 데이터가 늘수록 줄어드는 것이 일반적이며, 이 성질 때문에 데이터 추가가 과적합 처방이 됩니다."
+        },
+        {
+          "text": "학습 오차는 조금씩 늘고 검증 오차는 줄어 두 곡선이 가까워진다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "데이터가 적으면 모델이 학습 샘플을 쉽게 외워 학습 오차는 낮고 검증 오차는 높습니다. 데이터가 늘면 외우기 어려워져 학습 오차는 오르고, 일반화가 좋아져 검증 오차는 내려가 두 곡선이 가까워집니다.",
+      "explanation_full": "두 곡선이 만나는 높이가 모델이 도달할 수 있는 한계(편향 + 줄일 수 없는 오차)를 보여 줍니다. 그 높이가 목표보다 높으면 데이터가 아니라 모델·특징을 바꿔야 합니다. 곡선은 분할에 따라 흔들리므로 가능하면 여러 번 나눠 평균을 그립니다.",
+      "tags": [
+        "learning-curve"
+      ],
+      "terms": [
+        "learning-curve"
+      ],
+      "source_ref": "scikit-learn 문서 Learning curve; ISLR 2.2",
+      "status": "draft"
+    },
+    {
+      "id": "C-BV-013",
+      "type": "mcq",
+      "chapter": "C.bv",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "Ridge 회귀나 신경망의 weight decay에서 정규화 강도 λ를 키울 때, 편향과 분산의 변화로 옳은 것은?",
+      "choices": [
+        {
+          "text": "편향은 커지고 분산은 작아진다",
+          "rationale": null
+        },
+        {
+          "text": "편향은 작아지고 분산은 커진다",
+          "rationale": "반대입니다. λ를 키우면 가중치가 0 쪽으로 눌려 모델이 단순해지므로 편향이 늘고 분산이 줄어듭니다."
+        },
+        {
+          "text": "편향과 분산이 모두 작아진다",
+          "rationale": "정규화는 분산을 줄이는 대가로 편향을 조금 늘리는 거래입니다. 둘 다 공짜로 줄지는 않습니다."
+        },
+        {
+          "text": "편향과 분산은 그대로이고 줄일 수 없는 오차가 작아진다",
+          "rationale": "줄일 수 없는 오차는 데이터 잡음에서 오므로 정규화로 바뀌지 않습니다."
+        },
+        {
+          "text": "λ와 무관하게 편향과 분산은 데이터 양으로만 정해진다",
+          "rationale": "데이터 양도 분산에 영향을 주지만, 모델 제약을 조절하는 λ 역시 편향과 분산을 직접 바꿉니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "정규화 강도 λ를 키우면 가중치가 작게 눌려 모델의 실효 복잡도가 줄어듭니다. 그 결과 학습 데이터에 대한 민감도(분산)는 줄고, 참 관계를 덜 유연하게 맞추므로 편향은 커집니다.",
+      "explanation_full": "적절한 λ는 분산 감소 이득이 편향 증가 손해보다 큰 지점이며, 검증 데이터나 교차검증으로 고릅니다. λ가 너무 크면 과소적합으로 넘어갑니다. 드롭아웃 비율, 증강 강도 같은 다른 규제 손잡이도 같은 방향으로 작동합니다.",
+      "tags": [
+        "regularization",
+        "bias-variance"
+      ],
+      "terms": [
+        "regularization",
+        "bias-variance-tradeoff"
+      ],
+      "source_ref": "ISLR 6.2; Goodfellow et al., Deep Learning 7.1",
+      "status": "draft"
+    },
+    {
+      "id": "C-BV-014",
+      "type": "mcq",
+      "chapter": "C.bv",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "구름 그림자 경계 픽셀은 숙련 판독자 두 명이 판독해도 약 20%가 서로 다르게 레이블된다. 판독 기준을 그대로 둔다면, 이 불일치에서 오는 오차는 편향-분산 분해에서 어느 항에 해당하는가?",
+      "choices": [
+        {
+          "text": "편향(bias)",
+          "rationale": "편향은 모델이 너무 단순해 참 관계를 체계적으로 놓칠 때 생깁니다. 더 유연한 모델로 줄일 수 있다는 점에서 레이블 잡음과 다릅니다."
+        },
+        {
+          "text": "분산(variance)",
+          "rationale": "분산은 학습 데이터가 바뀔 때 모델 예측이 흔들리는 정도입니다. 데이터를 늘리거나 규제로 줄일 수 있어 레이블 자체의 불일치와 다릅니다."
+        },
+        {
+          "text": "편향과 분산의 교차항",
+          "rationale": "제곱오차의 편향-분산 분해에서 교차항은 기댓값을 취하면 0이 되어 따로 남지 않습니다."
+        },
+        {
+          "text": "줄일 수 없는 오차(잡음)",
+          "rationale": null
+        },
+        {
+          "text": "일반화 격차(generalization gap)",
+          "rationale": "일반화 격차는 학습–검증 성능 차이이며 분해의 구성 항이 아닙니다. 판독 불일치는 학습·검증 데이터 모두에 똑같이 들어 있습니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "같은 픽셀을 전문가도 다르게 판독한다면 입력만으로는 레이블을 확정할 수 없다는 뜻입니다. 이런 잡음에서 오는 오차는 어떤 모델을 써도 없앨 수 없는 줄일 수 없는 오차에 해당합니다.",
+      "explanation_full": "실무에서는 판독자 간 일치율을 모델 성능 상한의 대략적인 기준으로 봅니다. 경계 픽셀 비중이 큰 과제라면 판독 기준을 명확히 하거나(데이터 자체를 바꾸는 것), 경계 버퍼를 평가에서 제외하는 규칙을 미리 합의해 두는 것이 좋습니다.",
+      "tags": [
+        "noise",
+        "bias-variance"
+      ],
+      "terms": [
+        "irreducible-error",
+        "bias-variance-decomposition"
+      ],
+      "source_ref": "Hastie et al., ESL 7.3",
+      "status": "draft"
+    },
+    {
+      "id": "C-BV-015",
+      "type": "scenario",
+      "chapter": "C.bv",
+      "cognitive_level": 3,
+      "difficulty": 2,
+      "stem": "지시: \"val loss가 15 에폭부터 올라가는데 train loss는 60 에폭까지 계속 내려가고 있어. 지금 마지막 에폭 가중치 쓰고 있지? 저장 기준부터 바꿔서 다시 돌려.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "학습 손실이 가장 낮은 에폭의 가중치를 저장하도록 기준을 바꾼다",
+          "rationale": "학습 손실 최저점은 대개 마지막 에폭이라 지금과 다를 바 없습니다. 과적합 시점을 잡으려면 검증 손실을 기준으로 해야 합니다."
+        },
+        {
+          "text": "검증 손실이 가장 낮은 에폭의 가중치를 저장하고 조기 종료를 설정한다",
+          "rationale": null
+        },
+        {
+          "text": "시험셋 mAP가 가장 높은 에폭의 가중치를 골라 최종 모델로 저장한다",
+          "rationale": "시험셋으로 모델을 고르면 시험 점수가 낙관적으로 부풀어 최종 평가의 의미가 사라집니다. 선택은 검증셋으로 합니다."
+        },
+        {
+          "text": "에폭 수를 120으로 늘려 학습 손실을 더 낮춘 뒤 마지막 가중치를 쓴다",
+          "rationale": "이미 15 에폭부터 과적합이 진행 중이므로 더 오래 학습하면 검증 성능이 더 나빠집니다."
+        },
+        {
+          "text": "학습률을 10배 올려 학습 손실이 더 빨리 내려가게 한다",
+          "rationale": "학습 손실을 빨리 내리는 것은 해결책이 아닙니다. 지시의 핵심은 과적합 이전 시점의 가중치를 고르는 저장 기준입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "학습 손실은 계속 내려가는데 검증 손실이 오르기 시작하면 그 시점부터 과적합입니다. 검증 손실(또는 검증 지표)이 가장 좋은 에폭의 가중치를 저장하고, 일정 에폭 동안 개선이 없으면 멈추는 조기 종료를 두는 것이 정석입니다.",
+      "explanation_full": "에폭을 가로축으로 둔 학습곡선에서 검증 곡선이 U자로 꺾이는 지점을 찾는 것입니다. 조기 종료는 학습 반복 수를 제한하는 규제의 일종입니다. patience는 검증 곡선의 잡음을 고려해 5~20 에폭 정도로 잡는 경우가 많으며, 과적합이 이렇게 이르게 시작되면 증강·weight decay 강화도 함께 검토합니다.",
+      "tags": [
+        "overfitting",
+        "early-stopping"
+      ],
+      "terms": [
+        "overfitting",
+        "learning-curve"
+      ],
+      "source_ref": "Goodfellow et al., Deep Learning 7.8",
+      "status": "draft"
+    },
+    {
+      "id": "C-BV-016",
+      "type": "scenario",
+      "chapter": "C.bv",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"Sentinel-2 수계 추출 U-Net이 train IoU 0.62, val IoU 0.60이야. 증강은 더 넣지 말고 모델 쪽부터 손봐.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "회전·밝기 증강의 강도와 적용 확률을 높인다",
+          "rationale": "증강은 분산을 줄이는 규제라 과소적합에는 효과가 작고, 지시에서도 증강은 제외하라고 했습니다."
+        },
+        {
+          "text": "더 큰 인코더로 바꾸거나 weight decay·드롭아웃 같은 규제를 약하게 한다",
+          "rationale": null
+        },
+        {
+          "text": "드롭아웃 비율을 0.5로 높여 다시 학습한다",
+          "rationale": "드롭아웃을 늘리면 실효 용량이 더 줄어 과소적합이 심해집니다."
+        },
+        {
+          "text": "학습 타일을 두 배로 늘려 같은 모델로 다시 학습한다",
+          "rationale": "학습·검증 IoU가 모두 낮고 비슷한 편향 문제에는 데이터 추가 효과가 작습니다. 지시도 모델 쪽 조치를 요구합니다."
+        },
+        {
+          "text": "조기 종료 patience를 줄여 학습을 더 일찍 멈추게 한다",
+          "rationale": "학습 성능 자체가 낮은 상태에서 더 일찍 멈추면 과소적합이 심해집니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "학습 IoU부터 0.62로 낮고 검증과 차이가 거의 없으므로 편향이 큰 과소적합입니다. 모델 쪽 처방은 용량을 키우거나(더 큰 인코더) 실효 용량을 줄이던 규제를 약하게 하는 것입니다.",
+      "explanation_full": "과소적합과 과적합은 처방이 정반대이므로 먼저 학습 성능부터 확인하는 습관이 중요합니다. 수계 추출처럼 비교적 쉬운 과제에서 학습 IoU가 낮다면 레이블 품질(수계 경계 불일치)이나 입력 구성(NIR·SWIR 밴드 포함 여부)도 함께 점검합니다.",
+      "tags": [
+        "underfitting",
+        "prescription"
+      ],
+      "terms": [
+        "underfitting",
+        "regularization",
+        "model-capacity"
+      ],
+      "source_ref": "ISLR 2.2",
+      "status": "draft"
+    },
+    {
+      "id": "C-BV-017",
+      "type": "scenario",
+      "chapter": "C.bv",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"선박 탐지 train mAP50이 0.91인데 val은 0.55야. 학습 영상이 1,200장밖에 안 돼. 과적합부터 잡아.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "백본을 더 큰 모델로 바꿔 표현력을 높인 뒤 같은 설정으로 다시 학습한다",
+          "rationale": "용량을 키우면 분산이 더 커져 과적합이 심해질 가능성이 큽니다."
+        },
+        {
+          "text": "에폭 수를 두 배로 늘려 학습을 더 충분히 시킨 뒤 마지막 가중치를 쓴다",
+          "rationale": "이미 학습 데이터에 과하게 맞춰진 상태라 더 오래 학습하면 격차가 더 벌어집니다."
+        },
+        {
+          "text": "weight decay를 0으로 두고 드롭아웃도 모두 제거해 학습을 자유롭게 한다",
+          "rationale": "규제를 없애면 모델이 학습 데이터를 더 쉽게 외워 과적합이 심해집니다."
+        },
+        {
+          "text": "회전·뒤집기 증강과 weight decay를 넣고, 가능하면 학습 영상을 추가로 확보한다",
+          "rationale": null
+        },
+        {
+          "text": "검증 영상 일부를 학습에 넣고 같은 검증셋으로 다시 성능을 평가해 개선 여부를 본다",
+          "rationale": "검증 영상을 학습에 쓰면 검증 점수만 부풀 뿐 실제 일반화는 확인할 수 없는 데이터 누수입니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "학습–검증 격차가 크고 데이터가 적은 전형적인 과적합(분산 문제)입니다. 증강과 weight decay 같은 규제로 분산을 줄이고, 데이터 추가로 근본적인 격차를 좁히는 것이 맞는 방향입니다.",
+      "explanation_full": "위성·항공 영상의 선박은 방향이 임의이므로 회전·뒤집기 증강이 특히 효과적입니다. 규제를 넣은 뒤에도 격차가 크면 사전학습 가중치 활용, 백본 축소, 조기 종료를 추가로 검토합니다. 처방 효과는 반드시 학습에 쓰지 않은 검증셋으로 확인합니다.",
+      "tags": [
+        "overfitting",
+        "prescription"
+      ],
+      "terms": [
+        "overfitting",
+        "regularization"
+      ],
+      "source_ref": "Goodfellow et al., Deep Learning 7장",
+      "status": "draft"
+    },
+    {
+      "id": "C-BV-018",
+      "type": "scenario",
+      "chapter": "C.bv",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"학습 데이터를 25%, 50%, 100%로 늘려 가며 돌렸는데 val mIoU가 0.61, 0.62, 0.62이고 train mIoU도 0.64 근처야. 라벨링 추가 발주할지 판단해서 알려줘.\"\n\n가장 적절한 판단은?",
+      "choices": [
+        {
+          "text": "곡선이 낮은 수준에서 붙어 평평하므로 라벨링 추가보다 모델·입력 특징 개선을 먼저 한다",
+          "rationale": null
+        },
+        {
+          "text": "val mIoU가 조금씩 오르고 있으니 라벨링을 네 배로 늘리면 성능이 크게 오를 것이다",
+          "rationale": "0.61→0.62→0.62로 사실상 평평합니다. 곡선이 이미 수렴한 편향 상태라 데이터 추가 효과는 작다고 봐야 합니다."
+        },
+        {
+          "text": "train과 val의 차이가 작으므로 과적합이며 규제를 더 강하게 건다",
+          "rationale": "격차가 작은 것은 분산이 작다는 뜻이고, 둘 다 낮은 수준이면 과소적합(편향)입니다. 규제 강화는 반대 방향입니다."
+        },
+        {
+          "text": "학습곡선만으로는 판단할 수 없으니 시험셋 점수를 보고 발주 여부를 정한다",
+          "rationale": "학습곡선은 바로 이런 데이터 추가 판단에 쓰는 도구입니다. 시험셋을 의사결정에 반복해 쓰면 시험셋이 오염됩니다."
+        },
+        {
+          "text": "25%만 써도 성능이 같으니 앞으로 학습 데이터를 25%로 줄여 운영한다",
+          "rationale": "지금 모델에서 비슷할 뿐, 목표는 성능을 올리는 것입니다. 용량을 키우면 더 많은 데이터가 필요해질 수 있어 데이터를 버릴 근거가 되지 않습니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "데이터를 4배로 늘려도 검증 mIoU가 거의 변하지 않고, 학습 mIoU도 비슷하게 낮습니다. 편향이 큰(과소적합) 상태라 데이터 추가 효과가 작으므로, 모델 용량이나 입력 특징을 먼저 개선해야 합니다.",
+      "explanation_full": "학습곡선으로 데이터 추가 판단을 할 때 핵심 질문은 '곡선 끝이 아직 내려가는 중인가'와 '두 곡선이 만나는 높이가 목표보다 높은가'입니다. 모델을 키운 뒤 학습–검증 격차가 벌어지기 시작하면, 그때 다시 학습곡선을 그려 라벨링 추가를 검토합니다.",
+      "tags": [
+        "learning-curve",
+        "underfitting",
+        "data-collection"
+      ],
+      "terms": [
+        "learning-curve",
+        "underfitting"
+      ],
+      "source_ref": "Ng, Machine Learning Yearning; scikit-learn 문서 Learning curve",
+      "status": "draft"
+    }
+  ]
+}

@@ -1,0 +1,851 @@
+{
+  "format": "visiondrill-bank-exchange",
+  "format_version": 1,
+  "terms": [
+    {
+      "id": "pinhole-camera-model",
+      "term_en": "Pinhole Camera Model",
+      "term_ko": "핀홀 카메라 모델",
+      "abbreviation": null,
+      "definition": "3D 점과 투영 중심을 잇는 직선이 영상면과 만나는 곳에 상이 맺힌다고 보는 이상적 카메라 모델. x = f·X/Z 형태의 중심 투영",
+      "usage_example": "렌즈 왜곡만 먼저 펴면 나머지는 핀홀 모델로 계산해도 충분해.",
+      "origin": "standard",
+      "track": "D"
+    },
+    {
+      "id": "focal-length",
+      "term_en": "Focal Length",
+      "term_ko": "초점거리",
+      "abbreviation": "f",
+      "definition": "투영 중심(렌즈 광학 중심)에서 영상면(센서)까지의 거리. 화각과 확대 정도, 같은 고도에서의 GSD를 결정한다",
+      "usage_example": "초점거리 35 mm짜리로 바꾸면 같은 고도에서 GSD가 더 촘촘해지니까 비행 고도 다시 계산해.",
+      "origin": "standard",
+      "track": "D"
+    },
+    {
+      "id": "intrinsic-parameters",
+      "term_en": "Intrinsic Parameters",
+      "term_ko": "내부 파라미터",
+      "abbreviation": "K",
+      "definition": "카메라 자체의 투영 특성을 나타내는 값. 초점거리(fx, fy)·주점(cx, cy)·비대칭(skew)으로 이루어진 3×3 행렬 K로 표현한다",
+      "usage_example": "내부 파라미터는 캘리브레이션 때 한 번 잡아 두고, 줌이나 초점 바꾸면 다시 뽑아.",
+      "origin": "standard",
+      "track": "D"
+    },
+    {
+      "id": "extrinsic-parameters",
+      "term_en": "Extrinsic Parameters",
+      "term_ko": "외부 파라미터",
+      "abbreviation": "[R|t]",
+      "definition": "월드(지상) 좌표계에 대한 카메라의 위치와 자세를 회전 행렬 R과 이동 벡터 t로 나타낸 값. 사진측량에서는 외부표정요소라고도 한다",
+      "usage_example": "GNSS/IMU 로그로 사진마다 외부 파라미터 초기값 넣고 번들 조정 돌려.",
+      "origin": "standard",
+      "track": "D"
+    },
+    {
+      "id": "lens-distortion",
+      "term_en": "Lens Distortion",
+      "term_ko": "렌즈 왜곡",
+      "abbreviation": null,
+      "definition": "실제 렌즈가 핀홀 모델에서 벗어나 상의 위치가 어긋나는 기하 왜곡. 중심에서 반경 방향으로 생기는 방사 왜곡(k1, k2, k3)과 렌즈 편심으로 생기는 접선 왜곡(p1, p2)이 있다",
+      "usage_example": "광각 렌즈라 가장자리 방사 왜곡이 커. 왜곡 보정 안 하고 모자이크하면 경계에서 도로가 꺾여.",
+      "origin": "standard",
+      "track": "D"
+    },
+    {
+      "id": "camera-calibration",
+      "term_en": "Camera Calibration",
+      "term_ko": "카메라 캘리브레이션",
+      "abbreviation": null,
+      "definition": "체커보드 같은 알려진 패턴이나 기준점을 촬영해 카메라의 내부 파라미터와 렌즈 왜곡 계수(필요하면 외부 파라미터)를 추정하는 과정",
+      "usage_example": "새 드론 카메라 들어왔으니 체커보드로 캘리브레이션하고 재투영 오차 0.5픽셀 안쪽인지 확인해.",
+      "origin": "standard",
+      "track": "D"
+    },
+    {
+      "id": "pushbroom-sensor",
+      "term_en": "Pushbroom Sensor",
+      "term_ko": "푸시브룸 센서",
+      "abbreviation": null,
+      "definition": "진행 방향에 수직으로 늘어선 1차원 선형 검출기 배열로 한 줄씩 촬영하고, 플랫폼이 움직이면서 다음 줄을 쌓아 영상을 만드는 센서 방식",
+      "usage_example": "이 위성은 푸시브룸이라 행마다 촬영 시각이 달라. 프레임 카메라처럼 외부 파라미터 하나로 풀면 안 돼.",
+      "origin": "standard",
+      "track": "D"
+    },
+    {
+      "id": "rational-polynomial-coefficients",
+      "term_en": "Rational Polynomial Coefficients",
+      "term_ko": "유리다항식 계수",
+      "abbreviation": "RPC",
+      "definition": "영상 행·열 좌표를 지상 위도·경도·높이의 3차 다항식 비(ratio)로 표현한 계수 집합. 센서 물리 모델 대신 위성영상과 함께 배포되는 대체 센서 모델(RFM)이다",
+      "usage_example": "RPC 파일이랑 5 m DEM 넣어서 정사보정 돌리고, GCP로 편향 보정까지 해.",
+      "origin": "standard",
+      "track": "D"
+    },
+    {
+      "id": "ground-control-point",
+      "term_en": "Ground Control Point",
+      "term_ko": "지상기준점",
+      "abbreviation": "GCP",
+      "definition": "영상에서 위치를 명확히 식별할 수 있고 정확한 지상 좌표(측량값)를 아는 점. 기하 보정·센서 모델 보정과 정확도 검증에 쓴다",
+      "usage_example": "GCP는 도로 교차점 위주로 영상 전역에 고르게 15점 찍고, 그중 5점은 검사점으로 빼둬.",
+      "origin": "standard",
+      "track": "D"
+    }
+  ],
+  "questions": [
+    {
+      "id": "D-CAM-001",
+      "type": "short",
+      "chapter": "D.cam",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "3D 점과 투영 중심을 잇는 직선이 영상면과 만나는 곳에 상이 맺힌다고 보는, 렌즈 없는 이상적 중심 투영 카메라 모델의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Pinhole camera model",
+          "Pinhole model",
+          "Pinhole camera"
+        ],
+        "ko": [
+          "핀홀 카메라 모델",
+          "핀홀 모델",
+          "바늘구멍 사진기 모델",
+          "핀홀 카메라"
+        ]
+      },
+      "primary": "Pinhole camera model",
+      "explanation_short": "핀홀 카메라 모델은 모든 광선이 한 점(투영 중심)을 지난다고 보는 가장 단순한 카메라 모델입니다. 영상 좌표는 x = f·X/Z, y = f·Y/Z로 계산됩니다.",
+      "explanation_full": "실제 카메라는 렌즈 왜곡이 있으므로 '핀홀 모델 + 왜곡 모델'로 표현합니다. 사진측량의 공선 조건식(collinearity equation)도 같은 중심 투영 원리입니다. 동차좌표로 쓰면 x ~ K[R|t]X 한 줄로 내부·외부 파라미터가 모두 들어간 투영이 표현됩니다.",
+      "tags": [
+        "camera-model"
+      ],
+      "terms": [
+        "pinhole-camera-model"
+      ],
+      "source_ref": "Hartley & Zisserman, Multiple View Geometry 2판 6장",
+      "status": "draft"
+    },
+    {
+      "id": "D-CAM-002",
+      "type": "mcq",
+      "chapter": "D.cam",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "핀홀 모델에서 fx = 1,200 px, 주점 cx = 960 px인 카메라가 있다. 카메라 좌표계에서 X = 3 m, Z = 60 m인 점의 영상 가로 좌표 u는? (u = fx·X/Z + cx, 왜곡 없음)",
+      "choices": [
+        {
+          "text": "60 px",
+          "rationale": "fx·X/Z = 60까지만 계산하고 주점 cx를 더하지 않았습니다. 이 값은 주점으로부터의 거리입니다."
+        },
+        {
+          "text": "900 px",
+          "rationale": "960 − 60으로 부호를 반대로 적용했습니다. X가 양수이면 주점보다 오른쪽(+u)에 맺힙니다."
+        },
+        {
+          "text": "1,020 px",
+          "rationale": null
+        },
+        {
+          "text": "4,560 px",
+          "rationale": "fx·X + cx = 3,600 + 960으로 깊이 Z로 나누지 않았습니다. 원근 투영의 핵심은 Z로 나누는 것입니다."
+        },
+        {
+          "text": "980 px",
+          "rationale": "fx/Z = 20에 X를 곱하지 않고 cx에 더했습니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "u = fx·X/Z + cx = 1,200 × 3 / 60 + 960 = 60 + 960 = 1,020 px입니다.",
+      "explanation_full": "깊이 Z로 나누는 것이 원근 투영의 핵심입니다. 같은 X라도 멀리 있을수록(Z가 클수록) 주점에 가깝게 맺혀 작게 보입니다. 드론 사진에서는 Z가 대략 비행 고도에 해당하므로, 고도가 2배가 되면 같은 물체의 영상 크기는 절반이 됩니다.",
+      "tags": [
+        "camera-model",
+        "calculation"
+      ],
+      "terms": [
+        "pinhole-camera-model",
+        "intrinsic-parameters"
+      ],
+      "source_ref": "Hartley & Zisserman, Multiple View Geometry 2판 6장",
+      "status": "draft"
+    },
+    {
+      "id": "D-CAM-003",
+      "type": "short",
+      "chapter": "D.cam",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "투영 중심(렌즈의 광학 중심)에서 영상면(센서)까지의 거리로, 화각과 확대 정도를 결정하는 카메라 파라미터의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Focal length",
+          "Principal distance",
+          "Camera constant"
+        ],
+        "ko": [
+          "초점거리",
+          "주점거리",
+          "화면거리"
+        ]
+      },
+      "primary": "Focal length",
+      "explanation_short": "초점거리(f)가 길수록 화각이 좁아지고 같은 거리의 물체가 크게 찍힙니다. 핀홀 모델 x = f·X/Z에서 f가 확대율을 정합니다.",
+      "explanation_full": "컴퓨터 비전에서는 초점거리를 픽셀 단위(fx = f / 픽셀 크기)로 쓰는 경우가 많습니다. 사진측량에서는 무한 초점 기준의 정밀한 값을 주점거리(principal distance) 또는 화면거리라고 부릅니다. 드론 비행계획에서는 GSD = 픽셀 크기 × 고도 / 초점거리 관계로 고도를 정합니다.",
+      "tags": [
+        "camera-model"
+      ],
+      "terms": [
+        "focal-length"
+      ],
+      "source_ref": "Mikhail et al., Introduction to Modern Photogrammetry",
+      "status": "draft"
+    },
+    {
+      "id": "D-CAM-004",
+      "type": "mcq",
+      "chapter": "D.cam",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "드론이 같은 고도에서 촬영할 때, 센서는 그대로 두고 초점거리가 2배인 렌즈로 바꾸면 GSD와 한 장의 촬영 폭(지상 커버리지)은 어떻게 되는가?",
+      "choices": [
+        {
+          "text": "GSD는 1/2(더 세밀), 촬영 폭도 1/2",
+          "rationale": null
+        },
+        {
+          "text": "GSD는 2배(더 거침), 촬영 폭도 2배",
+          "rationale": "초점거리를 늘리면 확대가 커지므로 반대입니다. 초점거리가 짧아질 때의 변화입니다."
+        },
+        {
+          "text": "GSD는 1/2(더 세밀), 촬영 폭은 그대로",
+          "rationale": "센서 크기가 같으면 확대율이 커진 만큼 지상 촬영 폭도 줄어듭니다."
+        },
+        {
+          "text": "GSD는 그대로, 촬영 폭만 1/2",
+          "rationale": "GSD = 픽셀 크기 × 고도 / 초점거리이므로 초점거리가 바뀌면 GSD도 바뀝니다."
+        },
+        {
+          "text": "GSD는 1/4, 촬영 폭도 1/4",
+          "rationale": "길이 비율은 초점거리에 반비례해 1/2입니다. 1/4은 한 장의 면적 커버리지 비율입니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "GSD = 픽셀 크기 × 고도 / 초점거리, 촬영 폭 = 센서 폭 × 고도 / 초점거리입니다. 초점거리가 2배면 두 값 모두 1/2이 됩니다.",
+      "explanation_full": "예를 들어 픽셀 2.4 µm, 고도 120 m, 초점거리 8.8 mm이면 GSD ≈ 2.4e−6 × 120 / 8.8e−3 ≈ 3.3 cm입니다. 초점거리를 늘려 GSD를 줄이면 한 장이 덮는 면적은 1/4이 되므로, 같은 중복도를 유지하려면 촬영 장수와 비행 경로가 크게 늘어납니다.",
+      "tags": [
+        "camera-model",
+        "gsd"
+      ],
+      "terms": [
+        "focal-length",
+        "ground-sample-distance"
+      ],
+      "source_ref": "Mikhail et al., Introduction to Modern Photogrammetry",
+      "status": "draft"
+    },
+    {
+      "id": "D-CAM-005",
+      "type": "mcq",
+      "chapter": "D.cam",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "카메라 내부 파라미터 행렬 K(3×3)에 들어가는 요소로 옳은 것은?",
+      "choices": [
+        {
+          "text": "회전 행렬 R과 이동 벡터 t",
+          "rationale": "R과 t는 카메라의 위치·자세를 나타내는 외부 파라미터입니다."
+        },
+        {
+          "text": "초점거리(fx, fy)와 주점(cx, cy)",
+          "rationale": null
+        },
+        {
+          "text": "방사·접선 왜곡 계수(k1, k2, p1, p2)",
+          "rationale": "왜곡 계수도 카메라 고유 특성이라 캘리브레이션에서 함께 추정하지만, K 행렬이 아닌 별도의 계수 벡터로 다룹니다."
+        },
+        {
+          "text": "촬영 고도와 자세각(roll, pitch, yaw)",
+          "rationale": "고도와 자세는 촬영할 때마다 달라지는 외부 파라미터에 해당합니다."
+        },
+        {
+          "text": "스테레오 기선 길이 B와 시차 d",
+          "rationale": "B와 d는 스테레오 깊이 계산에 쓰는 값으로, 단일 카메라의 K 행렬 요소가 아닙니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "K = [[fx, s, cx], [0, fy, cy], [0, 0, 1]]로, 픽셀 단위 초점거리(fx, fy), 주점(cx, cy), 비대칭(s, 보통 0)으로 이루어집니다.",
+      "explanation_full": "K는 카메라 좌표계의 3D 방향을 픽셀 좌표로 바꾸는 역할을 합니다. OpenCV calibrateCamera는 K(cameraMatrix)와 왜곡 계수(distCoeffs)를 따로 돌려주며, 두 가지를 합쳐 넓은 의미의 '내부 파라미터'라고 부르기도 합니다.",
+      "tags": [
+        "camera-model"
+      ],
+      "terms": [
+        "intrinsic-parameters"
+      ],
+      "source_ref": "Hartley & Zisserman, Multiple View Geometry 2판 6장; OpenCV 문서 calib3d (Camera Calibration and 3D Reconstruction)",
+      "status": "draft"
+    },
+    {
+      "id": "D-CAM-006",
+      "type": "mcq",
+      "chapter": "D.cam",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "초점과 줌을 고정한 드론 카메라를 한 번 캘리브레이션했다. 원칙적으로 촬영할 때마다 새로 정해야 하는 것은?",
+      "choices": [
+        {
+          "text": "초점거리 fx, fy",
+          "rationale": "초점·줌이 고정이면 초점거리는 카메라 고유값으로 유지됩니다. 캘리브레이션 값을 그대로 씁니다."
+        },
+        {
+          "text": "주점 cx, cy",
+          "rationale": "주점은 렌즈 광축과 센서의 관계로 정해지는 내부 파라미터라, 광학계가 그대로면 바뀌지 않습니다."
+        },
+        {
+          "text": "방사 왜곡 계수 k1, k2와 접선 왜곡 계수 p1, p2",
+          "rationale": "왜곡 계수는 렌즈 설계·조립에 따른 고유 특성입니다. 초점·줌을 바꾸지 않으면 유지됩니다."
+        },
+        {
+          "text": "센서의 픽셀 크기",
+          "rationale": "픽셀 크기는 센서 제조 사양으로 고정된 값입니다."
+        },
+        {
+          "text": "사진마다의 카메라 위치와 자세(외부 파라미터)",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "내부 파라미터는 카메라·렌즈 자체의 특성이라 광학 설정이 같으면 유지되지만, 외부 파라미터는 촬영 순간 카메라가 어디서 어느 방향을 보았는지이므로 사진마다 다릅니다.",
+      "explanation_full": "드론 사진측량에서는 GNSS/IMU로 외부 파라미터 초기값을 얻고, 번들 조정(bundle adjustment)으로 정밀하게 추정합니다. 실제로는 온도·진동으로 내부 파라미터도 조금씩 변할 수 있어, SfM 소프트웨어는 자체 캘리브레이션(self-calibration)으로 함께 미세 조정하기도 합니다.",
+      "tags": [
+        "camera-model"
+      ],
+      "terms": [
+        "extrinsic-parameters",
+        "intrinsic-parameters"
+      ],
+      "source_ref": "Mikhail et al., Introduction to Modern Photogrammetry; Hartley & Zisserman, Multiple View Geometry 2판 6장",
+      "status": "draft"
+    },
+    {
+      "id": "D-CAM-007",
+      "type": "mcq",
+      "chapter": "D.cam",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "월드(지상) 좌표계에 대한 카메라의 위치와 자세를 회전 행렬 R과 이동 벡터 t로 나타낸 것을 무엇이라 하는가?",
+      "choices": [
+        {
+          "text": "내부 파라미터(intrinsic parameters)",
+          "rationale": "내부 파라미터는 초점거리·주점처럼 카메라 자체의 투영 특성으로, 위치·자세와는 무관합니다."
+        },
+        {
+          "text": "렌즈 왜곡 계수(distortion coefficients)",
+          "rationale": "왜곡 계수는 렌즈가 핀홀 모델에서 벗어나는 정도를 나타냅니다."
+        },
+        {
+          "text": "RPC(유리다항식 계수)",
+          "rationale": "RPC는 위성영상의 영상 좌표와 지상 좌표 관계를 다항식 비로 근사한 대체 모델입니다. R과 t로 이루어지지 않습니다."
+        },
+        {
+          "text": "외부 파라미터(extrinsic parameters)",
+          "rationale": null
+        },
+        {
+          "text": "호모그래피(homography)",
+          "rationale": "호모그래피는 두 평면(또는 두 영상) 사이의 3×3 투영 변환입니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "외부 파라미터 [R|t]는 월드 좌표를 카메라 좌표로 바꾸는 강체 변환으로, 회전 3개 + 이동 3개 = 자유도 6입니다.",
+      "explanation_full": "사진측량에서는 외부표정요소(EO: X, Y, Z, ω, φ, κ)라고 부릅니다. 전체 투영은 x ~ K[R|t]X로, 외부 파라미터로 좌표를 카메라 기준으로 옮긴 뒤 내부 파라미터로 픽셀 좌표를 얻습니다.",
+      "tags": [
+        "camera-model"
+      ],
+      "terms": [
+        "extrinsic-parameters"
+      ],
+      "source_ref": "Hartley & Zisserman, Multiple View Geometry 2판 6장",
+      "status": "draft"
+    },
+    {
+      "id": "D-CAM-008",
+      "type": "mcq",
+      "chapter": "D.cam",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "광각 드론 카메라 영상에서 곧은 도로가 영상 가장자리로 갈수록 바깥쪽으로 볼록하게 휘어 보인다. 이 왜곡의 이름은?",
+      "choices": [
+        {
+          "text": "배럴(barrel, 술통형) 왜곡",
+          "rationale": null
+        },
+        {
+          "text": "핀쿠션(pincushion, 실패형) 왜곡",
+          "rationale": "핀쿠션 왜곡은 직선이 중심 쪽으로 오목하게 휘는, 배럴 왜곡의 반대 현상입니다. 망원 렌즈에서 흔합니다."
+        },
+        {
+          "text": "비네팅(vignetting, 주변 광량 저하)",
+          "rationale": "비네팅은 가장자리가 어두워지는 밝기 현상으로, 직선의 모양을 바꾸지 않습니다."
+        },
+        {
+          "text": "롤링 셔터(rolling shutter) 왜곡",
+          "rationale": "롤링 셔터 왜곡은 행마다 노출 시각이 달라 빠르게 움직일 때 물체가 기울어지는 현상입니다. 정지 상태의 휨과 다릅니다."
+        },
+        {
+          "text": "색수차(chromatic aberration, 색 번짐)",
+          "rationale": "색수차는 파장별 굴절 차이로 경계에 색 테두리가 생기는 현상입니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "배럴 왜곡은 중심에서 멀어질수록 배율이 줄어드는 방사 왜곡으로, 중심을 지나지 않는 직선이 술통처럼 바깥으로 볼록하게 휩니다. 광각·어안 렌즈에서 흔합니다.",
+      "explanation_full": "방사 왜곡 모델 x_d = x(1 + k1·r² + k2·r⁴ + k3·r⁶)에서 배럴 왜곡은 보통 k1 < 0, 핀쿠션은 k1 > 0으로 나타납니다(좌표 정규화 방식에 따라 부호 해석이 달라질 수 있습니다). 보정하지 않고 모자이크하면 영상 경계에서 도로·해안선이 꺾여 이어집니다.",
+      "tags": [
+        "lens-distortion"
+      ],
+      "terms": [
+        "lens-distortion"
+      ],
+      "source_ref": "OpenCV 문서 calib3d (Camera Calibration and 3D Reconstruction)",
+      "status": "draft"
+    },
+    {
+      "id": "D-CAM-009",
+      "type": "mcq",
+      "chapter": "D.cam",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "방사 왜곡(radial distortion)과 접선 왜곡(tangential distortion)에 대한 설명으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "방사 왜곡은 렌즈와 센서가 평행하지 않아서, 접선 왜곡은 렌즈 곡률 때문에 생긴다",
+          "rationale": "원인이 서로 바뀌었습니다. 렌즈 곡률(형상)이 방사 왜곡, 렌즈·센서 비평행과 편심이 접선 왜곡의 원인입니다."
+        },
+        {
+          "text": "두 왜곡 모두 영상 중심에서 가장 크고, 가장자리로 갈수록 작아진다",
+          "rationale": "방사 왜곡은 중심에서 0이고 반경 r이 커질수록 커집니다. 가장자리가 가장 큽니다."
+        },
+        {
+          "text": "방사 왜곡은 중심에서 멀수록 커지고(k1~k3), 접선 왜곡은 렌즈 편심·비평행으로 생긴다(p1, p2)",
+          "rationale": null
+        },
+        {
+          "text": "접선 왜곡은 영상 가장자리로 갈수록 밝기가 어두워지는 현상을 가리키는 말이다",
+          "rationale": "가장자리가 어두워지는 것은 비네팅이며, 기하 왜곡이 아닌 밝기 현상입니다."
+        },
+        {
+          "text": "두 왜곡 모두 선형 변환이라 3×3 호모그래피 하나로 영상 전체를 완전히 보정할 수 있다",
+          "rationale": "왜곡은 r², r⁴ 등 비선형 항으로 표현되므로 호모그래피 같은 선형(투영) 변환으로 보정할 수 없습니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "방사 왜곡은 렌즈 형상 때문에 중심으로부터 반경 방향으로 상이 밀리는 왜곡으로 k1, k2, k3 계수로 표현합니다. 접선 왜곡은 렌즈 요소가 중심에서 어긋나거나 센서와 평행하지 않아 생기며 p1, p2로 표현합니다.",
+      "explanation_full": "일반 카메라에서는 방사 왜곡이 접선 왜곡보다 훨씬 큰 경우가 대부분입니다. 사진측량 분야에서는 Brown–Conrady 모델이라는 이름으로 같은 계수 체계를 씁니다. 두 왜곡 모두 캘리브레이션으로 추정해 undistort로 제거합니다.",
+      "tags": [
+        "lens-distortion"
+      ],
+      "terms": [
+        "lens-distortion"
+      ],
+      "source_ref": "OpenCV 문서 calib3d (Camera Calibration and 3D Reconstruction); Brown (1971), Close-Range Camera Calibration",
+      "status": "draft"
+    },
+    {
+      "id": "D-CAM-010",
+      "type": "mcq",
+      "chapter": "D.cam",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "체커보드처럼 모양을 아는 패턴을 여러 위치·각도로 촬영해 카메라의 내부 파라미터와 렌즈 왜곡 계수를 추정하는 과정을 무엇이라 하는가?",
+      "choices": [
+        {
+          "text": "방사 보정(radiometric calibration)",
+          "rationale": "방사 보정은 센서 DN을 복사휘도·반사율 같은 물리량으로 바꾸는 밝기 보정입니다. 기하 파라미터를 추정하지 않습니다."
+        },
+        {
+          "text": "카메라 캘리브레이션(camera calibration)",
+          "rationale": null
+        },
+        {
+          "text": "정사보정(orthorectification)",
+          "rationale": "정사보정은 DEM과 센서 모델로 기복 변위를 제거하는 작업입니다. 캘리브레이션 결과를 입력으로 쓰는 쪽입니다."
+        },
+        {
+          "text": "영상 정합(image registration)",
+          "rationale": "영상 정합은 두 영상을 서로 겹치게 맞추는 작업으로, 카메라 자체의 파라미터를 추정하지 않습니다."
+        },
+        {
+          "text": "히스토그램 평활화(histogram equalization)",
+          "rationale": "히스토그램 평활화는 대비를 높이는 밝기 처리입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "카메라(기하) 캘리브레이션은 3D 위치를 아는 패턴 점과 영상에서 검출된 점의 대응으로 K 행렬과 왜곡 계수를 추정합니다.",
+      "explanation_full": "Zhang(2000)의 평면 패턴 방법이 OpenCV calibrateCamera의 기반입니다. 원격탐사 문맥에서 '캘리브레이션'은 방사 보정을 뜻할 때도 있으므로, 대화에서 '기하 캘리브레이션인지 방사 캘리브레이션인지' 확인하는 습관이 필요합니다.",
+      "tags": [
+        "calibration"
+      ],
+      "terms": [
+        "camera-calibration"
+      ],
+      "source_ref": "Zhang (2000), A Flexible New Technique for Camera Calibration; OpenCV 문서 calib3d (Camera Calibration and 3D Reconstruction)",
+      "status": "draft"
+    },
+    {
+      "id": "D-CAM-011",
+      "type": "mcq",
+      "chapter": "D.cam",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "카메라 캘리브레이션 결과로 보고하는 재투영 오차(reprojection error)의 의미로 옳은 것은?",
+      "choices": [
+        {
+          "text": "추정한 초점거리와 제조사가 공개한 공칭 초점거리 사이의 차이",
+          "rationale": "공칭값과의 차이는 참고 정보일 뿐, 재투영 오차의 정의가 아닙니다. 공칭 초점거리는 원래 근사값입니다."
+        },
+        {
+          "text": "찍은 체커보드 사진 가운데 코너 검출에 실패한 사진이 전체에서 차지하는 비율",
+          "rationale": "검출 실패 비율은 데이터 품질 지표이며, 추정된 모델이 관측에 얼마나 맞는지를 나타내지 않습니다."
+        },
+        {
+          "text": "왜곡 보정 전후 두 영상 사이의 픽셀 밝기 차이를 평균한 값",
+          "rationale": "재투영 오차는 밝기가 아니라 위치(픽셀 좌표)의 차이입니다."
+        },
+        {
+          "text": "스테레오 두 카메라 사이 기선 길이를 추정할 때 생긴 오차",
+          "rationale": "기선 오차는 스테레오 외부 파라미터의 문제이며, 단일 카메라 캘리브레이션 지표가 아닙니다."
+        },
+        {
+          "text": "추정한 파라미터로 패턴 코너를 다시 투영한 위치와 실제 검출 위치의 거리",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "재투영 오차는 추정한 내부·외부 파라미터와 왜곡 계수로 패턴의 3D 코너를 영상에 다시 투영했을 때, 실제 검출된 코너 위치와 몇 픽셀 떨어지는지를 RMS로 나타낸 값입니다.",
+      "explanation_full": "흔히 0.5픽셀 이하를 양호한 기준으로 삼지만, 사진 수가 적거나 패턴이 영상 중앙에만 있으면 오차가 작아도 가장자리 왜곡이 잘못 추정될 수 있습니다. 그래서 오차 값과 함께 패턴이 영상 전 영역·다양한 기울기를 덮었는지도 확인합니다.",
+      "tags": [
+        "calibration",
+        "metric"
+      ],
+      "terms": [
+        "camera-calibration"
+      ],
+      "source_ref": "OpenCV 문서 calib3d (Camera Calibration and 3D Reconstruction)",
+      "status": "draft"
+    },
+    {
+      "id": "D-CAM-012",
+      "type": "short",
+      "chapter": "D.cam",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "진행 방향에 수직으로 늘어선 1차원 선형 검출기 배열로 한 줄씩 촬영하고, 위성이 움직이면서 다음 줄을 쌓아 영상을 만드는 센서 방식의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Pushbroom sensor",
+          "Pushbroom scanner",
+          "Pushbroom",
+          "Along-track scanner",
+          "Linear array sensor"
+        ],
+        "ko": [
+          "푸시브룸 센서",
+          "푸시브룸 스캐너",
+          "푸시브룸",
+          "선형 배열 센서",
+          "궤도 방향 스캐너"
+        ]
+      },
+      "primary": "Pushbroom sensor",
+      "explanation_short": "푸시브룸 센서는 가로 한 줄을 동시에 찍는 선형 배열을 쓰고, 궤도 진행으로 세로 방향을 채웁니다. 고해상도 광학 위성 대부분이 이 방식입니다.",
+      "explanation_full": "거울을 좌우로 흔들어 한 점씩 쓸어 찍는 휘스크브룸(whiskbroom, across-track) 방식과 대비됩니다. 움직이는 부품이 없고 검출기마다 체류 시간이 길어 신호 대 잡음비가 좋지만, 검출기 간 감도 차이로 줄무늬(striping)가 생길 수 있습니다. Sentinel-2 MSI, KOMPSAT-3 계열이 푸시브룸 방식입니다.",
+      "tags": [
+        "sensor",
+        "satellite"
+      ],
+      "terms": [
+        "pushbroom-sensor"
+      ],
+      "source_ref": "Schowengerdt, Remote Sensing: Models and Methods for Image Processing 3판 1장",
+      "status": "draft"
+    },
+    {
+      "id": "D-CAM-013",
+      "type": "mcq",
+      "chapter": "D.cam",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "푸시브룸 위성영상은 프레임 카메라 사진처럼 한 장 전체에 외부 파라미터 한 세트를 쓸 수 없다. 그 이유로 옳은 것은?",
+      "choices": [
+        {
+          "text": "푸시브룸 센서에는 렌즈가 없어서 초점거리를 정의할 수 없기 때문",
+          "rationale": "푸시브룸 센서도 망원경 광학계로 상을 맺으므로 초점거리가 있습니다."
+        },
+        {
+          "text": "영상이 한 순간에 찍히지만 행마다 픽셀 크기가 서로 다르기 때문",
+          "rationale": "푸시브룸 영상은 한 순간에 찍히지 않습니다. 픽셀 크기 차이는 외부 파라미터 문제의 원인이 아닙니다."
+        },
+        {
+          "text": "SAR처럼 시선 거리(range)를 측정해 영상을 만드는 방식이기 때문",
+          "rationale": "거리 측정 방식은 능동형 레이더인 SAR의 특징입니다. 푸시브룸은 수동 광학 센서입니다."
+        },
+        {
+          "text": "각 행(라인)이 다른 시각에 찍혀 행마다 위성의 위치·자세가 다르기 때문",
+          "rationale": null
+        },
+        {
+          "text": "대기 굴절 때문에 영상 가장자리 쪽 픽셀의 위치만 유독 크게 달라지기 때문",
+          "rationale": "대기 굴절은 작은 보정 항일 뿐이며, 외부 파라미터를 행마다 다르게 둬야 하는 근본 이유가 아닙니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "푸시브룸은 한 줄씩 시간 순서로 찍으므로 행마다 촬영 시각이 다르고, 그동안 위성은 이동·자세 변화를 합니다. 그래서 한 줄 안에서는 중심 투영이고, 줄과 줄 사이(진행 방향)는 시간에 따른 궤도 운동으로 이어지는 모델(라인 중심 투영)이 필요합니다.",
+      "explanation_full": "엄밀 센서 모델은 궤도·자세를 시간의 함수(다항식 등)로 두고 행마다 외부 파라미터를 계산합니다. 이 모델이 복잡하고 위성 제조사 정보가 필요해, 사용자에게는 대신 RPC를 제공하는 경우가 많습니다.",
+      "tags": [
+        "sensor",
+        "satellite"
+      ],
+      "terms": [
+        "pushbroom-sensor",
+        "extrinsic-parameters"
+      ],
+      "source_ref": "Gupta & Hartley (1997), Linear Pushbroom Cameras, IEEE TPAMI",
+      "status": "draft"
+    },
+    {
+      "id": "D-CAM-014",
+      "type": "short",
+      "chapter": "D.cam",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "위성영상의 행·열 좌표를 지상 위도·경도·높이의 3차 다항식 비(ratio)로 표현하며, 센서 물리 모델 대신 영상과 함께 배포되는 계수 집합(대체 센서 모델)의 이름은? (영문 약어 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Rational Polynomial Coefficients (RPC)",
+          "Rational Function Model (RFM)",
+          "RPC model",
+          "Rational Polynomial Camera"
+        ],
+        "ko": [
+          "유리다항식 계수",
+          "유리함수 모델",
+          "RPC 모델",
+          "유리다항식 모델"
+        ]
+      },
+      "primary": "Rational Polynomial Coefficients (RPC)",
+      "explanation_short": "RPC(유리다항식 계수)는 영상 좌표를 지상 좌표의 다항식 비로 근사한 대체 센서 모델입니다. 궤도·자세 같은 물리 정보를 몰라도 영상↔지상 좌표 변환을 할 수 있습니다.",
+      "explanation_full": "행과 열 각각에 분자·분모 3차 다항식(각 20개 계수)을 두며, 좌표는 오프셋·스케일로 정규화해 계산합니다. 고해상도 상용 위성 대부분이 RPC를 함께 제공하며, GDAL 등 일반 GIS 도구로 정사보정할 수 있는 이유이기도 합니다. 제공된 RPC에는 편향이 있을 수 있어 GCP로 보정합니다.",
+      "tags": [
+        "sensor-model",
+        "satellite"
+      ],
+      "terms": [
+        "rational-polynomial-coefficients"
+      ],
+      "source_ref": "Grodecki & Dial (2003), Block Adjustment of High-Resolution Satellite Images Described by Rational Polynomials, PE&RS",
+      "status": "draft"
+    },
+    {
+      "id": "D-CAM-015",
+      "type": "mcq",
+      "chapter": "D.cam",
+      "cognitive_level": 2,
+      "difficulty": 4,
+      "stem": "RPC로 영상의 한 픽셀(행·열)을 지상 좌표로 바꿀 때 높이(고도) 값이 반드시 필요한 이유는?",
+      "choices": [
+        {
+          "text": "한 픽셀의 시선(광선) 위 어느 높이에서 지표와 만나는지 정해야 하므로",
+          "rationale": null
+        },
+        {
+          "text": "높이는 대기보정 계산에 쓰이며 기하 변환 결과에는 영향이 없으므로",
+          "rationale": "RPC 식의 입력 자체에 높이가 들어가 있어 높이가 바뀌면 지상 위치가 달라집니다. 대기보정과는 관계없습니다."
+        },
+        {
+          "text": "RPC 계수가 고도별로 따로 제공되어 해당 고도의 계수 세트를 골라야 하므로",
+          "rationale": "RPC는 한 세트의 계수에 높이를 변수로 넣는 구조입니다. 고도별 계수 세트가 따로 있지 않습니다."
+        },
+        {
+          "text": "높이로 GSD를 계산해 출력 픽셀 크기를 먼저 정해야 하므로",
+          "rationale": "출력 픽셀 크기는 사용자가 정하는 값이며, 높이가 필요한 근본 이유가 아닙니다."
+        },
+        {
+          "text": "높이가 없으면 RPC가 EPSG:4326 경위도 좌표를 출력하지 못하므로",
+          "rationale": "RPC의 지상 좌표는 원래 경위도로 정의됩니다. 높이가 필요한 이유는 좌표계가 아니라 광선과 지표의 교점을 정하는 데 있습니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "영상의 한 픽셀은 3D 공간의 광선 하나에 대응하므로, 그 광선 위 어느 높이에서 지표와 만나는지 알아야 지상 위치가 한 점으로 정해집니다. 그래서 RPC 정사보정에는 DEM이 필요합니다.",
+      "explanation_full": "높이를 1 m 잘못 넣으면 대략 tan(촬영 경사각) × 1 m만큼 수평 위치가 밀립니다. 경사 촬영(off-nadir) 각이 큰 영상일수록 DEM 오차의 영향이 커지므로, 산악 지역에서는 DEM 해상도·정확도를 함께 점검합니다.",
+      "tags": [
+        "sensor-model",
+        "orthorectification"
+      ],
+      "terms": [
+        "rational-polynomial-coefficients",
+        "orthorectification"
+      ],
+      "source_ref": "Grodecki & Dial (2003), Block Adjustment of High-Resolution Satellite Images Described by Rational Polynomials, PE&RS",
+      "status": "draft"
+    },
+    {
+      "id": "D-CAM-016",
+      "type": "short",
+      "chapter": "D.cam",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "영상에서 위치를 명확히 식별할 수 있고 정확한 지상 좌표(측량값)를 알고 있어, 기하 보정과 위치 정확도 검증에 쓰는 점의 이름은? (영문 약어 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Ground Control Point (GCP)",
+          "Control point"
+        ],
+        "ko": [
+          "지상기준점",
+          "지상통제점",
+          "기준점"
+        ]
+      },
+      "primary": "Ground Control Point (GCP)",
+      "explanation_short": "지상기준점(GCP)은 영상 좌표와 지상 좌표를 모두 아는 점으로, 센서 모델이나 변환식을 보정하는 기준이 됩니다. 도로 교차점, 건물 모서리처럼 시간이 지나도 변하지 않는 지물을 씁니다.",
+      "explanation_full": "GCP는 GNSS 측량, 기존 정사영상·수치지도 등에서 좌표를 얻습니다. 보정에 쓰지 않고 정확도 평가에만 쓰는 점은 검사점(check point, ICP)이라고 따로 부르며, 최종 위치 정확도는 검사점 RMSE로 보고하는 것이 원칙입니다.",
+      "tags": [
+        "gcp",
+        "geometric-correction"
+      ],
+      "terms": [
+        "ground-control-point"
+      ],
+      "source_ref": "Mikhail et al., Introduction to Modern Photogrammetry; ASPRS Positional Accuracy Standards for Digital Geospatial Data",
+      "status": "draft"
+    },
+    {
+      "id": "D-CAM-017",
+      "type": "mcq",
+      "chapter": "D.cam",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "GCP를 이용한 기하 보정 절차로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "영상의 한쪽 모서리 지역에 GCP를 몰아서 최대한 많이 찍는다",
+          "rationale": "한쪽에 몰린 GCP는 그 지역만 맞추고 반대쪽으로 갈수록 오차가 커지는 외삽 문제를 만듭니다."
+        },
+        {
+          "text": "구름 가장자리나 그림자 끝처럼 대비가 강한 지점을 우선 선택한다",
+          "rationale": "구름·그림자는 촬영 시각마다 위치가 바뀌어 지상 좌표가 고정되지 않습니다."
+        },
+        {
+          "text": "영상 전역에 고르게 분포한 GCP로 보정하고, 보정에 안 쓴 검사점으로 정확도를 평가한다",
+          "rationale": null
+        },
+        {
+          "text": "밀물·썰물에 따라 달라지는 물가 경계선 위의 점을 GCP로 쓴다",
+          "rationale": "물가 경계선은 조위에 따라 수평 위치가 크게 바뀌므로 촬영 시점마다 좌표가 달라집니다."
+        },
+        {
+          "text": "보정에 쓴 GCP의 잔차 RMSE가 작으면 추가 검증 없이 정확도가 확보된 것으로 본다",
+          "rationale": "보정에 쓴 점의 잔차는 모델이 그 점에 맞춰진 결과라 낙관적으로 나옵니다. 독립 검사점으로 평가해야 합니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "GCP는 영상 전역에 고르게 분포해야 변환이 전 영역에서 안정적입니다. 또 일부 점은 보정에 쓰지 않고 검사점으로 남겨 두어야 실제 위치 정확도를 공정하게 평가할 수 있습니다.",
+      "explanation_full": "좋은 GCP는 ① 영상에서 명확히 식별되고 ② 시간에 따라 변하지 않으며 ③ 지상 좌표 정확도가 목표 정확도보다 충분히 높고 ④ 영상 전역·고도 범위에 고르게 분포합니다. 해안 지역에서는 방파제 모서리, 교량 기초처럼 조위 영향을 받지 않는 구조물을 고릅니다.",
+      "tags": [
+        "gcp",
+        "geometric-correction"
+      ],
+      "terms": [
+        "ground-control-point"
+      ],
+      "source_ref": "ASPRS Positional Accuracy Standards for Digital Geospatial Data; Mikhail et al., Introduction to Modern Photogrammetry",
+      "status": "draft"
+    },
+    {
+      "id": "D-CAM-018",
+      "type": "scenario",
+      "chapter": "D.cam",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"이번 드론 카메라 광각이라 가장자리가 휘어. 측량 들어가기 전에 체커보드로 캘리브레이션해서 왜곡 계수 뽑고 undistort 해.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "체커보드를 화면 중앙에 정면으로 놓고 같은 자세로 20장을 찍는다",
+          "rationale": "같은 자세의 중앙 사진만으로는 가장자리 왜곡과 초점거리가 잘 구별되지 않아 추정이 불안정합니다."
+        },
+        {
+          "text": "초점·줌을 고정하고, 체커보드를 가장자리까지 여러 위치·기울기로 찍어 추정한 뒤 재투영 오차를 본다",
+          "rationale": null
+        },
+        {
+          "text": "촬영할 때마다 줌을 바꿔 가며 다양한 배율로 찍고 파라미터를 평균한다",
+          "rationale": "줌을 바꾸면 내부 파라미터 자체가 바뀝니다. 서로 다른 카메라 상태를 평균하면 어느 상태에도 맞지 않습니다."
+        },
+        {
+          "text": "DEM을 넣고 정사보정 도구로 처리하면 왜곡 계수가 함께 추정된다",
+          "rationale": "정사보정은 지형 기복을 다루는 작업이며, 렌즈 왜곡 계수를 추정하는 절차가 아닙니다."
+        },
+        {
+          "text": "왜곡이 큰 가장자리만 잘라내고 중앙부만 쓰면 캘리브레이션은 필요 없다",
+          "rationale": "중앙부에도 방사 왜곡이 작게나마 남고, 측량에 필요한 초점거리·주점도 알 수 없습니다. 촬영 범위도 줄어듭니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "캘리브레이션은 실제 촬영과 같은 광학 설정(초점·줌 고정)에서, 패턴이 영상 전 영역을 덮고 다양한 기울기를 갖도록 여러 장 찍어야 왜곡 계수와 초점거리가 안정적으로 추정됩니다. 결과는 재투영 오차로 확인합니다.",
+      "explanation_full": "보통 15~20장 이상, 가장자리·모서리를 충분히 포함하도록 찍습니다. 흐린 사진, 코너 검출이 틀린 사진은 빼고 다시 추정합니다. 추정 후에는 곧은 건물 모서리나 도로를 undistort 영상에서 직선으로 펴졌는지 눈으로도 확인합니다.",
+      "tags": [
+        "calibration",
+        "lens-distortion"
+      ],
+      "terms": [
+        "camera-calibration",
+        "lens-distortion"
+      ],
+      "source_ref": "Zhang (2000); OpenCV 문서 calib3d (Camera Calibration and 3D Reconstruction)",
+      "status": "draft"
+    },
+    {
+      "id": "D-CAM-019",
+      "type": "scenario",
+      "chapter": "D.cam",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"KOMPSAT-3A RPC만으로 정사보정했더니 기준 정사영상 대비 영상 전체가 동쪽으로 약 6 m 일정하게 밀려 있어. GCP 몇 점 따서 보정해.\"\n\n이 지시의 의도로 옳은 것은?",
+      "choices": [
+        {
+          "text": "렌즈 왜곡 계수를 다시 추정해 영상 가장자리의 휨을 없애라는 것",
+          "rationale": "영상 전체가 한 방향으로 일정하게 밀린 것은 가장자리로 갈수록 커지는 렌즈 왜곡의 양상이 아닙니다."
+        },
+        {
+          "text": "쌍선형 대신 큐빅으로 리샘플링해 위치 정확도를 높이라는 것",
+          "rationale": "리샘플링 방법은 반 픽셀 이하의 값 차이만 만들며, 6 m의 일정한 이동을 고치지 못합니다."
+        },
+        {
+          "text": "DEM을 더 고해상도로 바꿔 지형 기복 오차를 줄이라는 것",
+          "rationale": "DEM 오차에 의한 변위는 지형 높이에 따라 달라집니다. 전 영역이 같은 양만큼 밀린 것은 DEM보다 센서 모델의 편향을 가리킵니다."
+        },
+        {
+          "text": "GCP로 RPC의 체계적 편향(이동 등)을 추정해 보정하고 다시 정사보정하라는 것",
+          "rationale": null
+        },
+        {
+          "text": "대기보정을 BOA 반사율로 다시 해 두 영상의 밝기 차이를 없애라는 것",
+          "rationale": "대기보정은 밝기(방사) 처리이며, 위치가 밀린 기하 문제와 관계없습니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "제공된 RPC는 위성 자세·궤도 오차 때문에 영상 전체가 일정하게 밀리는 체계적 편향을 가질 수 있습니다. 몇 개의 GCP로 영상 공간의 이동(필요하면 어파인) 보정량을 추정해 RPC에 반영한 뒤 다시 정사보정하라는 뜻입니다.",
+      "explanation_full": "이를 RPC 편향 보정(bias compensation)이라 하며, 고해상도 위성은 GCP 몇 점만으로도 크게 개선되는 경우가 많습니다. 보정에 쓰지 않은 검사점으로 잔차를 확인해 보고하고, 전역 이동이 아니라 지형에 따라 달라지는 오차가 남으면 그때 DEM 품질을 봅니다.",
+      "tags": [
+        "sensor-model",
+        "gcp"
+      ],
+      "terms": [
+        "rational-polynomial-coefficients",
+        "ground-control-point"
+      ],
+      "source_ref": "Grodecki & Dial (2003), Block Adjustment of High-Resolution Satellite Images Described by Rational Polynomials, PE&RS",
+      "status": "draft"
+    }
+  ]
+}

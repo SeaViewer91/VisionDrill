@@ -1,0 +1,525 @@
+{
+  "format": "visiondrill-bank-exchange",
+  "format_version": 1,
+  "terms": [
+    {
+      "id": "sum-of-squared-errors",
+      "term_en": "Sum of Squared Errors",
+      "term_ko": "잔차제곱합",
+      "abbreviation": "SSE",
+      "definition": "관측값과 적합값의 차이(잔차)를 제곱해 모두 더한 값 Σ(yᵢ−ŷᵢ)²으로, 모형이 설명하지 못한 변동. RSS(Residual Sum of Squares)라고도 한다",
+      "usage_example": "SSE 기준으로 보면 밴드비 모델이 원밴드 모델보다 20% 정도 줄었어.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "total-sum-of-squares",
+      "term_en": "Total Sum of Squares",
+      "term_ko": "총제곱합",
+      "abbreviation": "SST",
+      "definition": "종속변수가 평균 주변에서 흩어진 전체 변동 Σ(yᵢ−ȳ)². 절편이 있는 OLS에서는 SST = SSR(회귀제곱합) + SSE(잔차제곱합)로 분해된다",
+      "usage_example": "검증 구역 수심 자료는 SST 자체가 작아서 R²가 낮게 나오는 거야. RMSE도 같이 봐.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "adjusted-r-squared",
+      "term_en": "Adjusted R-squared",
+      "term_ko": "수정 결정계수",
+      "abbreviation": "adj. R²",
+      "definition": "설명변수 개수(자유도)를 반영해 보정한 결정계수 1 − (1−R²)(n−1)/(n−p−1). 쓸모없는 변수를 넣으면 오히려 떨어질 수 있다",
+      "usage_example": "밴드 12개 다 넣은 모델이랑 3개짜리 비교할 땐 R² 말고 adjusted R²로 비교해.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "regression-coefficient",
+      "term_en": "Regression Coefficient",
+      "term_ko": "회귀계수",
+      "abbreviation": "β",
+      "definition": "다른 설명변수가 고정되어 있을 때 해당 설명변수가 1단위 변할 때 종속변수 기대값이 변하는 양",
+      "usage_example": "NDVI 계수가 8.5면 NDVI 0.1 오를 때 수확량이 평균 0.85톤 늘어난다는 뜻이야.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "intercept",
+      "term_en": "Intercept",
+      "term_ko": "절편",
+      "abbreviation": "β₀",
+      "definition": "모든 설명변수가 0일 때 회귀식이 주는 종속변수의 예측값(상수항)",
+      "usage_example": "절편이 음수라고 원점 통과로 강제하지 마. NDVI 0은 관측 범위 밖이라 의미 없는 값이야.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "explanatory-variable",
+      "term_en": "Explanatory Variable",
+      "term_ko": "설명변수",
+      "abbreviation": "x",
+      "definition": "회귀모형에서 종속변수를 설명·예측하는 데 쓰는 입력 변수. 독립변수, 예측변수(predictor), 특징(feature)이라고도 한다",
+      "usage_example": "설명변수는 B2~B8 반사율이랑 수온만 쓰고, 날짜는 빼.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "response-variable",
+      "term_en": "Response Variable",
+      "term_ko": "종속변수",
+      "abbreviation": "y",
+      "definition": "회귀모형이 설명하거나 예측하려는 대상 변수. 반응변수, 목표변수(target)라고도 한다",
+      "usage_example": "이번 모델 종속변수는 현장 채취한 클로로필-a 농도고, 위성 반사율이 설명변수야.",
+      "origin": "standard",
+      "track": "B"
+    }
+  ],
+  "questions": [
+    {
+      "id": "B-OLS-003",
+      "type": "mcq",
+      "chapter": "B.ols",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "절편이 있는 OLS 회귀에서 제곱합은 SST = SSR + SSE로 분해된다. 이 중 SSE가 뜻하는 것은? (yᵢ: 관측값, ŷᵢ: 적합값, ȳ: 관측값 평균)",
+      "choices": [
+        {
+          "text": "Σ(yᵢ − ŷᵢ)², 모형이 설명하지 못한 변동",
+          "rationale": null
+        },
+        {
+          "text": "Σ(ŷᵢ − ȳ)², 모형이 설명한 변동",
+          "rationale": "Σ(ŷᵢ − ȳ)²는 회귀제곱합 SSR입니다. 적합값이 평균에서 얼마나 움직였는지, 즉 모형이 설명한 부분입니다."
+        },
+        {
+          "text": "Σ(yᵢ − ȳ)², 종속변수의 전체 변동",
+          "rationale": "Σ(yᵢ − ȳ)²는 총제곱합 SST입니다. SSR과 SSE를 합친 전체 변동입니다."
+        },
+        {
+          "text": "Σ(xᵢ − x̄)², 설명변수의 흩어진 정도",
+          "rationale": "설명변수의 제곱합은 기울기의 표준오차 계산에 쓰이지만, 종속변수 변동을 나누는 SST = SSR + SSE 분해에는 등장하지 않습니다."
+        },
+        {
+          "text": "Σ(yᵢ − ŷᵢ), 잔차를 제곱하지 않고 부호 그대로 더한 값",
+          "rationale": "절편이 있는 OLS에서 잔차의 단순합은 항상 0입니다. 제곱하지 않으면 양·음 잔차가 상쇄되어 변동의 크기를 나타내지 못합니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "SSE(Sum of Squared Errors, 잔차제곱합)는 관측값과 적합값 차이를 제곱해 더한 값으로, 모형이 설명하지 못한 변동입니다. OLS는 바로 이 SSE를 최소화합니다.",
+      "explanation_full": "세 제곱합의 관계: SST(전체 변동) = SSR(설명된 변동) + SSE(설명 못 한 변동). 이 분해는 절편이 있는 OLS에서 성립합니다. 교재에 따라 SSE를 RSS(Residual Sum of Squares)라 부르고, 드물게 SSR을 \"Sum of Squared Residuals\"(=SSE)의 약자로 쓰는 경우도 있어 약어만 보고 판단하지 말고 정의를 확인해야 합니다. 위성 기반 수심 추정처럼 여러 모델을 비교할 때 SSE를 표본 수로 나누고 제곱근을 취하면 RMSE가 됩니다.",
+      "tags": [
+        "regression",
+        "sum-of-squares"
+      ],
+      "terms": [
+        "sum-of-squared-errors",
+        "total-sum-of-squares"
+      ],
+      "source_ref": "Montgomery·Peck·Vining, Introduction to Linear Regression Analysis 2~3장",
+      "status": "draft"
+    },
+    {
+      "id": "B-OLS-004",
+      "type": "mcq",
+      "chapter": "B.ols",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "위성 영상으로 연안 수심을 추정하는 OLS 회귀를 적합했더니 SST = 400, SSE = 100이었다. 이 모형의 결정계수 R²는?",
+      "choices": [
+        {
+          "text": "0.25",
+          "rationale": "0.25는 SSE/SST, 즉 설명하지 못한 변동의 비율입니다. R²는 1에서 이 값을 뺀 것입니다."
+        },
+        {
+          "text": "0.33",
+          "rationale": "0.33은 SSE/SSR = 100/300입니다. 설명 못 한 변동을 설명한 변동으로 나눈 값은 R²가 아닙니다."
+        },
+        {
+          "text": "0.75",
+          "rationale": null
+        },
+        {
+          "text": "1.33",
+          "rationale": "1.33은 SST/SSR = 400/300입니다. R²는 0~1 사이 값이므로 1을 넘을 수 없습니다."
+        },
+        {
+          "text": "3.00",
+          "rationale": "3.00은 SSR/SSE = 300/100입니다. 설명한 변동과 남은 변동의 비율이지 결정계수가 아닙니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "R² = 1 − SSE/SST = 1 − 100/400 = 0.75입니다. 같은 뜻으로 SSR = SST − SSE = 300이므로 R² = SSR/SST = 300/400 = 0.75입니다.",
+      "explanation_full": "계산 과정: SSR = 400 − 100 = 300, R² = 300/400 = 0.75. 즉 수심 변동의 75%를 모형이 설명합니다. 주의할 점은 R²가 SST에 좌우된다는 것입니다. 수심 범위가 좁은(0~5m) 검증 구역에서는 SST 자체가 작아서, 오차(RMSE)가 같아도 R²가 낮게 나옵니다. 그래서 수심 추정 보고서에는 R²와 RMSE를 함께 적습니다.",
+      "tags": [
+        "regression",
+        "sum-of-squares",
+        "calculation"
+      ],
+      "terms": [
+        "total-sum-of-squares",
+        "sum-of-squared-errors",
+        "r-squared"
+      ],
+      "source_ref": "Montgomery·Peck·Vining, Introduction to Linear Regression Analysis 2~3장",
+      "status": "draft"
+    },
+    {
+      "id": "B-OLS-005",
+      "type": "short",
+      "chapter": "B.ols",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "설명변수를 추가하면 무조건 오르는 결정계수의 단점을 보완하려고, 설명변수 개수(자유도)를 반영해 보정한 결정계수의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Adjusted R-squared",
+          "Adjusted R2",
+          "Adjusted coefficient of determination"
+        ],
+        "ko": [
+          "수정 결정계수",
+          "조정 결정계수",
+          "수정된 결정계수",
+          "자유도 수정 결정계수"
+        ]
+      },
+      "primary": "Adjusted R-squared",
+      "explanation_short": "수정 결정계수(adjusted R²)는 1 − (1−R²)(n−1)/(n−p−1)로 계산합니다. 설명력이 거의 없는 변수를 추가하면 R²는 조금이라도 오르지만 adjusted R²는 떨어질 수 있습니다.",
+      "explanation_full": "n은 표본 수, p는 절편을 뺀 설명변수 개수입니다. 변수 수가 다른 모형을 비교할 때 R²만 보면 변수가 많은 쪽이 항상 유리해 보이므로 adjusted R²를 함께 봅니다. 다만 adjusted R²도 표본 내 지표이므로, 예측 성능 비교에는 교차검증(원격탐사 자료라면 공간 교차검증) 오차가 더 믿을 만합니다.",
+      "tags": [
+        "regression",
+        "metric"
+      ],
+      "terms": [
+        "adjusted-r-squared"
+      ],
+      "source_ref": "ISLR 3장 Linear Regression",
+      "status": "draft"
+    },
+    {
+      "id": "B-OLS-006",
+      "type": "mcq",
+      "chapter": "B.ols",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "Sentinel-2 밴드로 엽록소 농도를 추정하는 OLS 모형에, 실험 삼아 난수로 만든 \"가짜 밴드\"를 설명변수로 하나 추가했다. R²와 adjusted R²의 변화로 가장 옳은 것은?",
+      "choices": [
+        {
+          "text": "난수라 설명력이 없으므로 R²와 adjusted R² 모두 반드시 떨어진다",
+          "rationale": "R²는 설명변수를 추가하면 절대 줄지 않습니다. 새 변수의 계수를 0으로 두면 원래 모형과 같아지므로 SSE가 늘 수 없기 때문입니다."
+        },
+        {
+          "text": "R²는 떨어지고, adjusted R²는 오른다",
+          "rationale": "방향이 반대입니다. R²는 줄지 않고, 변수 개수 패널티가 있는 쪽은 adjusted R²입니다."
+        },
+        {
+          "text": "두 값 모두 전혀 변하지 않는다",
+          "rationale": "난수 변수도 표본 안에서는 우연히 잔차와 조금씩 상관되므로 SSE가 약간 줄어 R²는 보통 미세하게 오릅니다."
+        },
+        {
+          "text": "R²는 같거나 조금 오르고, adjusted R²는 떨어질 수 있다",
+          "rationale": null
+        },
+        {
+          "text": "adjusted R²가 R²보다 커진다",
+          "rationale": "설명변수가 하나 이상인 모형에서 adjusted R²는 R²보다 클 수 없습니다(같거나 작음)."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "OLS에서 변수를 추가하면 SSE는 줄거나 같으므로 R²는 줄지 않습니다. adjusted R²는 변수 개수 패널티가 있어 설명력이 거의 없는 변수를 넣으면 떨어질 수 있습니다.",
+      "explanation_full": "추가한 변수의 t 통계량 절댓값이 1보다 크면 adjusted R²가 오르고, 1보다 작으면 떨어진다는 성질이 알려져 있습니다. 난수 변수라도 우연히 |t| > 1이 나올 수 있으므로 \"반드시 떨어진다\"가 아니라 \"떨어질 수 있다\"가 정확합니다. 예: n = 21, p = 4, R² = 0.80이면 adjusted R² = 1 − 0.20×20/16 = 0.75입니다. 초분광처럼 밴드가 수백 개인 자료에서 R²만 보면 밴드를 넣을수록 좋아 보이는 착시가 생깁니다.",
+      "tags": [
+        "regression",
+        "metric"
+      ],
+      "terms": [
+        "adjusted-r-squared",
+        "r-squared"
+      ],
+      "source_ref": "ISLR 3장 Linear Regression",
+      "status": "draft"
+    },
+    {
+      "id": "B-OLS-007",
+      "type": "short",
+      "chapter": "B.ols",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "단순회귀식 ŷ = β₀ + β₁x에서, x가 1단위 증가할 때 ŷ가 평균적으로 변하는 양을 나타내는 β₁을 부르는 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Regression coefficient",
+          "Slope",
+          "Slope coefficient",
+          "Coefficient"
+        ],
+        "ko": [
+          "회귀계수",
+          "기울기",
+          "기울기 계수"
+        ]
+      },
+      "primary": "Regression coefficient",
+      "explanation_short": "β₁은 회귀계수(regression coefficient)이며, 단순회귀에서는 회귀직선의 기울기(slope)입니다. x가 1 증가할 때 y의 기대값이 β₁만큼 변한다는 뜻입니다.",
+      "explanation_full": "다중회귀에서는 \"다른 설명변수를 고정했을 때\"라는 조건이 붙어 편회귀계수(partial regression coefficient)라고도 부릅니다. 계수의 크기는 단위에 따라 달라지므로(반사율 0~1 vs DN 0~10000), 변수 간 영향 크기를 비교하려면 표준화 계수를 쓰거나 단위를 맞춰야 합니다.",
+      "tags": [
+        "regression",
+        "basics"
+      ],
+      "terms": [
+        "regression-coefficient"
+      ],
+      "source_ref": "ISLR 3장 Linear Regression",
+      "status": "draft"
+    },
+    {
+      "id": "B-OLS-008",
+      "type": "mcq",
+      "chapter": "B.ols",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "논 필지별 벼 수확량(t/ha)을 NDVI로 설명하는 회귀식이 ŷ = 1.2 + 8.5 × NDVI로 추정되었다. 계수 8.5의 해석으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "NDVI가 1 증가하면 수확량이 원래 값 대비 8.5% 증가한다고 예측된다",
+          "rationale": "백분율 해석은 종속변수를 로그 변환한 모형(log-level)에서 나옵니다. 이 식은 수확량을 원단위(t/ha) 그대로 썼으므로 변화량도 t/ha 단위입니다."
+        },
+        {
+          "text": "NDVI 0.1 증가 시 수확량이 평균 0.85 t/ha 증가로 예측된다",
+          "rationale": null
+        },
+        {
+          "text": "NDVI가 0인 필지의 예상 수확량이 8.5 t/ha이다",
+          "rationale": "NDVI = 0일 때의 예측값은 절편 1.2입니다. 계수는 기울기이지 특정 지점의 값이 아닙니다."
+        },
+        {
+          "text": "NDVI와 수확량의 상관계수가 8.5이다",
+          "rationale": "상관계수는 −1~1 사이 값입니다. 회귀계수는 단위(t/ha per NDVI 1)를 가진 기울기로 상관계수와 다릅니다."
+        },
+        {
+          "text": "수확량 변동의 85%를 NDVI가 설명한다",
+          "rationale": "설명 비율은 결정계수 R²가 나타냅니다. 계수 크기만으로는 설명력을 알 수 없습니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "회귀계수 8.5는 NDVI 1단위 증가당 수확량 기대값이 8.5 t/ha 늘어난다는 뜻입니다. NDVI는 보통 0~1 범위라 0.1 단위로 환산하면 0.85 t/ha입니다.",
+      "explanation_full": "여기서 종속변수(response)는 수확량, 설명변수(explanatory)는 NDVI입니다. 회귀계수는 \"평균적인 관계\"에 대한 추정이지 개별 필지에서 NDVI를 인위적으로 올리면 수확량이 늘어난다는 인과 주장이 아닙니다. 실무 보고에서는 NDVI처럼 범위가 좁은 변수의 계수를 0.1 단위로 환산해 설명하면 이해가 쉽습니다.",
+      "tags": [
+        "regression",
+        "interpretation"
+      ],
+      "terms": [
+        "regression-coefficient",
+        "explanatory-variable",
+        "response-variable"
+      ],
+      "source_ref": "ISLR 3장 Linear Regression",
+      "status": "draft"
+    },
+    {
+      "id": "B-OLS-009",
+      "type": "short",
+      "chapter": "B.ols",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "회귀식 ŷ = β₀ + β₁x₁ + … + β_px_p에서, 모든 설명변수가 0일 때의 예측값을 나타내는 상수 β₀의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Intercept",
+          "Constant",
+          "Constant term",
+          "y-intercept"
+        ],
+        "ko": [
+          "절편",
+          "상수항",
+          "y절편"
+        ]
+      },
+      "primary": "Intercept",
+      "explanation_short": "β₀는 절편(intercept)으로, 모든 설명변수가 0일 때 모형이 주는 예측값입니다. 통계 패키지 출력에서는 const 또는 (Intercept)로 표시됩니다.",
+      "explanation_full": "절편을 넣어야 잔차 합이 0이 되고 SST = SSR + SSE 분해와 R²의 일반적 해석이 성립합니다. 물리적으로 \"x = 0이면 y = 0\"이 확실하더라도 관측 범위가 0에서 멀면 절편을 빼지 않는 것이 보통 안전합니다.",
+      "tags": [
+        "regression",
+        "basics"
+      ],
+      "terms": [
+        "intercept"
+      ],
+      "source_ref": "Montgomery·Peck·Vining, Introduction to Linear Regression Analysis 2~3장",
+      "status": "draft"
+    },
+    {
+      "id": "B-OLS-010",
+      "type": "mcq",
+      "chapter": "B.ols",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "드론 영상에서 뽑은 NDVI(관측 범위 0.35~0.85)로 초지 바이오매스(t/ha)를 추정했더니 ŷ = −3.2 + 12.5 × NDVI가 나왔다. 절편 −3.2에 대한 판단으로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "바이오매스는 음수가 될 수 없으므로 원점을 지나도록 절편 없이 다시 적합해야 한다",
+          "rationale": "절편을 강제로 빼면 기울기가 왜곡되고 잔차 합이 0이 아니게 되며 R² 해석도 달라집니다. 관측 범위 밖의 절편 부호만으로 모형을 바꿀 이유가 없습니다."
+        },
+        {
+          "text": "관측된 필지들의 바이오매스 평균이 −3.2 t/ha라는 뜻이다",
+          "rationale": "평균은 ȳ이며, 절편은 모든 설명변수가 0일 때의 예측값입니다. OLS에서는 x̄에서의 예측값이 ȳ가 됩니다."
+        },
+        {
+          "text": "NDVI가 1 증가할 때 바이오매스가 3.2 t/ha 감소한다는 뜻이다",
+          "rationale": "NDVI 1 증가당 변화량은 기울기 12.5입니다. 절편은 변화율이 아닙니다."
+        },
+        {
+          "text": "절편이 음수이므로 NDVI와 바이오매스는 음의 관계이다",
+          "rationale": "관계의 방향은 기울기의 부호(+12.5)로 판단합니다. 절편 부호와 관계 방향은 무관합니다."
+        },
+        {
+          "text": "NDVI = 0일 때의 예측값이나 관측 범위 밖 외삽이라 의미를 두지 않는다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "절편은 NDVI = 0일 때의 예측값인데, 관측 NDVI가 0.35~0.85뿐이라 0은 외삽 영역입니다. 음수 절편은 관측 범위 안 직선을 가장 잘 맞추다 생긴 결과일 뿐 모형 오류의 증거가 아닙니다.",
+      "explanation_full": "절편에 의미를 주고 싶다면 설명변수를 중심화(NDVI − 평균 NDVI)하면 됩니다. 그러면 절편은 \"평균 NDVI 필지의 예상 바이오매스\"가 되어 해석이 쉬워지고 기울기는 그대로입니다. 반대로 원점 통과 회귀(regression through the origin)는 물리적으로 x = 0 근처 자료가 있고 y = 0이 확실할 때만 신중히 씁니다.",
+      "tags": [
+        "regression",
+        "interpretation"
+      ],
+      "terms": [
+        "intercept"
+      ],
+      "source_ref": "Montgomery·Peck·Vining, Introduction to Linear Regression Analysis 2~3장",
+      "status": "draft"
+    },
+    {
+      "id": "B-OLS-011",
+      "type": "mcq",
+      "chapter": "B.ols",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "Sentinel-2 밴드 반사율로 호수의 클로로필-a 농도(현장 채수 측정값)를 추정하는 회귀모형을 만든다. 설명변수와 종속변수를 바르게 짝지은 것은?",
+      "choices": [
+        {
+          "text": "설명변수: 클로로필-a 농도 / 종속변수: 밴드 반사율",
+          "rationale": "방향이 반대입니다. 추정하려는 대상(클로로필-a)이 종속변수이고, 입력으로 쓰는 반사율이 설명변수입니다."
+        },
+        {
+          "text": "설명변수: 밴드 반사율 / 종속변수: 클로로필-a 농도",
+          "rationale": null
+        },
+        {
+          "text": "설명변수: 회귀계수 / 종속변수: 잔차",
+          "rationale": "회귀계수는 추정하는 모수이고, 잔차는 적합 후 남는 오차입니다. 둘 다 변수 역할이 아닙니다."
+        },
+        {
+          "text": "설명변수: 밴드 반사율 / 종속변수: 회귀모형의 R²",
+          "rationale": "R²는 모형 적합도를 요약하는 지표이지, 관측마다 값을 갖는 종속변수가 아닙니다."
+        },
+        {
+          "text": "설명변수와 종속변수 모두 밴드 반사율",
+          "rationale": "밴드 반사율끼리만으로는 클로로필-a를 추정할 수 없습니다. 종속변수는 현장에서 측정한 목표 값이어야 합니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "종속변수(response)는 모형이 추정하려는 대상인 클로로필-a 농도이고, 설명변수(explanatory)는 그것을 설명하는 입력인 밴드 반사율입니다.",
+      "explanation_full": "머신러닝 용어로는 설명변수 = 특징(feature), 종속변수 = 목표(target)·라벨(label)에 해당합니다. 원격탐사 회귀에서 종속변수는 보통 현장 조사값(수질, 바이오매스, 수심)이고, 이를 위성 화소와 시공간적으로 짝지은 매치업(match-up) 자료로 모형을 만듭니다.",
+      "tags": [
+        "regression",
+        "basics"
+      ],
+      "terms": [
+        "explanatory-variable",
+        "response-variable"
+      ],
+      "source_ref": "ISLR 3장 Linear Regression",
+      "status": "draft"
+    },
+    {
+      "id": "B-OLS-012",
+      "type": "scenario",
+      "chapter": "B.ols",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"NDVI–바이오매스 산점도가 NDVI 0.7 이상에서 포화돼서 휘고, 잔차 플롯도 U자야. 딥러닝까지 갈 건 없고 회귀식부터 고쳐봐.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "NDVI 0.7 이상 표본은 이상치로 보고 제거한 뒤 다시 적합한다",
+          "rationale": "포화 구간은 실제 현상(고밀도 식생에서 NDVI 포화)이지 오류가 아닙니다. 제거하면 범위가 잘려 그 구간 예측을 못 하게 됩니다."
+        },
+        {
+          "text": "Ridge 회귀로 바꿔 계수 크기를 줄인다",
+          "rationale": "Ridge는 다중공선성에 의한 계수 불안정을 줄이는 방법입니다. 관계식 모양이 틀린 문제(모형 설정 오류)는 해결하지 못합니다."
+        },
+        {
+          "text": "이분산-강건 표준오차로 바꿔 p값을 다시 계산한다",
+          "rationale": "강건 표준오차는 표준오차만 고칩니다. 적합선 자체가 곡선을 못 따라가는 편향은 그대로 남습니다."
+        },
+        {
+          "text": "NDVI² 항이나 로그 변환으로 곡선을 반영해 OLS로 다시 적합한다",
+          "rationale": null
+        },
+        {
+          "text": "R²가 0.7을 넘으면 선형성 가정은 충족된 것으로 보고 그대로 보고한다",
+          "rationale": "R²가 높아도 잔차에 U자 패턴이 있으면 선형성 가정이 깨진 것입니다. R²는 가정 충족 여부를 알려주지 않습니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "OLS의 선형성은 \"계수에 대해 선형\"이라는 뜻이므로 NDVI² 항이나 로그 변환을 넣어도 여전히 OLS로 적합할 수 있습니다. 곡선 관계를 식에 반영한 뒤 잔차 플롯의 U자가 사라졌는지 확인합니다.",
+      "explanation_full": "y = β₀ + β₁x + β₂x²는 x에 대해선 곡선이지만 β에 대해 선형이라 선형회귀입니다. NDVI와 NDVI²는 서로 상관이 높으니 NDVI를 중심화한 뒤 제곱하면 공선성이 줄어듭니다. 포화 문제가 심한 고밀도 식생에서는 EVI처럼 포화가 덜한 지수로 설명변수를 바꾸는 것도 방법입니다.",
+      "tags": [
+        "regression",
+        "assumption",
+        "linearity"
+      ],
+      "terms": [
+        "ols",
+        "line-assumptions"
+      ],
+      "source_ref": "ISLR 3장 Linear Regression",
+      "status": "draft"
+    },
+    {
+      "id": "B-OLS-013",
+      "type": "scenario",
+      "chapter": "B.ols",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"양식장 면적 추정 모델 A랑 B 중 하나만 보고서에 넣어. R²만 보고 고르지 말고.\"\n(표본 n = 40 / 모델 A: 설명변수 3개, R² 0.81, adjusted R² 0.79 / 모델 B: 설명변수 12개, R² 0.83, adjusted R² 0.75)\n\n가장 적절한 선택과 근거는?",
+      "choices": [
+        {
+          "text": "모델 A: 변수 수를 반영한 adjusted R²가 더 높아, 추가 9개 변수가 설명력을 충분히 늘리지 못했다",
+          "rationale": null
+        },
+        {
+          "text": "모델 B: R²가 0.83으로 더 높으므로 더 좋은 모델이다",
+          "rationale": "변수를 늘리면 R²는 거의 항상 오릅니다. 지시에서 R²만 보고 고르지 말라고 한 이유입니다."
+        },
+        {
+          "text": "모델 B: 설명변수가 많을수록 정보가 많아 새 자료에서도 더 잘 맞는다",
+          "rationale": "n = 40에 변수 12개면 과적합 위험이 큽니다. 변수 수가 많다고 일반화 성능이 좋아지지 않습니다."
+        },
+        {
+          "text": "두 모델의 R²를 평균한 0.82를 보고서에 적는다",
+          "rationale": "서로 다른 모델의 지표를 평균하면 어느 모델도 설명하지 못하는 숫자가 됩니다."
+        },
+        {
+          "text": "adjusted R²는 변수 수가 다른 모델끼리는 비교할 수 없으므로 판단을 보류한다",
+          "rationale": "반대입니다. adjusted R²는 바로 변수 수가 다른 모델을 비교하려고 만든 지표입니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "adjusted R²는 변수 수 패널티를 준 결정계수로, A(0.79)가 B(0.75)보다 높습니다. B의 R²가 0.02 높은 것은 변수 9개를 더 넣어 생긴 몫으로 볼 수 있습니다.",
+      "explanation_full": "검산: A = 1 − (1−0.81)×39/36 ≈ 0.794, B = 1 − (1−0.83)×39/27 ≈ 0.754. 실무에서는 adjusted R²에 더해 AIC/BIC나 교차검증 오차로도 확인합니다. 양식장처럼 공간적으로 몰려 있는 대상은 무작위 분할보다 공간 교차검증으로 비교해야 과대평가를 피할 수 있습니다.",
+      "tags": [
+        "regression",
+        "metric",
+        "model-comparison"
+      ],
+      "terms": [
+        "adjusted-r-squared",
+        "r-squared"
+      ],
+      "source_ref": "ISLR 3장 Linear Regression",
+      "status": "draft"
+    }
+  ]
+}

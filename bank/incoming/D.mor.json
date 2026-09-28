@@ -1,0 +1,688 @@
+{
+  "format": "visiondrill-bank-exchange",
+  "format_version": 1,
+  "terms": [
+    {
+      "id": "otsu-thresholding",
+      "term_en": "Otsu's Method",
+      "term_ko": "오츠 이진화",
+      "abbreviation": null,
+      "definition": "밝기 히스토그램을 두 클래스로 나눌 때 클래스 간 분산이 최대가 되는 임계값을 자동으로 찾는 전역 이진화 방법",
+      "usage_example": "NDWI 임계값 0으로 고정하지 말고 장면별로 Otsu 돌려서 비교해봐.",
+      "origin": "standard",
+      "track": "D"
+    },
+    {
+      "id": "erosion",
+      "term_en": "Erosion",
+      "term_ko": "침식",
+      "abbreviation": null,
+      "definition": "구조요소가 전경 안에 완전히 들어가는 위치만 전경으로 남기는 형태학 연산으로, 객체를 깎아 줄인다",
+      "usage_example": "건물 마스크끼리 붙어 있으면 한 번 침식해서 떨어뜨린 뒤 개수 세봐.",
+      "origin": "standard",
+      "track": "D"
+    },
+    {
+      "id": "dilation",
+      "term_en": "Dilation",
+      "term_ko": "팽창",
+      "abbreviation": null,
+      "definition": "구조요소가 전경과 조금이라도 겹치는 위치를 모두 전경으로 만드는 형태학 연산으로, 객체를 불린다",
+      "usage_example": "도로 마스크가 군데군데 끊겼네. 3×3으로 한 번 팽창해봐.",
+      "origin": "standard",
+      "track": "D"
+    },
+    {
+      "id": "morphological-opening",
+      "term_en": "Morphological Opening",
+      "term_ko": "열림 연산",
+      "abbreviation": null,
+      "definition": "침식 후 같은 구조요소로 팽창하는 연산으로, 구조요소보다 작은 돌기·고립 잡음을 없애고 큰 객체의 모양은 대체로 유지한다",
+      "usage_example": "수계 마스크에 점 잡음 많으니 3×3 열림 한 번 하고 벡터화해.",
+      "origin": "standard",
+      "track": "D"
+    },
+    {
+      "id": "morphological-closing",
+      "term_en": "Morphological Closing",
+      "term_ko": "닫힘 연산",
+      "abbreviation": null,
+      "definition": "팽창 후 같은 구조요소로 침식하는 연산으로, 구조요소보다 작은 구멍·틈을 메우고 큰 객체의 모양은 대체로 유지한다",
+      "usage_example": "양식장 경계가 1~2픽셀씩 끊기니까 닫힘 연산으로 이어 붙여.",
+      "origin": "standard",
+      "track": "D"
+    },
+    {
+      "id": "connected-component-labeling",
+      "term_en": "Connected Component Labeling",
+      "term_ko": "연결요소 레이블링",
+      "abbreviation": "CCL",
+      "definition": "이진 영상에서 서로 이어진 전경 픽셀 덩어리마다 고유 번호를 붙이는 처리",
+      "usage_example": "연결요소로 나눠서 면적 20픽셀 미만 조각은 지워.",
+      "origin": "standard",
+      "track": "D"
+    },
+    {
+      "id": "hole-filling",
+      "term_en": "Hole Filling",
+      "term_ko": "구멍 메우기",
+      "abbreviation": null,
+      "definition": "전경으로 둘러싸여 영상 바깥쪽 배경과 연결되지 않은 배경 영역을 전경으로 채우는 처리",
+      "usage_example": "건물 지붕 마스크 안에 뚫린 구멍은 hole filling으로 메우고 폴리곤 만들어.",
+      "origin": "standard",
+      "track": "D"
+    },
+    {
+      "id": "skeletonization",
+      "term_en": "Skeletonization",
+      "term_ko": "스켈레톤화(골격화)",
+      "abbreviation": null,
+      "definition": "이진 객체를 연결 구조(위상)를 유지한 채 폭 1픽셀의 중심선으로 가늘게 만드는 처리",
+      "usage_example": "도로 마스크를 스켈레톤화해서 중심선 네트워크로 뽑아.",
+      "origin": "standard",
+      "track": "D"
+    }
+  ],
+  "questions": [
+    {
+      "id": "D-MOR-001",
+      "type": "short",
+      "chapter": "D.mor",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "밝기 히스토그램을 두 클래스로 나눌 때, 두 클래스 사이의 분산(클래스 간 분산)이 최대가 되는 임계값을 자동으로 찾는 이진화 방법은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Otsu's method",
+          "Otsu thresholding",
+          "Otsu",
+          "Otsu binarization"
+        ],
+        "ko": [
+          "오츠 이진화",
+          "오츠 방법",
+          "오츠 알고리즘",
+          "오츠",
+          "Otsu 이진화"
+        ]
+      },
+      "primary": "Otsu's method",
+      "explanation_short": "Otsu 방법은 가능한 모든 임계값에서 두 클래스로 나눴을 때의 클래스 간 분산을 계산해 가장 큰 값을 고릅니다. 이는 클래스 내 분산을 최소로 하는 것과 같습니다.",
+      "explanation_full": "히스토그램이 두 봉우리(쌍봉형)로 뚜렷이 나뉠 때 잘 동작하는 전역(global) 임계값 방법입니다. 사람이 임계값을 정하지 않아도 되어, 장면마다 조건이 다른 NDWI 수계 추출 등에서 출발점으로 자주 씁니다. 한 봉우리가 매우 작거나 조명이 영상 안에서 크게 달라지면 결과가 불안정해집니다.",
+      "tags": [
+        "thresholding"
+      ],
+      "terms": [
+        "otsu-thresholding"
+      ],
+      "source_ref": "Gonzalez & Woods, Digital Image Processing(영상 분할·임계값 처리 장); Otsu (1979) IEEE Trans. SMC",
+      "status": "draft"
+    },
+    {
+      "id": "D-MOR-002",
+      "type": "mcq",
+      "chapter": "D.mor",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "이진 영상의 침식(erosion) 연산에 대한 설명으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "구조요소가 전경과 한 픽셀이라도 겹치기만 하면 그 위치를 전경으로 만든다",
+          "rationale": "팽창(dilation)의 정의입니다."
+        },
+        {
+          "text": "구조요소가 전경 안에 완전히 들어가는 위치만 남겨 객체를 깎아 낸다",
+          "rationale": null
+        },
+        {
+          "text": "전경으로 완전히 둘러싸인 배경 구멍을 찾아 전경으로 채운다",
+          "rationale": "구멍 메우기(hole filling)의 설명입니다."
+        },
+        {
+          "text": "서로 이어진 전경 덩어리마다 서로 다른 번호를 붙인다",
+          "rationale": "연결요소 레이블링의 설명입니다."
+        },
+        {
+          "text": "객체를 연결 구조를 유지한 채 1픽셀 두께의 중심선으로 줄인다",
+          "rationale": "스켈레톤화의 설명입니다. 침식은 가는 연결부를 끊을 수도 있습니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "침식은 구조요소를 각 위치에 대어 보아 구조요소 전체가 전경 안에 들어갈 때만 전경으로 남기는 연산입니다. 그 결과 객체 가장자리가 깎이고 구조요소보다 작은 조각은 사라집니다.",
+      "explanation_full": "3×3 정사각 구조요소로 침식하면 객체가 사방으로 1픽셀씩 줄어듭니다. 붙어 있는 객체를 떼어 내거나 가장자리 잡음을 깎을 때 쓰지만, 가는 선·작은 객체도 함께 사라지는 부작용이 있습니다. 그레이스케일 영상에서는 구조요소 범위 안 최솟값을 취하는 연산이 됩니다.",
+      "tags": [
+        "morphology"
+      ],
+      "terms": [
+        "erosion"
+      ],
+      "source_ref": "Gonzalez & Woods, Digital Image Processing(형태학적 영상처리 장)",
+      "status": "draft"
+    },
+    {
+      "id": "D-MOR-003",
+      "type": "short",
+      "chapter": "D.mor",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "구조요소가 전경과 조금이라도 겹치는 위치를 모두 전경으로 만들어, 이진 객체를 불리는 형태학 연산은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Dilation"
+        ],
+        "ko": [
+          "팽창",
+          "팽창 연산"
+        ]
+      },
+      "primary": "Dilation",
+      "explanation_short": "팽창(dilation)은 구조요소가 전경에 닿기만 해도 그 위치를 전경으로 만드는 연산입니다. 객체가 커지고 작은 틈·구멍이 메워지며 가까운 객체끼리 붙을 수 있습니다.",
+      "explanation_full": "침식과 팽창은 서로 쌍대(dual) 관계로, 전경의 팽창은 배경의 침식과 같습니다(대칭 구조요소 기준). 그레이스케일 영상에서는 구조요소 범위 안 최댓값을 취하는 최댓값 필터가 됩니다. 끊긴 도로·하천 마스크를 잇는 데 쓰지만 객체 면적이 커지므로 면적 집계 전에는 보통 침식과 짝지어(닫힘) 씁니다.",
+      "tags": [
+        "morphology"
+      ],
+      "terms": [
+        "dilation"
+      ],
+      "source_ref": "Gonzalez & Woods, Digital Image Processing(형태학적 영상처리 장)",
+      "status": "draft"
+    },
+    {
+      "id": "D-MOR-004",
+      "type": "mcq",
+      "chapter": "D.mor",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "열림(opening)과 닫힘(closing) 연산의 순서를 바르게 짝지은 것은?",
+      "choices": [
+        {
+          "text": "열림: 팽창 → 침식, 닫힘: 침식 → 팽창",
+          "rationale": "두 연산의 순서를 서로 바꾸었습니다."
+        },
+        {
+          "text": "열림: 침식 → 침식, 닫힘: 팽창 → 팽창",
+          "rationale": "같은 연산을 두 번 하는 것은 반복 침식·반복 팽창입니다. 열림·닫힘은 서로 반대인 두 연산을 짝지은 것입니다."
+        },
+        {
+          "text": "열림: 침식만 1회, 닫힘: 팽창만 1회",
+          "rationale": "단일 침식·팽창은 객체 크기를 바꿉니다. 열림·닫힘은 반대 연산을 이어서 해 큰 객체 크기를 대체로 되돌립니다."
+        },
+        {
+          "text": "열림: 침식 → 팽창, 닫힘: 침식 → 팽창(구조요소 크기만 다름)",
+          "rationale": "닫힘은 팽창을 먼저 합니다. 구조요소 크기로 두 연산이 구분되는 것이 아닙니다."
+        },
+        {
+          "text": "열림: 침식 → 팽창, 닫힘: 팽창 → 침식",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "열림은 침식 후 팽창, 닫힘은 팽창 후 침식이며 두 단계에 같은 구조요소를 씁니다. 열림은 작은 돌기·잡음을 없애고, 닫힘은 작은 구멍·틈을 메웁니다.",
+      "explanation_full": "“열림”은 먼저 깎아서 가는 연결부를 끊고(열고), “닫힘”은 먼저 불려서 틈을 막는다(닫는다)고 기억하면 쉽습니다. 두 연산 모두 구조요소보다 큰 객체의 모양은 대체로 유지하며, 같은 연산을 두 번 적용해도 결과가 더 바뀌지 않는 멱등성(idempotence)이 있습니다.",
+      "tags": [
+        "morphology"
+      ],
+      "terms": [
+        "morphological-opening",
+        "morphological-closing"
+      ],
+      "source_ref": "Gonzalez & Woods, Digital Image Processing(형태학적 영상처리 장)",
+      "status": "draft"
+    },
+    {
+      "id": "D-MOR-005",
+      "type": "short",
+      "chapter": "D.mor",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "이진 영상에서 서로 이어진 전경 픽셀 덩어리마다 고유 번호를 붙여, 객체 개수·면적을 셀 수 있게 하는 처리는? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Connected component labeling (CCL)",
+          "Connected component labelling",
+          "Connected component analysis",
+          "Connected components"
+        ],
+        "ko": [
+          "연결요소 레이블링",
+          "연결요소 라벨링",
+          "연결성분 레이블링",
+          "연결요소 분석",
+          "레이블링",
+          "라벨링"
+        ]
+      },
+      "primary": "Connected component labeling (CCL)",
+      "explanation_short": "연결요소 레이블링(CCL)은 이웃으로 이어진 전경 픽셀을 한 덩어리로 묶어 번호를 매깁니다. 덩어리별 면적·외접 박스·중심을 구해 객체 단위 분석을 할 수 있습니다.",
+      "explanation_full": "이웃 기준으로 상하좌우만 보는 4-연결과 대각선까지 보는 8-연결이 있으며, 기준에 따라 개수가 달라집니다. 세그멘테이션 결과에서 작은 조각을 면적으로 걸러 내거나, 객체 수를 세거나, 폴리곤화 전에 객체 단위로 나누는 데 필수적으로 쓰입니다. OpenCV의 connectedComponentsWithStats, scikit-image의 measure.label이 대표적인 함수입니다.",
+      "tags": [
+        "connectivity",
+        "post-processing"
+      ],
+      "terms": [
+        "connected-component-labeling"
+      ],
+      "source_ref": "scikit-image 문서 skimage.morphology·skimage.measure",
+      "status": "draft"
+    },
+    {
+      "id": "D-MOR-006",
+      "type": "short",
+      "chapter": "D.mor",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "도로 마스크 같은 이진 객체를, 연결 구조(위상)를 유지한 채 폭 1픽셀의 중심선으로 가늘게 만드는 처리는? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Skeletonization",
+          "Skeletonisation",
+          "Thinning",
+          "Skeleton"
+        ],
+        "ko": [
+          "스켈레톤화",
+          "골격화",
+          "세선화",
+          "스켈레톤",
+          "골격 추출"
+        ]
+      },
+      "primary": "Skeletonization",
+      "explanation_short": "스켈레톤화(skeletonization)는 객체를 양쪽에서 균일하게 깎아 폭 1픽셀 중심선만 남기되, 끊기거나 구멍이 생기지 않게 연결 구조를 유지합니다.",
+      "explanation_full": "세선화(thinning) 알고리즘(예: Zhang-Suen)으로 구현하는 경우가 많고, 중심선에서 경계까지의 거리(거리 변환)를 함께 저장하면 원래 폭도 복원할 수 있습니다(medial axis). 원격탐사에서는 도로·하천·수로 마스크를 중심선 네트워크로 바꿀 때 쓰며, 결과 픽셀을 이어 선형 벡터로 변환합니다.",
+      "tags": [
+        "morphology",
+        "centerline"
+      ],
+      "terms": [
+        "skeletonization"
+      ],
+      "source_ref": "scikit-image 문서 skimage.morphology·skimage.measure",
+      "status": "draft"
+    },
+    {
+      "id": "D-MOR-007",
+      "type": "mcq",
+      "chapter": "D.mor",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "형태학적 구멍 메우기(hole filling)가 채우는 영역은?",
+      "choices": [
+        {
+          "text": "영상 안에 있는 모든 배경 픽셀",
+          "rationale": "모든 배경을 채우면 영상 전체가 전경이 됩니다. 구멍 메우기는 둘러싸인 배경만 채웁니다."
+        },
+        {
+          "text": "구조요소보다 작은 배경 틈과 구멍만",
+          "rationale": "크기 기준으로 작은 구멍·틈을 메우는 것은 닫힘 연산의 성질입니다."
+        },
+        {
+          "text": "전경에 둘러싸여 바깥 배경과 이어지지 않은 영역",
+          "rationale": null
+        },
+        {
+          "text": "영상 테두리에 닿아 있어 바깥쪽 배경과 이어진 배경 영역 전체",
+          "rationale": "테두리와 이어진 배경은 “바깥”으로 보고 채우지 않습니다."
+        },
+        {
+          "text": "면적이 가장 큰 배경 연결요소 하나",
+          "rationale": "면적이 가장 큰 배경은 대개 바깥 배경입니다. 크기가 아니라 둘러싸였는지가 기준입니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "구멍 메우기는 테두리에서 이어지는 배경(바깥)을 찾은 뒤, 거기에 닿지 않는 배경, 즉 전경에 완전히 갇힌 영역을 전경으로 바꿉니다. 구멍 크기와는 관계없습니다.",
+      "explanation_full": "구현은 테두리에서 배경을 flood fill 한 뒤 반전해 원 마스크와 합치는 방식이 흔합니다(scipy.ndimage.binary_fill_holes 등). 영상 테두리에 걸쳐 잘린 객체의 구멍은 바깥 배경과 이어진 것으로 보여 채워지지 않을 수 있으므로, 타일 단위로 처리할 때는 여유분을 두는 것이 좋습니다. 연결 기준(4/8-연결)에 따라 “둘러싸임” 판정이 달라질 수 있다는 점도 기억하세요.",
+      "tags": [
+        "morphology",
+        "post-processing"
+      ],
+      "terms": [
+        "hole-filling"
+      ],
+      "source_ref": "Gonzalez & Woods, Digital Image Processing(형태학적 영상처리 장)",
+      "status": "draft"
+    },
+    {
+      "id": "D-MOR-008",
+      "type": "mcq",
+      "chapter": "D.mor",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "항공 영상 한쪽에 큰 구름 그림자가 드리워져, 전역 Otsu 임계값 하나로 이진화하니 그림자 쪽 대상이 모두 배경으로 빠졌다. 가장 적절한 대안은?",
+      "choices": [
+        {
+          "text": "영상을 작은 창으로 나눠 창마다 임계값을 정하는 적응형(국소) 이진화를 쓴다",
+          "rationale": null
+        },
+        {
+          "text": "Otsu로 구한 같은 임계값을 영상 전체에 한 번 더 반복 적용해 결과를 보강한다",
+          "rationale": "같은 전역 임계값을 반복해도 결과는 같습니다. 문제는 영상 전체에 하나의 임계값을 쓰는 것입니다."
+        },
+        {
+          "text": "이진화 결과에 큰 구조요소로 팽창을 적용해 빠진 대상을 되살린다",
+          "rationale": "팽창은 남아 있는 전경을 불릴 뿐, 이미 배경으로 빠진 대상을 찾아내지 못하고 경계만 부풀립니다."
+        },
+        {
+          "text": "히스토그램 봉우리가 뾰족해지도록 영상 전체에 가우시안 블러를 강하게 건다",
+          "rationale": "블러는 잡음을 줄여 줄 뿐, 그림자 쪽과 밝은 쪽의 밝기 수준 차이를 없애지 못합니다."
+        },
+        {
+          "text": "Otsu 대신 영상 전체의 평균 밝기를 임계값으로 사용한다",
+          "rationale": "평균 밝기도 영상 전체에 하나의 값을 쓰는 전역 임계값이라 같은 문제가 생깁니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "전역 Otsu는 영상 전체에 임계값 하나를 쓰므로, 조명이 위치마다 크게 다르면 한쪽 대상을 놓칩니다. 창마다 임계값을 따로 구하는 적응형(국소) 이진화가 이런 조명 불균일에 강합니다.",
+      "explanation_full": "적응형 이진화에는 창 안의 평균·가우시안 가중평균에서 상수를 뺀 값을 임계값으로 쓰는 방식(OpenCV adaptiveThreshold), 국소 평균·표준편차를 쓰는 방식(Niblack, Sauvola) 등이 있습니다. 창 크기는 대상보다 충분히 크게 잡아야 합니다. 조명 성분을 큰 가우시안으로 추정해 빼 준 뒤 전역 Otsu를 적용하는 방법도 쓸 수 있습니다.",
+      "tags": [
+        "thresholding",
+        "illumination"
+      ],
+      "terms": [
+        "otsu-thresholding"
+      ],
+      "source_ref": "Gonzalez & Woods, Digital Image Processing(영상 분할·임계값 처리 장); Otsu (1979) IEEE Trans. SMC",
+      "status": "draft"
+    },
+    {
+      "id": "D-MOR-009",
+      "type": "mcq",
+      "chapter": "D.mor",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "이진 수계 마스크에서 (A) 육지 위에 흩어진 1~2픽셀짜리 오탐 점을 없애고, (B) 좁은 수로가 1~2픽셀씩 끊긴 곳을 잇고 싶다. 각각에 알맞은 연산(3×3 구조요소)의 짝은?",
+      "choices": [
+        {
+          "text": "(A) 닫힘, (B) 열림",
+          "rationale": "두 연산을 반대로 짝지었습니다. 닫힘은 틈을 메우고, 열림은 작은 조각을 없앱니다."
+        },
+        {
+          "text": "(A) 팽창, (B) 침식",
+          "rationale": "팽창은 점 잡음을 오히려 키우고, 침식은 끊긴 곳을 더 벌립니다."
+        },
+        {
+          "text": "(A) 구멍 메우기, (B) 스켈레톤화",
+          "rationale": "구멍 메우기는 전경 안쪽 배경을 채우는 처리이고, 스켈레톤화는 중심선을 뽑는 처리라 두 요구와 맞지 않습니다."
+        },
+        {
+          "text": "(A) 열림, (B) 닫힘",
+          "rationale": null
+        },
+        {
+          "text": "(A) 열림, (B) 열림",
+          "rationale": "(B)의 끊긴 곳은 열림으로 이어지지 않습니다. 열림은 오히려 가는 연결부를 끊습니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "열림(침식→팽창)은 구조요소보다 작은 점 잡음을 지우고, 닫힘(팽창→침식)은 구조요소보다 좁은 틈·끊김을 메웁니다. 두 연산 모두 큰 수체의 모양은 대체로 유지합니다.",
+      "explanation_full": "3×3 구조요소 기준으로 열림은 3×3 창이 들어가지 못하는 조각(폭 1~2픽셀)을 없애고, 닫힘은 1~2픽셀 폭의 틈을 메웁니다. 둘을 이어서 적용하면 순서에 따라 결과가 달라지므로 목적(오탐 제거 우선인지, 연결 우선인지)에 맞게 순서를 정합니다. 다만 열림은 폭 1~2픽셀의 실제 좁은 수로도 지울 수 있으니 수로 폭과 GSD를 함께 고려해야 합니다.",
+      "tags": [
+        "morphology",
+        "water-mask"
+      ],
+      "terms": [
+        "morphological-opening",
+        "morphological-closing"
+      ],
+      "source_ref": "Gonzalez & Woods, Digital Image Processing(형태학적 영상처리 장)",
+      "status": "draft"
+    },
+    {
+      "id": "D-MOR-010",
+      "type": "mcq",
+      "chapter": "D.mor",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "이진 건물 마스크에 3×3 정사각 구조요소로 형태학 연산을 할 때, 옳은 설명은?",
+      "choices": [
+        {
+          "text": "침식은 모든 객체를 사방으로 1픽셀씩 키운다",
+          "rationale": "객체를 키우는 것은 팽창입니다. 침식은 사방으로 1픽셀씩 깎습니다."
+        },
+        {
+          "text": "팽창하면 사이 간격이 2픽셀 이하인 두 건물이 하나로 붙을 수 있다",
+          "rationale": null
+        },
+        {
+          "text": "팽창 뒤 같은 구조요소로 침식하면 항상 원래 마스크로 정확히 돌아온다",
+          "rationale": "그 연산은 닫힘으로, 메워진 틈·구멍은 되돌아오지 않습니다. 팽창과 침식은 서로의 역연산이 아닙니다."
+        },
+        {
+          "text": "침식은 폭 1픽셀짜리 가는 선을 더 두껍게 만든다",
+          "rationale": "3×3 구조요소가 들어가지 못하는 폭 1픽셀 선은 침식하면 사라집니다."
+        },
+        {
+          "text": "팽창은 건물 내부의 작은 구멍을 더 크게 넓혀 놓는다",
+          "rationale": "팽창은 전경을 불리므로 내부 구멍은 작아지거나 메워집니다. 구멍을 키우는 것은 침식입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "3×3 팽창은 각 객체를 사방으로 1픽셀씩 불리므로, 두 객체가 1픽셀씩 다가가 2픽셀 이하 간격은 메워집니다. 그래서 팽창 후 연결요소 개수를 세면 건물 수가 줄어들 수 있습니다.",
+      "explanation_full": "간격 2픽셀을 예로 들면 두 객체가 각각 1픽셀씩 커져 가운데 두 칸이 모두 채워집니다. 반대로 침식은 폭 2픽셀 이하의 가는 연결부를 끊어 붙어 있던 객체를 분리합니다. 개수·면적 통계를 낼 때는 어떤 형태학 연산을 거쳤는지 반드시 기록해 두어야 결과를 재현하고 해석할 수 있습니다.",
+      "tags": [
+        "morphology"
+      ],
+      "terms": [
+        "erosion",
+        "dilation"
+      ],
+      "source_ref": "Gonzalez & Woods, Digital Image Processing(형태학적 영상처리 장)",
+      "status": "draft"
+    },
+    {
+      "id": "D-MOR-011",
+      "type": "mcq",
+      "chapter": "D.mor",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "다음 3×3 이진 영상(1 = 전경)의 연결요소 개수를 4-연결과 8-연결 기준으로 각각 세면?\n\n1 0 0\n0 1 0\n0 0 1",
+      "choices": [
+        {
+          "text": "4-연결 1개, 8-연결 3개",
+          "rationale": "기준을 반대로 적용했습니다. 대각선을 이웃으로 보는 것은 8-연결입니다."
+        },
+        {
+          "text": "4-연결 3개, 8-연결 3개",
+          "rationale": "8-연결에서는 대각선으로 닿은 픽셀도 이웃이므로 세 픽셀이 하나로 이어집니다."
+        },
+        {
+          "text": "4-연결 1개, 8-연결 1개",
+          "rationale": "4-연결은 상하좌우만 이웃으로 보므로 대각선으로만 닿은 세 픽셀은 각각 따로 셉니다."
+        },
+        {
+          "text": "4-연결 2개, 8-연결 1개",
+          "rationale": "4-연결에서 상하좌우로 맞닿은 쌍이 하나도 없으므로 3개입니다."
+        },
+        {
+          "text": "4-연결 3개, 8-연결 1개",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "세 전경 픽셀은 대각선으로만 닿아 있습니다. 상하좌우만 보는 4-연결에서는 3개, 대각선까지 보는 8-연결에서는 1개로 셉니다.",
+      "explanation_full": "대각선으로 이어진 도로·수로처럼 가는 선형 객체는 4-연결로 세면 여러 조각으로 쪼개져 개수가 부풀려질 수 있습니다. 반대로 8-연결은 모서리만 닿은 서로 다른 건물을 하나로 합칠 수 있습니다. 전경과 배경에 서로 다른 연결 기준(예: 전경 8, 배경 4)을 쓰는 것이 위상적으로 일관된다는 점도 알아 두면 좋습니다.",
+      "tags": [
+        "connectivity"
+      ],
+      "terms": [
+        "connected-component-labeling"
+      ],
+      "source_ref": "Gonzalez & Woods, Digital Image Processing(형태학적 영상처리 장)",
+      "status": "draft"
+    },
+    {
+      "id": "D-MOR-012",
+      "type": "mcq",
+      "chapter": "D.mor",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "도로 분할 마스크를 스켈레톤화했더니 중심선 양옆으로 짧은 가지(spur)가 많이 돋아났다. 가장 가능성 높은 원인과 대응은?",
+      "choices": [
+        {
+          "text": "스켈레톤화가 연결 구조를 유지하지 못해서 → 연결요소 레이블링으로 끊긴 곳을 다시 잇는다",
+          "rationale": "스켈레톤화는 연결 구조를 유지하도록 설계됩니다. 짧은 가지는 연결이 끊겨서가 아니라 경계 요철 때문에 생깁니다."
+        },
+        {
+          "text": "도로 폭이 너무 넓어서 → 마스크를 여러 번 팽창해 폭을 더 키운 뒤 다시 스켈레톤화한다",
+          "rationale": "폭을 키워도 경계 요철은 남고, 팽창으로 이웃 도로가 붙는 부작용이 생깁니다."
+        },
+        {
+          "text": "경계의 작은 요철이 가지로 변한 것 → 경계를 다듬고 스켈레톤화한 뒤 짧은 가지를 잘라 낸다",
+          "rationale": null
+        },
+        {
+          "text": "8-연결 기준을 써서 → 4-연결 기준으로 바꾸면 짧은 가지가 모두 사라진다",
+          "rationale": "연결 기준은 픽셀 간 연결 판단 방식을 바꿀 뿐, 경계 요철에서 생기는 가지를 없애지 못합니다."
+        },
+        {
+          "text": "원 영상이 그레이스케일이라서 → 원 영상을 RGB로 바꾸어 분할과 스켈레톤화를 다시 한다",
+          "rationale": "스켈레톤화는 이진 마스크에 적용하는 연산이라 원 영상의 색공간과는 관계없습니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "스켈레톤은 경계의 작은 돌기 하나하나에도 그쪽으로 뻗는 가지를 만들 만큼 경계 모양에 민감합니다. 그래서 열림·닫힘 등으로 경계를 다듬은 뒤 스켈레톤화하고, 일정 길이 미만 가지를 잘라 내는 가지치기(pruning)를 함께 씁니다.",
+      "explanation_full": "가지치기 길이는 도로 폭 정도에서 시작해 실제 짧은 골목이 지워지지 않는지 확인하며 경험적으로 정합니다. 스켈레톤을 벡터 선으로 바꾼 뒤에도 선 단순화(Douglas-Peucker 등)를 적용해 계단 모양을 줄입니다. 딥러닝 분할 결과는 경계가 들쭉날쭉하기 쉬워 이 후처리가 결과 품질을 크게 좌우합니다.",
+      "tags": [
+        "morphology",
+        "centerline",
+        "post-processing"
+      ],
+      "terms": [
+        "skeletonization"
+      ],
+      "source_ref": "Gonzalez & Woods, Digital Image Processing(형태학적 영상처리 장)",
+      "status": "draft"
+    },
+    {
+      "id": "D-MOR-013",
+      "type": "mcq",
+      "chapter": "D.mor",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "건물 지붕 마스크 안에 크기가 제각각인 구멍(최대 약 20×20픽셀)이 뚫려 있다. 건물 외곽선은 그대로 두고 구멍만 모두 메우려 할 때, 3×3 닫힘 연산보다 구멍 메우기(hole filling)가 적절한 이유는?",
+      "choices": [
+        {
+          "text": "크기와 무관하게 바깥과 안 이어진 구멍만 채우므로 큰 구멍도 메우고 외곽은 유지되기 때문",
+          "rationale": null
+        },
+        {
+          "text": "닫힘 연산은 작은 구멍을 메우는 것이 아니라 오히려 구멍을 더 넓히는 연산이기 때문",
+          "rationale": "닫힘(팽창→침식)은 작은 구멍을 메웁니다. 구멍을 넓히는 것은 침식입니다."
+        },
+        {
+          "text": "구멍 메우기는 스켈레톤화를 함께 수행해 지붕 모양을 단순한 다각형으로 정리하기 때문",
+          "rationale": "구멍 메우기는 둘러싸인 배경을 채우는 연산으로 스켈레톤화와 무관합니다."
+        },
+        {
+          "text": "구멍 메우기는 닫힘보다 훨씬 큰 구조요소를 자동으로 골라 팽창과 침식을 반복하기 때문",
+          "rationale": "구멍 메우기는 구조요소 크기로 동작하는 연산이 아니라 바깥 배경과의 연결 여부로 판단합니다."
+        },
+        {
+          "text": "닫힘 연산은 연결요소 레이블링을 먼저 끝낸 영상에만 적용할 수 있는 연산이기 때문",
+          "rationale": "닫힘은 레이블링 여부와 관계없이 이진 마스크에 바로 적용할 수 있습니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "3×3 닫힘은 구조요소보다 좁은 틈만 메우므로 20×20 구멍은 남고, 구조요소를 크게 키우면 오목한 외곽과 이웃 건물 사이까지 메워집니다. 구멍 메우기는 크기가 아니라 둘러싸였는지로 판단해 외곽선을 건드리지 않습니다.",
+      "explanation_full": "다만 중정(안뜰)처럼 실제로 뚫린 공간도 같이 채워지므로, 납품 기준이 “외곽선만 있는 폴리곤”인지 “안쪽 링(hole)을 포함한 폴리곤”인지 먼저 확인해야 합니다. 일정 면적 이하 구멍만 채우려면 배경 쪽에 연결요소 레이블링을 적용해 작은 구멍만 골라 채우는 방식(예: skimage.morphology.remove_small_holes)을 씁니다.",
+      "tags": [
+        "morphology",
+        "post-processing"
+      ],
+      "terms": [
+        "hole-filling",
+        "morphological-closing"
+      ],
+      "source_ref": "scikit-image 문서 skimage.morphology·skimage.measure",
+      "status": "draft"
+    },
+    {
+      "id": "D-MOR-014",
+      "type": "scenario",
+      "chapter": "D.mor",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"건물 분할 결과를 Shapefile로 납품하기 전에, 면적 20픽셀 미만 자잘한 조각은 지우고 지붕 안 구멍은 메운 다음 폴리곤으로 바꿔 줘. GSD는 0.5 m야.\"\n\n가장 적절한 처리 순서는?",
+      "choices": [
+        {
+          "text": "20×20 정사각 구조요소로 한 번 침식해서 작은 조각을 지운 뒤 → 바로 폴리곤화",
+          "rationale": "큰 구조요소로 침식하면 작은 조각뿐 아니라 모든 건물이 깎여 작아지고, “면적 20픽셀”과 “20×20 구조요소”는 다른 기준입니다."
+        },
+        {
+          "text": "마스크 전체를 스켈레톤화 → 짧은 가지 가지치기 → 중심선을 폴리곤화",
+          "rationale": "스켈레톤화는 중심선을 뽑는 처리로, 건물 면(폴리곤) 납품에는 맞지 않습니다."
+        },
+        {
+          "text": "3×3 팽창을 여러 번 반복해 작은 조각을 주변 큰 건물에 붙인 뒤 → 폴리곤화",
+          "rationale": "조각이 지워지지 않고 건물 면적만 부풀며, 가까운 건물끼리 붙는 부작용이 생깁니다."
+        },
+        {
+          "text": "레이블링으로 조각 면적 계산 → 20픽셀(5 m²) 미만 제거 → 구멍 메우기 → 폴리곤화",
+          "rationale": null
+        },
+        {
+          "text": "먼저 폴리곤화한 뒤 → 다시 래스터로 바꿔 Otsu로 재이진화하고 → 결과를 그대로 납품",
+          "rationale": "이미 이진인 마스크를 Otsu로 다시 이진화할 이유가 없고, 조각 제거·구멍 메우기 단계도 빠져 있습니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "면적 기준 조각 제거는 연결요소 레이블링으로 덩어리별 픽셀 수를 세서 하는 것이 정확합니다. GSD 0.5 m면 픽셀 하나가 0.25 m²이므로 20픽셀은 5 m²이며, 구멍을 메운 뒤 폴리곤화하면 불필요한 안쪽 링이 생기지 않습니다.",
+      "explanation_full": "침식·열림으로도 작은 조각이 사라지긴 하지만 모든 건물 경계가 함께 바뀌므로, “면적 기준”이라는 지시에는 레이블링이 맞습니다. 폴리곤화(rasterio.features.shapes, gdal_polygonize 등) 뒤에는 계단 모양 경계를 단순화하고, 좌표계(EPSG)가 원 래스터와 같은지 확인한 뒤 납품합니다. 면적 기준을 m²로 받았다면 GSD로 픽셀 수를 환산한 과정을 기록해 두세요.",
+      "tags": [
+        "post-processing",
+        "vectorization",
+        "building"
+      ],
+      "terms": [
+        "connected-component-labeling",
+        "hole-filling",
+        "polygonization"
+      ],
+      "source_ref": "scikit-image 문서 skimage.morphology·skimage.measure",
+      "status": "draft"
+    },
+    {
+      "id": "D-MOR-015",
+      "type": "scenario",
+      "chapter": "D.mor",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"NDWI 임계값을 0으로 고정하지 말고, 512×512 타일마다 Otsu로 구해서 수계 이진화해.\"\n\n이 지시를 수행하기 전에 가장 먼저 확인해야 할 것은?",
+      "choices": [
+        {
+          "text": "물이 거의 없거나 물뿐인 타일이 있는지(쌍봉형이 아니어도 Otsu는 억지로 둘로 나눈다)",
+          "rationale": null
+        },
+        {
+          "text": "타일 크기가 2의 거듭제곱인지(Otsu는 2의 거듭제곱 크기 영상에서만 계산된다)",
+          "rationale": "Otsu는 히스토그램만 쓰므로 영상 크기와 무관합니다."
+        },
+        {
+          "text": "NDWI 값에 음수가 포함되는지(Otsu는 음수 값이 있는 영상에는 적용할 수 없다)",
+          "rationale": "Otsu는 값 범위를 구간(bin)으로 나눈 히스토그램에서 계산하므로 음수가 있어도 적용할 수 있습니다. 구현에 따라(예: OpenCV) 8비트 등으로 값을 변환해야 할 수는 있지만 알고리즘 자체의 제약은 아닙니다."
+        },
+        {
+          "text": "영상이 트루컬러로 합성되어 있는지(Otsu는 3채널 컬러 영상에만 적용된다)",
+          "rationale": "Otsu는 단일 밴드(여기서는 NDWI) 히스토그램에 적용합니다."
+        },
+        {
+          "text": "타일 간 overlap이 64픽셀인지(overlap이 없으면 Otsu 임계값을 계산할 수 없다)",
+          "rationale": "overlap은 경계 효과를 줄이는 선택 사항으로, Otsu 계산 가능 여부와는 무관합니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "Otsu는 어떤 히스토그램이든 두 클래스로 나누는 임계값을 반드시 내놓습니다. 육지만 있는 타일에서는 육지 안의 밝기 차이로 경계가 잡혀 대량 오탐이 생기므로, 타일별 히스토그램의 쌍봉성이나 물 비율을 먼저 점검해야 합니다.",
+      "explanation_full": "대응으로는 타일을 키우거나 이웃 타일과 묶어 계산하기, 임계값이 합리적 범위(예: 전역 값 주변)를 벗어나면 전역 값을 쓰기, 클래스 분리도 지표가 낮은 타일은 건너뛰기 등이 있습니다. 해안선이 지나는 타일만 골라 계산하는 방식도 흔합니다. 타일별 임계값을 지도로 그려 보면 이상한 타일을 빠르게 찾을 수 있습니다.",
+      "tags": [
+        "thresholding",
+        "water-mask",
+        "tiling"
+      ],
+      "terms": [
+        "otsu-thresholding"
+      ],
+      "source_ref": "Gonzalez & Woods, Digital Image Processing(영상 분할·임계값 처리 장); Otsu (1979) IEEE Trans. SMC",
+      "status": "draft"
+    }
+  ]
+}

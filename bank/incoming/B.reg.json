@@ -1,0 +1,754 @@
+{
+  "format": "visiondrill-bank-exchange",
+  "format_version": 1,
+  "terms": [
+    {
+      "id": "lasso-regression",
+      "term_en": "Lasso Regression",
+      "term_ko": "라쏘 회귀",
+      "abbreviation": "Lasso",
+      "definition": "회귀계수 절댓값 합(L1) 패널티를 더해 계수를 줄이고 일부를 정확히 0으로 만들어 변수 선택까지 하는 회귀",
+      "usage_example": "지수 변수가 30개나 되니까 Lasso로 돌려서 살아남는 것만 추려 와.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "elastic-net",
+      "term_en": "Elastic Net",
+      "term_ko": "엘라스틱 넷",
+      "abbreviation": null,
+      "definition": "L1(Lasso) 패널티와 L2(Ridge) 패널티를 섞은 규제 회귀. 변수 선택을 하면서 상관 높은 변수 묶음을 함께 남기는 경향이 있다",
+      "usage_example": "밴드끼리 상관이 워낙 높으니까 Lasso 말고 Elastic Net으로, L1 비율도 CV로 같이 잡아.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "regularization-parameter",
+      "term_en": "Regularization Parameter",
+      "term_ko": "규제 강도",
+      "abbreviation": "λ",
+      "definition": "손실함수에 더하는 패널티 항의 비중을 정하는 하이퍼파라미터. 클수록 계수를 강하게 줄여 편향은 커지고 분산은 작아진다",
+      "usage_example": "λ는 감으로 정하지 말고 공간 블록 CV로 골라.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "shrinkage",
+      "term_en": "Shrinkage",
+      "term_ko": "수축",
+      "abbreviation": null,
+      "definition": "패널티 때문에 추정 계수가 0 쪽으로 끌려가 크기가 줄어드는 효과. 약간의 편향을 감수하고 분산을 줄여 예측 오차를 낮춘다",
+      "usage_example": "Ridge 계수가 OLS보다 작게 나오는 건 수축 때문이니까 버그 아니야.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "one-standard-error-rule",
+      "term_en": "One-Standard-Error Rule",
+      "term_ko": "1 표준오차 규칙",
+      "abbreviation": "1-SE rule",
+      "definition": "교차검증 오차가 최소인 모형 대신, 최소 오차 + 1 표준오차 이내에 드는 모형 중 가장 단순한(규제가 가장 강한) 모형을 고르는 규칙",
+      "usage_example": "λ_min 말고 1-SE 규칙으로 골라. 변수 몇 개 덜 쓰는 게 현장에 설명하기 편해.",
+      "origin": "standard",
+      "track": "B"
+    }
+  ],
+  "questions": [
+    {
+      "id": "B-REG-001",
+      "type": "short",
+      "chapter": "B.reg",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "회귀계수 절댓값의 합(L1 노름)에 비례하는 패널티를 더해, 일부 계수를 정확히 0으로 만들어 변수 선택까지 하는 회귀의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Lasso regression",
+          "Lasso",
+          "Least Absolute Shrinkage and Selection Operator",
+          "L1 regularized regression"
+        ],
+        "ko": [
+          "라쏘 회귀",
+          "라쏘",
+          "L1 규제 회귀"
+        ]
+      },
+      "primary": "Lasso regression",
+      "explanation_short": "Lasso는 RSS + λΣ|βj|를 최소화합니다. L1 패널티는 0에서 뾰족해 최적해가 '계수 = 0'인 점에 걸리기 쉬우므로 변수 선택 효과가 있습니다.",
+      "explanation_full": "이름은 Least Absolute Shrinkage and Selection Operator의 약자입니다. 설명변수가 많고 그중 일부만 중요하다고 볼 때 유용하지만, 서로 강하게 상관된 변수들 중에서는 하나만 (다소 임의로) 남기는 경향이 있어 원격탐사의 인접 밴드처럼 비슷한 변수가 많으면 Elastic Net을 함께 검토합니다.",
+      "tags": [
+        "regression",
+        "regularization"
+      ],
+      "terms": [
+        "lasso-regression"
+      ],
+      "source_ref": "ISLR 6.2절(Shrinkage Methods)",
+      "status": "draft"
+    },
+    {
+      "id": "B-REG-002",
+      "type": "short",
+      "chapter": "B.reg",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "L1(Lasso) 패널티와 L2(Ridge) 패널티를 섞어 쓰는 규제 회귀의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Elastic Net",
+          "Elastic Net regression"
+        ],
+        "ko": [
+          "엘라스틱 넷",
+          "일래스틱 넷",
+          "엘라스틱넷 회귀"
+        ]
+      },
+      "primary": "Elastic Net",
+      "explanation_short": "Elastic Net은 λ[α·Σ|βj| + (1−α)/2·Σβj²] 꼴의 패널티를 씁니다. α = 1이면 Lasso, α = 0이면 Ridge입니다.",
+      "explanation_full": "L1 성분으로 변수 선택을, L2 성분으로 상관 높은 변수 묶음을 함께 남기는 그룹 효과를 얻습니다. 대신 λ와 L1 비율(α, scikit-learn의 l1_ratio) 두 하이퍼파라미터를 교차검증으로 함께 골라야 합니다. 패널티 표기와 스케일링은 라이브러리마다 조금씩 다릅니다.",
+      "tags": [
+        "regression",
+        "regularization"
+      ],
+      "terms": [
+        "elastic-net"
+      ],
+      "source_ref": "Zou & Hastie (2005), Regularization and variable selection via the elastic net",
+      "status": "draft"
+    },
+    {
+      "id": "B-REG-003",
+      "type": "short",
+      "chapter": "B.reg",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "회귀계수 제곱합(L2 노름의 제곱)에 비례하는 패널티를 더해 계수를 0 쪽으로 줄이지만 정확히 0으로 만들지는 않는 회귀의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Ridge regression",
+          "Ridge",
+          "Tikhonov regularization",
+          "L2 regularized regression"
+        ],
+        "ko": [
+          "능형회귀",
+          "릿지 회귀",
+          "리지 회귀",
+          "릿지",
+          "L2 규제 회귀"
+        ]
+      },
+      "primary": "Ridge regression",
+      "explanation_short": "Ridge 회귀는 RSS + λΣβj²를 최소화합니다. 계수를 전체적으로 줄여 다중공선성으로 인한 불안정을 완화하지만, 계수를 정확히 0으로 만들지는 않습니다.",
+      "explanation_full": "Ridge는 (X'X + λI)⁻¹X'y라는 닫힌 해가 있어 계산이 간단합니다. 변수를 빼기 어려운 상황(모든 밴드를 써야 하는 경우 등)에서 계수를 안정화하는 데 씁니다. 딥러닝의 weight decay도 같은 L2 패널티 개념입니다.",
+      "tags": [
+        "regression",
+        "regularization"
+      ],
+      "terms": [
+        "ridge-regression"
+      ],
+      "source_ref": "ISLR 6.2절(Shrinkage Methods)",
+      "status": "draft"
+    },
+    {
+      "id": "B-REG-004",
+      "type": "short",
+      "chapter": "B.reg",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "교차검증 오차가 가장 작은 λ를 그대로 쓰지 않고, '최소 오차 + 1 표준오차' 이내에 드는 모형 중 가장 단순한(규제가 가장 강한) 모형을 고르는 규칙의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "One-standard-error rule (1-SE rule)",
+          "1 standard error rule"
+        ],
+        "ko": [
+          "1 표준오차 규칙",
+          "1-SE 규칙",
+          "일 표준오차 규칙"
+        ]
+      },
+      "primary": "One-standard-error rule (1-SE rule)",
+      "explanation_short": "1-SE 규칙은 교차검증 오차의 추정 불확실성(표준오차)을 고려해, 최소 오차와 통계적으로 구분되지 않는 모형들 중 가장 단순한 것을 고르는 규칙입니다.",
+      "explanation_full": "R glmnet의 lambda.min이 CV 오차 최소 λ, lambda.1se가 이 규칙으로 고른 λ입니다. 변수가 더 적은 모형은 설명하기 쉽고 새 지역·새 시기 영상으로 옮겼을 때도 더 안정적인 경우가 많습니다. 파시모니 원칙을 교차검증에 적용한 것이라 볼 수 있습니다.",
+      "tags": [
+        "regression",
+        "regularization",
+        "model-selection"
+      ],
+      "terms": [
+        "one-standard-error-rule"
+      ],
+      "source_ref": "ESL 7.10절(Cross-Validation)",
+      "status": "draft"
+    },
+    {
+      "id": "B-REG-005",
+      "type": "short",
+      "chapter": "B.reg",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "규제 회귀에서 패널티 때문에 계수 추정치가 OLS보다 0 쪽으로 끌려가 크기가 작아지는 효과를 무엇이라 하는가? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Shrinkage",
+          "Coefficient shrinkage"
+        ],
+        "ko": [
+          "수축",
+          "축소",
+          "계수 수축",
+          "계수 축소"
+        ]
+      },
+      "primary": "Shrinkage",
+      "explanation_short": "수축(shrinkage)은 패널티가 계수를 0 쪽으로 끌어당기는 효과입니다. 추정치에 약간의 편향이 생기는 대신 분산이 줄어 예측 오차가 낮아질 수 있습니다.",
+      "explanation_full": "Ridge·Lasso를 통틀어 수축 방법(shrinkage methods)이라고 부릅니다. Ridge 계수가 OLS보다 작게 나오는 것은 오류가 아니라 의도된 결과입니다. 수축된 계수는 편향되어 있으므로 크기를 그대로 '효과 크기'로 보고할 때는 주의해야 합니다.",
+      "tags": [
+        "regression",
+        "regularization"
+      ],
+      "terms": [
+        "shrinkage"
+      ],
+      "source_ref": "ISLR 6.2절(Shrinkage Methods)",
+      "status": "draft"
+    },
+    {
+      "id": "B-REG-006",
+      "type": "mcq",
+      "chapter": "B.reg",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "Ridge 회귀와 Lasso 회귀의 차이로 옳은 것은?",
+      "choices": [
+        {
+          "text": "Ridge는 계수를 정확히 0으로 만들어 변수 선택을 하고, Lasso는 계수를 0에 가깝게만 줄인다",
+          "rationale": "반대입니다. 계수를 정확히 0으로 만드는 것은 L1 패널티(Lasso)입니다."
+        },
+        {
+          "text": "Lasso는 행렬 공식으로 한 번에 풀리는 닫힌 해가 있지만, Ridge는 반복 최적화가 필요하다",
+          "rationale": "반대입니다. Ridge는 (X'X + λI)⁻¹X'y라는 닫힌 해가 있고, Lasso는 절댓값 때문에 좌표하강법 등 반복 계산으로 풉니다."
+        },
+        {
+          "text": "Lasso는 일부 계수를 정확히 0으로 만들 수 있지만, Ridge는 계수를 줄일 뿐 대개 0으로 만들지 않는다",
+          "rationale": null
+        },
+        {
+          "text": "Ridge는 설명변수를 표준화할 필요가 없고, Lasso만 표준화가 필요하다",
+          "rationale": "두 방법 모두 계수 크기에 패널티를 주므로 변수 단위의 영향을 받습니다. 둘 다 표준화가 필요합니다."
+        },
+        {
+          "text": "서로 강하게 상관된 두 변수가 있으면 Lasso는 두 변수를 모두 비슷한 크기의 계수로 함께 남기는 경향이 있다",
+          "rationale": "그것은 Ridge(와 Elastic Net)의 특성입니다. Lasso는 상관 높은 변수 중 하나를 남기고 나머지를 0으로 보내는 경향이 있습니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "L1 패널티(Σ|βj|)는 0에서 뾰족해 최적해가 '계수 = 0'인 점에 걸리기 쉬워 변수 선택 효과가 있습니다. L2 패널티(Σβj²)는 매끄러워 계수를 전체적으로 줄이지만 정확히 0으로 만들지는 않습니다.",
+      "explanation_full": "목적함수: Ridge = RSS + λΣβj², Lasso = RSS + λΣ|βj|. 중요한 변수가 소수라고 볼 때는 Lasso, 대부분의 변수가 조금씩 기여하고 서로 상관이 높을 때는 Ridge가 유리한 경우가 많습니다. 원격탐사에서 인접 밴드처럼 상관 높은 변수가 많으면 Lasso의 선택 결과가 표본에 따라 흔들릴 수 있어 Elastic Net을 함께 검토합니다.",
+      "tags": [
+        "regression",
+        "regularization"
+      ],
+      "terms": [
+        "lasso-regression",
+        "ridge-regression"
+      ],
+      "source_ref": "ISLR 6.2절(Shrinkage Methods)",
+      "status": "draft"
+    },
+    {
+      "id": "B-REG-007",
+      "type": "mcq",
+      "chapter": "B.reg",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "Ridge·Lasso에서 규제 강도 λ를 0부터 점점 키울 때 일반적으로 나타나는 변화로 옳은 것은?",
+      "choices": [
+        {
+          "text": "λ = 0일 때 모든 계수가 0이고, λ가 커질수록 계수가 OLS 추정값에 가까워진다",
+          "rationale": "반대입니다. λ = 0이면 패널티가 없어 OLS와 같고, λ가 커질수록 계수가 0 쪽으로 줄어듭니다."
+        },
+        {
+          "text": "λ가 커질수록 계수 추정치의 분산은 커지고 편향은 줄어든다",
+          "rationale": "반대입니다. 규제를 강하게 할수록 편향은 커지고 분산은 줄어듭니다."
+        },
+        {
+          "text": "λ가 커질수록 훈련 데이터의 잔차제곱합(RSS)이 계속 줄어든다",
+          "rationale": "패널티가 커지면 훈련 데이터에 맞추는 자유가 줄어 훈련 RSS는 커집니다. 훈련 RSS가 가장 작은 것은 λ = 0(OLS)입니다."
+        },
+        {
+          "text": "λ가 아주 커지면 절편까지 0이 되어 예측값이 항상 0이 된다",
+          "rationale": "일반적으로 절편은 패널티를 받지 않으므로, λ가 매우 커지면 기울기 계수만 0으로 가고 예측값은 y의 평균으로 수렴합니다."
+        },
+        {
+          "text": "계수들이 0 쪽으로 줄어들고, 편향은 커지는 대신 분산은 줄어든다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "λ는 패널티의 비중이므로 커질수록 계수가 수축되어 모형이 단순해집니다. 그 결과 편향은 증가하고 분산은 감소하며, 테스트 오차는 보통 중간 λ에서 가장 낮은 U자 모양이 됩니다.",
+      "explanation_full": "λ = 0이면 OLS, λ → ∞이면 절편만 남은 모형(예측 = ȳ)입니다. 이 사이에서 편향 증가보다 분산 감소가 커서 테스트 오차가 가장 낮아지는 지점을 교차검증으로 찾습니다. scikit-learn의 Ridge·Lasso는 이 값을 alpha라고 부르고, LogisticRegression은 역수 개념인 C를 써서 C가 작을수록 규제가 강하다는 점에 주의합니다.",
+      "tags": [
+        "regression",
+        "regularization",
+        "bias-variance"
+      ],
+      "terms": [
+        "regularization-parameter",
+        "bias-variance-tradeoff"
+      ],
+      "source_ref": "ISLR 6.2절(Shrinkage Methods)",
+      "status": "draft"
+    },
+    {
+      "id": "B-REG-008",
+      "type": "mcq",
+      "chapter": "B.reg",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "Ridge·Lasso를 적합하기 전에 설명변수를 표준화하는 주된 이유는?",
+      "choices": [
+        {
+          "text": "패널티는 계수 크기에 매겨지는데 계수 크기는 변수 단위에 따라 달라지므로, 표준화하지 않으면 변수마다 규제가 불공평하게 걸리기 때문",
+          "rationale": null
+        },
+        {
+          "text": "표준화를 해야 잔차가 정규분포를 따르게 되어 규제 회귀의 기본 가정이 충족되기 때문",
+          "rationale": "표준화는 선형 변환이라 잔차 분포 모양을 바꾸지 않습니다. 규제 회귀에서 표준화가 필요한 이유는 척도 통일입니다."
+        },
+        {
+          "text": "표준화를 하면 설명변수 사이의 상관이 제거되어 다중공선성이 완전히 사라지기 때문",
+          "rationale": "상관계수는 선형 변환에 대해 변하지 않으므로 표준화해도 변수 간 상관은 그대로입니다."
+        },
+        {
+          "text": "설명변수를 표준화하지 않으면 규제 회귀에서 절편을 추정할 수 없기 때문",
+          "rationale": "절편 추정은 표준화 여부와 무관합니다. 설명변수를 중심화하면 절편이 ȳ로 단순해질 뿐입니다."
+        },
+        {
+          "text": "규제가 없는 OLS에서도 표준화하지 않으면 계수 추정이 편향되기 때문",
+          "rationale": "OLS는 단위를 바꿔도 적합값이 같고 계수만 비례해서 바뀝니다(편향되지 않음). 척도가 결과를 바꾸는 것은 패널티가 들어갈 때입니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "같은 효과라도 m 단위 변수는 계수가 작고 km 단위 변수는 계수가 큽니다. 패널티는 계수 크기에 붙으므로, 표준화하지 않으면 단위만으로 어떤 변수는 과하게, 어떤 변수는 약하게 규제됩니다.",
+      "explanation_full": "예: 고도를 m로 넣으면 계수가 작아 거의 규제되지 않고, 반사도(0~1)는 계수가 커서 강하게 규제됩니다. 표준화 통계(평균·표준편차)는 훈련 데이터에서만 구해 검증·테스트에 적용해야 누수가 없으며, 교차검증에서는 fold마다 다시 계산되도록 파이프라인으로 묶습니다. 라이브러리마다 처리가 달라, 일반적으로 R glmnet은 기본 설정(standardize=TRUE)에서 내부적으로 표준화하지만 scikit-learn의 Ridge·Lasso는 스스로 표준화하지 않으므로 StandardScaler를 앞에 붙입니다(버전별 기본값은 문서로 확인).",
+      "tags": [
+        "regression",
+        "regularization",
+        "preprocessing"
+      ],
+      "terms": [
+        "regularization-parameter",
+        "standardization",
+        "lasso-regression"
+      ],
+      "source_ref": "ISLR 6.2절(Shrinkage Methods) · glmnet 문서",
+      "status": "draft"
+    },
+    {
+      "id": "B-REG-009",
+      "type": "mcq",
+      "chapter": "B.reg",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "Elastic Net이 Lasso보다 유리한 상황으로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "설명변수들이 서로 거의 독립이고, 표본 수가 변수 수보다 훨씬 많아 추정이 이미 안정적일 때",
+          "rationale": "이런 상황에서는 Lasso나 OLS도 잘 동작하며, Elastic Net의 장점(상관 변수 묶음 처리)이 드러나지 않습니다."
+        },
+        {
+          "text": "어떤 계수도 0으로 만들지 않고 모든 변수를 모형에 남겨야 할 때",
+          "rationale": "Elastic Net은 L1 성분이 있어 계수를 0으로 만들 수 있습니다. 모든 변수를 남기려면 Ridge가 맞습니다."
+        },
+        {
+          "text": "조정해야 할 하이퍼파라미터 수를 하나로 줄이고 싶을 때",
+          "rationale": "Elastic Net은 λ와 L1 비율(α) 두 개를 조정해야 하므로 오히려 늘어납니다."
+        },
+        {
+          "text": "서로 강하게 상관된 변수 묶음이 있어 Lasso가 그중 하나만 골라 선택이 흔들릴 때",
+          "rationale": null
+        },
+        {
+          "text": "설명변수와 종속변수 사이의 관계가 강하게 비선형일 때",
+          "rationale": "Elastic Net도 선형 모형입니다. 비선형 관계는 다항항·스플라인·트리 모형 등으로 다룹니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "Elastic Net은 L2 성분 덕분에 상관 높은 변수들을 비슷한 계수로 함께 남기는 그룹 효과(grouping effect)가 있고, L1 성분으로 변수 선택도 합니다. 그래서 상관 높은 변수가 많을 때 Lasso보다 선택이 안정적입니다.",
+      "explanation_full": "패널티는 λ[α·Σ|βj| + (1−α)/2·Σβj²] 꼴이며 α = 1이면 Lasso, α = 0이면 Ridge입니다. 변수 수 p가 표본 수 n보다 클 때 Lasso는 최대 n개까지만 변수를 고를 수 있는 제약이 있는데, Elastic Net은 이 제약이 없습니다. 인접 파장 밴드와 여러 식생지수처럼 비슷한 변수가 많은 원격탐사 회귀에서 자주 씁니다.",
+      "tags": [
+        "regression",
+        "regularization"
+      ],
+      "terms": [
+        "elastic-net",
+        "lasso-regression",
+        "multicollinearity"
+      ],
+      "source_ref": "Zou & Hastie (2005) · ESL 3.4절(Shrinkage Methods)",
+      "status": "draft"
+    },
+    {
+      "id": "B-REG-010",
+      "type": "mcq",
+      "chapter": "B.reg",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "Ridge·Lasso의 목적함수 'RSS + λ × (패널티)'에서 λ(람다)가 뜻하는 것은?",
+      "choices": [
+        {
+          "text": "경사하강법에서 한 번에 계수를 얼마나 움직일지 정하는 학습률",
+          "rationale": "학습률(learning rate)은 최적화 알고리즘의 보폭입니다. λ는 목적함수 자체에서 패널티의 비중을 정합니다."
+        },
+        {
+          "text": "패널티 항의 비중, 즉 규제 강도를 정하는 하이퍼파라미터",
+          "rationale": null
+        },
+        {
+          "text": "모형이 종속변수의 분산 중 설명하는 비율인 결정계수",
+          "rationale": "결정계수는 R²입니다. λ는 적합 결과가 아니라 적합 전에 정하는 조절값입니다."
+        },
+        {
+          "text": "적합이 끝난 뒤 잔차로부터 계산하는 오차 분산 추정치",
+          "rationale": "오차 분산은 보통 σ²로 표기하며 적합 결과로 추정합니다."
+        },
+        {
+          "text": "모형에 포함할 설명변수의 개수를 직접 지정하는 값",
+          "rationale": "변수 개수를 직접 정하는 값이 아니라 계수 크기에 벌점을 주는 강도입니다. Lasso에서는 λ가 커질수록 결과적으로 0이 아닌 계수가 줄어들 뿐입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "λ는 데이터에 맞추는 정도(RSS)와 계수를 작게 유지하는 정도(패널티) 사이의 균형을 정하는 하이퍼파라미터입니다. 데이터로 직접 추정하지 않고 교차검증 등으로 고릅니다.",
+      "explanation_full": "λ = 0이면 규제가 없는 OLS와 같고, 클수록 계수가 0 쪽으로 강하게 수축됩니다. 라이브러리마다 이름이 달라 scikit-learn의 Ridge·Lasso는 alpha, glmnet은 lambda라고 부르며, glmnet의 alpha는 Elastic Net의 L1 비율을 뜻하므로 혼동하지 않도록 합니다.",
+      "tags": [
+        "regression",
+        "regularization"
+      ],
+      "terms": [
+        "regularization-parameter",
+        "regularization"
+      ],
+      "source_ref": "ISLR 6.2절(Shrinkage Methods)",
+      "status": "draft"
+    },
+    {
+      "id": "B-REG-011",
+      "type": "mcq",
+      "chapter": "B.reg",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "Lasso의 λ 후보별 10겹 교차검증 결과가 다음과 같다. CV 오차가 가장 작은 지점의 표준오차는 0.10이다. 1 표준오차 규칙(1-SE rule)으로 고르는 λ는?\n\nλ = 0.005 → CV MSE 2.34\nλ = 0.01 → CV MSE 2.30\nλ = 0.05 → CV MSE 2.38\nλ = 0.1 → CV MSE 2.45\nλ = 0.2 → CV MSE 2.60",
+      "choices": [
+        {
+          "text": "λ = 0.005",
+          "rationale": "기준(2.40) 안에 들지만 λ가 더 작아(규제가 약해) 더 복잡한 모형입니다. 1-SE 규칙은 기준 안에서 가장 단순한 쪽을 고릅니다."
+        },
+        {
+          "text": "λ = 0.01",
+          "rationale": "CV 오차가 최소인 λ_min입니다. 1-SE 규칙은 여기서 더 단순한 쪽으로 이동합니다."
+        },
+        {
+          "text": "λ = 0.05",
+          "rationale": null
+        },
+        {
+          "text": "λ = 0.1",
+          "rationale": "CV MSE 2.45가 기준 2.30 + 0.10 = 2.40을 넘습니다."
+        },
+        {
+          "text": "λ = 0.2",
+          "rationale": "CV MSE 2.60으로 기준을 크게 넘어 과소적합 쪽입니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "기준은 최소 CV 오차 + 1 표준오차 = 2.30 + 0.10 = 2.40입니다. 이 안에 드는 λ(0.005, 0.01, 0.05) 중 규제가 가장 강한, 즉 가장 단순한 λ = 0.05를 고릅니다.",
+      "explanation_full": "CV 오차 추정치에도 표본 변동이 있으므로, 통계적으로 구분되지 않는 모형들 중 더 단순한 것을 택하자는 파시모니 원칙의 적용입니다. glmnet의 lambda.1se가 이 규칙으로 고른 값입니다. 공간 자료에서는 무작위 k겹 대신 공간 블록 교차검증으로 오차와 표준오차를 구해야 지나치게 낙관적인 추정을 피할 수 있습니다.",
+      "tags": [
+        "regression",
+        "regularization",
+        "calculation",
+        "model-selection"
+      ],
+      "terms": [
+        "one-standard-error-rule",
+        "regularization-parameter",
+        "k-fold-cross-validation"
+      ],
+      "source_ref": "ESL 7.10절 · glmnet 문서(cv.glmnet)",
+      "status": "draft"
+    },
+    {
+      "id": "B-REG-012",
+      "type": "mcq",
+      "chapter": "B.reg",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "Ridge 회귀가 OLS보다 테스트 오차를 낮출 수 있는 이유로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "계수를 수축시켜 약간의 편향을 들이는 대신 추정치의 분산을 크게 줄이기 때문",
+          "rationale": null
+        },
+        {
+          "text": "Ridge 추정량은 편향이 없는 불편 추정량이면서 분산까지 OLS보다 작기 때문",
+          "rationale": "λ > 0인 Ridge 추정량은 편향이 있습니다. 가우스-마르코프 가정에서 선형 불편 추정량 중 분산이 가장 작은 것은 OLS입니다."
+        },
+        {
+          "text": "훈련 데이터에서 잔차제곱합(RSS)이 OLS보다 항상 작게 나오기 때문",
+          "rationale": "훈련 RSS는 OLS가 최소입니다. Ridge는 훈련 RSS가 더 크지만 새 데이터에서 더 잘 맞을 수 있습니다."
+        },
+        {
+          "text": "잔차가 정규분포를 따르도록 바꿔 주어 추론의 가정을 만족시키기 때문",
+          "rationale": "Ridge는 잔차 분포와 무관하게 계수 크기를 제한하는 방법입니다."
+        },
+        {
+          "text": "중요하지 않은 변수의 계수를 정확히 0으로 만들어 변수 수를 줄이기 때문",
+          "rationale": "계수를 정확히 0으로 만드는 것은 Lasso(L1)입니다. Ridge는 계수를 줄이기만 합니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "기대 테스트 오차는 편향² + 분산 + 줄일 수 없는 오차로 나뉩니다. Ridge는 계수를 0 쪽으로 수축해 편향을 조금 늘리지만, 공선성이나 변수 과다로 커진 분산을 그보다 크게 줄여 전체 오차를 낮출 수 있습니다.",
+      "explanation_full": "특히 설명변수끼리 상관이 높거나 변수 수가 표본 수에 비해 많으면 OLS 계수의 분산이 매우 커지므로 수축의 이득이 큽니다. 반대로 변수가 적고 서로 독립이며 표본이 충분하면 OLS와 Ridge의 차이는 작습니다. 규제 강도가 너무 크면 편향이 분산 감소보다 커져 과소적합이 됩니다.",
+      "tags": [
+        "regression",
+        "regularization",
+        "bias-variance"
+      ],
+      "terms": [
+        "shrinkage",
+        "ridge-regression",
+        "bias-variance-tradeoff"
+      ],
+      "source_ref": "ISLR 6.2절(Shrinkage Methods)",
+      "status": "draft"
+    },
+    {
+      "id": "B-REG-013",
+      "type": "mcq",
+      "chapter": "B.reg",
+      "cognitive_level": 2,
+      "difficulty": 4,
+      "stem": "계수가 2개(β₁, β₂)일 때, Lasso가 Ridge와 달리 계수를 정확히 0으로 만들 수 있는 이유를 제약 영역(β₁·β₂ 평면에서 허용되는 계수 범위) 관점에서 설명한 것으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "Lasso의 제약 영역은 원이라서 RSS 등고선이 축 위에서 먼저 닿기 쉽다",
+          "rationale": "원(β₁² + β₂² ≤ t)은 Ridge의 제약 영역입니다. 원은 매끄러워 축 위에서 닿을 특별한 이유가 없습니다."
+        },
+        {
+          "text": "Lasso는 RSS 대신 잔차 절댓값의 합을 최소화하기 때문이다",
+          "rationale": "Lasso도 제곱오차(RSS)를 씁니다. 잔차 절댓값 합을 최소화하는 것은 LAD(최소절대편차) 회귀입니다."
+        },
+        {
+          "text": "Lasso의 제약 영역은 변이 축과 평행한 정사각형이라서, 모서리가 대각선 방향에 놓여 계수가 0이 되기 쉽다",
+          "rationale": "변이 축과 평행한 정사각형(max(|β₁|, |β₂|) ≤ t)은 L∞ 제약입니다. L1 제약은 꼭짓점이 축 위에 있는 마름모입니다."
+        },
+        {
+          "text": "Lasso는 반복 계산을 하므로 수치 오차로 작은 계수가 0으로 반올림되기 때문이다",
+          "rationale": "0이 되는 것은 수치 오차가 아니라 최적해 자체가 정확히 0인 점에 놓이기 때문입니다."
+        },
+        {
+          "text": "Lasso의 제약 영역은 꼭짓점이 축 위에 있는 마름모라서, 등고선이 꼭짓점에서 먼저 닿기 쉽다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "Lasso 제약 |β₁| + |β₂| ≤ t는 꼭짓점이 축 위에 있는 마름모입니다. RSS 등고선이 커지다 처음 닿는 점이 꼭짓점이면 한 계수가 정확히 0이 됩니다. Ridge의 원형 제약에는 이런 모서리가 없습니다.",
+      "explanation_full": "변수가 많아지면 L1 제약 영역(교차 다면체)은 모서리와 꼭짓점이 훨씬 많아져 여러 계수가 동시에 0이 되는 해가 흔해집니다. 같은 문제를 패널티 형태로 쓰면, |β|는 0에서 미분이 불연속(뾰족)하기 때문에 작은 계수를 정확히 0에 붙잡아 두는 힘이 생긴다고 설명할 수도 있습니다.",
+      "tags": [
+        "regression",
+        "regularization"
+      ],
+      "terms": [
+        "lasso-regression",
+        "ridge-regression"
+      ],
+      "source_ref": "ISLR 6.2.2절(Figure 6.7)",
+      "status": "draft"
+    },
+    {
+      "id": "B-REG-014",
+      "type": "scenario",
+      "chapter": "B.reg",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"Sentinel-2 밴드 10개에 식생·수분 지수 15개, 총 25개 변수로 엽록소 농도 회귀를 했더니 계수 부호가 들쭉날쭉해. 규제를 걸어서 쓸 변수만 남기고, 뭐가 남았는지 보고해줘.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "Ridge 회귀를 적합하고 계수 절댓값이 큰 순서대로 상위 변수를 보고한다",
+          "rationale": "Ridge는 계수를 0으로 만들지 않아 '쓸 변수만 남기라'는 지시에 맞지 않습니다. 임의로 자른 계수 순위는 변수 선택 근거가 되지 못합니다."
+        },
+        {
+          "text": "변수를 표준화하고 Lasso를 적합한 뒤, λ는 교차검증으로 골라 0이 아닌 계수의 변수를 보고한다",
+          "rationale": null
+        },
+        {
+          "text": "표준화 없이 Lasso를 적합하고, λ는 훈련 오차가 가장 작은 값으로 고른다",
+          "rationale": "표준화하지 않으면 단위에 따라 규제가 불공평하고, 훈련 오차가 최소인 λ는 0에 가까워 사실상 OLS가 되어 변수가 거의 다 남습니다."
+        },
+        {
+          "text": "λ를 아주 크게 고정해 계수 대부분을 0으로 만든 뒤 남은 변수를 보고한다",
+          "rationale": "λ를 임의로 크게 잡으면 중요한 변수까지 0이 되어 과소적합됩니다. λ는 교차검증으로 정해야 합니다."
+        },
+        {
+          "text": "OLS를 적합한 뒤 p값이 0.05보다 큰 변수를 한꺼번에 제거하고 다시 적합한다",
+          "rationale": "공선성이 큰 상황에서는 표준오차가 부풀어 중요한 변수도 p값이 커 보입니다. 규제를 걸라는 지시와도 다릅니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "변수 선택과 규제를 함께 하려면 L1 패널티인 Lasso가 맞습니다. 단위가 다른 밴드·지수를 공정하게 규제하려면 먼저 표준화하고, λ는 교차검증으로 골라 0이 아닌 계수로 남은 변수를 보고합니다.",
+      "explanation_full": "계수 부호가 들쭉날쭉한 것은 밴드와 지수 사이의 강한 상관(다중공선성) 신호입니다. 공간 자료이므로 λ 선택에는 공간 블록 교차검증을 쓰고, fold마다 남는 변수가 바뀌는지도 함께 보고하면 좋습니다. 선택이 크게 흔들리면 Elastic Net으로 바꾸는 것을 검토합니다.",
+      "tags": [
+        "regression",
+        "regularization",
+        "prescription"
+      ],
+      "terms": [
+        "lasso-regression",
+        "regularization-parameter",
+        "standardization"
+      ],
+      "source_ref": "ISLR 6.2절(Shrinkage Methods)",
+      "status": "draft"
+    },
+    {
+      "id": "B-REG-015",
+      "type": "scenario",
+      "chapter": "B.reg",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"Lasso로 밴드 고른 거, 교차검증 fold마다 남는 밴드가 B5였다가 B6였다가 바뀌어. 인접 밴드끼리 상관이 0.95가 넘더라. 변수 선택은 하되 좀 안정적으로 만들어봐.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "λ를 더 키워서 Lasso가 남기는 변수 수를 줄인다",
+          "rationale": "변수 수가 줄어도 상관 높은 밴드 중 무엇을 남길지는 여전히 임의로 바뀝니다. 불안정의 원인인 상관 구조를 다루지 못합니다."
+        },
+        {
+          "text": "Ridge 회귀로 바꿔서 모든 밴드를 계수와 함께 남긴다",
+          "rationale": "안정적이지만 계수를 0으로 만들지 않아 '변수 선택은 하라'는 지시를 어깁니다."
+        },
+        {
+          "text": "난수 시드를 여러 번 바꿔 돌린 뒤 CV 점수가 가장 좋았던 한 번의 선택을 쓴다",
+          "rationale": "가장 좋았던 한 번을 고르는 것은 우연을 결과로 채택하는 체리피킹이며 불안정을 숨길 뿐입니다."
+        },
+        {
+          "text": "Elastic Net으로 바꾸고 λ와 L1 비율을 교차검증으로 함께 고른다",
+          "rationale": null
+        },
+        {
+          "text": "상관이 높은 밴드 쌍마다 하나를 무작위로 지운 뒤 Lasso를 다시 돌린다",
+          "rationale": "어떤 밴드를 남길지 다시 무작위로 정하는 것이라 근본적으로 같은 문제가 남습니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "Lasso는 강하게 상관된 변수 중 하나만 다소 임의로 남기므로 표본이 조금만 바뀌어도 선택이 흔들립니다. Elastic Net은 L2 성분으로 상관 변수를 묶어 함께 남기면서 L1 성분으로 선택도 하므로 더 안정적입니다.",
+      "explanation_full": "L1 비율(α)을 1에 가깝게 두면 Lasso에, 0에 가깝게 두면 Ridge에 가까워집니다. α 후보(예: 0.1, 0.5, 0.9)와 λ를 격자로 두고 공간 블록 교차검증으로 함께 고릅니다. 선택 안정성을 수치로 보여주려면 부트스트랩 반복에서 각 밴드가 선택된 비율(안정성 선택)을 보고하는 방법도 있습니다.",
+      "tags": [
+        "regression",
+        "regularization",
+        "prescription"
+      ],
+      "terms": [
+        "elastic-net",
+        "lasso-regression",
+        "multicollinearity"
+      ],
+      "source_ref": "Zou & Hastie (2005) · ESL 3.4절(Shrinkage Methods)",
+      "status": "draft"
+    },
+    {
+      "id": "B-REG-016",
+      "type": "scenario",
+      "chapter": "B.reg",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"Ridge λ는 테스트셋 R²가 제일 높게 나오는 값으로 골라서, 그 R²를 그대로 최종 성능으로 보고서에 써.\"\n\n이 지시대로 하기 전에 제안할 가장 적절한 방식은?",
+      "choices": [
+        {
+          "text": "λ는 훈련 데이터 안에서 (공간 블록) 교차검증으로 고르고, 테스트셋은 최종 모형 평가에 한 번만 쓴다",
+          "rationale": null
+        },
+        {
+          "text": "지시대로 λ를 고르되, 보고서에는 테스트셋 R² 대신 훈련셋 R²를 적는다",
+          "rationale": "훈련 R²는 가장 낙관적인 값이라 새 데이터에서의 성능을 나타내지 못합니다."
+        },
+        {
+          "text": "λ = 0으로 두고 OLS로 적합하면 λ를 고를 필요가 없으니 그 결과를 보고한다",
+          "rationale": "튜닝 문제를 피하려고 규제를 포기하는 것이며, 규제가 필요했던 이유(분산 감소)를 버리는 것입니다."
+        },
+        {
+          "text": "λ는 훈련 오차가 가장 작아지는 값으로 고르고, 테스트셋 R²를 최종 성능으로 보고한다",
+          "rationale": "훈련 오차는 λ가 0에 가까울수록 작아지므로 사실상 규제를 하지 않는 것과 같습니다."
+        },
+        {
+          "text": "테스트셋을 둘로 나눠 각각에서 λ를 고른 뒤, 두 R² 중 더 높은 값을 최종 성능으로 보고서에 적는다",
+          "rationale": "여전히 테스트 데이터로 선택을 하는 것이고, 높은 값만 고르면 더 낙관적으로 편향됩니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "테스트셋으로 λ를 고르면 테스트셋이 튜닝에 쓰여, 그 R²는 새 데이터에서의 성능보다 낙관적으로 부풀려집니다. λ는 훈련 데이터 안의 교차검증으로 고르고 테스트셋은 마지막에 한 번만 평가해야 합니다.",
+      "explanation_full": "λ 후보가 많을수록 테스트셋에 우연히 잘 맞는 값을 고를 확률이 커져 편향이 심해집니다. 위성영상처럼 공간 자기상관이 있는 자료는 무작위 분할이면 인접 픽셀이 훈련·검증에 섞여 성능이 부풀려지므로, 교차검증과 테스트셋 모두 공간 블록(타일·지역) 단위로 나눕니다.",
+      "tags": [
+        "regression",
+        "regularization",
+        "validation"
+      ],
+      "terms": [
+        "regularization-parameter",
+        "spatial-cross-validation",
+        "ridge-regression"
+      ],
+      "source_ref": "ISLR 5.1절 · 6.2절",
+      "status": "draft"
+    },
+    {
+      "id": "B-REG-017",
+      "type": "scenario",
+      "chapter": "B.reg",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"Lasso λ를 0.001에서 0.05로 올렸더니 훈련 R²는 0.92에서 0.85로 떨어졌는데, 공간 블록 CV R²는 0.61에서 0.70으로 올랐어. 이거 어떻게 봐야 하는지 정리해줘.\"\n\n가장 적절한 해석은?",
+      "choices": [
+        {
+          "text": "훈련 R²가 떨어졌으므로 모형이 나빠진 것이고, λ = 0.001로 되돌려야 한다",
+          "rationale": "규제를 약하게 할수록 훈련 성능이 높아지는 것은 당연합니다. 판단 기준은 새 데이터에서의 성능(CV)입니다."
+        },
+        {
+          "text": "훈련 R²와 CV R²가 반대로 움직였으므로 데이터 누수가 있다는 증거이다",
+          "rationale": "규제를 키우면 훈련 성능은 내려가고 일반화 성능은 올라갈 수 있는 것이 정상적인 편향-분산 절충입니다. 누수의 근거가 아닙니다."
+        },
+        {
+          "text": "λ = 0.001일 때는 과적합 상태였고, 규제를 키워 분산이 줄면서 일반화 성능이 좋아졌다",
+          "rationale": null
+        },
+        {
+          "text": "λ = 0.05에서 이미 과소적합이 시작되었으므로 λ를 다시 낮춰야 한다",
+          "rationale": "과소적합이 시작되면 CV 성능도 함께 떨어져야 합니다. CV R²가 오른 것은 아직 규제의 이득이 더 크다는 뜻입니다."
+        },
+        {
+          "text": "Lasso의 λ는 훈련 R²에만 영향을 주므로, CV R²가 오른 것은 fold 구성에 따른 우연이라고 봐야 한다",
+          "rationale": "λ는 계수를 바꾸므로 훈련·검증 성능 모두에 영향을 줍니다. fold 간 변동은 함께 확인해야 하지만 λ와 무관하다고 볼 근거는 없습니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "훈련 R²와 CV R²의 차이가 0.31에서 0.15로 줄었습니다. 규제를 키워 편향은 조금 늘었지만 분산(과적합)이 크게 줄어 일반화 성능이 좋아진 전형적인 편향-분산 절충의 모습입니다.",
+      "explanation_full": "다음 단계로는 λ를 더 넓은 범위로 훑어 CV R²가 최대가 되는 지점(또는 1-SE 규칙 지점)을 찾습니다. CV R²의 fold 간 표준오차도 함께 보고해야 0.61 → 0.70이 의미 있는 차이인지 판단할 수 있습니다.",
+      "tags": [
+        "regression",
+        "regularization",
+        "bias-variance"
+      ],
+      "terms": [
+        "regularization-parameter",
+        "bias-variance-tradeoff",
+        "overfitting"
+      ],
+      "source_ref": "ISLR 2.2절 · 6.2절",
+      "status": "draft"
+    }
+  ]
+}

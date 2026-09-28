@@ -1,0 +1,705 @@
+{
+  "format": "visiondrill-bank-exchange",
+  "format_version": 1,
+  "terms": [
+    {
+      "id": "convolution",
+      "term_en": "Convolution",
+      "term_ko": "합성곱(컨볼루션)",
+      "abbreviation": null,
+      "definition": "작은 가중치 행렬(커널)을 영상 위에서 옮겨 가며 겹친 픽셀 값과 곱해 더한 값을 출력 픽셀로 삼는 연산",
+      "usage_example": "3×3 커널로 컨볼루션 돌린 결과랑 원본 차이 영상도 같이 저장해.",
+      "origin": "standard",
+      "track": "D"
+    },
+    {
+      "id": "mean-filter",
+      "term_en": "Mean Filter",
+      "term_ko": "평균 필터",
+      "abbreviation": null,
+      "definition": "커널 안 이웃 픽셀 값의 산술평균으로 중심 픽셀을 바꾸는 평활 필터(박스 필터)",
+      "usage_example": "평균 필터는 선박 경계까지 뭉개니까 탐지 전처리로는 쓰지 마.",
+      "origin": "standard",
+      "track": "D"
+    },
+    {
+      "id": "gaussian-filter",
+      "term_en": "Gaussian Filter",
+      "term_ko": "가우시안 필터",
+      "abbreviation": null,
+      "definition": "중심에서 멀어질수록 정규분포 모양으로 작아지는 가중치로 이웃 픽셀을 가중평균하는 평활 필터",
+      "usage_example": "특징점 뽑기 전에 σ=1 가우시안으로 잡음 살짝 눌러.",
+      "origin": "standard",
+      "track": "D"
+    },
+    {
+      "id": "median-filter",
+      "term_en": "Median Filter",
+      "term_ko": "미디언 필터(중앙값 필터)",
+      "abbreviation": null,
+      "definition": "커널 안 이웃 픽셀 값을 정렬해 중앙값으로 중심 픽셀을 바꾸는 비선형 필터",
+      "usage_example": "분류 결과에 소금·후추 같은 점들이 많네. 3×3 미디언 한 번 걸어봐.",
+      "origin": "standard",
+      "track": "D"
+    },
+    {
+      "id": "image-sharpening",
+      "term_en": "Image Sharpening",
+      "term_ko": "샤프닝(선명화)",
+      "abbreviation": null,
+      "definition": "영상의 고주파(경계·세부) 성분을 강조해 경계를 또렷하게 만드는 처리. 대표적으로 언샤프 마스킹이 있다",
+      "usage_example": "판독용 캡처에만 샤프닝 넣고, 학습 데이터에는 넣지 마.",
+      "origin": "standard",
+      "track": "D"
+    },
+    {
+      "id": "spatial-frequency",
+      "term_en": "Spatial Frequency",
+      "term_ko": "공간 주파수",
+      "abbreviation": null,
+      "definition": "영상에서 밝기가 공간적으로 변하는 빠르기. 경계·잡음처럼 급변하는 성분은 고주파, 완만한 배경·조명 변화는 저주파",
+      "usage_example": "조명 불균일은 저주파라서 큰 가우시안으로 빼고 고주파만 남겨봐.",
+      "origin": "standard",
+      "track": "D"
+    },
+    {
+      "id": "lee-filter",
+      "term_en": "Lee Filter",
+      "term_ko": "리(Lee) 필터",
+      "abbreviation": null,
+      "definition": "국소 평균과 분산으로 균질 영역은 강하게 평활하고 경계·점 표적은 보존하는, SAR 스페클 감소용 적응형 필터",
+      "usage_example": "Sentinel-1 VV 영상은 선박 탐지 전에 7×7 Lee 필터 한 번 걸어.",
+      "origin": "standard",
+      "track": "D"
+    }
+  ],
+  "questions": [
+    {
+      "id": "D-FILT-001",
+      "type": "short",
+      "chapter": "D.filt",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "작은 가중치 행렬(커널)을 영상 위에서 한 칸씩 옮겨 가며, 겹친 픽셀 값과 가중치를 곱해 더한 값을 출력 픽셀로 삼는 연산은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Convolution",
+          "Cross-correlation"
+        ],
+        "ko": [
+          "합성곱",
+          "컨볼루션",
+          "콘볼루션",
+          "회선",
+          "교차상관"
+        ]
+      },
+      "primary": "Convolution",
+      "explanation_short": "합성곱(convolution)은 커널을 영상 위에서 이동시키며 곱-합을 계산하는 연산입니다. 평균·가우시안 평활, 샤프닝, 경계 검출 필터가 모두 이 방식으로 동작합니다.",
+      "explanation_full": "엄밀히는 커널을 상하좌우로 뒤집어 계산하는 것이 합성곱, 뒤집지 않는 것이 교차상관(cross-correlation)입니다. 대칭 커널(평균·가우시안)에서는 결과가 같고, CNN의 “convolution” 층도 실제로는 교차상관으로 구현되지만 관례상 합성곱이라 부릅니다. 커널의 크기와 가중치만 바꿔도 전혀 다른 필터가 된다는 점이 핵심입니다.",
+      "tags": [
+        "convolution"
+      ],
+      "terms": [
+        "convolution",
+        "kernel"
+      ],
+      "source_ref": "Gonzalez & Woods, Digital Image Processing(공간 필터링 장)",
+      "status": "draft"
+    },
+    {
+      "id": "D-FILT-002",
+      "type": "mcq",
+      "chapter": "D.filt",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "3×3 평균 필터(mean filter, 박스 필터) 커널의 원소 값으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "가운데 원소만 1이고 나머지 8개는 모두 0",
+          "rationale": "항등(identity) 커널로, 적용해도 영상이 변하지 않습니다."
+        },
+        {
+          "text": "9개 원소 모두 1",
+          "rationale": "평균이 아니라 합을 구하므로 출력 밝기가 약 9배로 커집니다. 원소 합이 1이 되도록 나눠야 합니다."
+        },
+        {
+          "text": "9개 원소 모두 1/9",
+          "rationale": null
+        },
+        {
+          "text": "가운데 4/16, 상하좌우 2/16, 네 모서리 1/16",
+          "rationale": "3×3 가우시안 근사 커널입니다. 중심에 더 큰 가중치를 줍니다."
+        },
+        {
+          "text": "가운데 8, 나머지 8개 원소는 모두 −1",
+          "rationale": "원소 합이 0인 라플라시안 계열의 경계 검출(고주파 통과) 커널입니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "평균 필터는 이웃 9개 픽셀의 산술평균이므로 모든 원소가 1/9입니다. 원소 합이 1이라 평탄한 영역의 밝기는 그대로 유지됩니다.",
+      "explanation_full": "평균 필터는 가장 단순한 저주파 통과(평활) 필터로, 커널이 클수록 더 많이 흐려집니다. 모든 이웃을 같은 비중으로 섞기 때문에 경계가 뭉개지고, 사각형 커널 탓에 가우시안보다 부자연스러운 흐림이 생길 수 있습니다. 적분 영상(integral image)을 쓰면 커널 크기와 무관하게 빠르게 계산할 수 있습니다.",
+      "tags": [
+        "smoothing",
+        "kernel"
+      ],
+      "terms": [
+        "mean-filter",
+        "convolution"
+      ],
+      "source_ref": "Gonzalez & Woods, Digital Image Processing(공간 필터링 장)",
+      "status": "draft"
+    },
+    {
+      "id": "D-FILT-003",
+      "type": "short",
+      "chapter": "D.filt",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "중심에서 멀어질수록 정규분포 모양으로 작아지는 가중치를 써서 이웃 픽셀을 가중평균하는 평활 필터는? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Gaussian filter",
+          "Gaussian blur",
+          "Gaussian smoothing"
+        ],
+        "ko": [
+          "가우시안 필터",
+          "가우시안 블러",
+          "가우스 필터",
+          "가우시안 평활"
+        ]
+      },
+      "primary": "Gaussian filter",
+      "explanation_short": "가우시안 필터는 2차원 정규분포 모양의 커널로 가중평균하는 평활 필터입니다. 표준편차 σ가 흐림 정도를 결정합니다.",
+      "explanation_full": "가까운 이웃에 큰 가중치를 주므로 같은 크기의 평균 필터보다 흐림이 자연스럽고 인공적인 무늬가 적습니다. 2차원 가우시안은 가로·세로 1차원 필터 두 번으로 나눠 계산할 수 있어(분리 가능, separable) 빠릅니다. 특징점 검출의 스케일 공간 구성과, 다운샘플링 전 앨리어싱 방지에도 기본으로 쓰입니다.",
+      "tags": [
+        "smoothing"
+      ],
+      "terms": [
+        "gaussian-filter"
+      ],
+      "source_ref": "Gonzalez & Woods, Digital Image Processing(공간 필터링 장)",
+      "status": "draft"
+    },
+    {
+      "id": "D-FILT-004",
+      "type": "mcq",
+      "chapter": "D.filt",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "미디언 필터(median filter)의 동작으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "커널 안 이웃 픽셀 값을 크기순으로 정렬해 가운데 값으로 중심 픽셀을 바꾼다",
+          "rationale": null
+        },
+        {
+          "text": "커널 안 이웃 픽셀 값의 산술평균을 구해 그 값으로 중심 픽셀을 바꾼다",
+          "rationale": "평균(박스) 필터의 동작입니다."
+        },
+        {
+          "text": "커널 안에서 가장 큰 값을 찾아 그 값으로 중심 픽셀을 바꾼다",
+          "rationale": "최댓값 필터로, 그레이스케일 팽창(dilation)과 같은 연산입니다."
+        },
+        {
+          "text": "중심에 가까운 이웃일수록 큰 가중치를 주어 가중평균한다",
+          "rationale": "가우시안 필터의 동작입니다."
+        },
+        {
+          "text": "창 안의 국소 평균과 분산을 보고 평활 정도를 픽셀마다 조절한다",
+          "rationale": "Lee 필터 같은 적응형 필터의 동작입니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "미디언 필터는 이웃 값의 중앙값을 취하는 비선형 필터입니다. 곱-합으로 계산하지 않으므로 가중치 커널로 표현되는 컨볼루션이 아닙니다.",
+      "explanation_full": "중앙값은 극단값 몇 개에 흔들리지 않아 점 잡음(임펄스 잡음)을 잘 없애면서 경계를 비교적 잘 보존합니다. 대신 커널 크기에 비해 가는 선이나 작은 점 표적도 잡음처럼 지워질 수 있습니다. 분류 결과 지도의 고립 픽셀 정리에도 자주 씁니다.",
+      "tags": [
+        "smoothing",
+        "nonlinear-filter"
+      ],
+      "terms": [
+        "median-filter"
+      ],
+      "source_ref": "Gonzalez & Woods, Digital Image Processing(공간 필터링 장)",
+      "status": "draft"
+    },
+    {
+      "id": "D-FILT-005",
+      "type": "mcq",
+      "chapter": "D.filt",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "언샤프 마스킹(unsharp masking)으로 영상을 선명하게 만드는 방법으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "원본 영상을 가우시안으로 흐리게 만든 결과를 그대로 최종 출력한다",
+          "rationale": "그것은 평활(저주파 통과) 처리입니다. 선명화와 반대 효과입니다."
+        },
+        {
+          "text": "원본에서 흐린 영상을 뺀 결과만 출력한다",
+          "rationale": "그 결과는 세부(고주파) 성분만 남은 영상으로 원래 밝기 정보가 사라집니다. 선명화는 이 성분을 원본에 더합니다."
+        },
+        {
+          "text": "원본에 미디언 필터를 여러 번 반복해서 적용한다",
+          "rationale": "미디언 필터는 잡음 제거용 평활 필터로, 반복할수록 더 뭉개집니다."
+        },
+        {
+          "text": "원본 − 흐린 영상(세부 성분)에 가중치를 곱해 원본에 더한다",
+          "rationale": null
+        },
+        {
+          "text": "영상을 크게 확대(업샘플링)한 뒤 다시 원래 크기로 축소한다",
+          "rationale": "리샘플링만으로는 경계가 강조되지 않고 오히려 흐려질 수 있습니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "언샤프 마스킹은 출력 = 원본 + k × (원본 − 흐린 영상)입니다. “원본 − 흐린 영상”이 경계·세부(고주파) 성분이라 이를 더하면 경계가 강조됩니다.",
+      "explanation_full": "이름의 “unsharp(흐린)”은 빼는 데 쓰는 흐린 영상을 가리킵니다. k와 흐림 정도(σ)를 키우면 더 선명해지지만 경계 주변에 밝고 어두운 띠(헤일로, overshoot)가 생기고 잡음도 함께 커집니다. 판독용 표시에는 유용하지만 픽셀 값이 바뀌므로 정량 분석 데이터에는 쓰지 않습니다.",
+      "tags": [
+        "sharpening"
+      ],
+      "terms": [
+        "image-sharpening"
+      ],
+      "source_ref": "Gonzalez & Woods, Digital Image Processing(공간 필터링 장)",
+      "status": "draft"
+    },
+    {
+      "id": "D-FILT-006",
+      "type": "short",
+      "chapter": "D.filt",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "영상에서 경계·잡음처럼 밝기가 짧은 거리 안에서 급격히 변하는 성분을 공간 주파수 관점에서 무엇이라 부르는가? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "High frequency",
+          "High-frequency component",
+          "High spatial frequency"
+        ],
+        "ko": [
+          "고주파",
+          "고주파 성분",
+          "고주파수"
+        ]
+      },
+      "primary": "High frequency",
+      "explanation_short": "밝기가 짧은 거리 안에서 빠르게 변하는 경계·세부·잡음은 고주파(high frequency) 성분입니다. 넓은 영역에서 천천히 변하는 배경·조명은 저주파 성분입니다.",
+      "explanation_full": "평균·가우시안 같은 평활 필터는 고주파를 줄이는 저주파 통과(low-pass) 필터이고, 경계 검출·샤프닝은 고주파를 강조하는 고주파 통과(high-pass) 성격의 처리입니다. 잡음도 고주파라서 잡음 제거와 경계 보존은 늘 상충합니다. 푸리에 변환으로 영상을 주파수 영역에서 보면 이 구분을 직접 확인할 수 있습니다.",
+      "tags": [
+        "frequency"
+      ],
+      "terms": [
+        "spatial-frequency"
+      ],
+      "source_ref": "Gonzalez & Woods, Digital Image Processing(주파수 영역 필터링 장)",
+      "status": "draft"
+    },
+    {
+      "id": "D-FILT-007",
+      "type": "mcq",
+      "chapter": "D.filt",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "Lee 필터(Lee filter)가 원격탐사에서 주로 쓰이는 목적은?",
+      "choices": [
+        {
+          "text": "광학 영상에서 구름과 구름 그림자를 찾아 제거한다",
+          "rationale": "구름·그림자는 구름 마스킹으로 처리합니다. Lee 필터와 무관합니다."
+        },
+        {
+          "text": "SAR 영상의 스페클(speckle) 잡음을 줄인다",
+          "rationale": null
+        },
+        {
+          "text": "대기 중 연무·산란으로 뿌옇게 보이는 효과를 보정한다",
+          "rationale": "대기보정(TOA→BOA)이나 연무 제거(dehazing)의 역할입니다."
+        },
+        {
+          "text": "드론 카메라 렌즈의 방사 왜곡(배럴 왜곡)을 보정한다",
+          "rationale": "렌즈 왜곡은 카메라 보정(내부 표정 요소 추정)으로 처리합니다."
+        },
+        {
+          "text": "다중분광 밴드 사이의 위치 어긋남을 맞춘다",
+          "rationale": "밴드 간 정합(co-registration)의 역할입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "Lee 필터는 SAR 영상의 스페클을 줄이는 대표적인 적응형 필터입니다. 국소 통계를 보고 균질한 곳은 강하게, 경계·점 표적 주변은 약하게 평활합니다.",
+      "explanation_full": "스페클은 한 해상도 셀 안 여러 산란체의 반사파가 간섭해 생기는 무늬로, 곱셈성(multiplicative) 잡음으로 모델링합니다. 같은 목적의 필터로 Frost, Kuan, Gamma-MAP, Refined Lee 등이 있고, 인접 픽셀·여러 관측을 평균하는 멀티룩(multilook) 처리도 스페클을 줄입니다. Sentinel-1 전처리 도구에서 이런 필터를 창 크기(예: 5×5, 7×7)와 함께 선택합니다.",
+      "tags": [
+        "sar",
+        "speckle"
+      ],
+      "terms": [
+        "lee-filter",
+        "speckle"
+      ],
+      "source_ref": "Lee, J.-S. (1980) Digital Image Enhancement and Noise Filtering by Use of Local Statistics, IEEE TPAMI; SAR 영상처리 일반",
+      "status": "draft"
+    },
+    {
+      "id": "D-FILT-008",
+      "type": "short",
+      "chapter": "D.filt",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "컨볼루션 전에 영상 가장자리 바깥에 가상의 픽셀(0, 반사값, 복제값 등)을 채워, 경계 픽셀에도 커널을 적용할 수 있게 하는 처리는? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Padding",
+          "Border padding"
+        ],
+        "ko": [
+          "패딩",
+          "경계 패딩",
+          "가장자리 채우기"
+        ]
+      },
+      "primary": "Padding",
+      "explanation_short": "패딩(padding)은 영상 테두리 바깥에 값을 채워 넣는 처리입니다. 커널이 영상 밖으로 삐져나가는 경계 픽셀도 계산할 수 있고, 출력 크기를 입력과 같게 유지할 수 있습니다.",
+      "explanation_full": "대표 방식은 0으로 채우기(zero/constant), 경계 값 복제(replicate/edge), 거울 반사(reflect), 반대편 값으로 감싸기(wrap)입니다. 라이브러리마다 기본 방식이 다르므로(반사 계열이 기본인 경우도, 0이 기본인 경우도 있음) 결과가 다를 때 먼저 확인합니다. CNN에서도 같은 개념으로 출력 크기를 맞추는 데 씁니다.",
+      "tags": [
+        "border-handling"
+      ],
+      "terms": [
+        "padding"
+      ],
+      "source_ref": "OpenCV 문서 Image Filtering(borderType)",
+      "status": "draft"
+    },
+    {
+      "id": "D-FILT-009",
+      "type": "short",
+      "chapter": "D.filt",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "512×512 단일 밴드 영상에 5×5 커널을 패딩 없이(stride 1) 컨볼루션하면 출력 영상의 가로 픽셀 수는? (숫자로)",
+      "accepted_answers": {
+        "en": [
+          "508"
+        ],
+        "ko": [
+          "508",
+          "508픽셀"
+        ]
+      },
+      "primary": "508",
+      "explanation_short": "패딩 없이 stride 1이면 출력 크기 = 입력 − 커널 + 1 = 512 − 5 + 1 = 508입니다. 커널이 영상 안에 온전히 들어가는 위치만 계산되기 때문입니다.",
+      "explanation_full": "양쪽에서 커널 반경((5 − 1) ÷ 2 = 2)만큼씩 줄어 512 − 2×2 = 508로 생각해도 됩니다. 각 변에 2픽셀씩 패딩하면 512×512를 유지할 수 있습니다. 일반식은 출력 = ⌊(입력 + 2×패딩 − 커널) ÷ stride⌋ + 1이며, CNN 층의 출력 크기 계산에도 그대로 쓰입니다.",
+      "tags": [
+        "convolution",
+        "calculation"
+      ],
+      "terms": [
+        "convolution",
+        "padding"
+      ],
+      "source_ref": "Gonzalez & Woods, Digital Image Processing(공간 필터링 장)",
+      "status": "draft"
+    },
+    {
+      "id": "D-FILT-010",
+      "type": "mcq",
+      "chapter": "D.filt",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "영상 곳곳에 흰 점·검은 점이 흩뿌려진 임펄스 잡음(salt-and-pepper noise)이 있다. 경계를 최대한 살리면서 이 잡음을 없애기에 가장 적절한 필터는?",
+      "choices": [
+        {
+          "text": "3×3 평균 필터",
+          "rationale": "평균은 극단값(0·255)에 크게 끌려가 점 잡음이 주변으로 번진 얼룩이 남고 경계도 흐려집니다."
+        },
+        {
+          "text": "σ가 큰 가우시안 필터",
+          "rationale": "가중평균이므로 극단값의 영향이 남고, σ를 키울수록 경계가 크게 흐려집니다."
+        },
+        {
+          "text": "언샤프 마스킹",
+          "rationale": "샤프닝은 고주파를 강조하므로 점 잡음을 오히려 더 두드러지게 합니다."
+        },
+        {
+          "text": "라플라시안 필터",
+          "rationale": "경계·점을 검출(강조)하는 2차 미분 필터로, 잡음 제거용이 아닙니다."
+        },
+        {
+          "text": "3×3 미디언 필터",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "임펄스 잡음은 주변과 전혀 다른 극단값 몇 개로 이뤄져 있어, 정렬 후 가운데 값을 취하는 미디언 필터가 이를 거의 무시합니다. 평균 계열 필터는 극단값을 주변으로 퍼뜨립니다.",
+      "explanation_full": "3×3 창에서 잡음 픽셀이 과반(5개 이상)만 아니면 중앙값은 정상 값이 됩니다. 계단형 경계에서도 중앙값은 경계 양쪽 값 중 하나를 고르므로 평균보다 경계를 잘 보존합니다. 원격탐사에서는 센서 결함으로 생긴 점 잡음이나 분류 결과 지도의 고립 픽셀 정리에 자주 씁니다.",
+      "tags": [
+        "noise",
+        "smoothing"
+      ],
+      "terms": [
+        "median-filter",
+        "mean-filter"
+      ],
+      "source_ref": "Gonzalez & Woods, Digital Image Processing(공간 필터링 장)",
+      "status": "draft"
+    },
+    {
+      "id": "D-FILT-011",
+      "type": "mcq",
+      "chapter": "D.filt",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "가우시안 필터의 표준편차 σ를 1에서 3으로 키웠을 때 나타나는 변화로 옳은 것은?",
+      "choices": [
+        {
+          "text": "가중치가 중심에 더 집중되어 흐림이 약해진다",
+          "rationale": "σ가 작아질 때의 설명입니다. σ가 커지면 가중치가 넓게 퍼져 흐림이 강해집니다."
+        },
+        {
+          "text": "더 넓은 이웃이 반영되어 더 강하게 흐려지며, 커널 크기도 키워야 한다",
+          "rationale": null
+        },
+        {
+          "text": "고주파 성분이 강조되어 건물 경계가 더 선명해진다",
+          "rationale": "가우시안은 저주파 통과 필터라 σ를 키우면 고주파가 더 많이 줄어듭니다."
+        },
+        {
+          "text": "커널 원소의 합이 3배가 되어 영상 전체가 밝아진다",
+          "rationale": "가우시안 커널은 원소 합이 1이 되도록 정규화하므로 평균 밝기는 유지됩니다."
+        },
+        {
+          "text": "중앙값 기반 필터로 바뀌어 점 잡음에 훨씬 강해진다",
+          "rationale": "σ는 가중치 분포의 폭일 뿐, 선형 가중평균이라는 성질은 바뀌지 않습니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "σ가 커지면 가중치 분포가 넓게 퍼져 먼 이웃까지 섞이므로 더 강하게 흐려집니다. 가중치가 의미 있게 남는 범위도 넓어지므로 커널 크기를 키워야 합니다.",
+      "explanation_full": "실무에서는 커널 반경을 약 3σ(한 변 약 6σ + 1)로 잡는 경우가 많습니다. 커널을 σ에 비해 너무 작게 자르면 창 안의 가중치가 거의 균일해져 평균 필터에 가까운 결과가 됩니다. 라이브러리에 따라 커널 크기만 주면 σ를 자동 계산하거나 σ만 주면 크기를 정하므로, 두 값을 모두 명시하는 습관이 좋습니다.",
+      "tags": [
+        "smoothing"
+      ],
+      "terms": [
+        "gaussian-filter"
+      ],
+      "source_ref": "Gonzalez & Woods, Digital Image Processing(공간 필터링 장)",
+      "status": "draft"
+    },
+    {
+      "id": "D-FILT-012",
+      "type": "mcq",
+      "chapter": "D.filt",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "원본 영상에서 그 영상을 가우시안 필터로 흐린 결과를 빼면(원본 − 흐린 영상) 어떤 성분이 남는가?",
+      "choices": [
+        {
+          "text": "경계·세부 같은 고주파 성분",
+          "rationale": null
+        },
+        {
+          "text": "넓은 영역에 걸친 조명·배경 같은 저주파 성분",
+          "rationale": "저주파 성분은 흐린 영상 쪽에 남아 있습니다. 빼면 저주파가 제거됩니다."
+        },
+        {
+          "text": "원본과 똑같은 영상(차이가 거의 없음)",
+          "rationale": "흐림 과정에서 고주파가 줄었기 때문에 차이가 0이 되지 않습니다."
+        },
+        {
+          "text": "잡음만 깨끗하게 제거된 원본 영상",
+          "rationale": "잡음이 줄어든 영상은 흐린 영상 쪽입니다. 차이 영상에는 오히려 잡음이 많이 들어 있습니다."
+        },
+        {
+          "text": "밝기 순서가 뒤집힌 음화(negative) 영상",
+          "rationale": "음화는 최댓값에서 픽셀 값을 뺀 것(예: 255 − 값)으로 다른 처리입니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "가우시안 흐림은 저주파만 남기는 저주파 통과 필터이므로, 원본에서 빼면 그 반대인 고주파(경계·세부·잡음) 성분이 남습니다. 이 차이 영상이 고주파 통과 결과이자 샤프닝에서 원본에 더하는 “디테일”입니다.",
+      "explanation_full": "원본 = 저주파 + 고주파로 나누어 생각하면 편합니다. 반대로 σ가 아주 큰 가우시안으로 흐린 영상은 조명 불균일·음영 같은 완만한 성분이라, 이를 빼거나 나누어 조명을 보정하기도 합니다(배경 제거). 차이 영상은 음수 값을 가지므로 부호 있는 자료형(float 등)으로 계산해야 값이 잘리지 않습니다.",
+      "tags": [
+        "frequency",
+        "sharpening"
+      ],
+      "terms": [
+        "spatial-frequency",
+        "image-sharpening"
+      ],
+      "source_ref": "Gonzalez & Woods, Digital Image Processing(주파수 영역 필터링 장)",
+      "status": "draft"
+    },
+    {
+      "id": "D-FILT-013",
+      "type": "mcq",
+      "chapter": "D.filt",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "Lee 필터의 동작 원리에 대한 설명으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "모든 픽셀에 같은 평균 필터를 적용하되 창 크기만 스페클 수준에 맞게 크게 잡는다",
+          "rationale": "그것은 비적응형 평균 필터입니다. Lee 필터는 위치마다 평활 강도가 달라집니다."
+        },
+        {
+          "text": "국소 분산이 큰 곳일수록 더 강하게 평활해 경계와 밝은 표적을 부드럽게 만든다",
+          "rationale": "반대입니다. 분산이 큰 곳(경계·강한 표적)은 원래 값을 더 많이 유지합니다."
+        },
+        {
+          "text": "균질 영역은 국소 평균에 가깝게, 분산이 큰 경계·점 표적은 원래 값에 가깝게 출력한다",
+          "rationale": null
+        },
+        {
+          "text": "영상을 푸리에 변환해 스페클에 해당하는 주파수 대역만 잘라낸 뒤 역변환한다",
+          "rationale": "주파수 영역 필터링 방식입니다. Lee 필터는 공간 영역에서 국소 통계를 씁니다."
+        },
+        {
+          "text": "창 안 값을 정렬해 중앙값으로 바꿈으로써 극단적인 밝은 점을 제거한다",
+          "rationale": "미디언 필터의 동작입니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "Lee 필터는 출력 = 국소 평균 + k × (원래 값 − 국소 평균)으로 계산하며, k는 국소 분산이 스페클만으로 기대되는 수준보다 얼마나 큰지로 정해집니다. 균질 영역은 k ≈ 0이라 평균처럼, 경계·표적은 k ≈ 1이라 원래 값처럼 됩니다.",
+      "explanation_full": "SAR 스페클은 신호 세기에 비례하는 곱셈성 잡음으로 모델링되므로, 균질 영역에서 기대되는 분산을 등가 룩 수(ENL)로 추정해 비교합니다. 이 적응성 덕분에 해면은 매끈해지면서 선박 같은 밝은 점 표적은 비교적 보존됩니다. 경계 방향까지 고려하도록 개선한 것이 Refined Lee 필터입니다.",
+      "tags": [
+        "sar",
+        "speckle",
+        "adaptive-filter"
+      ],
+      "terms": [
+        "lee-filter"
+      ],
+      "source_ref": "Lee, J.-S. (1980) Digital Image Enhancement and Noise Filtering by Use of Local Statistics, IEEE TPAMI; SAR 영상처리 일반",
+      "status": "draft"
+    },
+    {
+      "id": "D-FILT-014",
+      "type": "mcq",
+      "chapter": "D.filt",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "8비트 정사영상에 15×15 가우시안 블러를 적용했더니 영상 테두리 몇 픽셀 폭이 어둡게 변했다. 가장 가능성 높은 원인과 대응은?",
+      "choices": [
+        {
+          "text": "가우시안 σ가 너무 작았다 → σ를 키운다",
+          "rationale": "σ를 키우면 커널 바깥쪽 가중치가 커져 테두리 밖 0 값의 영향이 오히려 커지므로 어두워지는 현상이 더 심해질 수 있습니다."
+        },
+        {
+          "text": "커널 원소 합이 1보다 컸다 → 커널을 정규화한다",
+          "rationale": "합이 1보다 크면 영상 전체가 밝아집니다. 테두리만 어두워지는 현상과 맞지 않습니다."
+        },
+        {
+          "text": "가우시안이 원래 경계를 어둡게 강조한다 → 미디언 필터로 바꾼다",
+          "rationale": "가우시안은 경계를 강조하지 않고 흐리게 합니다. 원인은 테두리 바깥에 채운 값입니다."
+        },
+        {
+          "text": "제로 패딩의 0이 평균에 섞였다 → 반사·복제 패딩을 쓴다",
+          "rationale": null
+        },
+        {
+          "text": "커널 크기가 홀수라 중심이 어긋났다 → 짝수 크기 커널을 쓴다",
+          "rationale": "홀수 커널은 중심 픽셀이 정확히 하나 있어 오히려 표준입니다. 짝수 커널은 반 픽셀 이동을 만듭니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "제로 패딩을 쓰면 테두리 픽셀의 가중평균에 바깥의 0 값이 섞여, 커널 반경(15×15면 7픽셀)만큼 테두리가 어두워집니다. 경계 값을 반사·복제하는 패딩을 쓰면 이 현상이 크게 줄어듭니다.",
+      "explanation_full": "반경 = (15 − 1) ÷ 2 = 7이므로 가장자리 7픽셀 폭까지 영향을 받습니다. 위성·항공 영상은 영상 영역 밖이 nodata(0)로 채워진 경우도 많은데, 이때는 패딩 방식만 바꿔서는 부족하고 nodata를 제외하고 가중치를 다시 정규화하는 필터링이 필요합니다. 필터링 후 테두리 값을 신뢰하지 않고 잘라 내는 것도 흔한 대응입니다.",
+      "tags": [
+        "border-handling",
+        "smoothing"
+      ],
+      "terms": [
+        "padding",
+        "gaussian-filter"
+      ],
+      "source_ref": "OpenCV 문서 Image Filtering(borderType)",
+      "status": "draft"
+    },
+    {
+      "id": "D-FILT-015",
+      "type": "scenario",
+      "chapter": "D.filt",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"Sentinel-1 VV 영상에서 선박 탐지하기 전에 스페클 좀 줄여. 7×7 평균 필터 말고 7×7 Lee 필터로 해.\"\n\n이 지시의 의도로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "Lee 필터가 평균 필터보다 계산이 가벼워 전체 처리 시간을 줄이려는 것",
+          "rationale": "Lee 필터는 창마다 평균·분산을 계산하는 적응형 필터라 단순 평균보다 가볍지 않습니다. 속도가 목적이 아닙니다."
+        },
+        {
+          "text": "스페클은 덧셈성 잡음이라서 Lee 필터로만 제거할 수 있기 때문",
+          "rationale": "스페클은 일반적으로 곱셈성 잡음으로 모델링합니다. 평균 필터로도 줄어들긴 하므로 “Lee만 가능”하다는 것도 틀립니다."
+        },
+        {
+          "text": "Lee 필터가 VV 편파 영상을 VH 편파처럼 바꿔 선박 대비를 높이기 때문",
+          "rationale": "편파는 송수신 안테나 방향으로 정해지는 관측 특성이며, 필터로 바꿀 수 없습니다."
+        },
+        {
+          "text": "Lee 필터가 입사각에 따른 밝기 차이를 보정해 영상 전체 밝기를 고르게 하기 때문",
+          "rationale": "입사각·지형에 따른 밝기 보정은 방사 보정(지형 보정, 입사각 정규화 등)의 역할입니다."
+        },
+        {
+          "text": "균질한 해면은 강하게 평활하되, 선박 같은 밝은 점 표적과 해안선은 보존하려는 것",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "7×7 평균 필터는 스페클과 함께 작은 선박의 밝은 점과 경계까지 주변과 섞어 흐리게 만듭니다. Lee 필터는 국소 분산을 보고 균질한 해면만 강하게 평활해 탐지 대상을 보존하려는 목적입니다.",
+      "explanation_full": "작은 선박은 SAR 영상에서 몇 픽셀짜리 밝은 점으로 나타나는데, 평균 필터를 거치면 최대 밝기가 크게 낮아져 CFAR 같은 임계값 기반 탐지에서 놓치기 쉽습니다. 반대로 필터를 아예 쓰지 않으면 해면 스페클이 오탐을 만듭니다. 창 크기가 클수록 평활은 강해지지만 작은 표적 손실 위험도 커지므로 대상 크기를 고려해 창 크기를 정합니다.",
+      "tags": [
+        "sar",
+        "speckle",
+        "ship-detection"
+      ],
+      "terms": [
+        "lee-filter",
+        "mean-filter",
+        "speckle"
+      ],
+      "source_ref": "Lee, J.-S. (1980) Digital Image Enhancement and Noise Filtering by Use of Local Statistics, IEEE TPAMI; SAR 영상처리 일반",
+      "status": "draft"
+    },
+    {
+      "id": "D-FILT-016",
+      "type": "scenario",
+      "chapter": "D.filt",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"대용량 정사영상을 1024×1024 타일로 나눠서 9×9 가우시안 필터를 돌리는데, 타일 경계에 줄무늬가 생기지 않게 이웃 타일 픽셀을 여유분으로 붙여서 필터링한 다음 여유분은 잘라 내.\"\n\n타일 각 변에 붙여야 할 여유분(halo)의 최소 폭은?",
+      "choices": [
+        {
+          "text": "4픽셀",
+          "rationale": null
+        },
+        {
+          "text": "9픽셀",
+          "rationale": "커널 한 변(9)을 그대로 쓴 값으로, 동작은 하지만 최소 폭은 아닙니다. 커널 중심에서 한쪽으로 뻗는 길이(반경)만 있으면 됩니다."
+        },
+        {
+          "text": "2픽셀",
+          "rationale": "반경의 절반이라, 타일 가장자리 픽셀을 계산할 때 필요한 이웃 일부가 여전히 빠집니다."
+        },
+        {
+          "text": "8픽셀",
+          "rationale": "커널 크기에서 1을 뺀 값(9 − 1)으로 양쪽 반경을 합친 길이입니다. 한 변에는 그 절반이면 충분합니다."
+        },
+        {
+          "text": "0픽셀(타일마다 반사 패딩만 적용)",
+          "rationale": "반사 패딩은 이웃 타일의 실제 값이 아닌 가짜 값을 쓰므로 타일 경계 결과가 전체 영상을 한 번에 처리한 결과와 달라져 줄무늬가 생길 수 있습니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "9×9 커널의 반경은 (9 − 1) ÷ 2 = 4이므로, 타일 가장자리 픽셀을 계산하려면 바깥으로 4픽셀의 실제 이웃 값이 필요합니다. 각 변에 4픽셀 여유분을 붙여 필터링하고 잘라 내면 전체 영상을 한 번에 처리한 결과와 같아집니다.",
+      "explanation_full": "이 여유분을 halo 또는 overlap이라 부르며, 딥러닝 타일 추론에서 overlap을 두고 가장자리 예측을 버리는 것과 같은 원리입니다. 필터를 여러 번 연달아 적용하면 반경이 누적되므로 여유분도 합산해 잡아야 합니다. 전체 영상의 바깥 테두리에는 붙일 이웃 타일이 없으므로 그 부분만 패딩 방식으로 처리합니다.",
+      "tags": [
+        "border-handling",
+        "tiling",
+        "calculation"
+      ],
+      "terms": [
+        "padding",
+        "gaussian-filter"
+      ],
+      "source_ref": "Gonzalez & Woods, Digital Image Processing(공간 필터링 장)",
+      "status": "draft"
+    }
+  ]
+}

@@ -1,0 +1,768 @@
+{
+  "format": "visiondrill-bank-exchange",
+  "format_version": 1,
+  "terms": [
+    {
+      "id": "log-transformation",
+      "term_en": "Log Transformation",
+      "term_ko": "로그 변환",
+      "abbreviation": null,
+      "definition": "값에 로그를 취해 오른쪽으로 긴 꼬리를 줄이고 곱셈적 관계를 덧셈적 관계로 바꾸는 변환. 양수에만 쓸 수 있어 0이 있으면 log(x+1) 등을 쓴다",
+      "usage_example": "타일별 건물 수가 너무 치우쳐 있으니까 log1p 씌워서 다시 넣어봐.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "box-cox-transformation",
+      "term_en": "Box-Cox Transformation",
+      "term_ko": "박스-콕스 변환",
+      "abbreviation": null,
+      "definition": "양수 자료에 (y^λ − 1)/λ (λ = 0이면 log y) 형태의 거듭제곱 변환을 적용하고, 정규분포에 가장 가까워지는 λ를 최대우도로 추정하는 변환족",
+      "usage_example": "탁도 잔차가 계속 한쪽으로 치우치면 Box-Cox로 λ부터 추정해서 어떤 변환이 맞는지 보자.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "standardization",
+      "term_en": "Standardization",
+      "term_ko": "표준화",
+      "abbreviation": "z-score",
+      "definition": "각 값에서 평균을 빼고 표준편차로 나눠 평균 0, 표준편차 1로 맞추는 선형 변환, z = (x − μ)/σ",
+      "usage_example": "고도랑 반사도는 단위가 다르니까 표준화하고 나서 계수 크기 비교해.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "min-max-normalization",
+      "term_en": "Min-Max Normalization",
+      "term_ko": "최소-최대 정규화",
+      "abbreviation": null,
+      "definition": "(x − min)/(max − min)으로 값을 0~1 구간에 맞추는 선형 변환. 극단값 하나에 범위가 좌우된다",
+      "usage_example": "16비트 DN은 밴드별로 2~98% 백분위로 자른 다음 min-max로 0~1 맞춰서 넣어줘.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "interaction-term",
+      "term_en": "Interaction Term",
+      "term_ko": "상호작용항",
+      "abbreviation": null,
+      "definition": "두 설명변수의 곱(x1·x2)으로 만든 항. 한 변수의 효과(기울기)가 다른 변수의 값에 따라 달라지는 관계를 표현한다",
+      "usage_example": "관개 여부에 따라 NDVI 효과가 다를 것 같으니까 NDVI×관개 상호작용항 넣어서 다시 봐.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "polynomial-regression",
+      "term_en": "Polynomial Regression",
+      "term_ko": "다항 회귀",
+      "abbreviation": null,
+      "definition": "설명변수의 거듭제곱 항(x², x³ …)을 추가해 곡선 관계를 적합하는 회귀. 계수에 대해서는 선형이라 OLS로 추정한다",
+      "usage_example": "수온이랑 엽록소는 중간에서 꺾이니까 2차항까지 넣은 다항 회귀로 봐.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "dummy-variable",
+      "term_en": "Dummy Variable",
+      "term_ko": "더미 변수",
+      "abbreviation": null,
+      "definition": "범주형 변수의 각 범주를 0/1로 표시하는 지시변수. 절편이 있는 모형에서는 범주 k개를 기준 범주를 뺀 k−1개 더미로 표현한다",
+      "usage_example": "토지피복 클래스는 수계를 기준 범주로 두고 더미 4개로 넣어.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "dummy-variable-trap",
+      "term_en": "Dummy Variable Trap",
+      "term_ko": "더미 변수 함정",
+      "abbreviation": null,
+      "definition": "절편이 있는 모형에 범주 k개의 더미를 모두 넣어 더미의 합이 절편 열과 같아지는 완전 다중공선성 상태. 계수를 유일하게 추정할 수 없다",
+      "usage_example": "계절 더미 4개 다 넣었지? 더미 함정이라 하나가 NA로 나오는 거야. 기준 계절 하나 빼.",
+      "origin": "standard",
+      "track": "B"
+    }
+  ],
+  "questions": [
+    {
+      "id": "B-TRF-001",
+      "type": "short",
+      "chapter": "B.trf",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "양수 자료에 (y^λ − 1)/λ 형태의 거듭제곱 변환을 적용하고, 변환된 자료가 정규분포에 가장 가까워지도록 λ를 데이터로부터 추정해 고르는 변환의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Box-Cox transformation",
+          "Box-Cox"
+        ],
+        "ko": [
+          "박스-콕스 변환",
+          "박스-콕스",
+          "Box-Cox 변환"
+        ]
+      },
+      "primary": "Box-Cox transformation",
+      "explanation_short": "Box-Cox 변환은 λ 값 하나로 로그(λ = 0), 제곱근(λ = 0.5), 무변환(λ = 1) 등을 아우르는 변환족이며, 최적 λ를 최대우도로 추정합니다.",
+      "explanation_full": "종속변수의 치우침이나 이분산을 줄일 때 어떤 변환을 쓸지 '감'으로 고르지 않고 데이터로 정하게 해 줍니다. 자료가 모두 양수여야 하므로 0이나 음수가 있으면 상수를 더해 옮기거나 Yeo-Johnson 변환을 씁니다. 원격탐사에서는 탁도·부유사 농도처럼 양수이고 오른쪽으로 치우친 수질 변수에 자주 적용합니다.",
+      "tags": [
+        "regression",
+        "transformation"
+      ],
+      "terms": [
+        "box-cox-transformation"
+      ],
+      "source_ref": "Box & Cox (1964), An Analysis of Transformations",
+      "status": "draft"
+    },
+    {
+      "id": "B-TRF-002",
+      "type": "short",
+      "chapter": "B.trf",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "각 값에서 평균을 빼고 표준편차로 나눠 평균 0, 표준편차 1로 맞추는 변환의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Standardization",
+          "Standardisation",
+          "Z-score normalization",
+          "Z-score standardization",
+          "Z-score"
+        ],
+        "ko": [
+          "표준화",
+          "Z점수 변환",
+          "Z점수 표준화",
+          "Z점수"
+        ]
+      },
+      "primary": "Standardization",
+      "explanation_short": "표준화(z-score)는 z = (x − μ)/σ로 계산하며, 결과는 평균 0, 표준편차 1이 됩니다. 선형 변환이라 분포 모양(치우침)은 바뀌지 않습니다.",
+      "explanation_full": "단위가 다른 변수(예: 반사도 0~1, 고도 m, 경사 °)를 같은 척도로 맞출 때 씁니다. 규제 회귀(Ridge·Lasso)나 거리 기반 모형 앞에서는 사실상 필수입니다. 평균·표준편차는 훈련 데이터에서만 구하고, 같은 값을 검증·추론 데이터에 적용해야 데이터 누수가 없습니다.",
+      "tags": [
+        "regression",
+        "transformation"
+      ],
+      "terms": [
+        "standardization"
+      ],
+      "source_ref": "ISLR 3장(Linear Regression) · Wooldridge, Introductory Econometrics 6·7장",
+      "status": "draft"
+    },
+    {
+      "id": "B-TRF-003",
+      "type": "short",
+      "chapter": "B.trf",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "두 설명변수의 곱(x₁·x₂)을 모형에 추가해, 한 변수의 효과(기울기)가 다른 변수의 값에 따라 달라지도록 하는 항의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Interaction term",
+          "Interaction",
+          "Interaction effect"
+        ],
+        "ko": [
+          "상호작용항",
+          "상호작용",
+          "교호작용항",
+          "교호작용",
+          "상호작용 효과"
+        ]
+      },
+      "primary": "Interaction term",
+      "explanation_short": "상호작용항은 x₁·x₂처럼 두 변수를 곱한 항입니다. 이 항이 있으면 x₁의 기울기가 β₁ + β₃·x₂로 x₂에 따라 달라집니다.",
+      "explanation_full": "예를 들어 관개 여부에 따라 NDVI와 수확량의 관계(기울기)가 다르다고 볼 때 NDVI×관개 항을 넣습니다. 상호작용항을 넣으면 주효과 계수의 의미가 '상대 변수가 0일 때의 효과'로 바뀌므로, 연속형 변수는 평균 중심화한 뒤 곱을 만들면 해석이 쉬워집니다. 보통 두 주효과도 함께 넣습니다(계층 원칙).",
+      "tags": [
+        "regression",
+        "transformation"
+      ],
+      "terms": [
+        "interaction-term"
+      ],
+      "source_ref": "ISLR 3장(Linear Regression) · Wooldridge, Introductory Econometrics 6·7장",
+      "status": "draft"
+    },
+    {
+      "id": "B-TRF-004",
+      "type": "short",
+      "chapter": "B.trf",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "절편이 있는 회귀모형에 범주가 k개인 변수의 더미를 k개 모두 넣어, 더미의 합이 절편 열(모두 1)과 같아지는 완전 다중공선성이 생긴 상황을 무엇이라 하는가? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Dummy variable trap",
+          "Dummy trap"
+        ],
+        "ko": [
+          "더미 변수 함정",
+          "더미 함정",
+          "가변수 함정"
+        ]
+      },
+      "primary": "Dummy variable trap",
+      "explanation_short": "더미 변수 함정은 k개 더미의 합이 항상 1이라 절편 열과 완전히 겹쳐 계수를 유일하게 정할 수 없는 상태입니다. 기준 범주 하나를 빼고 k−1개만 넣으면 피할 수 있습니다.",
+      "explanation_full": "R이나 statsmodels에서는 계수 하나가 NA로 나오거나 특이행렬(singular matrix) 경고가 뜨는 식으로 드러납니다. 빠진 기준 범주의 효과는 절편에 흡수되고, 나머지 더미 계수는 기준 범주와의 차이로 읽습니다.",
+      "tags": [
+        "regression",
+        "transformation"
+      ],
+      "terms": [
+        "dummy-variable-trap",
+        "dummy-variable"
+      ],
+      "source_ref": "ISLR 3장(Linear Regression) · Wooldridge, Introductory Econometrics 6·7장",
+      "status": "draft"
+    },
+    {
+      "id": "B-TRF-005",
+      "type": "short",
+      "chapter": "B.trf",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "설명변수 x에 x², x³ 같은 거듭제곱 항을 추가해 곡선 관계를 적합하되, 계수에 대해서는 선형이라 OLS로 그대로 추정할 수 있는 회귀의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Polynomial regression"
+        ],
+        "ko": [
+          "다항 회귀",
+          "다항식 회귀",
+          "다항 회귀분석"
+        ]
+      },
+      "primary": "Polynomial regression",
+      "explanation_short": "다항 회귀는 x, x², x³ … 을 설명변수로 넣은 회귀입니다. x에 대해서는 곡선이지만 계수 β에 대해서는 선형이므로 일반 OLS로 추정합니다.",
+      "explanation_full": "차수를 높일수록 자료 양 끝에서 곡선이 크게 흔들리고(과적합) 외삽이 위험해지므로 보통 2~3차에서 멈춥니다. x와 x²는 상관이 높아 VIF가 커지기 쉬운데, x를 평균 중심화한 뒤 제곱하면 줄어듭니다. 이름이 비슷한 '다항 로지스틱 회귀(multinomial)'는 클래스가 여러 개인 분류 모형으로 전혀 다른 개념입니다.",
+      "tags": [
+        "regression",
+        "transformation"
+      ],
+      "terms": [
+        "polynomial-regression"
+      ],
+      "source_ref": "ISLR 7장(Moving Beyond Linearity)",
+      "status": "draft"
+    },
+    {
+      "id": "B-TRF-006",
+      "type": "mcq",
+      "chapter": "B.trf",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "위성영상에서 추출한 필지별 건물 연면적(m²)처럼 모두 양수이고 오른쪽으로 긴 꼬리를 가진 변수의 치우침(왜도)을 줄이려 할 때 가장 흔히 쓰는 변환은?",
+      "choices": [
+        {
+          "text": "표준화(z-score) 변환",
+          "rationale": "표준화는 평균과 척도만 바꾸는 선형 변환이라 분포 모양(왜도)은 그대로입니다."
+        },
+        {
+          "text": "로그 변환",
+          "rationale": null
+        },
+        {
+          "text": "제곱 변환(x²)",
+          "rationale": "제곱은 큰 값을 더 크게 벌려 오른쪽 꼬리를 오히려 길게 만듭니다. 왼쪽으로 치우친 자료에 쓰는 방향입니다."
+        },
+        {
+          "text": "최소-최대(min-max) 정규화",
+          "rationale": "0~1로 범위만 맞추는 선형 변환이라 왜도는 변하지 않습니다."
+        },
+        {
+          "text": "더미 변수 변환",
+          "rationale": "더미 변수는 범주형 변수를 0/1로 표현하는 방법이며, 연속형 변수의 분포 모양을 바꾸는 변환이 아닙니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "로그 변환은 큰 값을 강하게 압축하고 작은 값 사이는 상대적으로 벌려서 오른쪽 꼬리를 줄입니다. 표준화·min-max 같은 선형 변환은 분포 모양을 바꾸지 못합니다.",
+      "explanation_full": "로그는 곱셈적 관계(면적이 2배, 10배)를 덧셈적 관계로 바꿔 줍니다. 값에 0이 있으면 log(x+1)(log1p)을 쓰고, 음수가 있으면 Yeo-Johnson 같은 다른 변환을 검토합니다. 원격탐사에서는 면적·개수·거리처럼 양수이면서 여러 자릿수에 걸친 변수에 흔히 적용합니다.",
+      "tags": [
+        "regression",
+        "transformation"
+      ],
+      "terms": [
+        "log-transformation"
+      ],
+      "source_ref": "ISLR 3장(Linear Regression) · Wooldridge, Introductory Econometrics 6·7장",
+      "status": "draft"
+    },
+    {
+      "id": "B-TRF-007",
+      "type": "mcq",
+      "chapter": "B.trf",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "밴드 값 x를 최소-최대 정규화(min-max normalization)할 때 쓰는 식은?",
+      "choices": [
+        {
+          "text": "(x − 평균) / 표준편차",
+          "rationale": "표준화(z-score) 식입니다. 결과는 평균 0, 표준편차 1이며 범위가 정해져 있지 않습니다."
+        },
+        {
+          "text": "x / 최댓값",
+          "rationale": "최댓값으로만 나누는 스케일링입니다. 최솟값이 0이 아니면 결과가 0에서 시작하지 않습니다."
+        },
+        {
+          "text": "log(x − 최솟값 + 1)",
+          "rationale": "로그 변환의 한 형태로 분포 모양을 바꿉니다. 0~1 범위도 보장하지 않습니다."
+        },
+        {
+          "text": "(x − 최솟값) / (최댓값 − 최솟값)",
+          "rationale": null
+        },
+        {
+          "text": "(x − 중앙값) / 사분위범위(IQR = Q3 − Q1)",
+          "rationale": "중앙값과 IQR을 쓰는 로버스트 스케일링입니다. 이상치에 덜 민감하지만 0~1 범위를 보장하지 않습니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "min-max 정규화는 최솟값을 0, 최댓값을 1로 보내는 선형 변환입니다. 결과가 0~1에 들어가지만 극단값 하나가 min이나 max를 정하므로 이상치에 민감합니다.",
+      "explanation_full": "위성영상 DN(예: 12비트 0~4095)을 딥러닝 입력으로 넣을 때 흔히 쓰며, 실무에서는 이상치 영향을 줄이려고 2%·98% 백분위수로 잘라낸(clip) 뒤 min-max를 적용하기도 합니다. 훈련 데이터에서 구한 min·max를 검증·추론 데이터에도 그대로 써야 스케일 불일치와 데이터 누수를 막을 수 있습니다.",
+      "tags": [
+        "regression",
+        "transformation"
+      ],
+      "terms": [
+        "min-max-normalization"
+      ],
+      "source_ref": "ISLR 3장(Linear Regression) · Wooldridge, Introductory Econometrics 6·7장",
+      "status": "draft"
+    },
+    {
+      "id": "B-TRF-008",
+      "type": "mcq",
+      "chapter": "B.trf",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "log(y) = β₀ + 0.8·log(x)로 적합된 모형(log-log 모형)에서 계수 0.8의 해석으로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "x가 1% 늘면 y는 약 0.8% 늘어난다",
+          "rationale": null
+        },
+        {
+          "text": "x가 1 단위 늘면 y는 0.8 단위 늘어난다",
+          "rationale": "변환이 없는 선형(level-level) 모형의 해석입니다. 양쪽을 로그로 바꾸면 단위 변화가 아니라 비율(%) 변화로 읽습니다."
+        },
+        {
+          "text": "x가 1 단위 늘면 y는 약 80% 늘어난다",
+          "rationale": "y만 로그인 log-level 모형으로 잘못 읽은 것입니다. 게다가 log-level에서도 계수 0.8은 약 80%가 아니라 e^0.8 − 1 ≈ 123% 증가입니다."
+        },
+        {
+          "text": "x가 1% 늘면 y는 0.8 단위 늘어난다",
+          "rationale": "x만 로그인 level-log 모형의 해석 형태입니다. 그 경우에도 x 1% 증가당 y는 0.8/100 = 0.008 단위 증가입니다."
+        },
+        {
+          "text": "x가 2배가 되면 y도 정확히 1.8배가 된다",
+          "rationale": "x가 2배이면 y는 2^0.8 ≈ 1.74배입니다. log-log 계수는 곱셈적(거듭제곱) 관계를 뜻합니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "양변이 로그인 모형에서 계수는 탄력성(elasticity)입니다. x가 1% 늘면 y는 약 β% 늘어난다고 읽으므로, 0.8이면 약 0.8% 증가입니다.",
+      "explanation_full": "log-log 모형은 y = e^β₀ · x^β₁ 인 거듭제곱 관계입니다. 정확히는 x가 (1+r)배가 되면 y는 (1+r)^β₁배가 되고, r = 0.01이면 1.01^0.8 ≈ 1.008로 약 0.8%입니다. 변환 조합별 해석: level-level은 단위당 변화, log-level(y만 로그)은 x 1단위당 y가 약 100·β% 변화(정확히 e^β − 1), level-log(x만 로그)은 x 1%당 y가 β/100 단위 변화입니다. 원격탐사에서는 영상에서 잰 수관 면적과 바이오매스처럼 상대성장(allometry) 관계를 log-log로 적합하는 경우가 흔합니다.",
+      "tags": [
+        "regression",
+        "transformation",
+        "interpretation"
+      ],
+      "terms": [
+        "log-transformation"
+      ],
+      "source_ref": "Wooldridge, Introductory Econometrics 2.4절·6.2절",
+      "status": "draft"
+    },
+    {
+      "id": "B-TRF-009",
+      "type": "mcq",
+      "chapter": "B.trf",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "Box-Cox 변환에 대한 설명으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "음수와 0이 섞인 자료에도 별도 처리 없이 그대로 적용할 수 있다",
+          "rationale": "Box-Cox는 y > 0인 자료에만 정의됩니다. 0이나 음수가 있으면 상수를 더해 옮기거나 Yeo-Johnson 변환을 씁니다."
+        },
+        {
+          "text": "λ = 1이면 로그 변환과 같아진다",
+          "rationale": "λ = 1이면 y − 1이 되어 분포 모양이 그대로입니다. 로그 변환에 해당하는 것은 λ = 0입니다."
+        },
+        {
+          "text": "λ = 0이면 로그 변환에 해당하고, λ는 보통 최대우도로 추정한다",
+          "rationale": null
+        },
+        {
+          "text": "λ = 2이면 제곱근 변환에 해당한다",
+          "rationale": "제곱근 변환은 λ = 0.5입니다. λ = 2는 제곱 변환 쪽입니다."
+        },
+        {
+          "text": "설명변수들 사이의 다중공선성을 없애려고 모든 설명변수에 함께 적용하는 변환이다",
+          "rationale": "Box-Cox는 주로 종속변수의 치우침·이분산을 줄여 정규성에 가깝게 만드는 용도입니다. 설명변수 간 상관을 없애 주지 않습니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "Box-Cox는 (y^λ − 1)/λ (λ ≠ 0), log y (λ = 0)로 정의되는 변환족이며, 변환된 자료가 정규분포에 가장 가까워지는 λ를 최대우도로 고릅니다. 양수 자료에만 쓸 수 있습니다.",
+      "explanation_full": "추정된 λ가 0 근처면 로그, 0.5 근처면 제곱근, 1 근처면 변환 불필요로 보고, 해석하기 쉬운 값으로 반올림해 쓰는 경우가 많습니다. 종속변수를 변환하면 예측값을 원래 단위로 되돌릴 때 역변환이 필요하며, 역변환한 값은 평균이 아니라 중앙값에 가까운 추정이 된다는 점도 기억해야 합니다.",
+      "tags": [
+        "regression",
+        "transformation"
+      ],
+      "terms": [
+        "box-cox-transformation"
+      ],
+      "source_ref": "Box & Cox (1964), An Analysis of Transformations",
+      "status": "draft"
+    },
+    {
+      "id": "B-TRF-010",
+      "type": "mcq",
+      "chapter": "B.trf",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "표준화(z-score)와 최소-최대(min-max) 정규화에 대한 설명으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "표준화를 하면 오른쪽으로 치우친 분포도 정규분포 모양으로 바뀐다",
+          "rationale": "표준화는 선형 변환이라 분포 모양은 그대로이고 평균 0, 표준편차 1로만 맞춰집니다. 정규분포에 가깝게 하려면 로그·Box-Cox 같은 비선형 변환이 필요합니다."
+        },
+        {
+          "text": "min-max 정규화를 하면 결과의 평균이 0, 표준편차가 1이 된다",
+          "rationale": "그것은 표준화의 결과입니다. min-max 결과는 0~1 범위이며 평균·표준편차는 자료에 따라 다릅니다."
+        },
+        {
+          "text": "표준화한 값은 항상 −1과 1 사이에 들어간다",
+          "rationale": "z값에는 범위 제한이 없습니다. 평균에서 표준편차의 3배 이상 떨어진 값은 |z| > 3이 됩니다."
+        },
+        {
+          "text": "절편이 있는 OLS에서 설명변수를 표준화하면 적합이 좋아져 결정계수(R²)가 올라간다",
+          "rationale": "절편이 있는 OLS에서 설명변수를 선형 변환해도 적합값은 같으므로 R²는 그대로입니다. 바뀌는 것은 계수의 크기와 해석입니다."
+        },
+        {
+          "text": "min-max 정규화는 극단값 하나 때문에 나머지 값이 좁은 구간에 몰릴 수 있다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "min-max는 최솟값·최댓값 두 점으로 범위를 정하므로, 극단값이 하나만 있어도 대부분의 값이 0 근처(또는 1 근처)에 뭉칩니다. 두 변환 모두 선형이라 분포 모양은 바꾸지 않습니다.",
+      "explanation_full": "예: 반사도가 대부분 0.02~0.10인데 구름 픽셀 하나가 0.9이면 min-max 후 대부분의 값이 0~0.09 구간에 몰립니다. 이럴 때는 표준화, 백분위수 클리핑 후 min-max, 또는 로버스트 스케일링(중앙값·IQR)을 검토합니다. 절편이 있는 OLS에서 설명변수를 선형 변환해도 적합값·R²·t값·p값은 변하지 않고 계수의 크기만 바뀝니다.",
+      "tags": [
+        "regression",
+        "transformation"
+      ],
+      "terms": [
+        "standardization",
+        "min-max-normalization"
+      ],
+      "source_ref": "ISLR 3장(Linear Regression) · Wooldridge, Introductory Econometrics 6·7장",
+      "status": "draft"
+    },
+    {
+      "id": "B-TRF-011",
+      "type": "mcq",
+      "chapter": "B.trf",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "농경지 수확량 y를 NDVI와 관개 여부 D(관개 = 1, 비관개 = 0)로 설명하는 모형 y = β₀ + β₁·NDVI + β₂·D + β₃·(NDVI × D)에서 β₃의 의미로 옳은 것은?",
+      "choices": [
+        {
+          "text": "관개 필지와 비관개 필지의 평균 수확량 차이",
+          "rationale": "NDVI = 0일 때의 두 집단 차이는 β₂입니다. 상호작용이 있으면 집단 차이는 β₂ + β₃·NDVI로 NDVI 값에 따라 달라집니다."
+        },
+        {
+          "text": "관개 필지에서 NDVI의 기울기가 비관개 필지보다 얼마나 큰지(작은지)",
+          "rationale": null
+        },
+        {
+          "text": "NDVI와 관개 여부 D 사이의 상관계수",
+          "rationale": "상호작용항 계수는 두 설명변수 간 상관이 아니라, 한 변수의 효과가 다른 변수에 따라 달라지는 정도입니다."
+        },
+        {
+          "text": "비관개 필지에서 NDVI가 1 늘 때 수확량의 변화량",
+          "rationale": "비관개(D = 0) 필지의 NDVI 기울기는 β₁입니다. 관개 필지의 기울기가 β₁ + β₃입니다."
+        },
+        {
+          "text": "NDVI 효과와 관개 효과를 더한 전체 효과의 크기",
+          "rationale": "두 효과의 합이 아니라 기울기의 '차이(조절 효과)'입니다. 곱 항이 들어가야 기울기가 집단별로 달라집니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "D = 0이면 y = β₀ + β₁·NDVI, D = 1이면 y = (β₀ + β₂) + (β₁ + β₃)·NDVI입니다. 따라서 β₃는 관개 여부에 따른 NDVI 기울기의 차이입니다.",
+      "explanation_full": "상호작용항을 넣으면 주효과(β₁, β₂)의 해석이 '상대 변수가 0일 때의 효과'로 바뀝니다. NDVI = 0은 현실적으로 의미가 적은 값이므로 NDVI를 평균 중심화한 뒤 곱을 만들면 β₂를 '평균 NDVI에서의 관개 효과'로 읽을 수 있습니다. 상호작용항을 넣을 때는 보통 두 주효과도 함께 넣습니다(계층 원칙).",
+      "tags": [
+        "regression",
+        "transformation",
+        "interpretation"
+      ],
+      "terms": [
+        "interaction-term",
+        "dummy-variable"
+      ],
+      "source_ref": "ISLR 3장(Linear Regression) · Wooldridge, Introductory Econometrics 6·7장",
+      "status": "draft"
+    },
+    {
+      "id": "B-TRF-012",
+      "type": "mcq",
+      "chapter": "B.trf",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "수온 x(°C)와 엽록소 농도 y의 관계를 y = β₀ + 0.8x − 0.02x²으로 적합했다. 예측 엽록소 농도가 최대가 되는 수온은?",
+      "choices": [
+        {
+          "text": "10°C",
+          "rationale": "분모를 4β₂로 잘못 잡은 값(0.8 / 0.08)입니다. 꼭짓점은 −β₁/(2β₂)입니다."
+        },
+        {
+          "text": "40°C",
+          "rationale": "2를 빠뜨리고 0.8 / 0.02로 계산한 값입니다."
+        },
+        {
+          "text": "20°C",
+          "rationale": null
+        },
+        {
+          "text": "0°C",
+          "rationale": "x = 0은 절편 위치일 뿐입니다. 1차 계수가 양수이므로 x가 0보다 커지면 처음에는 y가 증가합니다."
+        },
+        {
+          "text": "최대가 없다(x가 커질수록 계속 증가)",
+          "rationale": "2차 계수가 음수(−0.02)이므로 위로 볼록한 포물선이며 꼭짓점에서 최대가 됩니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "2차식 β₁x + β₂x²의 꼭짓점은 x = −β₁/(2β₂)입니다. −0.8 / (2 × −0.02) = 0.8 / 0.04 = 20°C입니다.",
+      "explanation_full": "다항 회귀는 x에 대해서는 곡선이지만 계수에 대해서는 선형이므로 OLS로 추정합니다. 2차항이 있으면 x의 기울기가 β₁ + 2β₂x(여기서는 0.8 − 0.04x)로 x에 따라 달라지며, x = 20에서 0이 됩니다. 꼭짓점이 관측 범위 밖이면 외삽이므로 해석에 주의하고, 차수를 높일수록 자료 양 끝에서 곡선이 크게 흔들리는(과적합) 문제가 생깁니다.",
+      "tags": [
+        "regression",
+        "transformation",
+        "calculation"
+      ],
+      "terms": [
+        "polynomial-regression"
+      ],
+      "source_ref": "ISLR 7.1절(Polynomial Regression)",
+      "status": "draft"
+    },
+    {
+      "id": "B-TRF-013",
+      "type": "mcq",
+      "chapter": "B.trf",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "토지피복(수계·산림·농경지·시가지) 더미를 수계를 기준 범주로 넣은 회귀로 지표면온도(°C)를 예측했더니 '시가지' 더미 계수가 3.2였다. 올바른 해석은?",
+      "choices": [
+        {
+          "text": "시가지 픽셀의 평균 지표면온도 자체가 3.2°C라는 뜻이다",
+          "rationale": "더미 계수는 수준이 아니라 기준 범주와의 차이입니다. 시가지의 예측값은 절편 + 3.2(다른 변수 고정)입니다."
+        },
+        {
+          "text": "시가지는 수계·산림·농경지 세 범주의 평균보다 3.2°C 높다",
+          "rationale": "비교 대상은 '나머지 전체'가 아니라 기준 범주(수계) 하나입니다."
+        },
+        {
+          "text": "시가지 면적 비율이 1%p 늘 때 지표면온도가 3.2°C 오른다",
+          "rationale": "더미는 0/1 지시변수이므로 연속적인 비율 변화로 읽지 않습니다. 그것은 연속형 비율 변수를 넣었을 때의 해석 방식입니다."
+        },
+        {
+          "text": "다른 변수가 같을 때, 시가지는 수계보다 지표면온도가 평균 3.2°C 높다",
+          "rationale": null
+        },
+        {
+          "text": "시가지 더미가 산림 더미보다 지표면온도를 설명하는 데 3.2배만큼 더 중요한 변수라는 뜻이다",
+          "rationale": "계수는 기준 범주 대비 차이일 뿐 중요도의 배수가 아닙니다. 시가지와 산림의 차이는 두 더미 계수의 차로 구합니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "더미 변수의 계수는 다른 변수를 고정했을 때 해당 범주가 기준 범주(여기서는 수계)에 비해 종속변수 평균이 얼마나 다른지를 나타냅니다.",
+      "explanation_full": "기준 범주를 바꾸면 계수 값은 달라지지만 모형의 적합값은 같습니다. 두 비기준 범주끼리의 차이(예: 시가지 − 산림)는 두 계수의 차로 구하고, 그 차이의 유의성은 공분산까지 고려해 따로 검정해야 합니다. 기준 범주는 보통 표본이 충분하고 해석의 기준이 되는 범주로 고릅니다.",
+      "tags": [
+        "regression",
+        "transformation",
+        "interpretation"
+      ],
+      "terms": [
+        "dummy-variable"
+      ],
+      "source_ref": "ISLR 3장(Linear Regression) · Wooldridge, Introductory Econometrics 6·7장",
+      "status": "draft"
+    },
+    {
+      "id": "B-TRF-014",
+      "type": "mcq",
+      "chapter": "B.trf",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "절편이 있는 회귀모형에 범주가 5개인 토지피복 변수를 넣으려 한다. 더미 변수를 몇 개 만들어야 하며, 그 이유는?",
+      "choices": [
+        {
+          "text": "4개. 5개를 모두 넣으면 더미의 합이 항상 1이 되어 절편 열과 완전한 다중공선성이 생기기 때문",
+          "rationale": null
+        },
+        {
+          "text": "5개. 범주마다 더미가 하나씩 있어야 모든 범주의 효과를 빠짐없이 추정할 수 있기 때문",
+          "rationale": "절편이 있으면 5개 더미의 합 = 1 = 절편 열이 되어 계수를 유일하게 정할 수 없습니다(더미 변수 함정). 기준 범주의 효과는 절편에 흡수됩니다."
+        },
+        {
+          "text": "1개. 범주 번호 1~5를 한 변수에 넣으면 범주 정보가 모두 담기기 때문",
+          "rationale": "번호를 연속형으로 넣으면 범주 사이 간격이 같고 순서가 있다고 가정하게 됩니다. 명목형 범주에는 맞지 않습니다."
+        },
+        {
+          "text": "3개. 자유도를 아끼려면 표본이 가장 적은 범주 두 개를 함께 빼야 하기 때문",
+          "rationale": "범주 두 개를 빼면 두 범주가 하나의 기준으로 합쳐져 정보가 사라집니다. 빼는 것은 기준 범주 하나뿐입니다."
+        },
+        {
+          "text": "4개. 더미를 5개 모두 넣으면 잔차에 이분산이 생겨 표준오차가 틀어지기 때문",
+          "rationale": "개수는 맞지만 이유가 틀렸습니다. 문제는 이분산이 아니라 설명변수 사이의 완전 다중공선성입니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "범주 k개는 기준 범주를 뺀 k−1개 더미로 표현합니다. 절편과 k개 더미를 함께 넣으면 더미의 합이 절편 열(모두 1)과 같아져 계수를 유일하게 정할 수 없는 더미 변수 함정에 빠집니다.",
+      "explanation_full": "절편을 빼고 k개 더미를 모두 넣는 방법도 수학적으로는 가능하지만, 그 경우 (다른 설명변수가 없다면) 각 계수가 범주별 평균이 되고 R²의 정의가 달라지므로 일반적으로는 절편 + k−1개 더미를 씁니다. pandas get_dummies(drop_first=True)나 statsmodels 공식의 C(landcover)는 기준 범주를 자동으로 빼 줍니다. 규제 회귀나 트리 모형처럼 목적에 따라 k개를 모두 쓰는 원-핫 인코딩을 쓰기도 합니다.",
+      "tags": [
+        "regression",
+        "transformation"
+      ],
+      "terms": [
+        "dummy-variable-trap",
+        "dummy-variable",
+        "multicollinearity"
+      ],
+      "source_ref": "ISLR 3장(Linear Regression) · Wooldridge, Introductory Econometrics 6·7장",
+      "status": "draft"
+    },
+    {
+      "id": "B-TRF-015",
+      "type": "scenario",
+      "chapter": "B.trf",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"타일(512×512)별 건물 수를 설명변수로 쓰는데, 0부터 3,000까지 오른쪽으로 심하게 치우쳐 있어. 건물이 하나도 없는 타일도 40% 정도 되고. 적당히 변환해서 다시 넣어봐.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "건물 수에 자연로그 log(x)를 그대로 적용한다",
+          "rationale": "건물 수가 0인 타일에서 log(0)이 정의되지 않아(−∞) 적합할 수 없습니다."
+        },
+        {
+          "text": "건물이 0개인 타일을 제거한 뒤 log(x)를 적용한다",
+          "rationale": "전체의 40%를 버리면 표본이 크게 줄고, 건물이 없는 지역을 체계적으로 빼게 되어 결과가 편향됩니다."
+        },
+        {
+          "text": "Box-Cox 변환으로 최적 λ를 추정해 그대로 적용한다",
+          "rationale": "Box-Cox는 양수 자료에만 정의되므로 0이 섞인 자료에 그대로 쓸 수 없습니다."
+        },
+        {
+          "text": "min-max 정규화로 값을 0~1 범위로 맞춘다",
+          "rationale": "선형 변환이라 범위만 바뀌고 치우침은 그대로 남습니다."
+        },
+        {
+          "text": "log(x + 1), 즉 log1p 변환을 적용한다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "0이 포함된 개수 자료에는 log(x + 1)을 써서 0은 0으로 두면서 큰 값을 압축합니다. log(x)나 Box-Cox는 0에서 정의되지 않고, 0인 타일을 버리면 표본 편향이 생깁니다.",
+      "explanation_full": "log1p 후 계수는 x가 클 때 대략 비율 변화로 읽을 수 있지만, x가 작은 구간에서는 이 근사가 부정확해집니다. 0이 매우 많으면 '건물 있음(0/1)' 더미를 함께 넣어 0과 양수 구간을 따로 설명하게 하는 방법도 씁니다. 음수까지 있는 변수라면 Yeo-Johnson 변환을 검토합니다.",
+      "tags": [
+        "regression",
+        "transformation",
+        "prescription"
+      ],
+      "terms": [
+        "log-transformation",
+        "box-cox-transformation"
+      ],
+      "source_ref": "ISLR 3장(Linear Regression) · Wooldridge, Introductory Econometrics 6·7장",
+      "status": "draft"
+    },
+    {
+      "id": "B-TRF-016",
+      "type": "scenario",
+      "chapter": "B.trf",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"해안선 거리 x(km)랑 x² 같이 넣었더니 두 변수 VIF가 50이 넘어. 곡선 관계는 그대로 두고 공선성만 좀 낮춰봐.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "x² 항을 빼고 x만 남긴다",
+          "rationale": "공선성은 사라지지만 지시에서 유지하라고 한 곡선 관계를 잃습니다."
+        },
+        {
+          "text": "x에서 평균을 뺀 c = x − x̄를 만들고, c와 c²를 넣는다",
+          "rationale": null
+        },
+        {
+          "text": "x를 min-max 정규화(0~1)한 뒤 그 값을 제곱해 함께 넣는다",
+          "rationale": "0~1의 양수 값에서도 x와 x²의 상관은 여전히 매우 높습니다(균등분포면 약 0.97). 척도만 바뀌고 공선성은 남습니다."
+        },
+        {
+          "text": "이미 만든 x와 x²를 각각 따로 표준화해서 넣는다",
+          "rationale": "만들어 둔 x²를 나중에 표준화하는 것은 선형 변환이라 x와 x²의 상관계수가 그대로입니다. 제곱하기 전에 중심화해야 합니다."
+        },
+        {
+          "text": "x에 로그를 취해 log(x)와 x²를 함께 넣는다",
+          "rationale": "지시와 다른 모형이 되고, log(x)와 x²도 같은 x에서 나와 여전히 강하게 상관될 수 있습니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "x가 모두 양수이면 x와 x²는 함께 커져 상관이 매우 높습니다. 평균 중심화 후 제곱하면(x 분포가 대칭에 가까울수록) 두 항의 상관이 크게 줄어, 곡선 관계는 유지하면서 VIF를 낮출 수 있습니다.",
+      "explanation_full": "중심화는 같은 2차 곡선을 다르게 매개화한 것이라 적합값·R²를 바꾸지 않습니다. 대신 1차항 계수의 의미가 '평균 거리에서의 기울기'로 바뀌어 해석이 쉬워집니다. 이런 공선성은 변수 구성 방식에서 생긴 구조적 공선성이라 중심화로 해결되는 대표적인 경우이며, 상호작용항 x₁·x₂를 만들 때도 같은 이유로 먼저 중심화합니다. 직교 다항식(orthogonal polynomial)을 쓰는 방법도 있습니다.",
+      "tags": [
+        "regression",
+        "transformation",
+        "prescription"
+      ],
+      "terms": [
+        "polynomial-regression",
+        "vif",
+        "multicollinearity"
+      ],
+      "source_ref": "ISLR 7.1절 · Kutner et al., Applied Linear Statistical Models 8.1절",
+      "status": "draft"
+    },
+    {
+      "id": "B-TRF-017",
+      "type": "scenario",
+      "chapter": "B.trf",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"산림 바이오매스 회귀에 적색 밴드 반사도(0~0.3), 고도(0~1,800m), 경사(0~45°)를 넣었어. 어느 변수 영향이 제일 큰지 계수 크기로 비교해서 보고해줘.\"\n\n가장 먼저 할 일은?",
+      "choices": [
+        {
+          "text": "원래 단위로 적합한 회귀계수의 절댓값을 그대로 줄 세워 비교한다",
+          "rationale": "계수는 변수 단위에 따라 달라집니다. 반사도는 범위가 0.3뿐이라 계수가 크게, 고도는 m 단위라 작게 나와 비교가 왜곡됩니다."
+        },
+        {
+          "text": "p값이 가장 작은 변수를 영향이 가장 큰 변수로 판단해 보고한다",
+          "rationale": "p값은 효과가 0이 아니라는 증거의 강도이지 효과의 크기가 아닙니다. 표본이 크면 작은 효과도 p값이 매우 작아집니다."
+        },
+        {
+          "text": "종속변수인 바이오매스만 표준화하고 설명변수는 원래 단위 그대로 다시 적합한다",
+          "rationale": "y만 표준화하면 모든 계수가 같은 상수로 나뉠 뿐이라, 설명변수 단위 차이에서 오는 왜곡은 그대로입니다."
+        },
+        {
+          "text": "설명변수를 표준화해 다시 적합하고, 1 표준편차당 효과로 비교한다",
+          "rationale": null
+        },
+        {
+          "text": "모든 변수에 로그를 취해 같은 척도로 만든 뒤 계수를 비교한다",
+          "rationale": "로그는 분포 모양과 관계 형태를 바꾸는 비선형 변환이지 단위를 맞추는 방법이 아닙니다. 모형과 해석 자체가 달라집니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "원래 단위의 계수는 '그 단위 1 증가당 변화'라 단위가 다른 변수끼리 크기를 비교할 수 없습니다. 설명변수를 표준화하면 계수가 '1 표준편차 변화당 효과'가 되어 같은 기준으로 비교할 수 있습니다.",
+      "explanation_full": "표준화 계수도 설명변수끼리 상관이 높으면(다중공선성) 불안정하므로 VIF를 함께 확인합니다. 표준화는 선형 변환이라 R²·p값은 바뀌지 않습니다. 보고서에는 '고도 1 표준편차(예: 약 400m) 증가당 바이오매스 몇 t/ha 증가'처럼 원래 단위로 풀어 쓰면 비전공자도 이해하기 쉽습니다.",
+      "tags": [
+        "regression",
+        "transformation",
+        "interpretation"
+      ],
+      "terms": [
+        "standardization"
+      ],
+      "source_ref": "ISLR 3장(Linear Regression) · Wooldridge, Introductory Econometrics 6·7장",
+      "status": "draft"
+    }
+  ]
+}

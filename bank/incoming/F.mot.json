@@ -1,0 +1,927 @@
+{
+  "format": "visiondrill-bank-exchange",
+  "format_version": 1,
+  "terms": [
+    {
+      "id": "multi-object-tracking",
+      "term_en": "Multi-Object Tracking",
+      "term_ko": "다중 객체 추적",
+      "abbreviation": "MOT",
+      "definition": "영상의 매 프레임에서 여러 객체를 찾고, 같은 객체에는 프레임이 바뀌어도 같은 ID를 유지해 궤적(track)을 만드는 태스크. 실무에서는 주로 매 프레임 탐지 후 트랙과 연관(association)하는 검출 기반 추적(tracking-by-detection)으로 구현한다",
+      "usage_example": "드론 영상 차량 대수는 탐지 박스만 세면 중복 집계되니까 MOT로 ID 붙여서 세자.",
+      "origin": "standard",
+      "track": "F"
+    },
+    {
+      "id": "kalman-filter",
+      "term_en": "Kalman Filter",
+      "term_ko": "칼만 필터",
+      "abbreviation": "KF",
+      "definition": "운동 모델로 다음 상태(위치·크기·속도)를 예측하고, 새 관측이 들어오면 예측과 관측을 각각의 불확실성에 따라 가중 결합해 상태를 보정하는 재귀 추정 필터",
+      "usage_example": "위성 동영상 선박은 거의 등속으로 움직이니까 칼만 필터 등속 모델로 충분할 거야.",
+      "origin": "standard",
+      "track": "F"
+    },
+    {
+      "id": "hungarian-algorithm",
+      "term_en": "Hungarian Algorithm",
+      "term_ko": "헝가리안 알고리즘",
+      "abbreviation": null,
+      "definition": "비용 행렬이 주어졌을 때 총비용이 최소가 되도록 행(트랙)과 열(검출)을 1:1로 짝짓는 최적 할당 알고리즘(Kuhn–Munkres 알고리즘)",
+      "usage_example": "트랙이랑 검출 매칭은 IoU 큰 것부터 greedy로 하지 말고 헝가리안으로 전역 최적 할당해.",
+      "origin": "standard",
+      "track": "F"
+    },
+    {
+      "id": "deepsort",
+      "term_en": "DeepSORT",
+      "term_ko": "딥소트",
+      "abbreviation": null,
+      "definition": "SORT(칼만 필터 예측 + 헝가리안 매칭)에 CNN으로 뽑은 외형 특징(Re-ID 임베딩)의 거리와 매칭 캐스케이드를 더해, 가림 뒤 다시 나타난 객체의 ID를 더 잘 유지하도록 한 추적기",
+      "usage_example": "예인선들이 큰 배 뒤로 가려졌다 나오면 ID가 섞이니까 DeepSORT처럼 외형 임베딩을 매칭에 같이 써 보자.",
+      "origin": "standard",
+      "track": "F"
+    },
+    {
+      "id": "bytetrack",
+      "term_en": "ByteTrack",
+      "term_ko": "바이트트랙",
+      "abbreviation": null,
+      "definition": "검출 결과를 신뢰도로 나눠 고신뢰 박스로 먼저 트랙과 매칭하고, 매칭되지 않은 트랙을 저신뢰 박스와 한 번 더 매칭해 가려지거나 흐릿한 객체의 궤적을 이어 가는 추적 방법",
+      "usage_example": "해무 낀 날엔 선박 score가 0.3대로 떨어지니까 ByteTrack처럼 저신뢰 박스도 2차 매칭에 써.",
+      "origin": "standard",
+      "track": "F"
+    },
+    {
+      "id": "id-switch",
+      "term_en": "ID Switch",
+      "term_ko": "ID 스위치",
+      "abbreviation": "IDSW",
+      "definition": "하나의 정답(GT) 객체에 대응하는 예측 트랙 ID가 직전에 대응하던 ID와 다른 ID로 바뀌는 추적 오류",
+      "usage_example": "교차로에서 차량 두 대가 엇갈리는 구간에 IDSW가 몰려 있어. 그 구간 프레임만 따로 뽑아 봐.",
+      "origin": "standard",
+      "track": "F"
+    },
+    {
+      "id": "mota",
+      "term_en": "Multiple Object Tracking Accuracy",
+      "term_ko": "다중 객체 추적 정확도",
+      "abbreviation": "MOTA",
+      "definition": "1 − (FN + FP + IDSW) / GT로 계산하는 CLEAR MOT 지표. 미탐·오탐·ID 스위치를 한데 합쳐 추적 정확도를 나타내며, 값이 검출 오류에 크게 좌우된다",
+      "usage_example": "MOTA 올랐다고 좋아하지 마. 탐지기 바꿔서 FN이 줄어든 효과가 대부분일 수 있어.",
+      "origin": "standard",
+      "track": "F"
+    },
+    {
+      "id": "idf1",
+      "term_en": "ID F1 Score",
+      "term_ko": "ID F1 점수",
+      "abbreviation": "IDF1",
+      "definition": "전체 시퀀스에서 GT 궤적과 예측 궤적을 1:1로 대응시킨 뒤, 대응된 ID로 맞힌 검출 수(IDTP)로 계산한 F1 점수: 2·IDTP / (2·IDTP + IDFP + IDFN). 같은 객체에 같은 ID를 얼마나 오래 유지했는지 반영한다",
+      "usage_example": "항적 분석용이면 MOTA보다 IDF1이 중요해. 두 추적기 IDF1부터 비교해 줘.",
+      "origin": "standard",
+      "track": "F"
+    },
+    {
+      "id": "hota",
+      "term_en": "Higher Order Tracking Accuracy",
+      "term_ko": "고차 추적 정확도",
+      "abbreviation": "HOTA",
+      "definition": "검출 정확도(DetA)와 연관 정확도(AssA)의 기하평균 √(DetA·AssA)를 여러 위치 임계값(α)에서 구해 평균한 추적 지표. 검출과 ID 연관을 균형 있게 평가한다",
+      "usage_example": "HOTA가 떨어졌으면 DetA랑 AssA로 쪼개서 검출 문제인지 연관 문제인지부터 보고해.",
+      "origin": "standard",
+      "track": "F"
+    }
+  ],
+  "questions": [
+    {
+      "id": "F-MOT-001",
+      "type": "short",
+      "chapter": "F.mot",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "영상의 매 프레임에서 여러 객체를 검출하고, 같은 객체에는 프레임이 바뀌어도 같은 ID를 유지해 궤적(trajectory)을 만드는 태스크의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Multi-Object Tracking (MOT)",
+          "Multiple Object Tracking",
+          "Multi-Target Tracking"
+        ],
+        "ko": [
+          "다중 객체 추적",
+          "다중 물체 추적",
+          "다중 객체 트래킹",
+          "다중 표적 추적"
+        ]
+      },
+      "primary": "Multi-Object Tracking",
+      "explanation_short": "다중 객체 추적(MOT)은 검출에 '시간 축의 동일성(ID)'을 더한 태스크입니다. 프레임마다 박스를 찾는 데 그치지 않고, 같은 선박·차량에 같은 ID를 이어 붙여 궤적을 만듭니다.",
+      "explanation_full": "실무 MOT는 대부분 검출 기반 추적(tracking-by-detection)으로, 매 프레임 탐지기를 돌린 뒤 기존 트랙과 새 검출을 연관(association)합니다. 객체 하나만 따라가는 단일 객체 추적(SOT)과 달리 객체 수가 계속 바뀌므로 새 트랙 생성·소멸 규칙이 필요합니다. 드론 영상 차량 계수, 위성 동영상 선박 항적 추출처럼 '몇 대가 지나갔나', '어디로 움직였나'를 묻는 과제의 기본이 됩니다.",
+      "tags": [
+        "tracking",
+        "basics"
+      ],
+      "terms": [
+        "multi-object-tracking"
+      ],
+      "source_ref": "MOTChallenge 벤치마크 문서 (Milan et al., MOT16, 2016)",
+      "status": "draft"
+    },
+    {
+      "id": "F-MOT-002",
+      "type": "mcq",
+      "chapter": "F.mot",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "드론 영상 차량 계수 과제에서 '검출 기반 추적(tracking-by-detection)' 방식의 처리 흐름으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "첫 프레임에서 지정한 차량 한 대의 외형 템플릿을 다음 프레임들에서 계속 찾아 따라간다",
+          "rationale": "지정한 객체 하나만 따라가는 방식은 단일 객체 추적(SOT)입니다. 새로 나타나는 여러 차량에 ID를 붙이지 못합니다."
+        },
+        {
+          "text": "전체 프레임을 시간 평균해 만든 배경과 각 프레임의 차이로 움직이는 영역을 한 번에 분할한다",
+          "rationale": "배경 차분(background subtraction)으로 움직이는 픽셀을 찾을 수는 있지만, 개체를 나누고 프레임 간 같은 ID를 잇는 단계가 없습니다."
+        },
+        {
+          "text": "매 프레임 탐지기로 박스를 얻고, 기존 트랙의 예측 위치와 새 검출을 매칭해 ID를 이어 붙인다",
+          "rationale": null
+        },
+        {
+          "text": "프레임마다 탐지된 박스 수를 모두 더해 영상 전체의 차량 대수로 보고한다",
+          "rationale": "같은 차량이 여러 프레임에 나오므로 중복 집계됩니다. 이 중복을 없애려고 추적으로 ID를 붙이는 것입니다."
+        },
+        {
+          "text": "탐지기는 쓰지 않고 광학 흐름(optical flow)으로 픽셀 이동량만 계산해 차량 궤적으로 쓴다",
+          "rationale": "광학 흐름은 픽셀 단위 움직임 벡터일 뿐 객체 단위 ID가 없습니다. 또한 '검출 기반'이라는 조건과 맞지 않습니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "검출 기반 추적은 '매 프레임 탐지 → 기존 트랙 위치 예측 → 트랙과 검출 연관(매칭) → ID 유지·생성·삭제'의 반복입니다. 탐지기와 연관 단계가 분리되어 있어 탐지기를 바꿔 끼우기 쉽습니다.",
+      "explanation_full": "SORT, DeepSORT, ByteTrack이 모두 이 구조입니다. 매칭되지 않은 검출은 새 트랙 후보가 되고, 일정 프레임 이상 매칭되지 않은 트랙은 삭제됩니다. 따라서 추적 품질은 탐지 품질(미탐·오탐)과 연관 품질(ID 유지) 두 축으로 나눠 봐야 하며, 이 구분이 뒤의 MOTA·IDF1·HOTA 해석으로 이어집니다.",
+      "tags": [
+        "tracking",
+        "tracking-by-detection"
+      ],
+      "terms": [
+        "multi-object-tracking"
+      ],
+      "source_ref": "MOTChallenge 벤치마크 문서 (Milan et al., MOT16, 2016)",
+      "status": "draft"
+    },
+    {
+      "id": "F-MOT-003",
+      "type": "short",
+      "chapter": "F.mot",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "SORT 계열 추적기에서 각 트랙의 다음 프레임 위치를 등속 운동 모델로 예측하고, 매칭된 검출이 들어오면 예측과 관측을 불확실성에 따라 가중 결합해 상태를 보정하는 재귀 추정 필터의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Kalman Filter (KF)"
+        ],
+        "ko": [
+          "칼만 필터"
+        ]
+      },
+      "primary": "Kalman Filter",
+      "explanation_short": "칼만 필터는 '예측(predict) → 보정(update)'을 반복하는 재귀 필터입니다. 추적에서는 트랙의 위치·크기·속도를 상태로 두고, 다음 프레임 박스를 예측해 매칭 비용 계산에 씁니다.",
+      "explanation_full": "보정 단계에서는 예측 불확실성과 관측(검출) 노이즈의 비율로 칼만 이득(Kalman gain)을 구해, 불확실한 쪽을 덜 믿도록 가중 평균합니다. 선형 운동·가우시안 잡음을 가정하므로 급선회하는 객체에는 오차가 커집니다. 검출이 잠시 없어도(가림) 예측 단계만 돌려 트랙 위치를 추정할 수 있어, 위성 동영상에서 구름·교량에 잠깐 가려진 선박을 잇는 데 유용합니다.",
+      "tags": [
+        "tracking",
+        "motion-model"
+      ],
+      "terms": [
+        "kalman-filter"
+      ],
+      "source_ref": "Bewley et al., Simple Online and Realtime Tracking (SORT, ICIP 2016)",
+      "status": "draft"
+    },
+    {
+      "id": "F-MOT-004",
+      "type": "short",
+      "chapter": "F.mot",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "트랙 m개와 검출 n개 사이의 비용 행렬(예: 1 − IoU)이 주어졌을 때, 총비용이 최소가 되도록 트랙과 검출을 1:1로 짝짓는 최적 할당 알고리즘의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Hungarian Algorithm",
+          "Hungarian Method",
+          "Kuhn-Munkres Algorithm",
+          "Munkres Algorithm"
+        ],
+        "ko": [
+          "헝가리안 알고리즘",
+          "헝가리안 방법",
+          "헝가리 알고리즘",
+          "쿤-먼크레스 알고리즘"
+        ]
+      },
+      "primary": "Hungarian Algorithm",
+      "explanation_short": "헝가리안 알고리즘(Kuhn–Munkres)은 이분 그래프의 최소 비용 1:1 할당을 다항 시간에 푸는 알고리즘입니다. 추적에서는 트랙-검출 비용 행렬의 전역 최적 매칭을 구하는 데 씁니다.",
+      "explanation_full": "SORT는 예측 박스와 검출 사이의 IoU로 비용을 만들고, 할당 뒤 IoU가 임계값보다 낮은 쌍은 매칭에서 빼 버립니다(게이팅). 파이썬에서는 SciPy의 linear_sum_assignment 같은 선형 할당 함수로 같은 문제를 풉니다. IoU가 큰 쌍부터 확정하는 탐욕(greedy) 매칭은 빠르지만 밀집 구간에서 전체 최적이 아닐 수 있습니다.",
+      "tags": [
+        "tracking",
+        "association"
+      ],
+      "terms": [
+        "hungarian-algorithm"
+      ],
+      "source_ref": "Bewley et al., Simple Online and Realtime Tracking (SORT, ICIP 2016)",
+      "status": "draft"
+    },
+    {
+      "id": "F-MOT-005",
+      "type": "mcq",
+      "chapter": "F.mot",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "SORT가 한 프레임을 처리하는 순서로 옳은 것은?",
+      "choices": [
+        {
+          "text": "칼만 필터로 트랙 위치 예측 → 예측 박스와 새 검출의 IoU 비용 행렬 계산 → 헝가리안 알고리즘으로 할당 → 매칭된 트랙을 검출로 보정",
+          "rationale": null
+        },
+        {
+          "text": "헝가리안 알고리즘으로 트랙과 검출을 먼저 할당 → 칼만 필터로 기존 트랙 위치 예측 → IoU 비용 행렬 계산 → 매칭된 트랙을 검출로 보정",
+          "rationale": "할당은 비용 행렬이 있어야 할 수 있습니다. 예측과 비용 계산이 할당보다 먼저 와야 합니다."
+        },
+        {
+          "text": "새 검출로 모든 트랙의 칼만 상태를 먼저 보정 → 보정된 박스로 IoU 비용 행렬 계산 → 헝가리안 알고리즘으로 할당",
+          "rationale": "어느 검출이 어느 트랙의 것인지 모르는 상태에서는 보정을 할 수 없습니다. 보정(update)은 매칭이 끝난 뒤 짝지어진 검출로만 합니다."
+        },
+        {
+          "text": "이전 프레임 박스 그대로 IoU 비용 행렬 계산 → 헝가리안 알고리즘으로 할당 → 칼만 필터는 쓰지 않고 박스만 교체",
+          "rationale": "예측 없이 이전 박스와 IoU를 비교하는 것은 단순 IoU 추적기에 가깝습니다. SORT는 칼만 예측 위치를 써서 움직이는 객체의 매칭을 안정시킵니다."
+        },
+        {
+          "text": "칼만 필터로 기존 트랙 위치 예측 → IoU가 가장 큰 쌍부터 차례로 확정하는 탐욕 매칭 → 매칭된 트랙을 검출로 보정",
+          "rationale": "SORT는 탐욕 매칭이 아니라 헝가리안 알고리즘으로 전역 최적 할당을 구합니다. 탐욕 매칭은 밀집 구간에서 최적이 아닐 수 있습니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "SORT의 한 프레임은 '예측(칼만) → 비용 계산(IoU) → 할당(헝가리안) → 보정(칼만 update)' 순서입니다. 이후 매칭 안 된 검출은 새 트랙으로, 오래 매칭 안 된 트랙은 삭제합니다.",
+      "explanation_full": "칼만 필터는 예측과 보정 두 번 등장합니다. 예측은 매칭 전에 비용을 만들기 위해, 보정은 매칭 후 짝지어진 검출로 상태를 고치기 위해 씁니다. SORT의 상태는 박스 중심·면적·종횡비와 그 속도(종횡비는 일정하다고 가정)로 구성됩니다. 드론 영상처럼 카메라가 크게 움직이면 등속 예측이 빗나가 매칭이 흔들리므로, 카메라 움직임 보정이나 외형 특징을 추가하는 후속 방법이 나왔습니다.",
+      "tags": [
+        "tracking",
+        "sort",
+        "pipeline"
+      ],
+      "terms": [
+        "kalman-filter",
+        "hungarian-algorithm"
+      ],
+      "source_ref": "Bewley et al., Simple Online and Realtime Tracking (SORT, ICIP 2016)",
+      "status": "draft"
+    },
+    {
+      "id": "F-MOT-006",
+      "type": "short",
+      "chapter": "F.mot",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "SORT에 CNN으로 뽑은 외형 특징(Re-ID 임베딩)의 코사인 거리와 매칭 캐스케이드를 더해, 가림 뒤 다시 나타난 객체의 ID 유지를 개선한 추적기의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "DeepSORT"
+        ],
+        "ko": [
+          "딥소트",
+          "딥 SORT"
+        ]
+      },
+      "primary": "DeepSORT",
+      "explanation_short": "DeepSORT는 SORT의 움직임 정보(칼만 예측)에 외형 정보(Re-ID 임베딩)를 더한 추적기입니다. 움직임만으로는 가림 뒤 위치 예측이 빗나가지만, 외형이 비슷한지로 같은 객체를 다시 찾을 수 있습니다.",
+      "explanation_full": "DeepSORT는 트랙마다 최근 외형 임베딩들을 저장해 두고 새 검출과의 최소 코사인 거리를 비용으로 씁니다. 칼만 예측과의 마할라노비스 거리는 불가능한 매칭을 걸러내는 게이트로 쓰고(원 논문 실험 설정 기준, 두 거리의 가중합도 가능), 최근에 관측된 트랙부터 먼저 매칭하는 매칭 캐스케이드를 적용합니다. 원 논문의 Re-ID 모델은 보행자 데이터로 학습되었으므로 선박·차량에 쓰려면 해당 도메인으로 다시 학습한 임베딩 모델이 필요합니다.",
+      "tags": [
+        "tracking",
+        "deepsort",
+        "re-id"
+      ],
+      "terms": [
+        "deepsort"
+      ],
+      "source_ref": "Wojke et al., Simple Online and Realtime Tracking with a Deep Association Metric (DeepSORT, ICIP 2017)",
+      "status": "draft"
+    },
+    {
+      "id": "F-MOT-007",
+      "type": "short",
+      "chapter": "F.mot",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "검출 결과를 신뢰도로 나눠 고신뢰 박스로 먼저 트랙과 매칭한 뒤, 매칭되지 않은 트랙을 저신뢰 박스와 한 번 더 매칭하는 연관 방식을 제안한 추적 방법의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "ByteTrack",
+          "BYTE"
+        ],
+        "ko": [
+          "바이트트랙"
+        ]
+      },
+      "primary": "ByteTrack",
+      "explanation_short": "ByteTrack은 저신뢰 검출을 버리지 않고 '두 번째 매칭'에 씁니다. 가림·흐림으로 점수가 떨어진 실제 객체가 기존 트랙과 이어져 궤적이 끊기지 않습니다.",
+      "explanation_full": "논문에서 연관 방법 자체의 이름은 BYTE이고, 이를 YOLOX 탐지기와 묶은 추적기가 ByteTrack입니다. 저신뢰 박스 중 어떤 트랙과도 매칭되지 않은 것은 배경(오탐)으로 보고 버리며, 새 트랙은 고신뢰 박스로만 만듭니다. 외형 특징 없이 IoU만으로도 높은 성능을 보여, 해무·역광으로 점수가 떨어지기 쉬운 해상 드론 영상에서 먼저 시도해 볼 만한 기준선입니다.",
+      "tags": [
+        "tracking",
+        "bytetrack"
+      ],
+      "terms": [
+        "bytetrack"
+      ],
+      "source_ref": "Zhang et al., ByteTrack: Multi-Object Tracking by Associating Every Detection Box (ECCV 2022)",
+      "status": "draft"
+    },
+    {
+      "id": "F-MOT-008",
+      "type": "mcq",
+      "chapter": "F.mot",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "SORT를 기준으로 DeepSORT와 ByteTrack이 각각 주로 보완한 점을 바르게 짝지은 것은?",
+      "choices": [
+        {
+          "text": "DeepSORT: 저신뢰 검출을 버리지 않고 2차 매칭에 활용 / ByteTrack: 외형 임베딩으로 가림 뒤 재등장한 객체를 다시 식별",
+          "rationale": "두 방법의 핵심이 서로 뒤바뀌었습니다. 외형 임베딩은 DeepSORT, 신뢰도별 2단계 매칭은 ByteTrack의 핵심입니다."
+        },
+        {
+          "text": "DeepSORT: 칼만 필터를 입자 필터로 교체해 비선형 움직임 대응 / ByteTrack: 헝가리안 매칭을 탐욕 매칭으로 바꿔 속도 향상",
+          "rationale": "두 방법 모두 칼만 필터와 헝가리안 할당을 그대로 씁니다. 개선의 초점은 움직임 모델이나 할당 알고리즘이 아닙니다."
+        },
+        {
+          "text": "DeepSORT: 외형 임베딩으로 가림 뒤 재등장한 객체를 다시 식별 / ByteTrack: 탐지기 없이 광학 흐름만으로 객체를 추적",
+          "rationale": "ByteTrack도 검출 기반 추적입니다. 탐지기가 내놓은 박스를 고·저신뢰로 나눠 매칭할 뿐 광학 흐름으로 대체하지 않습니다."
+        },
+        {
+          "text": "DeepSORT: 외형 임베딩으로 가림 뒤 재등장한 객체를 다시 식별 / ByteTrack: 저신뢰 검출을 버리지 않고 2차 매칭에 활용",
+          "rationale": null
+        },
+        {
+          "text": "DeepSORT: 탐지와 Re-ID 임베딩을 한 네트워크에서 동시에 학습 / ByteTrack: 저신뢰 검출을 버리지 않고 2차 매칭에 활용",
+          "rationale": "탐지와 임베딩을 한 네트워크로 공동 학습하는 것은 JDE·FairMOT 계열입니다. DeepSORT는 탐지기와 별도로 학습한 Re-ID CNN을 씁니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "DeepSORT는 '무엇처럼 생겼나(외형)'를, ByteTrack은 '점수가 낮아도 버리지 말자(저신뢰 검출 활용)'를 SORT에 더했습니다. 둘 다 칼만 예측과 헝가리안 할당이라는 뼈대는 유지합니다.",
+      "explanation_full": "두 아이디어는 서로 배타적이지 않아, 이후 방법들(예: BoT-SORT)은 ByteTrack식 2단계 매칭에 외형 임베딩과 카메라 움직임 보정을 함께 씁니다. 실무에서는 객체 외형이 서로 뚜렷이 다르고 가림이 길면 외형 임베딩이, 해무·모션 블러로 탐지 점수가 자주 떨어지면 2단계 매칭이 효과가 큽니다.",
+      "tags": [
+        "tracking",
+        "deepsort",
+        "bytetrack"
+      ],
+      "terms": [
+        "deepsort",
+        "bytetrack"
+      ],
+      "source_ref": "Zhang et al., ByteTrack: Multi-Object Tracking by Associating Every Detection Box (ECCV 2022)",
+      "status": "draft"
+    },
+    {
+      "id": "F-MOT-009",
+      "type": "short",
+      "chapter": "F.mot",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "추적 평가에서 하나의 정답(GT) 객체에 대응하는 예측 트랙 ID가 도중에 다른 ID로 바뀌는 오류를 무엇이라 하나? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "ID Switch (IDSW)",
+          "Identity Switch",
+          "ID Swap"
+        ],
+        "ko": [
+          "ID 스위치",
+          "ID 전환",
+          "아이디 스위치",
+          "ID 교체"
+        ]
+      },
+      "primary": "ID Switch",
+      "explanation_short": "ID 스위치(IDSW)는 같은 GT 객체가 예측 ID 7로 추적되다가 ID 12로 바뀌는 식의 오류입니다. MOTA 계산식의 오류 항 가운데 하나입니다.",
+      "explanation_full": "주로 객체끼리 엇갈리거나 가까이 붙을 때, 또는 가림 뒤 새 트랙이 생길 때 발생합니다. CLEAR MOT 방식에서는 바뀌는 순간 한 번만 세므로, 바뀐 뒤 잘못된 ID로 오래 추적해도 IDSW는 1회입니다. 이 때문에 'ID를 얼마나 오래 올바르게 유지했나'는 IDF1이나 HOTA의 연관 정확도(AssA)로 함께 봅니다.",
+      "tags": [
+        "tracking",
+        "metric",
+        "error-type"
+      ],
+      "terms": [
+        "id-switch"
+      ],
+      "source_ref": "Bernardin & Stiefelhagen, Evaluating Multiple Object Tracking Performance: The CLEAR MOT Metrics (2008)",
+      "status": "draft"
+    },
+    {
+      "id": "F-MOT-010",
+      "type": "mcq",
+      "chapter": "F.mot",
+      "cognitive_level": 2,
+      "difficulty": 4,
+      "stem": "GT 선박 A는 1~60프레임 내내 영상에 보인다. 추적 결과 A는 1~50프레임에서 예측 ID 7과 매칭되었고, 51~55프레임에서는 어떤 예측과도 매칭되지 않았으며, 56~60프레임에서 다시 ID 7과 매칭되었다. MOTChallenge에서 함께 보고하는 CLEAR MOT 지표(FN·FP·IDSW)와 단편화(Frag) 정의로 이 GT에 기록되는 오류로 옳은 것은?",
+      "choices": [
+        {
+          "text": "FN 5개, ID 스위치 1회",
+          "rationale": "재매칭된 ID가 직전과 같은 7이므로 ID 스위치가 아닙니다. ID 스위치는 대응 ID가 다른 번호로 바뀔 때만 셉니다."
+        },
+        {
+          "text": "FN 5개, 단편화(Frag) 1회, ID 스위치 0회",
+          "rationale": null
+        },
+        {
+          "text": "FN 5개, ID 스위치 2회(7 → 없음 → 7)",
+          "rationale": "매칭이 없는 구간은 'ID가 없는 상태(미탐)'일 뿐 다른 ID로 바뀐 것이 아닙니다. 끊겼다 이어진 것은 단편화로 셉니다."
+        },
+        {
+          "text": "FP 5개, 단편화(Frag) 1회, ID 스위치 0회",
+          "rationale": "GT가 있는데 예측이 매칭되지 않은 것은 미탐(FN)입니다. FP는 GT가 없는 곳에 나온 예측입니다."
+        },
+        {
+          "text": "오류 없음 — 최종적으로 같은 ID로 이어졌으므로",
+          "rationale": "5프레임 동안 보이는 선박을 놓친 것은 FN으로 기록되고, 추적이 끊겼다 이어진 것은 단편화로 기록됩니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "보이는 GT를 5프레임 놓쳤으니 FN 5개, 추적이 끊겼다가 다시 이어졌으니 단편화 1회입니다. 다시 붙은 ID가 직전과 같은 7이므로 ID 스위치는 없습니다.",
+      "explanation_full": "단편화(fragmentation)는 GT 궤적의 추적 상태가 '추적 중 → 끊김 → 재추적'으로 바뀐 횟수로, ID가 같아도 셉니다. ID 스위치는 대응 ID가 달라진 횟수이므로 둘은 따로 셉니다. 만약 56프레임부터 ID 9로 이어졌다면 단편화 1회와 ID 스위치 1회가 함께 기록됩니다. 위성 동영상에서 구름 그림자·교량 아래 가림 구간이 있으면 단편화가 늘기 쉬우며, 트랙 유지 프레임 수(max_age)가 짧으면 그 단편화가 ID 스위치로 번집니다.",
+      "tags": [
+        "tracking",
+        "metric",
+        "fragmentation"
+      ],
+      "terms": [
+        "id-switch"
+      ],
+      "source_ref": "Li, Huang & Nevatia, Learning to Associate: HybridBoosted Multi-Target Tracker (CVPR 2009) — MT/ML/Frag 정의; Bernardin & Stiefelhagen, Evaluating Multiple Object Tracking Performance: The CLEAR MOT Metrics (2008)",
+      "status": "draft"
+    },
+    {
+      "id": "F-MOT-011",
+      "type": "mcq",
+      "chapter": "F.mot",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "MOTA(Multiple Object Tracking Accuracy)의 계산식으로 옳은 것은? (GT는 모든 프레임의 정답 객체 수 합계)",
+      "choices": [
+        {
+          "text": "매칭된 예측-GT 쌍의 평균 겹침(IoU) 또는 평균 거리",
+          "rationale": "이것은 위치 정밀도를 나타내는 MOTP(Multiple Object Tracking Precision)입니다. 미탐·오탐·ID 오류는 반영하지 않습니다."
+        },
+        {
+          "text": "2·IDTP / (2·IDTP + IDFP + IDFN)",
+          "rationale": "ID 기준 F1 점수인 IDF1의 식입니다. 궤적 단위로 ID를 대응시킨 뒤 계산합니다."
+        },
+        {
+          "text": "√(DetA × AssA)",
+          "rationale": "검출 정확도와 연관 정확도의 기하평균은 HOTA입니다."
+        },
+        {
+          "text": "1 − (FN + FP) / GT",
+          "rationale": "ID 스위치(IDSW) 항이 빠졌습니다. 이 식은 추적이 아니라 검출 오류만 반영합니다."
+        },
+        {
+          "text": "1 − (FN + FP + IDSW) / GT",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "MOTA = 1 − (FN + FP + IDSW) / GT 로, 미탐·오탐·ID 스위치를 모두 더해 GT 수로 나눈 오류율을 1에서 뺍니다. 오류가 GT보다 많으면 음수가 될 수 있습니다.",
+      "explanation_full": "합은 모든 프레임에 걸쳐 구합니다. 세 오류를 같은 무게로 더하지만 실제로는 FN·FP 개수가 IDSW보다 훨씬 많아 MOTA는 검출 성능에 크게 좌우됩니다. 그래서 MOTA가 높아도 ID 유지가 나쁠 수 있고, ID 품질은 IDF1·HOTA(AssA)로 함께 봅니다. 상한은 1이고 하한은 없습니다.",
+      "tags": [
+        "tracking",
+        "metric",
+        "formula"
+      ],
+      "terms": [
+        "mota",
+        "id-switch"
+      ],
+      "source_ref": "Bernardin & Stiefelhagen, Evaluating Multiple Object Tracking Performance: The CLEAR MOT Metrics (2008)",
+      "status": "draft"
+    },
+    {
+      "id": "F-MOT-012",
+      "type": "mcq",
+      "chapter": "F.mot",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "드론 영상 300프레임에서 전체 GT 차량 박스 수가 2,000개이고, 추적 결과 FN 260개, FP 140개, ID 스위치 40회가 나왔다. MOTA는?",
+      "choices": [
+        {
+          "text": "0.80",
+          "rationale": "1 − (260 + 140) / 2000 = 0.80은 ID 스위치 40회를 빠뜨린 값입니다."
+        },
+        {
+          "text": "0.85",
+          "rationale": "1 − (260 + 40) / 2000 = 0.85는 FP 140개를 빠뜨린 값입니다."
+        },
+        {
+          "text": "0.78",
+          "rationale": null
+        },
+        {
+          "text": "0.98",
+          "rationale": "1 − 40 / 2000 = 0.98은 ID 스위치만 오류로 센 값입니다. MOTA는 미탐·오탐도 함께 셉니다."
+        },
+        {
+          "text": "0.22",
+          "rationale": "(260 + 140 + 40) / 2000 = 0.22는 오류율 자체입니다. MOTA는 1에서 이 값을 뺍니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "MOTA = 1 − (FN + FP + IDSW) / GT = 1 − (260 + 140 + 40) / 2000 = 1 − 440/2000 = 1 − 0.22 = 0.78 입니다.",
+      "explanation_full": "오류 440개 중 FN·FP가 400개(91%)이고 IDSW는 40개(9%)뿐입니다. 이처럼 MOTA 변화의 대부분은 검출 오류에서 오므로, ID 스위치를 절반으로 줄여도 MOTA는 0.78 → 0.79로 0.01밖에 오르지 않습니다. 추적기(연관) 개선 효과를 보려면 IDF1·AssA를 함께 봐야 하는 이유입니다.",
+      "tags": [
+        "tracking",
+        "metric",
+        "calculation"
+      ],
+      "terms": [
+        "mota",
+        "id-switch"
+      ],
+      "source_ref": "Bernardin & Stiefelhagen, Evaluating Multiple Object Tracking Performance: The CLEAR MOT Metrics (2008)",
+      "status": "draft"
+    },
+    {
+      "id": "F-MOT-013",
+      "type": "mcq",
+      "chapter": "F.mot",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "IDF1 지표에 대한 설명으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "시퀀스 전체에서 GT 궤적과 예측 궤적을 1:1로 대응시킨 뒤 IDTP·IDFP·IDFN으로 계산한 F1 점수",
+          "rationale": null
+        },
+        {
+          "text": "프레임마다 검출 정밀도와 재현율로 F1 점수를 구한 뒤, ID와 관계없이 시퀀스의 모든 프레임에 걸쳐 평균한 값",
+          "rationale": "프레임 단위 검출 F1에는 ID 정보가 전혀 들어가지 않습니다. IDF1은 궤적 단위로 ID를 대응시킨다는 점이 핵심입니다."
+        },
+        {
+          "text": "ID 스위치 횟수를 GT 궤적 수로 나눈 비율",
+          "rationale": "그것은 ID 스위치 빈도일 뿐입니다. IDF1은 스위치 '횟수'가 아니라 올바른 ID로 추적한 '분량'을 F1로 나타냅니다."
+        },
+        {
+          "text": "GT 궤적 중 수명의 80% 이상을 추적한 궤적의 비율",
+          "rationale": "이것은 MT(Mostly Tracked) 비율입니다. MT는 ID가 바뀌었는지와 관계없이 추적된 비율을 봅니다."
+        },
+        {
+          "text": "검출 정확도(DetA)와 연관 정확도(AssA)의 기하평균",
+          "rationale": "이것은 HOTA의 정의입니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "IDF1 = 2·IDTP / (2·IDTP + IDFP + IDFN) 입니다. GT 궤적과 예측 궤적을 시퀀스 전체에서 1:1로 짝지은 뒤, 짝지어진 ID로 맞힌 검출만 IDTP로 인정합니다.",
+      "explanation_full": "예를 들어 선박 A를 앞 절반은 ID 7, 뒤 절반은 ID 9로 추적했다면, A는 둘 중 하나(예: ID 7)와만 대응되어 나머지 절반은 IDFN으로, 대응되지 못한 ID 9 쪽 예측은 IDFP로 처리됩니다. 그래서 IDF1은 '같은 객체를 같은 ID로 얼마나 오래 유지했나'를 잘 반영하고, 항적·체류시간 분석처럼 ID 연속성이 중요한 과제에서 MOTA보다 중요하게 봅니다.",
+      "tags": [
+        "tracking",
+        "metric"
+      ],
+      "terms": [
+        "idf1"
+      ],
+      "source_ref": "Ristani et al., Performance Measures and a Data Set for Multi-Target, Multi-Camera Tracking (ECCV 2016 Workshops)",
+      "status": "draft"
+    },
+    {
+      "id": "F-MOT-014",
+      "type": "short",
+      "chapter": "F.mot",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "검출 정확도(DetA)와 연관 정확도(AssA)의 기하평균을 여러 위치 임계값(α)에서 구해 평균함으로써, 검출과 ID 연관을 균형 있게 평가하는 추적 지표의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Higher Order Tracking Accuracy (HOTA)"
+        ],
+        "ko": [
+          "고차 추적 정확도",
+          "HOTA 지표"
+        ]
+      },
+      "primary": "HOTA",
+      "explanation_short": "HOTA(Higher Order Tracking Accuracy)는 α마다 √(DetA·AssA)를 구해 평균합니다. 기하평균이라 검출이나 연관 중 한쪽만 좋아서는 점수가 높아지지 않습니다.",
+      "explanation_full": "DetA는 TP / (TP + FN + FP)로 검출 품질을, AssA는 맞힌 검출들이 궤적 단위로 얼마나 일관되게 같은 ID로 이어졌는지를 나타냅니다. HOTA가 떨어지면 DetA와 AssA로 쪼개 '탐지기를 고칠지, 연관 단계를 고칠지'를 정할 수 있습니다. MOTChallenge 등 주요 벤치마크가 MOTA·IDF1과 함께 보고합니다.",
+      "tags": [
+        "tracking",
+        "metric"
+      ],
+      "terms": [
+        "hota"
+      ],
+      "source_ref": "Luiten et al., HOTA: A Higher Order Metric for Evaluating Multi-Object Tracking (IJCV 2021)",
+      "status": "draft"
+    },
+    {
+      "id": "F-MOT-015",
+      "type": "mcq",
+      "chapter": "F.mot",
+      "cognitive_level": 2,
+      "difficulty": 5,
+      "stem": "위성 동영상 선박 추적기 A와 B를 비교했다. A: MOTA 0.72, IDF1 0.48 / B: MOTA 0.69, IDF1 0.71. HOTA를 DetA와 AssA로 분해하면 두 추적기의 DetA는 비슷하고 AssA는 B가 크게 높았다. 해석으로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "MOTA가 더 높은 A가 추적 품질 전반에서 우수하므로 항적 분석에도 A를 쓴다",
+          "rationale": "MOTA는 FN·FP 개수에 좌우되고 ID 스위치는 바뀌는 순간 1회만 셉니다. ID 유지 품질은 IDF1·AssA가 더 잘 보여 주며 둘 다 B가 높습니다."
+        },
+        {
+          "text": "A는 B보다 오탐(FP)이 훨씬 많아 IDF1이 낮게 나왔다",
+          "rationale": "DetA가 비슷하므로 검출 오류(FP·FN) 차이로 설명할 수 없습니다. IDF1·AssA 차이는 연관(ID 유지) 품질 차이입니다."
+        },
+        {
+          "text": "B는 A보다 검출 재현율이 크게 높아 IDF1이 높게 나왔다",
+          "rationale": "DetA가 비슷하다는 것은 검출 성능이 비슷하다는 뜻입니다. B의 강점은 검출이 아니라 연관입니다."
+        },
+        {
+          "text": "검출 성능은 비슷하고 B가 같은 선박에 같은 ID를 더 오래 유지하므로, 항적 분석에는 B가 적합하다",
+          "rationale": null
+        },
+        {
+          "text": "IDF1과 MOTA의 순위가 서로 반대로 나왔으므로, 두 지표 중 하나의 평가 스크립트에 계산 오류가 있다",
+          "rationale": "두 지표는 보는 측면이 달라 순위가 뒤집히는 일이 흔합니다. 여기서는 IDF1과 AssA가 같은 방향(B 우세)을 가리켜 일관된 결과입니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "DetA가 비슷하니 검출 품질은 비슷하고, IDF1과 AssA가 모두 B 쪽으로 크게 높으니 B가 ID를 더 일관되게 유지합니다. MOTA의 작은 차이(0.03)는 주로 검출 오류 개수 차이를 반영합니다.",
+      "explanation_full": "지표 선택은 과제 목적에 맞춰야 합니다. 프레임별 선박 수 집계처럼 검출 위주 과제라면 MOTA·DetA가, 선박별 항적·체류시간처럼 '누가 어디로 갔나'가 중요한 과제라면 IDF1·AssA가 핵심입니다. 보고서에는 MOTA 하나만 쓰지 말고 MOTA·IDF1·HOTA(DetA/AssA)를 함께 제시하는 것이 좋습니다.",
+      "tags": [
+        "tracking",
+        "metric",
+        "interpretation"
+      ],
+      "terms": [
+        "idf1",
+        "hota",
+        "mota"
+      ],
+      "source_ref": "Luiten et al., HOTA: A Higher Order Metric for Evaluating Multi-Object Tracking (IJCV 2021)",
+      "status": "draft"
+    },
+    {
+      "id": "F-MOT-016",
+      "type": "scenario",
+      "chapter": "F.mot",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"드론 영상 차량 추적 MOTA가 0.81로 잘 나왔는데, 현장에선 같은 차에 번호가 자꾸 바뀐다고 해. 다음 보고서엔 ID 유지 성능이 드러나는 지표를 같이 넣어.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "MOTP를 추가로 계산해 박스 위치 정확도를 보고한다",
+          "rationale": "MOTP는 매칭된 박스의 위치 정밀도만 봅니다. ID가 바뀌는지와는 무관합니다."
+        },
+        {
+          "text": "IDF1을 추가로 계산해 ID 스위치 횟수와 함께 보고한다",
+          "rationale": null
+        },
+        {
+          "text": "탐지기의 mAP@0.5를 추가로 보고한다",
+          "rationale": "mAP는 프레임 단위 검출 성능 지표라 ID 정보가 없습니다."
+        },
+        {
+          "text": "MOTA의 IoU 매칭 기준을 0.5에서 0.3으로 낮춰 다시 계산해 보고한다",
+          "rationale": "매칭 기준을 느슨하게 하면 FN·FP 수가 바뀌어 MOTA만 달라질 뿐, ID 유지 성능을 따로 보여 주는 지표가 생기지 않습니다."
+        },
+        {
+          "text": "초당 처리 프레임 수(FPS)를 함께 보고한다",
+          "rationale": "FPS는 처리 속도 지표입니다. ID 유지 품질과 관계없습니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "MOTA는 검출 오류가 대부분을 차지해 ID가 자주 바뀌어도 높게 나올 수 있습니다. ID 유지 성능은 IDF1(궤적 단위 ID 일치 F1)로 드러나므로 IDSW 횟수와 함께 보고하는 것이 지시에 맞습니다.",
+      "explanation_full": "HOTA를 DetA·AssA로 나눠 함께 싣는 것도 좋은 보완입니다. 현장 불만('번호가 바뀐다')은 IDSW와 IDF1로 정량화하고, 어떤 구간(교차로, 가림)에서 몰리는지 프레임 구간별로 보여 주면 개선 방향(외형 특징 추가, 트랙 유지 길이 조정 등)을 정하기 쉽습니다.",
+      "tags": [
+        "tracking",
+        "metric",
+        "reporting"
+      ],
+      "terms": [
+        "idf1",
+        "id-switch",
+        "mota"
+      ],
+      "source_ref": "Ristani et al., Performance Measures and a Data Set for Multi-Target, Multi-Camera Tracking (ECCV 2016 Workshops)",
+      "status": "draft"
+    },
+    {
+      "id": "F-MOT-017",
+      "type": "scenario",
+      "chapter": "F.mot",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"위성 동영상에서 선박이 교량 밑을 지나며 8프레임쯤 가려졌다 나오면 새 ID가 붙어. 가림 동안 트랙이 살아 있게 설정 좀 봐 줘. 지금 max_age가 3이야.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "탐지 신뢰도 임계값을 올려 교량 주변 오탐을 줄인다",
+          "rationale": "오탐을 줄여도 가려진 동안 트랙이 3프레임 만에 삭제되는 문제는 그대로입니다. 오히려 재등장 직후 약한 검출까지 걸러질 수 있습니다."
+        },
+        {
+          "text": "min_hits(새 트랙을 확정하는 데 필요한 연속 매칭 횟수)를 3에서 6으로 늘려 새 ID 생성을 억제한다",
+          "rationale": "min_hits는 새 트랙 확정을 늦출 뿐, 3프레임 만에 삭제된 기존 트랙을 되살려 주지 않습니다. 재등장한 선박은 조금 늦게라도 결국 새 ID를 받습니다."
+        },
+        {
+          "text": "트랙-검출 매칭의 IoU 임계값을 0.3에서 0.7로 올린다",
+          "rationale": "매칭 조건이 까다로워져, 가림 뒤 예측 위치가 조금만 어긋나도 매칭이 실패합니다. 새 ID가 더 자주 생깁니다."
+        },
+        {
+          "text": "탐지 단계의 NMS IoU 임계값을 낮춘다",
+          "rationale": "NMS는 한 프레임 안의 중복 박스 제거 설정입니다. 트랙을 몇 프레임 유지할지와 관계없습니다."
+        },
+        {
+          "text": "max_age를 가림 길이보다 긴 값(예: 10 이상)으로 늘려, 가림 동안 칼만 예측으로 트랙을 유지한다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "max_age는 매칭 없이 트랙을 유지하는 최대 프레임 수입니다. 3이면 8프레임 가림 동안 트랙이 삭제되어 재등장 시 새 ID가 붙습니다. 가림 길이보다 길게 늘리면 그동안 칼만 필터가 위치를 예측하며 트랙을 유지하고, 재등장한 검출과 다시 매칭됩니다.",
+      "explanation_full": "max_age(구현에 따라 track_buffer 등으로 부름)를 너무 크게 하면 오래 사라진 트랙이 엉뚱한 새 검출과 붙는 오매칭과 계산량이 늘어납니다. 가림 동안 예측 위치가 빗나가는 게 걱정되면 선박이 거의 등속인지 확인하고, 필요하면 외형 특징을 함께 씁니다. 위성 동영상은 프레임률이 낮아 같은 '초' 단위 가림이라도 프레임 수로 환산해 설정해야 합니다.",
+      "tags": [
+        "tracking",
+        "occlusion",
+        "parameter"
+      ],
+      "terms": [
+        "kalman-filter",
+        "id-switch"
+      ],
+      "source_ref": "Bewley et al., Simple Online and Realtime Tracking (SORT, ICIP 2016)",
+      "status": "draft"
+    },
+    {
+      "id": "F-MOT-018",
+      "type": "scenario",
+      "chapter": "F.mot",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"해무 낀 날 드론 영상에서 선박 score가 0.3~0.5로 떨어져서, conf 0.5로 거르면 트랙이 끊겨. 저신뢰 박스를 그냥 버리지 말고 연관 단계에서 한 번 더 써 봐.\"\n\n이 지시의 의도로 옳은 것은?",
+      "choices": [
+        {
+          "text": "conf 임계값을 0.1로 낮춰 모든 박스로 한 번에 매칭하고, 매칭되지 않은 박스는 모두 새 트랙으로 만든다",
+          "rationale": "저신뢰 오탐(파도·부유물)까지 새 트랙이 되어 가짜 트랙과 ID가 폭증합니다. 저신뢰 박스는 기존 트랙을 잇는 데만 써야 합니다."
+        },
+        {
+          "text": "저신뢰 박스를 모아 탐지기를 재학습할 추가 학습 데이터(의사 라벨)로 쓴다",
+          "rationale": "재학습용 데이터 수집은 지시의 '연관 단계에서 쓰라'는 내용과 다릅니다. 검수 없는 저신뢰 박스를 의사 라벨로 쓰면 잡음이 섞이기도 합니다."
+        },
+        {
+          "text": "0.5 이상 박스로 먼저 트랙과 매칭하고, 남은 트랙만 0.1~0.5 박스와 2차 매칭하되 저신뢰 박스로는 새 트랙을 만들지 않는다",
+          "rationale": null
+        },
+        {
+          "text": "저신뢰 박스끼리만 따로 추적해 별도 ID 체계로 관리한다",
+          "rationale": "같은 선박이 점수에 따라 두 ID 체계로 쪼개져 궤적이 끊기는 문제가 더 심해집니다."
+        },
+        {
+          "text": "저신뢰 박스에 NMS를 한 번 더 적용해 개수를 줄인 뒤 결과에서 제외한다",
+          "rationale": "결국 저신뢰 박스를 버리는 것이라 지시와 반대입니다. 해무 속 선박 트랙은 여전히 끊깁니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "지시는 ByteTrack 방식의 2단계 연관입니다. 고신뢰 박스로 1차 매칭한 뒤, 짝을 못 찾은 기존 트랙을 저신뢰 박스와 2차 매칭해 궤적을 잇고, 저신뢰 박스 중 남는 것은 배경으로 버립니다.",
+      "explanation_full": "핵심은 '저신뢰 박스는 기존 트랙을 이어 주는 데만 쓴다'는 비대칭입니다. 기존 트랙 근처에 나온 저신뢰 박스는 실제 객체일 가능성이 높고, 트랙과 무관한 저신뢰 박스는 오탐일 가능성이 높다는 판단입니다. 2차 매칭에서는 외형이 흐려 믿기 어려우므로 보통 IoU만 씁니다. 1차·2차 경계값(0.5)과 하한(0.1)은 예시이며 데이터에 맞춰 조정합니다.",
+      "tags": [
+        "tracking",
+        "bytetrack",
+        "low-score"
+      ],
+      "terms": [
+        "bytetrack"
+      ],
+      "source_ref": "Zhang et al., ByteTrack: Multi-Object Tracking by Associating Every Detection Box (ECCV 2022)",
+      "status": "draft"
+    },
+    {
+      "id": "F-MOT-019",
+      "type": "scenario",
+      "chapter": "F.mot",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"위성 동영상(1 fps)의 소형 선박은 박스가 5~6픽셀이라 프레임 사이 IoU가 0으로 나오는 경우가 많아. 연관 비용을 바꿔 봐.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "IoU 대신 칼만 예측 위치와 검출 사이의 중심점 거리(또는 마할라노비스 거리)를 비용으로 쓰고, 최대 거리 게이트를 둔다",
+          "rationale": null
+        },
+        {
+          "text": "트랙-검출 매칭의 IoU 임계값을 0.3에서 0.5로 올린다",
+          "rationale": "겹침이 0인 쌍이 많아 문제인데 기준을 더 높이면 매칭이 더 실패합니다."
+        },
+        {
+          "text": "헝가리안 알고리즘 대신 IoU가 큰 쌍부터 확정하는 탐욕 매칭으로 바꾼다",
+          "rationale": "할당 알고리즘을 바꿔도 비용(IoU)이 모두 0이면 구분할 정보가 없습니다. 문제는 할당이 아니라 비용 정의입니다."
+        },
+        {
+          "text": "프레임을 한 장씩 건너뛰어 0.5 fps로 추적한다",
+          "rationale": "프레임 간 이동 거리가 두 배가 되어 IoU가 0인 경우가 더 늘어납니다."
+        },
+        {
+          "text": "탐지 단계의 NMS IoU 임계값을 낮춘다",
+          "rationale": "NMS는 한 프레임 안의 중복 제거 설정이라 프레임 사이 연관 비용 문제를 해결하지 못합니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "작은 객체가 박스 크기보다 멀리 움직이면 예측 박스와 검출 박스가 겹치지 않아 IoU 비용으로는 매칭이 불가능합니다. 겹침이 없어도 가까움을 표현할 수 있는 중심점 거리 기반 비용과 거리 게이트가 적절합니다.",
+      "explanation_full": "칼만 예측으로 이동을 보정한 뒤 거리를 재면 등속 이동하는 선박을 안정적으로 이을 수 있습니다. 마할라노비스 거리는 예측 불확실성까지 반영합니다. 게이트(예: 예측 위치에서 N픽셀 이내만 후보)를 두어야 멀리 있는 엉뚱한 검출과 억지로 짝지어지지 않습니다. 몇 픽셀짜리 선박은 외형 정보가 빈약하므로 외형 임베딩보다 움직임 기반 비용이 우선입니다.",
+      "tags": [
+        "tracking",
+        "association",
+        "small-object"
+      ],
+      "terms": [
+        "hungarian-algorithm",
+        "kalman-filter"
+      ],
+      "source_ref": "Bewley et al., Simple Online and Realtime Tracking (SORT, ICIP 2016)",
+      "status": "draft"
+    },
+    {
+      "id": "F-MOT-020",
+      "type": "scenario",
+      "chapter": "F.mot",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"항만 드론 영상에서 예인선이 대형선 뒤로 3초쯤 가려졌다 나오면 옆 예인선의 ID를 가져가 버려. 예인선마다 도색이 달라 겉모습은 구분되니까 그걸 매칭에 써 봐.\"\n\n이 지시에 맞는 방법은?",
+      "choices": [
+        {
+          "text": "칼만 필터의 프로세스 노이즈를 0으로 두어 예측 궤적을 직선으로 고정한다",
+          "rationale": "외형 정보를 쓰지 않는 조치이고, 예측을 과신하게 되어 실제 움직임이 조금만 달라도 매칭이 틀어집니다."
+        },
+        {
+          "text": "Re-ID 모델로 박스마다 외형 임베딩을 뽑아 트랙별로 저장하고, 코사인 거리를 칼만 예측 기반 게이트와 함께 매칭 비용으로 쓴다",
+          "rationale": null
+        },
+        {
+          "text": "선박 클래스를 예인선·대형선으로 세분화해 탐지기만 다시 학습한다",
+          "rationale": "뒤바뀌는 것은 같은 클래스(예인선)끼리의 ID입니다. 클래스를 나눠도 예인선끼리는 구분되지 않습니다."
+        },
+        {
+          "text": "외형은 쓰지 않고 max_age만 크게 늘려 가려진 트랙을 오래 유지한다",
+          "rationale": "트랙은 살아남지만, 재등장 시 움직임(위치)만으로 매칭하므로 가까운 다른 예인선과 바뀌는 문제는 남습니다. 지시는 외형 정보를 쓰라는 것입니다."
+        },
+        {
+          "text": "IoU 매칭 임계값을 낮춰 가림 직후 가까운 트랙과 더 쉽게 매칭되게 한다",
+          "rationale": "가까운 다른 예인선 트랙과도 쉽게 매칭되어 ID 뒤바뀜이 오히려 늘어납니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "지시는 DeepSORT 방식의 외형 기반 연관입니다. 트랙마다 외형 임베딩을 저장해 두면, 가림 뒤 위치 예측이 빗나가도 겉모습이 가장 비슷한 트랙과 다시 이어 ID 뒤바뀜을 줄일 수 있습니다.",
+      "explanation_full": "DeepSORT는 트랙마다 최근 임베딩 여러 개를 보관하고 그중 최소 코사인 거리를 쓰며, 마할라노비스 거리로 물리적으로 불가능한 매칭을 걸러냅니다. 보행자로 학습된 공개 Re-ID 가중치는 선박 외형 구분에 약하므로, 같은 선박의 여러 시점 크롭을 모아 임베딩 모델을 미세조정하는 것이 좋습니다. 트랙 유지 길이(max_age)도 가림 시간(3초 × fps)보다 길어야 외형 매칭 기회가 생깁니다.",
+      "tags": [
+        "tracking",
+        "deepsort",
+        "re-id",
+        "occlusion"
+      ],
+      "terms": [
+        "deepsort"
+      ],
+      "source_ref": "Wojke et al., Simple Online and Realtime Tracking with a Deep Association Metric (DeepSORT, ICIP 2017)",
+      "status": "draft"
+    },
+    {
+      "id": "F-MOT-021",
+      "type": "scenario",
+      "chapter": "F.mot",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"교차로 드론 영상 추적 결과로 차량 대수를 셌더니 수기 계수보다 1.5배 많아. 탐지기 탓하기 전에 추적 쪽부터 봐.\"\n\n가장 먼저 확인할 것은?",
+      "choices": [
+        {
+          "text": "매칭된 박스의 평균 IoU(MOTP)가 0.5 이상인지 본다",
+          "rationale": "MOTP는 위치 정밀도입니다. 박스가 조금 어긋나는 것만으로는 ID 개수가 1.5배로 늘지 않습니다."
+        },
+        {
+          "text": "영상의 GSD가 차량 크기에 비해 충분히 작은지 본다",
+          "rationale": "GSD는 탐지 가능성과 관련된 영상 조건입니다. 지시는 탐지보다 추적 쪽을 먼저 보라고 했습니다."
+        },
+        {
+          "text": "칼만 필터 상태 벡터에 가속도 항이 없어서 교차로에서 회전하는 차량들의 위치 예측이 빗나가는지 본다",
+          "rationale": "가속도 항 부족은 궤적이 끊기는 원인 후보 중 하나일 뿐이고, 대부분의 추적기는 등속 모델로도 잘 동작합니다. 먼저 궤적이 실제로 여러 ID로 쪼개졌는지 확인한 뒤 원인을 좁혀야 합니다."
+        },
+        {
+          "text": "한 차량의 궤적이 가림·미탐 뒤 새 ID로 쪼개졌는지, ID 스위치·단편화 수와 트랙 길이 분포를 본다",
+          "rationale": null
+        },
+        {
+          "text": "헝가리안 알고리즘이 매 프레임 전역 최적 할당을 내는지 탐욕 매칭 결과와 비교해 검증한다",
+          "rationale": "헝가리안 알고리즘은 주어진 비용 행렬에 대해 항상 최적 할당을 냅니다. 문제는 알고리즘이 아니라 비용·트랙 관리 설정 쪽입니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "ID 개수로 대수를 세면, 한 차량의 궤적이 여러 ID로 쪼개질 때마다 대수가 늘어납니다. 그래서 먼저 ID 스위치·단편화 수와 짧은 트랙이 많은지(트랙 길이 분포)를 확인해야 합니다.",
+      "explanation_full": "짧은 트랙이 많다면 max_age가 짧아 가림 뒤 새 ID가 생기거나, 저신뢰 검출이 버려져 궤적이 끊기는 경우가 흔합니다. 계수 목적이라면 카운팅 라인(가상 선)을 통과한 트랙만 세거나, 일정 길이 미만 트랙을 제외하는 규칙도 함께 검토합니다. 검출 오탐이 원인인지 추적이 원인인지는 FP 수와 IDSW·단편화 수를 나눠 보면 구분됩니다.",
+      "tags": [
+        "tracking",
+        "counting",
+        "debugging"
+      ],
+      "terms": [
+        "id-switch",
+        "multi-object-tracking"
+      ],
+      "source_ref": "MOTChallenge 벤치마크 문서 (Milan et al., MOT16, 2016)",
+      "status": "draft"
+    }
+  ]
+}

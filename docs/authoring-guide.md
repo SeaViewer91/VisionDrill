@@ -124,8 +124,8 @@
 
 ## 11. 병합 (문제은행 DB 만들기)
 - `npm run lint:drafts` → 모든 초안 오류 0 확인
-- `npm run merge:drafts` → `bank/visiondrill-bank.db`(원본 DB) + `bank/merge-report.md` + `bank/preview-draft.vdpack`(사람 검수 전 미리보기 팩)
+- `npm run merge:drafts` → `bank/visiondrill-bank.db`(원본 DB) + `bank/merge-report.md` + 학습 앱 기본 팩(`apps/drill/public/packs/default.vdpack`, 버전 `<앱 버전>-draft`, 사본 `bank/preview-draft.vdpack`)
   - 여러 장이 같은 용어 ID를 정의하면 커리큘럼 순서상 먼저 나온 장의 정의를 쓴다 (샘플 용어가 최우선).
   - 다른 이름으로 참조한 용어는 `tools/merge-drafts.ts`의 `ALIAS`, 아무 데도 정의되지 않은 용어는 `STUB_TERMS`에 추가한다.
   - 새 문항과 새 용어는 모두 초안(draft)으로 들어간다. Studio에서 검수 완료로 바꾼 것만 학습 팩으로 내보내진다.
-- 이미 Studio로 검수를 시작한 DB가 있다면 병합을 다시 돌려 덮어쓰지 말고, Studio의 "가져오기"로 필요한 장 파일만 들여온다.
+- 이미 Studio로 검수·수정을 시작한 DB는 병합 도구가 덮어쓰지 않고 멈춘다(`--force`로 강제). 새 초안은 Studio의 "가져오기"로 필요한 장 파일만 들여온다.

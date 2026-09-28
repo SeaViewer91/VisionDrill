@@ -1,0 +1,945 @@
+{
+  "format": "visiondrill-bank-exchange",
+  "format_version": 1,
+  "terms": [
+    {
+      "id": "multimodal-fusion",
+      "term_en": "Multimodal Fusion",
+      "term_ko": "다종 센서 융합",
+      "abbreviation": null,
+      "definition": "EO(가시광)·IR(열적외선)·SAR·LiDAR 등 서로 다른 센서 입력을 하나의 모델에서 결합하는 방식. 결합 위치에 따라 입력 채널을 이어 붙이는 Early(입력 레벨), 센서별 백본 피처를 합치는 Middle(특성 레벨), 센서별 모델의 박스·마스크를 병합하는 Late(결정 레벨) 융합으로 나눈다",
+      "usage_example": "야간 선박 탐지는 EO만으로 안 되니까 열화상이랑 Middle Fusion으로 붙여 보자.",
+      "origin": "standard",
+      "track": "H"
+    },
+    {
+      "id": "modality-collapse",
+      "term_en": "Modality Collapse",
+      "term_ko": "모달리티 붕괴",
+      "abbreviation": null,
+      "definition": "다종 센서 모델을 학습할 때 학습하기 쉬운 주 센서(보통 EO)의 신호에만 의존하도록 수렴해 부 센서(IR 등)의 기여가 사실상 사라지는 현상. 전체 mAP는 높아 보여도 주 센서가 막히면 성능이 급락한다",
+      "usage_example": "EO 막으니까 mAP가 바닥이야. IR 브랜치가 거의 안 쓰이는 모달리티 붕괴 같아.",
+      "origin": "standard",
+      "track": "H"
+    },
+    {
+      "id": "negative-transfer",
+      "term_en": "Negative Transfer",
+      "term_ko": "음의 전이",
+      "abbreviation": null,
+      "definition": "센서(또는 소스)를 추가했는데 오히려 성능이 떨어지는 현상. 노트는 융합 mAP가 단일 센서 최고 mAP보다 낮은 경우(mAP_Fusion < max(mAP_EO, mAP_IR))와, 특정 센서의 섀플리 값이 음수(φ_k < 0)인 경우로 진단한다",
+      "usage_example": "SAR 붙인 버전이 광학 단독보다 mAP가 낮네. 스페클이 섞여 들어가는 음의 전이인지 봐.",
+      "origin": "standard",
+      "track": "H"
+    },
+    {
+      "id": "shapley-value",
+      "term_en": "Shapley Value",
+      "term_ko": "섀플리 값",
+      "abbreviation": "φ",
+      "definition": "연합 게임 이론에서 참여자 i가 가능한 모든 부분 연합 S에 합류할 때의 한계 기여 v(S∪{i}) − v(S)를 |S|!(|N|−|S|−1)!/|N|! 가중치로 평균한 공정 기여도. 노트는 v(S)를 센서 부분집합 S만 넣었을 때의 검증 mAP로 두고 센서별 기여를 분해한다",
+      "usage_example": "광학·SAR 각각 끄고 켠 조합 mAP 다 뽑아서 센서별 섀플리 값으로 기여도 보고서 만들어.",
+      "origin": "standard",
+      "track": "H"
+    },
+    {
+      "id": "modality-dropout",
+      "term_en": "Modality Dropout",
+      "term_ko": "모달리티 드롭아웃",
+      "abbreviation": null,
+      "definition": "학습 중 미니배치마다 센서별 입력 마스크(0 또는 1)를 확률적으로 뽑아 일부 센서 입력을 통째로 0으로 만드는 정규화 기법. 한 센서만 남은 상황을 강제로 학습시켜 주 센서 편향과 센서 결측 취약성을 줄인다",
+      "usage_example": "IR 기여가 너무 낮으니 modality dropout 넣고 다시 학습 돌려.",
+      "origin": "standard",
+      "track": "H"
+    },
+    {
+      "id": "critical-alignment-tolerance",
+      "term_en": "Critical Alignment Tolerance",
+      "term_ko": "임계 정렬 허용치",
+      "abbreviation": "δ50",
+      "definition": "완전히 정렬된 검증 데이터에 병진·회전 변위를 단계별로 주입했을 때 mAP가 정렬 상태 mAP의 50%로 떨어지는 오차 크기. Diagnostics 노트가 정의한 지표로, 2 px 이하면 극도로 취약, 16 px 이상이면 고강건성으로 본다(잠정치)",
+      "usage_example": "EO-열화상 정렬 오차를 0, 1, 2, 4, 8 px씩 넣어 보고 δ50 몇 px인지 보고해.",
+      "origin": "project",
+      "track": "H"
+    },
+    {
+      "id": "modality-bias-ratio",
+      "term_en": "Modality Bias Ratio",
+      "term_ko": "모달리티 편향 지수",
+      "abbreviation": "MBR",
+      "definition": "센서 m을 막았을 때의 상대 성능 낙폭 DR_m = (mAP(전체) − mAP(m 제외)) / mAP(전체)를 센서별로 구한 뒤 DR_EO / DR_IR로 계산하는 편향 지표. Diagnostics 노트가 정의했으며 1에 가까우면 균등 기여, 5 초과면 붕괴 경고, 15 초과면 치명적 붕괴로 본다(잠정치)",
+      "usage_example": "MBR이 12 나왔어. 붕괴 경고 구간이니까 modality dropout으로 재학습 계획 세워.",
+      "origin": "project",
+      "track": "H"
+    },
+    {
+      "id": "cosine-feature-misalignment-index",
+      "term_en": "Cosine Feature Misalignment Index",
+      "term_ko": "코사인 특성 불일치 지수",
+      "abbreviation": "D_align",
+      "definition": "같은 공간 위치 (h, w)에서 EO 백본 피처와 IR 백본 피처의 코사인 유사도를 전체 위치에 대해 평균한 뒤 1에서 뺀 값. Diagnostics 노트가 정의한 지표로 0에 가까우면 잘 정렬, 0.45 초과면 심각한 공간 어긋남으로 본다(잠정치)",
+      "usage_example": "D_align이 0.5 넘게 나와. 피처 단계에서 두 센서가 서로 다른 곳을 보고 있다는 얘기야.",
+      "origin": "project",
+      "track": "H"
+    }
+  ],
+  "questions": [
+    {
+      "id": "H-MM-001",
+      "type": "short",
+      "chapter": "H.mm",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "EO+IR 융합 모델을 학습할 때 학습하기 쉬운 EO 쪽 그래디언트에만 빠르게 수렴해 IR 브랜치 가중치가 거의 갱신되지 않고, 결국 EO가 막히면 IR 단독으로는 표적을 찾지 못하는 현상의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Modality Collapse"
+        ],
+        "ko": [
+          "모달리티 붕괴",
+          "양상 붕괴"
+        ]
+      },
+      "primary": "Modality Collapse",
+      "explanation_short": "주도적 모달리티에만 의존하도록 수렴해 부 센서의 기여가 사라지는 현상을 모달리티 붕괴(Modality Collapse)라 합니다. 전체 검증 mAP는 높아 보여도 주 센서가 차단되는 야간·역광에서 성능이 급락합니다.",
+      "explanation_full": "노트는 신경망이 최적화 과정에서 '더 학습하기 쉬운' 모달리티로 쏠리는 경향을 원인으로 듭니다. 붕괴 여부는 센서를 하나씩 막아 성능 낙폭(DR_m)과 그 비율(MBR)을 보거나 섀플리 값으로 센서별 기여를 분해해 확인합니다. 원격탐사에서는 광학+열적외선 선박 감시, 광학+SAR 융합처럼 한 센서가 날씨·조도에 따라 빠지는 상황에서 특히 문제가 됩니다.",
+      "tags": [
+        "multimodal",
+        "modality-collapse"
+      ],
+      "terms": [
+        "modality-collapse"
+      ],
+      "source_ref": "Diagnostics/research/note/07_multimodal_alignment_diagnostics/03_modality_collapse_and_shapley.md#1",
+      "status": "draft"
+    },
+    {
+      "id": "H-MM-002",
+      "type": "mcq",
+      "chapter": "H.mm",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "EO+IR 융합 탐지 모델에서 나타날 수 있는 다음 현상 중 모달리티 붕괴(Modality Collapse)를 가장 직접적으로 보여주는 관측은?",
+      "choices": [
+        {
+          "text": "EO와 IR 입력을 1~2 px만 어긋나게 넣어도, 두 센서 채널을 입력 단계에서 이어 붙인 모델의 합성곱 에지 특징이 전면적으로 무너진다",
+          "rationale": "이것은 센서 간 공간 정렬 오차에 대한 민감도, 특히 Early Fusion의 약점입니다. 한 센서에 쏠리는 학습 편향과는 다른 결함입니다."
+        },
+        {
+          "text": "전체 검증 mAP는 높지만 EO를 0으로 막으면 IR만으로는 거의 탐지하지 못하고, IR 백본 가중치는 학습 내내 거의 변하지 않았다",
+          "rationale": null
+        },
+        {
+          "text": "융합 모델의 mAP가 EO 단독 모델의 mAP보다 낮게 나온다",
+          "rationale": "융합 성능이 단일 센서 최고 성능보다 낮은 것은 노트가 음의 전이(Negative Transfer)로 정의한 현상입니다."
+        },
+        {
+          "text": "건물 그림자가 EO에서는 어둡고 IR에서는 밝아, 두 신호를 평균하면 표적 활성이 상쇄된다",
+          "rationale": "이것은 교차 모달 물리 신호 충돌(Cross-Modal Signal Contradiction)로, 단순 덧셈·평균 융합이 상반된 신호를 상쇄하는 문제입니다."
+        },
+        {
+          "text": "IR의 GSD가 EO보다 5배 커서 업샘플링한 IR의 흐릿한 에지가 경계 오차를 키운다",
+          "rationale": "이것은 교차 스펙트럼 해상도 불균형(GSD Disparity)입니다. 센서 간 해상도 차이에서 오는 문제이지 학습 편향이 아닙니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "모달리티 붕괴의 핵심 징후는 '평균 성능은 좋은데 주 센서를 막으면 부 센서 혼자서는 못 한다'는 점입니다. 부 센서 브랜치가 거의 학습되지 않았다는 사실이 이를 뒷받침합니다.",
+      "explanation_full": "노트 01장은 다종 센서 융합의 결함 모드로 센서 결측 취약성, GSD 불균형, 물리 신호 충돌, 음의 전이를 들고, 03장은 주 센서 편향으로 인한 모달리티 붕괴를 따로 다룹니다. 보기들은 모두 노트에 나오는 실제 결함이므로, 증상이 어느 결함에 대응하는지 구분하는 것이 핵심입니다. 붕괴는 DR_m·MBR로 정량화하고 Modality Dropout으로 처방합니다.",
+      "tags": [
+        "multimodal",
+        "modality-collapse"
+      ],
+      "terms": [
+        "modality-collapse",
+        "multimodal-fusion"
+      ],
+      "source_ref": "Diagnostics/research/note/07_multimodal_alignment_diagnostics/03_modality_collapse_and_shapley.md#1",
+      "status": "draft"
+    },
+    {
+      "id": "H-MM-003",
+      "type": "short",
+      "chapter": "H.mm",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "연합 게임 이론에서 참여자 i가 가능한 모든 부분 연합에 합류할 때의 한계 기여를 조합 가중치로 평균한 '공정한 기여도'로, 노트가 센서별 순수 기여를 분해하는 데 쓰는 값의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Shapley Value"
+        ],
+        "ko": [
+          "섀플리 값",
+          "샤플리 값",
+          "섀플리 값 φ"
+        ]
+      },
+      "primary": "Shapley Value",
+      "explanation_short": "섀플리 값(Shapley Value)은 참여자가 모든 부분 연합에 추가될 때의 한계 기여 v(S∪{i}) − v(S)를 가중 평균한 값입니다. 노트는 v(S)를 센서 부분집합 S만 넣었을 때의 검증 mAP로 정의해 센서별 기여를 구합니다.",
+      "explanation_full": "가중치는 |S|!(|N|−|S|−1)!/|N|!이며, 모든 센서의 섀플리 값을 더하면 v(N) − v(∅)가 됩니다(효율성). 노트는 v(∅) = 0(모든 센서 결측 시 탐지 불가)으로 둡니다. 원격탐사에서 광학·SAR·열적외선을 함께 쓰는 모델의 각 센서 기여를 공정하게 비교할 때 쓸 수 있습니다. 섀플리 값을 양수 부분만 정규화한 비율을 노트는 MCR(모달리티 기여율)이라 부릅니다.",
+      "tags": [
+        "multimodal",
+        "shapley"
+      ],
+      "terms": [
+        "shapley-value"
+      ],
+      "source_ref": "Diagnostics/research/note/07_multimodal_alignment_diagnostics/03_modality_collapse_and_shapley.md#3.1",
+      "status": "draft"
+    },
+    {
+      "id": "H-MM-004",
+      "type": "mcq",
+      "chapter": "H.mm",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "광학(EO)+열적외선(IR) 선박 탐지 모델의 부분 센서 조합별 검증 mAP가 v(∅) = 0, v({EO}) = 0.60, v({IR}) = 0.20, v({EO, IR}) = 0.70이다. 노트의 2센서 섀플리 전개식으로 구한 IR의 섀플리 값 φ_IR은?",
+      "choices": [
+        {
+          "text": "0.20",
+          "rationale": "v({IR}) = 0.20을 그대로 쓴 값입니다. 섀플리 값은 IR 단독 기여와 EO에 IR을 더할 때의 기여를 반씩 평균합니다."
+        },
+        {
+          "text": "0.10",
+          "rationale": "두 항 중 하나만 쓴 값입니다(½ × 0.20 = 0.10 또는 v(N) − v({EO}) = 0.10). 두 항을 모두 더해야 합니다."
+        },
+        {
+          "text": "0.05",
+          "rationale": "½ × (0.70 − 0.60) = 0.05는 두 번째 항만 계산한 값입니다. 첫 번째 항 ½ × (0.20 − 0)을 빠뜨렸습니다."
+        },
+        {
+          "text": "0.15",
+          "rationale": null
+        },
+        {
+          "text": "0.55",
+          "rationale": "이것은 EO의 섀플리 값 φ_EO = ½ × 0.60 + ½ × (0.70 − 0.20) = 0.55입니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "φ_IR = ½[v({IR}) − v(∅)] + ½[v({EO, IR}) − v({EO})] = ½ × 0.20 + ½ × 0.10 = 0.15입니다. 같은 방식으로 φ_EO = 0.55이며, 두 값의 합 0.70은 v({EO, IR})과 같습니다.",
+      "explanation_full": "계산: 첫째 항 ½ × (0.20 − 0) = 0.10, 둘째 항 ½ × (0.70 − 0.60) = 0.05, 합 0.15. φ_EO = ½ × 0.60 + ½ × 0.50 = 0.55. 합이 v(N) − v(∅) = 0.70이 되는지 확인하면 검산이 됩니다. 노트의 MCR로 바꾸면 IR 기여율은 0.15 / 0.70 ≈ 21.4%입니다. 처방 매트릭스는 MCR_IR < 10%를 붕괴 판정 기준의 하나로 쓰는데, 이 수치는 경험적 잠정치입니다.",
+      "tags": [
+        "multimodal",
+        "shapley",
+        "calculation"
+      ],
+      "terms": [
+        "shapley-value"
+      ],
+      "source_ref": "Diagnostics/research/note/07_multimodal_alignment_diagnostics/03_modality_collapse_and_shapley.md#3.2",
+      "status": "draft"
+    },
+    {
+      "id": "H-MM-005",
+      "type": "short",
+      "chapter": "H.mm",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "SAR 스페클이나 짙은 안개의 산란광이 융합 단계에서 정상 센서의 피처를 오염시켜, 센서를 더했는데도 융합 모델 mAP가 단일 센서 최고 mAP보다 낮아지는 현상의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Negative Transfer"
+        ],
+        "ko": [
+          "음의 전이",
+          "부정적 전이",
+          "네거티브 트랜스퍼"
+        ]
+      },
+      "primary": "Negative Transfer",
+      "explanation_short": "센서를 추가했는데 오히려 성능이 떨어지는 현상을 음의 전이(Negative Transfer)라 합니다. 노트 01장은 이를 mAP_Fusion < max(mAP_EO, mAP_IR)로 적습니다.",
+      "explanation_full": "노트 03장은 음의 전이를 섀플리 값으로도 진단합니다(특정 센서의 φ_k < 0). 원인으로는 해당 센서의 해상도(GSD)가 너무 낮아 블러 노이즈를 주입하는 경우, 악천후로 SNR < 0 dB인 경우, 정렬 오차가 δ50을 넘어 상쇄 간섭이 생기는 경우를 듭니다. 처방은 해당 센서를 소프트 게이팅으로 차단하거나 동적 신뢰도 게이트를 적용하는 것입니다.",
+      "tags": [
+        "multimodal",
+        "negative-transfer"
+      ],
+      "terms": [
+        "negative-transfer"
+      ],
+      "source_ref": "Diagnostics/research/note/07_multimodal_alignment_diagnostics/01_multimodal_fusion_failure_modes.md#3.4",
+      "status": "draft"
+    },
+    {
+      "id": "H-MM-006",
+      "type": "mcq",
+      "chapter": "H.mm",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "광학(EO)과 SAR를 융합한 해상 부유물 탐지 모델 실험 결과 다섯 가지 중, 노트 01장의 음의 전이 정의(mAP_Fusion < max(mAP_EO, mAP_SAR))에 해당하는 것은?",
+      "choices": [
+        {
+          "text": "EO 단독 0.61, SAR 단독 0.35, 융합 0.58",
+          "rationale": null
+        },
+        {
+          "text": "EO 단독 0.61, SAR 단독 0.35, 융합 0.66",
+          "rationale": "융합 0.66이 단일 센서 최고값 0.61보다 높으므로 융합이 이득을 본 정상 사례입니다."
+        },
+        {
+          "text": "EO 단독 0.40, SAR 단독 0.52, 융합 0.55",
+          "rationale": "융합 0.55가 단일 최고값인 SAR 0.52보다 높습니다. EO가 SAR보다 낮다고 음의 전이가 되는 것은 아닙니다."
+        },
+        {
+          "text": "EO 단독 0.61, SAR 단독 0.35, 융합 0.61",
+          "rationale": "융합이 단일 최고값과 같을 뿐 그보다 낮지 않으므로 정의(부등호 <)를 만족하지 않습니다. 융합 이득이 없다는 신호이긴 합니다."
+        },
+        {
+          "text": "EO 단독 0.30, SAR 단독 0.28, 융합 0.45",
+          "rationale": "두 단일 센서가 모두 낮지만 융합이 둘 다보다 크게 높습니다. 절대 성능이 낮은 것과 음의 전이는 다른 문제입니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "음의 전이의 기준은 '융합 mAP가 두 단일 센서 중 더 좋은 쪽보다 낮은가'입니다. 0.58 < max(0.61, 0.35) = 0.61이므로 첫 사례만 해당합니다.",
+      "explanation_full": "노트 01장은 SAR 스페클이나 안개 산란광이 정상 센서 피처를 오염시켜 융합이 단일 센서보다 못해지는 것을 음의 전이로 봅니다. 03장은 같은 현상을 섀플리 값 φ_k < 0으로 검출한다고 쓰지만, 2센서에서 φ_SAR = ½[v(SAR) + v(EO,SAR) − v(EO)]이므로 이 사례(½ × (0.35 + 0.58 − 0.61) = 0.16)처럼 01장 정의로는 음의 전이여도 섀플리 값은 양수일 수 있습니다. 두 기준을 같은 것으로 단정하지 말고 무엇으로 판정했는지 밝혀 보고합니다.",
+      "tags": [
+        "multimodal",
+        "negative-transfer"
+      ],
+      "terms": [
+        "negative-transfer"
+      ],
+      "source_ref": "Diagnostics/research/note/07_multimodal_alignment_diagnostics/01_multimodal_fusion_failure_modes.md#3.4",
+      "status": "draft"
+    },
+    {
+      "id": "H-MM-007",
+      "type": "short",
+      "chapter": "H.mm",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "다종 센서 모델을 학습할 때 미니배치마다 센서별 마스크 m ∈ {0, 1}을 확률적으로 뽑아 X̃ = m · X처럼 특정 센서 입력 전체를 0으로 지워, 한 센서만 남은 상황도 학습시키는 정규화 기법의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Modality Dropout"
+        ],
+        "ko": [
+          "모달리티 드롭아웃",
+          "센서 드롭아웃"
+        ]
+      },
+      "primary": "Modality Dropout",
+      "explanation_short": "센서 입력 단위로 통째로 지우는 드롭아웃을 모달리티 드롭아웃(Modality Dropout)이라 합니다. 주 센서 편향(모달리티 붕괴)을 막고 센서 결측 시에도 단독 추론 능력을 유지하게 합니다.",
+      "explanation_full": "일반 Dropout이 뉴런 단위로 활성값을 끄는 것과 달리, 모달리티 드롭아웃은 센서(모달리티) 입력 전체를 끕니다. 노트는 양쪽 정상 0.50, IR 결측 0.25, EO 결측 0.25의 마스크 확률을 제시하고, MBR을 15.0에서 1.2 수준으로 낮추는 효과를 기대합니다(노트의 기대치). 광학+SAR 모델이라면 구름 낀 장면을 흉내 내 광학 입력을 지우는 학습과 같은 의미입니다.",
+      "tags": [
+        "multimodal",
+        "modality-dropout"
+      ],
+      "terms": [
+        "modality-dropout",
+        "dropout"
+      ],
+      "source_ref": "Diagnostics/research/note/07_multimodal_alignment_diagnostics/04_multimodal_prescriptions.md#2.1",
+      "status": "draft"
+    },
+    {
+      "id": "H-MM-008",
+      "type": "mcq",
+      "chapter": "H.mm",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "노트가 EO+IR 모델의 모달리티 드롭아웃(Modality Dropout)에 제시한 미니배치 마스크 확률 구성으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "두 센서 모두 유지, IR만 지움, EO만 지움, 두 센서 모두 지움을 각각 0.25",
+          "rationale": "노트의 구성에는 두 센서를 모두 지우는 경우가 없습니다. 둘 다 지운 입력은 탐지할 정보가 없어(v(∅) = 0) 센서 결측 대응을 가르치는 데 쓸모가 없습니다."
+        },
+        {
+          "text": "각 입력 픽셀을 센서와 무관하게 0.5 확률로 지움",
+          "rationale": "픽셀 단위 무작위 소거는 Cutout·일반 Dropout에 가깝습니다. 모달리티 드롭아웃은 센서 입력 전체를 단위로 지웁니다."
+        },
+        {
+          "text": "두 센서 모두 유지 0.50, IR만 지움 0.25, EO만 지움 0.25",
+          "rationale": null
+        },
+        {
+          "text": "IR만 지움 0.50, 두 센서 모두 유지 0.50, EO는 항상 유지",
+          "rationale": "EO를 항상 남기면 EO 결측 상황을 학습하지 못해 오히려 EO 편향이 강화됩니다. 노트는 EO 결측도 0.25로 강제 학습합니다."
+        },
+        {
+          "text": "두 센서 모두 유지 0.90, 두 센서 모두 지움 0.10",
+          "rationale": "두 센서를 동시에 켜고 끄기만 하면 한 센서만 남은 상황을 전혀 학습하지 못합니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "노트는 P(EO=1, IR=1) = 0.50, P(EO=1, IR=0) = 0.25, P(EO=0, IR=1) = 0.25로 구성합니다. 절반은 정상 융합을, 나머지 절반은 한쪽 센서 결측을 강제로 학습시키는 설계입니다.",
+      "explanation_full": "핵심은 '한 센서만 남은 입력'을 학습에 충분히 섞는 것입니다. 둘 다 지운 입력은 정보가 없어 제외합니다. 처방 매트릭스에는 'Modality Dropout (p = 0.5)'로만 적혀 있어 p가 무엇의 확률인지 밝히지 않았습니다. 본문 구성에서는 '어느 한 센서를 지울 확률'(0.25 + 0.25)과 '둘 다 유지할 확률'이 모두 0.5이므로 어느 쪽으로 읽어도 본문과 모순되지는 않지만, 실험 설정을 적을 때는 세 경우의 확률을 모두 밝히는 것이 안전합니다. 확률 값은 노트의 권장 설정이며 데이터에 맞게 조정할 수 있습니다.",
+      "tags": [
+        "multimodal",
+        "modality-dropout"
+      ],
+      "terms": [
+        "modality-dropout"
+      ],
+      "source_ref": "Diagnostics/research/note/07_multimodal_alignment_diagnostics/04_multimodal_prescriptions.md#2.1",
+      "status": "draft"
+    },
+    {
+      "id": "H-MM-009",
+      "type": "short",
+      "chapter": "H.mm",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "정렬된 EO·IR 검증 데이터에 병진 오차(0, 1, 2, 4, 8, 16, 32 px)와 회전 오차를 단계별로 주입했을 때, mAP가 정렬 상태 mAP의 50%로 떨어지는 오차 크기를 노트는 무엇이라 부르는가? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Critical Alignment Tolerance (δ50)",
+          "delta 50"
+        ],
+        "ko": [
+          "임계 정렬 허용치",
+          "임계 정렬 허용 오차",
+          "델타 50"
+        ]
+      },
+      "primary": "Critical Alignment Tolerance (δ50)",
+      "explanation_short": "mAP(δ50) = 0.5 × mAP(δ = 0)을 만족하는 오차 크기를 임계 정렬 허용치(δ50)라 합니다. 값이 클수록 센서 간 정렬 오차에 강한 모델입니다.",
+      "explanation_full": "노트의 판정은 δ50 ≤ 2.0 px이면 극도로 취약, 2.0~8.0 px이면 일반적인 Middle Fusion 수준, 16.0 px 이상이면 STN·Deformable Cross-Attention 같은 동적 정렬 모듈이 있는 고강건성 상태입니다. 이 구간은 경험적 잠정치입니다. 드론에 EO·열화상 카메라를 함께 달면 진동·열팽창으로 정렬이 흔들리므로, 배치 전에 δ50을 재 두면 기구 조립 허용 오차를 정하는 근거가 됩니다. 외부와 소통할 때는 \"센서 간 위치가 몇 픽셀 어긋나면 성능이 절반으로 떨어지는지\"처럼 풀어서 말합니다.",
+      "tags": [
+        "multimodal",
+        "alignment"
+      ],
+      "terms": [
+        "critical-alignment-tolerance"
+      ],
+      "source_ref": "Diagnostics/research/note/07_multimodal_alignment_diagnostics/02_sensor_misalignment_and_registration.md#3.2",
+      "status": "draft"
+    },
+    {
+      "id": "H-MM-010",
+      "type": "mcq",
+      "chapter": "H.mm",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "드론 EO·열화상 융합 차량 탐지 모델의 정렬 오차 스윕에서 정렬 상태 mAP가 0.74, 병진 오차 1.5 px에서 mAP가 0.37로 나왔다. 노트의 δ50 판정으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "δ50 ≈ 1.5 px로 일반적인 Middle Fusion 수준이다",
+          "rationale": "노트에서 Middle Fusion 수준은 2.0 px < δ50 < 8.0 px 구간입니다. 1.5 px는 2.0 px 이하라 더 나쁜 단계입니다."
+        },
+        {
+          "text": "mAP가 0.37 줄었으므로 δ50 = 0.37이며 고강건성 단계이다",
+          "rationale": "δ50은 mAP 낙폭이 아니라 성능이 절반이 되는 '정렬 오차 크기(px)'입니다. 단위부터 다릅니다."
+        },
+        {
+          "text": "δ50 ≈ 1.5 px이지만 값이 작을수록 강건하므로 문제없다",
+          "rationale": "δ50은 성능이 절반으로 떨어지기까지 버티는 오차 크기이므로 클수록 강건합니다. 해석 방향이 반대입니다."
+        },
+        {
+          "text": "δ50은 정렬 오차와 무관한 지표이므로, 판정하려면 D_align을 먼저 구해 0.45와 비교해야 한다",
+          "rationale": "δ50은 바로 정렬 오차 스윕에서 얻는 지표입니다. D_align은 피처 단계 불일치를 보는 별도 지표로 δ50 판정의 전제 조건이 아닙니다."
+        },
+        {
+          "text": "δ50 ≈ 1.5 px, '극도로 취약' 단계라 보정 없이 운용하기 어렵다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "0.37 = 0.5 × 0.74이므로 δ50 ≈ 1.5 px입니다. 노트 기준 δ50 ≤ 2.0 px는 '극도로 취약'으로, 정렬 보정 알고리즘 없이 조립 정밀도만으로는 운용이 어렵다고 봅니다.",
+      "explanation_full": "노트의 판정 구간(≤ 2.0 px 극도로 취약, 2.0~8.0 px Middle Fusion 수준, ≥ 16.0 px 고강건성)은 경험적 잠정치입니다. 참고로 처방 매트릭스는 δ50 < 4.0 px를 '공간 정렬 불일치' 처방 대상으로 적고 있어 본문 구간과 경계가 다릅니다. 1.5 px는 두 기준 모두에서 처방 대상입니다. 외부와 소통할 때는 \"센서 간 위치가 몇 픽셀 어긋나면 성능이 절반으로 떨어지는지\"처럼 풀어서 말합니다.",
+      "tags": [
+        "multimodal",
+        "alignment",
+        "calculation"
+      ],
+      "terms": [
+        "critical-alignment-tolerance"
+      ],
+      "source_ref": "Diagnostics/research/note/07_multimodal_alignment_diagnostics/02_sensor_misalignment_and_registration.md#3.2",
+      "status": "draft"
+    },
+    {
+      "id": "H-MM-011",
+      "type": "short",
+      "chapter": "H.mm",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "EO를 막았을 때의 상대 성능 낙폭 DR_EO를 IR을 막았을 때의 낙폭 DR_IR로 나눈 값(DR_EO / DR_IR)으로, 노트가 모달리티 붕괴를 판정하는 지표의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Modality Bias Ratio (MBR)"
+        ],
+        "ko": [
+          "모달리티 편향 지수",
+          "모달리티 편향비"
+        ]
+      },
+      "primary": "Modality Bias Ratio (MBR)",
+      "explanation_short": "MBR = DR_EO / DR_IR이며, DR_m = (mAP(전체) − mAP(m 제외)) / mAP(전체)입니다. 1에 가까우면 두 센서가 고르게 기여하고, 클수록 EO에 쏠려 있다는 뜻입니다.",
+      "explanation_full": "노트는 MBR > 5.0을 모달리티 붕괴 경고, MBR > 15.0을 IR이 사실상 더미인 치명적 붕괴로 봅니다. 노트 스스로 이 값을 '사전 잠정 기준치'라 밝히며, 야간 비중이 높은 도메인에서는 IR의 기대 기여가 커지므로 따로 캘리브레이션해야 한다고 적습니다. DR_IR이 0에 가까우면 MBR이 매우 커지거나 정의되지 않으므로 DR 값 자체도 함께 보고합니다. 외부와 소통할 때는 \"EO를 막았을 때와 IR을 막았을 때 성능이 떨어지는 폭의 비율\"처럼 풀어서 말합니다.",
+      "tags": [
+        "multimodal",
+        "modality-collapse"
+      ],
+      "terms": [
+        "modality-bias-ratio"
+      ],
+      "source_ref": "Diagnostics/research/note/07_multimodal_alignment_diagnostics/03_modality_collapse_and_shapley.md#2.1",
+      "status": "draft"
+    },
+    {
+      "id": "H-MM-012",
+      "type": "mcq",
+      "chapter": "H.mm",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "EO+IR 선박 탐지 모델의 전체 입력 mAP가 0.80이다. EO를 0으로 막으면 mAP가 0.20, IR을 0으로 막으면 0.77이 된다. MBR과 노트의 판정으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "MBR = 20, 15를 넘어 IR이 사실상 쓰이지 않는 치명적 붕괴 단계",
+          "rationale": null
+        },
+        {
+          "text": "MBR = 20, 5를 넘고 15 이하인 붕괴 경고 단계",
+          "rationale": "20은 15를 넘으므로 경고 단계가 아니라 치명적 붕괴 단계입니다."
+        },
+        {
+          "text": "MBR = 0.05, IR에 편향된 상태",
+          "rationale": "DR_IR / DR_EO로 분자·분모를 뒤집은 값입니다. MBR은 DR_EO / DR_IR입니다."
+        },
+        {
+          "text": "MBR ≈ 3.85(0.77 / 0.20), 붕괴 경고 기준 미만",
+          "rationale": "차단 후 mAP끼리 나눈 값입니다. MBR은 차단 후 mAP가 아니라 차단으로 '떨어진 폭'의 비율입니다."
+        },
+        {
+          "text": "MBR = 20이지만 1보다 크기만 하면 두 센서가 상호보완적으로 고르게 기여하는 정상 상태",
+          "rationale": "상호보완적 균등 기여는 MBR ≈ 1.0일 때입니다. 20은 EO에 극단적으로 쏠린 상태입니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "DR_EO = (0.80 − 0.20) / 0.80 = 0.75, DR_IR = (0.80 − 0.77) / 0.80 = 0.0375이므로 MBR = 0.75 / 0.0375 = 20입니다. 노트 기준 15 초과는 치명적 붕괴입니다.",
+      "explanation_full": "분모 0.80이 약분되므로 MBR = 0.60 / 0.03 = 20으로 바로 구해도 됩니다. EO만 막아도 성능 75%가 사라지고 IR을 막으면 4%도 안 떨어진다는 것은 IR 브랜치가 거의 장식이라는 뜻입니다. 노트 기준(5 초과 경고, 15 초과 치명)은 사전 잠정치로, 야간 비중 등 도메인에 맞춰 캘리브레이션해야 합니다. 처방은 Modality Dropout 재학습입니다. 외부와 소통할 때는 \"EO를 막았을 때와 IR을 막았을 때 성능이 떨어지는 폭의 비율\"처럼 풀어서 말합니다.",
+      "tags": [
+        "multimodal",
+        "modality-collapse",
+        "calculation"
+      ],
+      "terms": [
+        "modality-bias-ratio",
+        "modality-collapse"
+      ],
+      "source_ref": "Diagnostics/research/note/07_multimodal_alignment_diagnostics/03_modality_collapse_and_shapley.md#2.1",
+      "status": "draft"
+    },
+    {
+      "id": "H-MM-013",
+      "type": "mcq",
+      "chapter": "H.mm",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "노트의 코사인 특성 불일치 지수(D_align) 정의로 옳은 것은? (F_EO, F_IR은 같은 공간 위치 (h, w)의 두 백본 피처 벡터)",
+      "choices": [
+        {
+          "text": "모든 위치에서 F_EO와 F_IR의 코사인 유사도를 평균한 값을 1에서 뺀 값",
+          "rationale": null
+        },
+        {
+          "text": "모든 위치에서 F_EO와 F_IR의 유클리드 거리를 평균한 값",
+          "rationale": "노트의 정의는 크기에 영향을 받지 않는 코사인 유사도 기반입니다. 유클리드 거리는 피처 크기(노름)에 따라 값이 달라집니다."
+        },
+        {
+          "text": "두 원본 영상의 호모그래피 잔여 오차 δ의 크기(px)",
+          "rationale": "잔여 정렬 오차 δ는 영상 좌표계의 기하 오차입니다. D_align은 백본을 통과한 피처 공간에서 정렬 상태를 봅니다."
+        },
+        {
+          "text": "정렬 오차를 주입했을 때 mAP가 절반이 되는 오차 크기",
+          "rationale": "이것은 임계 정렬 허용치 δ50의 정의입니다."
+        },
+        {
+          "text": "F_EO와 F_IR을 이어 붙인 뒤 Sigmoid를 통과시킨 게이팅 맵의 평균",
+          "rationale": "이것은 처방의 동적 신뢰도 게이팅 크로스-어텐션이 만드는 게이팅 맵 g입니다. 진단 지표가 아닙니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "D_align = 1 − (1/HW) Σ cos(F_EO(h, w), F_IR(h, w))입니다. 두 센서의 피처가 같은 위치에서 같은 방향을 가리키면 0에 가까워집니다.",
+      "explanation_full": "코사인 유사도는 −1~1이므로 D_align은 이론상 0~2 범위입니다. 노트는 0에 가까우면 의미론적 피처가 같은 위치에 정렬된 상태, 0.45 초과면 심각한 공간 어긋남으로 봅니다(잠정치). 원본 영상의 기하 정렬(정합, GCP 기반 등록)이 되어 있어도 렌즈 왜곡·시차 때문에 피처 단계에서는 어긋날 수 있어 별도 지표로 봅니다. 참고로 노트 본문은 이 값을 \"공간 정렬 상관계수\"라고 부르지만, 수식은 1 − 평균 코사인 유사도이므로 실제로는 클수록 어긋난 불일치도입니다. 외부와 소통할 때는 \"두 센서의 중간 특징이 같은 위치에서 얼마나 다른 방향을 가리키는지\"처럼 풀어서 말합니다.",
+      "tags": [
+        "multimodal",
+        "alignment"
+      ],
+      "terms": [
+        "cosine-feature-misalignment-index"
+      ],
+      "source_ref": "Diagnostics/research/note/07_multimodal_alignment_diagnostics/02_sensor_misalignment_and_registration.md#4.1",
+      "status": "draft"
+    },
+    {
+      "id": "H-MM-014",
+      "type": "mcq",
+      "chapter": "H.mm",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "EO·IR 융합 모델의 검증 영상에서 D_align을 계산했더니 주간 장면 0.12, 짐벌 진동이 심했던 비행 구간 0.58이 나왔다. 해석으로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "진동 구간은 D_align이 커서 두 센서 피처가 더 잘 정렬되어 있다",
+          "rationale": "D_align은 1 − 평균 코사인 유사도이므로 클수록 어긋난 상태입니다. 방향을 반대로 읽었습니다."
+        },
+        {
+          "text": "진동 구간은 IR이 EO보다 더 많이 기여하는 모달리티 역편향 상태이다",
+          "rationale": "센서별 기여 편향은 DR·MBR·섀플리 값으로 봅니다. D_align은 공간 정렬 상태만 나타냅니다."
+        },
+        {
+          "text": "0.58은 확률값이므로 58%의 픽셀이 정렬 불량이라는 뜻이다",
+          "rationale": "D_align은 위치별 코사인 유사도 평균에서 나온 값으로, 불량 픽셀의 비율이 아닙니다."
+        },
+        {
+          "text": "진동 구간은 두 센서 피처가 같은 위치에서 크게 어긋나, 융합 시 서로에게 노이즈가 될 수 있다",
+          "rationale": null
+        },
+        {
+          "text": "주간 장면 0.12는 경고선 0.45 미만이므로 두 센서 사이에 정렬 오차가 전혀 없다는 것이 수학적으로 증명되었다",
+          "rationale": "0에 가까울수록 잘 정렬되었다는 경향을 보여줄 뿐, 오차가 '전혀 없다'는 증명은 아닙니다. 임계값도 경험적 잠정치입니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "D_align이 0에 가까우면 정렬, 클수록 어긋남입니다. 0.58은 노트의 경고선 0.45를 넘으므로, 진동 구간에서는 피처 수준 정렬이 무너져 융합이 오히려 노이즈를 섞을 수 있습니다.",
+      "explanation_full": "노트 본문은 D_align > 0.45를 심각한 어긋남으로, 처방 매트릭스는 D_align > 0.4를 공간 정렬 불일치 기준으로 적어 경계가 조금 다릅니다. 둘 다 경험적 잠정치이며, 0.58은 어느 기준으로도 경고입니다. 이 경우 정렬 오차 스윕으로 δ50도 함께 재고, Random Affine 증강이나 STN 자가 정렬 헤드를 검토합니다. 외부와 소통할 때는 \"두 센서의 중간 특징이 같은 위치에서 얼마나 다른 방향을 가리키는지\"처럼 풀어서 말합니다.",
+      "tags": [
+        "multimodal",
+        "alignment"
+      ],
+      "terms": [
+        "cosine-feature-misalignment-index"
+      ],
+      "source_ref": "Diagnostics/research/note/07_multimodal_alignment_diagnostics/02_sensor_misalignment_and_registration.md#4.1",
+      "status": "draft"
+    },
+    {
+      "id": "H-MM-015",
+      "type": "short",
+      "chapter": "H.mm",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "EO의 RGB 3채널과 IR 1채널을 입력 단계에서 바로 이어 붙여(H × W × 4) 하나의 백본에 넣는 다종 센서 융합 방식의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Early Fusion",
+          "Input-level Fusion"
+        ],
+        "ko": [
+          "초기 융합",
+          "입력 레벨 융합",
+          "조기 융합"
+        ]
+      },
+      "primary": "Early Fusion",
+      "explanation_short": "입력 채널 단위로 결합해 단일 백본에 넣는 방식을 Early Fusion(입력 레벨 융합)이라 합니다. 연산 비용이 가장 낮지만 센서 간 정렬 오차에 극도로 민감합니다.",
+      "explanation_full": "노트는 Early(입력), Middle(센서별 백본 후 피처 융합), Late(센서별 모델 출력의 박스·마스크를 WBF 등으로 병합)로 융합 단계를 나눕니다. Early Fusion은 1~2 픽셀만 어긋나도 합성곱 에지 특징이 전면 왜곡된다고 노트는 적습니다. 다중분광 밴드를 쌓아 넣는 것도 형태상 입력 레벨 결합이지만, 같은 센서의 밴드는 정합이 잘 되어 있어 사정이 다릅니다.",
+      "tags": [
+        "multimodal",
+        "fusion"
+      ],
+      "terms": [
+        "multimodal-fusion"
+      ],
+      "source_ref": "Diagnostics/research/note/07_multimodal_alignment_diagnostics/01_multimodal_fusion_failure_modes.md#2",
+      "status": "draft"
+    },
+    {
+      "id": "H-MM-016",
+      "type": "mcq",
+      "chapter": "H.mm",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "노트의 융합 단계 비교에서 '물리적 정렬 민감도는 가장 낮지만, 센서 간 상호보완적인 미세 특징 상호작용은 활용할 수 없는' 방식은?",
+      "choices": [
+        {
+          "text": "Early Fusion(입력 레벨): 원시 채널을 이어 붙여 단일 백본에 입력",
+          "rationale": "Early Fusion은 정렬 민감도가 '극도로 높은' 방식입니다. 1~2 픽셀 어긋남에도 에지 특징이 무너집니다."
+        },
+        {
+          "text": "Middle Fusion(특성 레벨): 센서별 백본 피처를 Cross-Attention으로 결합",
+          "rationale": "Middle Fusion은 정렬 민감도 '중간'이며, 피처 상호작용은 가능하지만 특정 센서 피처가 지배하는 모달리티 붕괴가 문제입니다."
+        },
+        {
+          "text": "Late Fusion(결정 레벨): 센서별 모델의 박스를 WBF 등으로 병합",
+          "rationale": null
+        },
+        {
+          "text": "Middle Fusion(특성 레벨): 센서별 백본 피처를 FPN 앞에서 Concat",
+          "rationale": "결합 연산이 Concat이어도 특성 레벨 융합이므로 정렬 민감도는 중간이고 피처 상호작용이 가능합니다."
+        },
+        {
+          "text": "Early Fusion 후 NMS로 중복 박스를 제거하는 방식",
+          "rationale": "후처리로 NMS를 쓰는 것은 대부분의 탐지기에 공통입니다. 입력 레벨 결합이라는 점에서 여전히 Early Fusion의 정렬 민감도를 가집니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "Late Fusion은 각 센서 모델이 따로 예측한 뒤 결과만 합치므로 정렬 오차에 가장 덜 민감합니다. 대신 피처 단계의 상호작용이 없어 두 센서를 함께 봐야만 보이는 미세한 단서를 쓰지 못하고, 연산 비용은 가장 큽니다.",
+      "explanation_full": "노트 표 요약: Early(비용 최저, 정렬 민감도 극도로 높음), Middle(비용 중간, 민감도 중간, 모달리티 붕괴 위험), Late(비용 최고, 민감도 낮음, 미세 상호작용 불가). 위성 광학과 SAR처럼 취득 시각·기하가 크게 다른 센서를 결합할 때 정렬이 불안하면 Late Fusion이 현실적인 출발점이 될 수 있습니다.",
+      "tags": [
+        "multimodal",
+        "fusion"
+      ],
+      "terms": [
+        "multimodal-fusion",
+        "weighted-boxes-fusion"
+      ],
+      "source_ref": "Diagnostics/research/note/07_multimodal_alignment_diagnostics/01_multimodal_fusion_failure_modes.md#2",
+      "status": "draft"
+    },
+    {
+      "id": "H-MM-017",
+      "type": "scenario",
+      "chapter": "H.mm",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"드론에 EO랑 열화상 같이 달고 연안 소형 선박 찍는 건데, 두 카메라 셔터 시차가 50 ms야. 선박은 36 km/h 정도로 움직이고 GSD는 10 cm. 시차 때문에 몇 픽셀 밀리는지부터 계산해서 대응 정해.\"\n\n가장 적절한 판단은?",
+      "choices": [
+        {
+          "text": "약 0.5 px 밀리므로 무시할 수 있고 추가 조치는 필요 없다",
+          "rationale": "0.5는 이동 거리(m)입니다. GSD 0.1 m/px로 나눠 픽셀로 바꾸면 5 px입니다."
+        },
+        {
+          "text": "약 50 px 밀리므로 두 센서를 따로 쓰는 Late Fusion으로 바로 바꾼다",
+          "rationale": "GSD 10 cm를 0.01 m로 잘못 환산하는 식으로 단위를 틀리면 나오는 값입니다. 10 m/s × 0.05 s = 0.5 m, 0.5 m ÷ 0.1 m/px = 5 px입니다."
+        },
+        {
+          "text": "약 5 px 밀리지만 모달리티 드롭아웃으로 재학습하면 해결된다",
+          "rationale": "모달리티 드롭아웃은 센서 편향·결측 대응 처방입니다. 이동 표적의 시간차 변위를 보정하지는 않습니다."
+        },
+        {
+          "text": "약 5 px 밀리므로 IR 영상을 EO와 같은 GSD로 쌍선형 업샘플링해 맞춘다",
+          "rationale": "해상도를 맞추는 것은 GSD 불균형 대응입니다. 시간차로 생긴 위치 변위는 그대로 남습니다."
+        },
+        {
+          "text": "약 5 px 밀리며, 노트 처방 매트릭스의 시간 동기화 지연 기준(3 px)을 넘으므로 광학 흐름 기반 시간 보정을 1차로 검토한다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "Δd = v · Δt / GSD = (10 m/s × 0.05 s) / 0.1 m/px = 5 px입니다. 처방 매트릭스는 고속 표적의 Δd_time > 3 px를 시간 동기화 지연 문제로 보고, 1차로 광학 흐름(Optical Flow) 시간 보정, 2차로 시공간 칼만 필터 예측 와핑을 제시합니다.",
+      "explanation_full": "계산: 36 km/h = 10 m/s, 10 × 0.05 = 0.5 m, 0.5 / 0.1 = 5 px. 노트 예시(100 km/h, GSD 0.5 m, Δt 100 ms → 5.56 px)처럼 수십 픽셀 크기의 소형 표적에서는 5 px 어긋남만으로도 IoU가 크게 떨어져 미탐으로 이어질 수 있습니다. 3 px 기준은 노트의 경험적 잠정치입니다. 하드웨어 트리거 동기화가 가능하다면 그것이 가장 근본적인 해결책이라는 점도 함께 보고합니다.",
+      "tags": [
+        "multimodal",
+        "alignment",
+        "drone",
+        "calculation"
+      ],
+      "terms": [
+        "ground-sample-distance",
+        "image-registration",
+        "multimodal-fusion"
+      ],
+      "source_ref": "Diagnostics/research/note/07_multimodal_alignment_diagnostics/02_sensor_misalignment_and_registration.md#2.2",
+      "status": "draft"
+    },
+    {
+      "id": "H-MM-018",
+      "type": "scenario",
+      "chapter": "H.mm",
+      "cognitive_level": 3,
+      "difficulty": 2,
+      "stem": "지시: \"야간에 EO가 죽으면 열화상만으로 버텨야 해. 광학+열화상 선박 모델 전체 mAP 좋다고 끝내지 말고, 센서 하나씩 막았을 때 얼마나 떨어지는지 숫자로 가져와.\"\n\n이 지시를 수행하는 방법으로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "야간에 찍은 영상만 골라 두 센서를 모두 넣은 상태의 mAP를 재서 주간과 비교해 보고한다",
+          "rationale": "야간 슬라이스 성능은 유용하지만, 지시는 '센서를 하나씩 막았을 때' 낙폭입니다. 두 센서를 다 넣으면 센서별 의존도가 드러나지 않습니다."
+        },
+        {
+          "text": "EO·IR을 각각 0으로 막고 mAP를 재서 DR과 MBR을 보고한다",
+          "rationale": null
+        },
+        {
+          "text": "EO와 IR 피처의 D_align을 계산해 두 센서가 잘 정렬됐는지 보고한다",
+          "rationale": "D_align은 공간 정렬 상태 지표입니다. 센서가 빠졌을 때의 성능 낙폭과는 다른 질문입니다."
+        },
+        {
+          "text": "정렬 오차를 0~32 px로 주입해 δ50을 보고한다",
+          "rationale": "δ50은 정렬 오차 내성을 봅니다. 센서 결측 시 성능은 알려주지 않습니다."
+        },
+        {
+          "text": "IR 영상의 해상도를 EO에 맞춰 업샘플링한 뒤 전체 mAP를 다시 잰다",
+          "rationale": "해상도 맞춤은 전처리 변경일 뿐, 한 센서가 사라졌을 때 모델이 버티는지 측정하지 않습니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "센서 m을 막았을 때의 상대 낙폭 DR_m = (mAP(전체) − mAP(m 제외)) / mAP(전체)와 그 비율 MBR이 바로 지시가 요구하는 숫자입니다. DR_EO가 크고 DR_IR이 작으면 모델이 EO에 쏠린 모달리티 붕괴 상태입니다.",
+      "explanation_full": "노트는 MBR > 5.0을 붕괴 경고, > 15.0을 치명적 붕괴로 봅니다(사전 잠정치, 야간 비중이 큰 도메인은 별도 캘리브레이션 필요). 보고할 때는 EO를 막았을 때의 절대 mAP(=IR 단독 성능)도 함께 적어야 '야간에 버틸 수 있는가'라는 원래 질문에 답이 됩니다. 외부와 소통할 때는 \"EO를 막았을 때와 IR을 막았을 때 성능이 떨어지는 폭의 비율\"처럼 풀어서 말합니다.",
+      "tags": [
+        "multimodal",
+        "modality-collapse"
+      ],
+      "terms": [
+        "modality-bias-ratio",
+        "modality-collapse"
+      ],
+      "source_ref": "Diagnostics/research/note/07_multimodal_alignment_diagnostics/03_modality_collapse_and_shapley.md#2.1",
+      "status": "draft"
+    },
+    {
+      "id": "H-MM-019",
+      "type": "scenario",
+      "chapter": "H.mm",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"광학+열화상 모델 MBR이 12, MCR_IR이 6%로 나왔어. 노트 처방 매트릭스대로 1차 조치 잡아서 바로 돌려.\"\n\n1차 조치로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "IR 브랜치를 소프트 게이팅으로 차단해 연산을 아낀다",
+          "rationale": "소프트 게이팅 차단은 섀플리 값이 음수(φ_k < 0)인 음의 전이 센서에 대한 처방입니다. 기여가 작을 뿐 양수인 IR을 끄면 야간 대응 능력을 아예 잃습니다."
+        },
+        {
+          "text": "학습 때 Random Affine 증강을 넣어 정렬 오차에 강하게 만든다",
+          "rationale": "Random Affine 증강은 공간 정렬 불일치(δ50·D_align 이상)에 대한 1차 처방입니다."
+        },
+        {
+          "text": "광학 흐름으로 두 센서 프레임의 시간차를 보정한다",
+          "rationale": "광학 흐름 보정은 시간 동기화 지연(Δd_time > 3 px)에 대한 처방입니다."
+        },
+        {
+          "text": "미니배치마다 센서 입력을 확률적으로 지우는 Modality Dropout을 넣어 재학습한다",
+          "rationale": null
+        },
+        {
+          "text": "STN 기반 자가 정렬 헤드를 추가한다",
+          "rationale": "STN 자가 정렬 헤드는 공간 정렬 불일치의 2차(근본) 처방입니다. 센서 편향과는 무관합니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "MBR > 5.0이면서 MCR_IR < 10%는 처방 매트릭스의 '모달리티 붕괴' 판정 기준이며, 1차 권장 처방은 Modality Dropout 재학습입니다. 2차 근본 처방은 센서별 비대칭 손실 정규화입니다.",
+      "explanation_full": "MBR 12는 경고선 5를 넘고 치명선 15에는 못 미칩니다. 노트의 기준값(MBR 5·15, MCR 10%)은 모두 사전 잠정치입니다. Modality Dropout은 한 센서만 남은 입력을 강제로 학습시켜 IR 브랜치도 스스로 표적을 찾도록 만듭니다. 재학습 후 MBR·DR을 다시 재서 효과를 확인합니다. 외부와 소통할 때는 \"EO를 막았을 때와 IR을 막았을 때 성능이 떨어지는 폭의 비율\"처럼 풀어서 말합니다.",
+      "tags": [
+        "multimodal",
+        "modality-dropout",
+        "prescription"
+      ],
+      "terms": [
+        "modality-dropout",
+        "modality-bias-ratio"
+      ],
+      "source_ref": "Diagnostics/research/note/07_multimodal_alignment_diagnostics/04_multimodal_prescriptions.md#3",
+      "status": "draft"
+    },
+    {
+      "id": "H-MM-020",
+      "type": "scenario",
+      "chapter": "H.mm",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"Sentinel-1 SAR랑 Sentinel-2 광학 융합한 해상 부유물 모델 말이야. SAR 넣은 게 진짜 도움이 되는지, 센서별 기여도를 공정하게 나눠서 보고해.\"\n\n가장 적절한 방법은?",
+      "choices": [
+        {
+          "text": "융합 모델과 광학 단독 모델의 mAP 차이만 SAR의 기여로 보고한다",
+          "rationale": "그 차이는 섀플리 값을 이루는 두 항 중 하나(광학에 SAR를 더할 때의 한계 기여)뿐입니다. SAR 단독 기여를 빠뜨려 공정한 분해가 되지 않습니다."
+        },
+        {
+          "text": "SAR 입력 채널에 대한 그래디언트 크기를 평균해 기여도로 쓴다",
+          "rationale": "그래디언트 크기는 국소 민감도일 뿐, 센서를 추가·제거했을 때의 성능 기여를 나타내지 않습니다."
+        },
+        {
+          "text": "광학 단독, SAR 단독, 둘 다 넣은 조합의 mAP를 각각 재고 v(∅) = 0으로 두어 센서별 섀플리 값을 계산한다",
+          "rationale": null
+        },
+        {
+          "text": "SAR 영상에 Lee 필터를 적용해 스페클을 줄인 뒤 다시 학습한다",
+          "rationale": "스페클 저감은 음의 전이가 확인된 뒤 검토할 수 있는 조치입니다. 지시는 먼저 기여도를 측정해 보고하라는 것입니다."
+        },
+        {
+          "text": "두 센서의 D_align을 계산해 0.45보다 크면 SAR 기여가 없다고 보고한다",
+          "rationale": "D_align은 공간 정렬 상태 지표입니다. 성능 기여와는 다른 양입니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "섀플리 값은 모든 부분 조합에서의 한계 기여를 공정하게 평균합니다. 2센서라면 φ_SAR = ½[v({SAR}) − v(∅)] + ½[v({광학, SAR}) − v({광학})]이므로 단독·융합 조합 mAP가 모두 필요합니다.",
+      "explanation_full": "보고서에는 섀플리 값과 함께 양수 기여만 정규화한 MCR(%)을 적으면 읽기 쉽습니다. 노트 03장은 φ_k < 0을 음의 전이 징후로 보고 해당 센서의 소프트 게이팅을 권합니다. 다만 노트 01장의 정의(융합 mAP < 단일 최고 mAP)와 항상 같은 결론이 나오지는 않으므로 두 수치를 함께 적습니다. SAR은 구름을 통과하므로 흐린 날 슬라이스에서 따로 섀플리 값을 재면 기여가 달리 보일 수 있습니다.",
+      "tags": [
+        "multimodal",
+        "shapley",
+        "sar"
+      ],
+      "terms": [
+        "shapley-value",
+        "negative-transfer"
+      ],
+      "source_ref": "Diagnostics/research/note/07_multimodal_alignment_diagnostics/03_modality_collapse_and_shapley.md#3.2",
+      "status": "draft"
+    },
+    {
+      "id": "H-MM-021",
+      "type": "scenario",
+      "chapter": "H.mm",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"항공 EO·열화상 짐벌이 진동 때문에 정렬이 조금씩 틀어지는 것 같아. 현재 융합 모델이 정렬 오차를 몇 px까지 버티는지 곡선으로 뽑아 와.\"\n\n가장 적절한 방법은?",
+      "choices": [
+        {
+          "text": "정렬된 검증 세트에 병진·회전 오차를 단계별로 넣어 mAP 곡선과 δ50을 구한다",
+          "rationale": null
+        },
+        {
+          "text": "지상기준점(GCP)으로 두 영상을 다시 정합한 뒤 정합된 상태에서 mAP를 한 번 더 잰다",
+          "rationale": "재정합은 오차를 없애는 조치이지, 모델이 얼마나 버티는지 측정하는 실험이 아닙니다."
+        },
+        {
+          "text": "학습 데이터에 Random Affine 증강을 넣고 재학습한다",
+          "rationale": "Random Affine 증강은 정렬 불일치에 대한 처방입니다. 지시는 먼저 현재 모델의 내성을 측정하라는 것입니다."
+        },
+        {
+          "text": "현재 검증 세트에서 D_align을 한 번 계산해 보고한다",
+          "rationale": "D_align은 현재 상태의 피처 불일치 한 값만 알려줍니다. '몇 px까지 버티는지' 곡선은 오차를 단계별로 넣어 봐야 얻습니다."
+        },
+        {
+          "text": "주간·야간 슬라이스로 나눠 mAP를 비교한다",
+          "rationale": "조도별 성능 비교는 정렬 오차 내성과 다른 질문입니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "노트의 정렬 강건성 스트레스 진단은 정렬된 데이터에 Δx, Δy ∈ {0, 1, 2, 4, 8, 16, 32} px, Δθ ∈ {0°, 0.5°, 1°, 2°, 5°}를 주입해 성능 저하 곡선을 그리는 것입니다. 곡선에서 mAP가 절반이 되는 지점이 δ50입니다.",
+      "explanation_full": "δ50 판정 구간(≤ 2 px 극도로 취약, 2~8 px Middle Fusion 수준, ≥ 16 px 고강건성)은 경험적 잠정치입니다. 짐벌 진동으로 실제 생기는 변위 폭(예: 비행 로그나 두 영상의 특징점 매칭으로 추정)과 δ50을 나란히 놓으면 보정 모듈이 필요한지 바로 판단할 수 있습니다. 외부와 소통할 때는 \"센서 간 위치가 몇 픽셀 어긋나면 성능이 절반으로 떨어지는지\"처럼 풀어서 말합니다.",
+      "tags": [
+        "multimodal",
+        "alignment"
+      ],
+      "terms": [
+        "critical-alignment-tolerance"
+      ],
+      "source_ref": "Diagnostics/research/note/07_multimodal_alignment_diagnostics/02_sensor_misalignment_and_registration.md#3.1",
+      "status": "draft"
+    },
+    {
+      "id": "H-MM-022",
+      "type": "scenario",
+      "chapter": "H.mm",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"δ50이 1.8 px, D_align이 0.52로 나왔어. 처방 매트릭스대로 1차는 학습 데이터 쪽에서 바로 하고, 근본적으로는 모델 구조를 바꾸는 쪽으로 계획 잡아.\"\n\n가장 적절한 계획은?",
+      "choices": [
+        {
+          "text": "1차: Modality Dropout 재학습 / 2차: 센서별 비대칭 손실 정규화",
+          "rationale": "이것은 모달리티 붕괴(MBR > 5, MCR_IR < 10%) 행의 처방입니다."
+        },
+        {
+          "text": "1차: 학습 시 Random Affine 증강 주입 / 2차: STN 기반 자가 정렬 헤드 추가",
+          "rationale": null
+        },
+        {
+          "text": "1차: 광학 흐름 시간 보정 / 2차: 시공간 칼만 필터 예측 와핑",
+          "rationale": "이것은 시간 동기화 지연(Δd_time > 3 px) 행의 처방입니다. 지시의 지표는 공간 정렬 불일치를 가리킵니다."
+        },
+        {
+          "text": "1차: 해당 센서 소프트 게이팅 차단 / 2차: Dynamic Confidence Gate 적용",
+          "rationale": "이것은 음의 전이(φ_k < 0) 행의 처방입니다."
+        },
+        {
+          "text": "1차: IR을 EO 해상도로 쌍선형 업샘플링 / 2차: Late Fusion으로 전환",
+          "rationale": "처방 매트릭스에 없는 조합이며, 업샘플링은 GSD 불균형 대응이지 정렬 오차를 흡수하지 않습니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "δ50 < 4.0 px와 D_align > 0.4는 처방 매트릭스의 '공간 정렬 불일치' 판정 기준입니다. 1차 처방은 Random Affine 증강, 2차 근본 처방은 STN 자가 정렬 헤드입니다.",
+      "explanation_full": "STN 헤드는 상관관계 신경망으로 아핀 행렬을 예측하고 그리드 샘플러로 IR 피처를 EO 좌표계로 와핑합니다. 노트는 이것으로 δ50을 2.5 px에서 18.0 px 이상으로 늘릴 수 있다고 기대합니다(노트의 목표치). 판정 기준값은 모두 잠정치이며, 1.8 px는 본문 기준(≤ 2.0 px 극도로 취약)과 매트릭스 기준(< 4.0 px) 모두에 걸립니다. 외부와 소통할 때는 \"센서 간 위치가 몇 픽셀 어긋나면 성능이 절반으로 떨어지는지\"처럼 풀어서 말합니다.",
+      "tags": [
+        "multimodal",
+        "alignment",
+        "prescription"
+      ],
+      "terms": [
+        "critical-alignment-tolerance",
+        "cosine-feature-misalignment-index"
+      ],
+      "source_ref": "Diagnostics/research/note/07_multimodal_alignment_diagnostics/04_multimodal_prescriptions.md#3",
+      "status": "draft"
+    }
+  ]
+}

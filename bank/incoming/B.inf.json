@@ -1,0 +1,630 @@
+{
+  "format": "visiondrill-bank-exchange",
+  "format_version": 1,
+  "terms": [
+    {
+      "id": "hat-matrix",
+      "term_en": "Hat Matrix",
+      "term_ko": "햇 행렬",
+      "abbreviation": "H",
+      "definition": "OLS에서 관측값 y를 적합값 ŷ로 바꾸는 행렬 H = X(XᵀX)⁻¹Xᵀ(ŷ = Hy). 대각원소 hᵢᵢ가 각 관측치의 레버리지이며 대각합은 계수 개수 p와 같다",
+      "usage_example": "햇 행렬 대각원소 뽑아서 레버리지 상위 20개 화소 좌표를 지도에 찍어 봐.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "dffits",
+      "term_en": "DFFITS",
+      "term_ko": "디에프피츠",
+      "abbreviation": "DFFITS",
+      "definition": "i번째 관측치를 빼고 다시 적합했을 때 그 관측치 자신의 적합값이 몇 표준오차만큼 바뀌는지로 잰 영향력 지표. 흔한 기준은 |DFFITS| > 2√(p/n)",
+      "usage_example": "Cook's D만 보지 말고 DFFITS도 같이 뽑아. 두 지표에서 다 걸리는 지점부터 현장 자료 확인하자.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "dfbetas",
+      "term_en": "DFBETAS",
+      "term_ko": "디에프베타스",
+      "abbreviation": "DFBETAS",
+      "definition": "i번째 관측치를 뺐을 때 j번째 회귀계수가 그 표준오차 단위로 얼마나 바뀌는지 나타내는 계수별 영향력 지표. 흔한 기준은 |DFBETAS| > 2/√n",
+      "usage_example": "NDVI 계수를 제일 많이 흔드는 필지가 어딘지 DFBETAS로 찾아봐.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "influential-point",
+      "term_en": "Influential Point",
+      "term_ko": "영향점",
+      "abbreviation": null,
+      "definition": "제거했을 때 회귀계수나 적합값이 눈에 띄게 달라지는 관측치. 보통 레버리지와 잔차가 함께 클 때 생기며 Cook's D·DFFITS·DFBETAS로 진단한다",
+      "usage_example": "영향점 세 개 빼고 돌린 결과랑 넣고 돌린 결과를 나란히 표로 붙여줘.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "robust-regression",
+      "term_en": "Robust Regression",
+      "term_ko": "로버스트 회귀",
+      "abbreviation": null,
+      "definition": "Huber 손실 같은 손실함수나 반복 가중치로 큰 잔차의 영향을 줄여, 이상치에 덜 민감하게 계수를 추정하는 회귀 방법",
+      "usage_example": "이상치를 일일이 빼기 애매하면 Huber 로버스트 회귀로 돌려서 OLS 계수랑 비교해봐.",
+      "origin": "standard",
+      "track": "B"
+    }
+  ],
+  "questions": [
+    {
+      "id": "B-INF-003",
+      "type": "short",
+      "chapter": "B.inf",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "OLS에서 적합값을 ŷ = Hy로 쓸 때, 관측값 y를 적합값 ŷ로 바꿔 주는 행렬 H = X(XᵀX)⁻¹Xᵀ의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Hat matrix",
+          "Projection matrix",
+          "Influence matrix"
+        ],
+        "ko": [
+          "햇 행렬",
+          "모자 행렬",
+          "투영 행렬",
+          "사영 행렬"
+        ]
+      },
+      "primary": "Hat matrix",
+      "explanation_short": "H는 y에 \"모자(^)를 씌워\" ŷ로 만든다고 해서 햇 행렬(hat matrix)이라 부릅니다. 대각원소 hᵢᵢ가 i번째 관측치의 레버리지입니다.",
+      "explanation_full": "H는 X의 열공간으로의 직교 투영 행렬이라 투영 행렬이라고도 합니다. H는 X만으로 정해지므로 레버리지도 y와 무관하게 설명변수 값만으로 결정됩니다. 성질: 0 ≤ hᵢᵢ ≤ 1, Σhᵢᵢ = p(절편 포함 계수 개수), 잔차 분산 Var(eᵢ) = σ²(1 − hᵢᵢ).",
+      "tags": [
+        "regression",
+        "diagnostics",
+        "leverage"
+      ],
+      "terms": [
+        "hat-matrix",
+        "leverage"
+      ],
+      "source_ref": "Montgomery·Peck·Vining, Introduction to Linear Regression Analysis 6장 Diagnostics for Leverage and Influence",
+      "status": "draft"
+    },
+    {
+      "id": "B-INF-004",
+      "type": "mcq",
+      "chapter": "B.inf",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "설명변수 4개와 절편이 있는 회귀모형(n = 100)에서, 고레버리지 판단에 흔히 쓰는 기준 2p/n의 값은? (p는 절편을 포함한 회귀계수 개수)",
+      "choices": [
+        {
+          "text": "0.10",
+          "rationale": null
+        },
+        {
+          "text": "0.08",
+          "rationale": "p를 설명변수 개수 4로 잡은 값(2×4/100)입니다. 이 기준의 p는 절편을 포함한 계수 개수 5입니다."
+        },
+        {
+          "text": "0.05",
+          "rationale": "0.05는 p/n, 즉 레버리지의 평균값입니다. 기준 2p/n은 평균의 두 배입니다."
+        },
+        {
+          "text": "0.04",
+          "rationale": "0.04는 Cook's D의 경험 기준 4/n입니다. 레버리지 기준과 다른 지표입니다."
+        },
+        {
+          "text": "0.20",
+          "rationale": "0.20은 DFBETAS의 경험 기준 2/√n = 2/10입니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "p = 설명변수 4 + 절편 1 = 5이므로 2p/n = 2×5/100 = 0.10입니다. 레버리지 평균이 p/n = 0.05이므로 그 두 배를 넘는 점을 고레버리지 후보로 봅니다.",
+      "explanation_full": "햇 행렬 대각합이 p라서 레버리지 평균은 항상 p/n입니다. 경험 기준으로 2p/n을 많이 쓰고, 표본이 작거나 보수적으로 볼 때는 3p/n도 씁니다. 원격탐사 회귀에서는 희귀한 피복(예: 반사율이 극단적인 염전·나지)이 고레버리지가 되기 쉽습니다.",
+      "tags": [
+        "regression",
+        "diagnostics",
+        "leverage",
+        "calculation"
+      ],
+      "terms": [
+        "leverage",
+        "hat-matrix"
+      ],
+      "source_ref": "Montgomery·Peck·Vining, Introduction to Linear Regression Analysis 6장 Diagnostics for Leverage and Influence",
+      "status": "draft"
+    },
+    {
+      "id": "B-INF-005",
+      "type": "mcq",
+      "chapter": "B.inf",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "n = 400인 회귀에서 관측치 A의 Cook's D가 0.03이었다. 흔히 쓰는 두 기준(4/n, 1)을 고려한 판단으로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "1보다 작으므로 영향이 전혀 없는 점으로 보고 넘어간다",
+          "rationale": "1은 매우 보수적인 기준입니다. 표본이 크면 Cook's D가 1을 넘는 경우가 드물어, 4/n처럼 표본 크기를 반영한 기준도 함께 봅니다."
+        },
+        {
+          "text": "Cook's D가 0.03이므로 이 점의 예측 오차가 3%라는 뜻이다",
+          "rationale": "Cook's D는 백분율 오차가 아니라, 그 점을 뺐을 때 전체 적합값이 변한 정도를 척도화한 무차원 값입니다."
+        },
+        {
+          "text": "4/n = 0.01을 넘으므로 영향점 후보로 보고 원자료를 확인한다",
+          "rationale": null
+        },
+        {
+          "text": "기준을 넘었으므로 즉시 삭제하고 다시 적합한다",
+          "rationale": "기준 초과는 \"확인하라\"는 신호이지 삭제 근거가 아닙니다. 오류인지 실제 값인지 확인이 먼저입니다."
+        },
+        {
+          "text": "레버리지가 0.03이라는 뜻이므로 x값이 평균에 가깝다",
+          "rationale": "Cook's D와 레버리지는 다른 값입니다. Cook's D는 잔차와 레버리지를 함께 반영합니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "4/n = 4/400 = 0.01이고 A의 Cook's D 0.03은 그 세 배이므로 영향점 후보입니다. 1 기준은 넘지 않지만, 표본이 클수록 개별 점의 Cook's D는 작아지므로 4/n 같은 표본 크기 반영 기준이 더 민감합니다.",
+      "explanation_full": "Cook's D는 Dᵢ = (rᵢ²/p)·hᵢᵢ/(1 − hᵢᵢ) (rᵢ: 내적 스튜던트화 잔차)로 계산돼 잔차와 레버리지가 함께 클 때 커집니다. 실무에서는 기준값 하나보다 Cook's D 막대그래프에서 다른 점들보다 두드러지게 튀는 점을 찾는 방식이 흔합니다.",
+      "tags": [
+        "regression",
+        "diagnostics",
+        "threshold"
+      ],
+      "terms": [
+        "cooks-distance",
+        "influential-point"
+      ],
+      "source_ref": "Kutner et al., Applied Linear Statistical Models 10장·11장",
+      "status": "draft"
+    },
+    {
+      "id": "B-INF-006",
+      "type": "short",
+      "chapter": "B.inf",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "i번째 관측치를 빼고 다시 적합했을 때, 그 관측치 자신의 적합값이 몇 표준오차만큼 바뀌는지로 영향력을 재는 지표의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "DFFITS",
+          "Difference in fits"
+        ],
+        "ko": [
+          "디에프피츠",
+          "디에프핏츠"
+        ]
+      },
+      "primary": "DFFITS",
+      "explanation_short": "DFFITS = (ŷᵢ − ŷᵢ₍ᵢ₎) / (s₍ᵢ₎√hᵢᵢ)로, i번째 점을 뺐을 때 자기 적합값이 표준오차 단위로 얼마나 움직이는지를 봅니다. 흔한 기준은 |DFFITS| > 2√(p/n)입니다.",
+      "explanation_full": "DFFITS는 외적 스튜던트화 잔차 tᵢ에 √(hᵢᵢ/(1 − hᵢᵢ))를 곱한 값과 같아, Cook's D처럼 잔차와 레버리지를 함께 반영합니다. 예: n = 100, p = 4(절편 포함 계수 개수)이면 기준은 2√0.04 = 0.4입니다. Cook's D가 \"모든 적합값\"의 변화라면 DFFITS는 \"자기 자신의 적합값\" 변화입니다.",
+      "tags": [
+        "regression",
+        "diagnostics",
+        "influence"
+      ],
+      "terms": [
+        "dffits"
+      ],
+      "source_ref": "Belsley·Kuh·Welsch, Regression Diagnostics (1980) 2장",
+      "status": "draft"
+    },
+    {
+      "id": "B-INF-007",
+      "type": "mcq",
+      "chapter": "B.inf",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "DFFITS와 DFBETAS의 차이를 옳게 설명한 것은?",
+      "choices": [
+        {
+          "text": "DFFITS는 레버리지만으로, DFBETAS는 잔차만으로 계산한다",
+          "rationale": "둘 다 관측치를 뺀 모형의 결과를 쓰며 잔차와 레버리지를 함께 반영합니다."
+        },
+        {
+          "text": "DFFITS는 관측치마다 하나(자기 적합값 변화), DFBETAS는 관측치·계수마다 하나(계수별 변화)다",
+          "rationale": null
+        },
+        {
+          "text": "DFBETAS는 모든 적합값 변화를 한 숫자로 요약한 것으로 Cook's D와 같다",
+          "rationale": "모든 적합값 변화를 하나로 요약한 것은 Cook's D입니다. DFBETAS는 계수별로 따로 나옵니다."
+        },
+        {
+          "text": "둘 다 순서상 인접한 잔차 사이의 자기상관을 진단하는 지표다",
+          "rationale": "둘 다 개별 관측치의 영향력 지표입니다. 자기상관은 Durbin-Watson 등으로 봅니다."
+        },
+        {
+          "text": "DFFITS는 y방향 이상치만, DFBETAS는 x방향 고레버리지 점만 찾는다",
+          "rationale": "둘 다 y방향 이탈(잔차)과 x방향 극단성(레버리지)이 결합된 영향력을 봅니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "DFFITS는 관측치 하나당 값 하나로 \"자기 적합값이 얼마나 바뀌나\"를, DFBETAS는 관측치 하나당 계수 개수만큼 값이 나와 \"어느 계수를 얼마나 바꾸나\"를 봅니다.",
+      "explanation_full": "예를 들어 NDVI 계수 해석이 핵심이라면 NDVI 계수의 DFBETAS만 골라 보면 됩니다. 반대로 전체 예측에 대한 영향이 궁금하면 Cook's D나 DFFITS를 봅니다. 경험 기준: |DFFITS| > 2√(p/n), |DFBETAS| > 2/√n.",
+      "tags": [
+        "regression",
+        "diagnostics",
+        "influence"
+      ],
+      "terms": [
+        "dffits",
+        "dfbetas"
+      ],
+      "source_ref": "Belsley·Kuh·Welsch, Regression Diagnostics (1980) 2장",
+      "status": "draft"
+    },
+    {
+      "id": "B-INF-008",
+      "type": "short",
+      "chapter": "B.inf",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "i번째 관측치를 뺐을 때 j번째 회귀계수가 (그 계수의 표준오차 단위로) 얼마나 바뀌는지 나타내는, 계수별 영향력 지표의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "DFBETAS"
+        ],
+        "ko": [
+          "디에프베타스"
+        ]
+      },
+      "primary": "DFBETAS",
+      "explanation_short": "DFBETAS는 (β̂ⱼ − β̂ⱼ₍ᵢ₎)를 표준오차로 나눈 값으로, 관측치 i가 계수 j를 얼마나 움직이는지 봅니다. 흔한 기준은 |DFBETAS| > 2/√n입니다.",
+      "explanation_full": "표준오차로 나누지 않은 원래 차이는 DFBETA라고 부르며, 계수 단위를 그대로 가집니다. 관측치 수 × 계수 개수만큼 값이 나오므로 관심 있는 계수 열만 골라 봅니다. 예: 수온 계수가 특정 해역 관측치 몇 개에 좌우되는지 확인할 때 유용합니다.",
+      "tags": [
+        "regression",
+        "diagnostics",
+        "influence"
+      ],
+      "terms": [
+        "dfbetas"
+      ],
+      "source_ref": "Belsley·Kuh·Welsch, Regression Diagnostics (1980) 2장",
+      "status": "draft"
+    },
+    {
+      "id": "B-INF-009",
+      "type": "mcq",
+      "chapter": "B.inf",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "n = 400인 NDVI–수확량 회귀에서 NDVI 계수에 대한 DFBETAS가 관측치 A는 0.35, B는 0.08이었다. 흔히 쓰는 기준 |DFBETAS| > 2/√n을 적용한 판단은?",
+      "choices": [
+        {
+          "text": "A와 B 모두 기준을 넘는다",
+          "rationale": "B의 0.08은 기준 2/√400 = 0.1보다 작습니다."
+        },
+        {
+          "text": "B만 기준을 넘는다",
+          "rationale": "기준은 0.1이므로 넘는 쪽은 A(0.35)입니다."
+        },
+        {
+          "text": "둘 다 1보다 작으므로 기준을 넘지 않는다",
+          "rationale": "|DFBETAS| > 1은 소·중표본에서 쓰는 다른 경험 기준입니다. 문제는 2/√n 기준을 적용하라고 했고, n = 400이면 기준값은 0.1이라 A(0.35)가 넘습니다."
+        },
+        {
+          "text": "A만 기준을 넘는다",
+          "rationale": null
+        },
+        {
+          "text": "DFBETAS는 모형 전체 지표라 계수별 판단은 할 수 없다",
+          "rationale": "DFBETAS는 계수마다 따로 계산되는 계수별 지표입니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "2/√n = 2/√400 = 2/20 = 0.1입니다. A(0.35)만 기준을 넘으므로, A를 빼면 NDVI 계수가 그 표준오차의 약 0.35배만큼 움직인다는 뜻입니다.",
+      "explanation_full": "부호도 의미가 있습니다. 보통 양수면 그 관측치가 계수를 키우는 쪽으로 작용한다는 뜻입니다(A를 빼면 계수가 줄어듦). 다만 구현마다 부호 정의가 다를 수 있으니 문서를 확인합니다. 다음 단계는 A 필지의 NDVI·수확량 원자료와 영상을 확인하는 것입니다.",
+      "tags": [
+        "regression",
+        "diagnostics",
+        "influence",
+        "calculation"
+      ],
+      "terms": [
+        "dfbetas"
+      ],
+      "source_ref": "Belsley·Kuh·Welsch, Regression Diagnostics (1980) 2장",
+      "status": "draft"
+    },
+    {
+      "id": "B-INF-010",
+      "type": "mcq",
+      "chapter": "B.inf",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "회귀 진단에서 \"이상치(outlier)\"를 가장 정확하게 설명한 것은?",
+      "choices": [
+        {
+          "text": "설명변수(X) 공간에서 다른 점들과 멀리 떨어진 관측치",
+          "rationale": "그것은 고레버리지 점입니다. x가 극단적이어도 회귀선 위에 놓이면 이상치가 아닙니다."
+        },
+        {
+          "text": "제거하고 다시 적합하면 회귀계수가 크게 바뀌는 관측치",
+          "rationale": "그것은 영향점(influential point)의 정의입니다. 이상치가 늘 영향점인 것은 아닙니다."
+        },
+        {
+          "text": "측정 오류로 확인된 관측치",
+          "rationale": "이상치는 원인과 상관없이 모형에서 크게 벗어난 점입니다. 실제로 드문 현상이 이상치로 나타날 수도 있습니다."
+        },
+        {
+          "text": "Cook's D가 1을 넘는 관측치",
+          "rationale": "Cook's D는 영향력 지표라 영향점 판단에 씁니다. 이상치 판단은 잔차 크기로 합니다."
+        },
+        {
+          "text": "회귀선에서 y방향으로 크게 벗어나 잔차가 큰 관측치",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "회귀에서 이상치는 y방향으로 모형에서 크게 벗어난, 잔차(보통 스튜던트화 잔차)가 큰 관측치입니다. x방향 극단성(레버리지)이나 적합 결과에 대한 영향(영향점)과는 구분합니다.",
+      "explanation_full": "세 개념 정리: 이상치 = y방향 이탈(잔차), 고레버리지 = x방향 극단(hᵢᵢ), 영향점 = 빼면 결과가 바뀜(Cook's D 등). 흔히 |스튜던트화 잔차| > 3을 이상치 후보로 봅니다. 원격탐사에서는 구름·그림자 오염, 현장값 입력 오류, 시공간 매칭 오류가 이상치의 흔한 원인입니다.",
+      "tags": [
+        "regression",
+        "diagnostics",
+        "outlier"
+      ],
+      "terms": [
+        "outlier"
+      ],
+      "source_ref": "ISLR 3.3.3 Outliers, High Leverage Points",
+      "status": "draft"
+    },
+    {
+      "id": "B-INF-011",
+      "type": "mcq",
+      "chapter": "B.inf",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "단순회귀 산점도에서 다음 관측치 중 \"이상치이지만 영향점은 아닐 가능성이 가장 큰\" 것은?",
+      "choices": [
+        {
+          "text": "x는 극단적이지만 회귀선 위에 거의 정확히 놓인 점",
+          "rationale": "잔차가 작으니 이상치가 아닙니다. 고레버리지이지만 선과 잘 맞아 영향도 작은 \"좋은 레버리지\" 점입니다."
+        },
+        {
+          "text": "x는 평균 근처인데 y가 회귀선에서 크게 벗어난 점",
+          "rationale": null
+        },
+        {
+          "text": "x도 극단적이고 y도 회귀선에서 크게 벗어난 점",
+          "rationale": "레버리지와 잔차가 모두 커서 회귀선을 자기 쪽으로 끌어당기는 전형적인 영향점입니다."
+        },
+        {
+          "text": "x는 평균 근처이고 잔차도 거의 0인 점",
+          "rationale": "잔차가 작아 이상치가 아니고 영향도 거의 없는 평범한 점입니다."
+        },
+        {
+          "text": "전체 관측치 중 Cook's D가 가장 크고 1을 넘는 점",
+          "rationale": "Cook's D가 크다는 것 자체가 영향점이라는 뜻이므로 \"영향점이 아닌\" 조건에 맞지 않습니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "x가 평균 근처면 레버리지가 낮아 회귀선을 거의 움직이지 못합니다. 그래서 잔차가 커서 이상치이지만, 빼도 기울기가 크게 바뀌지 않아 영향점이 아닐 가능성이 큽니다.",
+      "explanation_full": "x 평균 근처의 이상치는 주로 절편을 조금 움직이고 잔차 분산(s)을 부풀립니다. 가장 위험한 것은 x도 극단이고 y도 벗어난 점입니다. 레버리지(x) × 잔차(y) 두 축으로 나눠 생각하면 이상치·고레버리지·영향점을 쉽게 구분할 수 있습니다.",
+      "tags": [
+        "regression",
+        "diagnostics",
+        "outlier",
+        "influence"
+      ],
+      "terms": [
+        "outlier",
+        "influential-point",
+        "leverage"
+      ],
+      "source_ref": "ISLR 3.3.3 Outliers, High Leverage Points",
+      "status": "draft"
+    },
+    {
+      "id": "B-INF-012",
+      "type": "short",
+      "chapter": "B.inf",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "제거했을 때 회귀계수나 적합값이 눈에 띄게 달라지는 관측치를 무엇이라 하나? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Influential point",
+          "Influential observation",
+          "Influential case"
+        ],
+        "ko": [
+          "영향점",
+          "영향 관측치",
+          "영향력 있는 관측치",
+          "영향치"
+        ]
+      },
+      "primary": "Influential point",
+      "explanation_short": "영향점(influential point)은 빼고 다시 적합하면 결과가 크게 달라지는 관측치입니다. 보통 레버리지와 잔차가 함께 클 때 생깁니다.",
+      "explanation_full": "영향점은 Cook's D(전체 적합값), DFFITS(자기 적합값), DFBETAS(계수별)로 진단합니다. 영향점이 있으면 결론이 소수 관측치에 좌우되므로, 있을 때와 뺐을 때 결과를 함께 보고하는 것이 좋습니다.",
+      "tags": [
+        "regression",
+        "diagnostics",
+        "influence"
+      ],
+      "terms": [
+        "influential-point"
+      ],
+      "source_ref": "Kutner et al., Applied Linear Statistical Models 10장·11장",
+      "status": "draft"
+    },
+    {
+      "id": "B-INF-013",
+      "type": "mcq",
+      "chapter": "B.inf",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "큰 잔차를 가진 관측치의 영향을 줄이도록 손실함수(예: Huber 손실)를 바꾸거나 가중치를 반복 조정해, 이상치에 덜 민감하게 계수를 추정하는 회귀는?",
+      "choices": [
+        {
+          "text": "Ridge 회귀",
+          "rationale": "Ridge는 계수 제곱합 패널티로 다중공선성에 의한 불안정을 줄입니다. 잔차가 큰 관측치의 영향은 그대로입니다."
+        },
+        {
+          "text": "가중최소제곱(WLS)",
+          "rationale": "WLS도 가중치를 쓰지만, 오차 분산 구조로 미리 정한 가중치를 씁니다. 목적이 이분산 처방입니다."
+        },
+        {
+          "text": "로버스트 회귀",
+          "rationale": null
+        },
+        {
+          "text": "단계적 회귀(stepwise regression)",
+          "rationale": "단계적 회귀는 설명변수를 넣고 빼며 고르는 변수 선택 방법입니다."
+        },
+        {
+          "text": "로지스틱 회귀",
+          "rationale": "로지스틱 회귀는 종속변수가 이진(0/1)일 때 쓰는 모형입니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "로버스트 회귀(robust regression)는 큰 잔차에 제곱 대신 완만한 벌점을 주거나 가중치를 낮춰, 소수의 이상치가 계수를 좌우하지 못하게 합니다.",
+      "explanation_full": "대표적으로 Huber·Tukey bisquare 손실을 쓰는 M-추정이 있고, 반복 재가중 최소제곱(IRLS)으로 풉니다. 고레버리지 이상치까지 막으려면 MM-추정, LTS 같은 방법을 씁니다. 이상치를 하나하나 빼기 애매할 때 OLS와 로버스트 회귀 결과를 나란히 비교하면 결론이 이상치에 얼마나 의존하는지 알 수 있습니다.",
+      "tags": [
+        "regression",
+        "prescription",
+        "outlier"
+      ],
+      "terms": [
+        "robust-regression"
+      ],
+      "source_ref": "Kutner et al., Applied Linear Statistical Models 10장·11장",
+      "status": "draft"
+    },
+    {
+      "id": "B-INF-014",
+      "type": "mcq",
+      "chapter": "B.inf",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "Huber 손실을 쓰는 로버스트 회귀의 특징으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "잔차 크기와 상관없이 모든 잔차에 똑같이 절댓값 손실을 쓴다",
+          "rationale": "모든 잔차에 절댓값을 쓰는 것은 최소절대편차(LAD, 중앙값 회귀)입니다."
+        },
+        {
+          "text": "잔차가 기준보다 큰 관측치는 적합 과정에서 완전히 제거한다",
+          "rationale": "관측치를 완전히 빼는 것은 절사(trimming) 방식입니다. Huber는 큰 잔차의 영향을 줄일 뿐 없애지 않습니다."
+        },
+        {
+          "text": "회귀계수 제곱합에 패널티를 더해 계수를 줄인다",
+          "rationale": "계수 패널티는 Ridge 같은 규제 회귀입니다. 손실함수의 잔차 부분은 그대로 제곱입니다."
+        },
+        {
+          "text": "작은 잔차는 제곱, 큰 잔차는 선형 벌점으로 영향을 제한한다",
+          "rationale": null
+        },
+        {
+          "text": "레버리지가 높은 관측치일수록 가중치를 키워 적합에 더 크게 반영한다",
+          "rationale": "Huber 손실은 잔차 크기로 가중치를 정하며, 레버리지가 높다고 가중치를 키우지 않습니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "Huber 손실은 잔차가 기준값 c 이하이면 제곱(OLS처럼), c를 넘으면 선형(절댓값처럼) 벌점을 줍니다. 그래서 정상 점에서는 OLS의 효율을 살리고 큰 잔차의 영향은 제한합니다.",
+      "explanation_full": "주의: Huber M-추정은 y방향 이상치에는 강하지만, x도 극단인 고레버리지 이상치에는 여전히 약할 수 있습니다. 그런 경우 MM-추정 등 레버리지에도 강한 방법을 검토합니다. 기준값 c는 보통 잔차 척도의 1.345배를 써서 정규 오차일 때 OLS 대비 약 95% 효율을 얻습니다.",
+      "tags": [
+        "regression",
+        "prescription",
+        "outlier"
+      ],
+      "terms": [
+        "robust-regression"
+      ],
+      "source_ref": "Kutner et al., Applied Linear Statistical Models 10장·11장",
+      "status": "draft"
+    },
+    {
+      "id": "B-INF-015",
+      "type": "scenario",
+      "chapter": "B.inf",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"위성 스테레오로 추정한 건물 높이 회귀에서 Cook's D가 4/n 넘는 점이 6개 나왔어. 바로 지우지 말고 제대로 처리해.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "6개를 지우고 다시 적합해, 새로 4/n을 넘는 점이 없어질 때까지 반복한다",
+          "rationale": "반복 삭제하면 매번 새 점이 기준을 넘어 자료가 계속 깎이고, 결과가 선택적으로 왜곡됩니다."
+        },
+        {
+          "text": "기준을 1로 바꿔서 넘는 점이 없으면 그대로 보고한다",
+          "rationale": "기준을 바꿔 문제를 안 보이게 하는 것은 진단이 아닙니다. 영향점의 원인을 확인해야 합니다."
+        },
+        {
+          "text": "종속변수를 로그 변환해 Cook's D를 줄인다",
+          "rationale": "변환은 비선형·이분산 처방입니다. 영향점의 원인(오류인지 실제 값인지)을 확인하지 않은 채 수치만 줄이는 셈입니다."
+        },
+        {
+          "text": "R²가 가장 높아지는 조합을 찾을 때까지 6개 중 일부를 뺀다",
+          "rationale": "R²를 기준으로 점을 고르는 것은 결과에 맞춰 자료를 고르는 것이라 과대평가된 모형이 됩니다."
+        },
+        {
+          "text": "원자료를 확인해 오류면 고치고, 실제 값이면 두고 로버스트 회귀로 민감도를 본다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "영향점은 먼저 원자료(좌표 매칭, 영상 품질, 기준 높이 값)를 확인해 오류면 수정·제거하고, 실제 값이면 유지합니다. 그 다음 로버스트 회귀나 제거 전후 비교로 결론이 몇 개 점에 얼마나 의존하는지 봅니다.",
+      "explanation_full": "건물 높이 추정에서는 그림자·가림(occlusion), 스테레오 매칭 실패, 기준 자료와 촬영 시점 차이(신축·철거)가 영향점의 흔한 원인입니다. 보고서에는 \"영향점 6개 확인 결과 2개는 매칭 오류로 제외, 4개는 실제 고층 건물로 유지\" 처럼 판단 근거를 남깁니다.",
+      "tags": [
+        "regression",
+        "diagnostics",
+        "influence",
+        "prescription"
+      ],
+      "terms": [
+        "cooks-distance",
+        "influential-point",
+        "robust-regression"
+      ],
+      "source_ref": "Kutner et al., Applied Linear Statistical Models 10장·11장",
+      "status": "draft"
+    },
+    {
+      "id": "B-INF-016",
+      "type": "scenario",
+      "chapter": "B.inf",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"수심 회귀에서 밴드비가 유독 큰 외곽 지점 몇 개가 레버리지 0.4로 튀어. 근데 스튜던트화 잔차랑 Cook's D는 작아. 이거 빼야 하는지 판단해 줘.\"\n\n가장 적절한 판단은?",
+      "choices": [
+        {
+          "text": "회귀선과 잘 맞는 고레버리지 점이므로 남기고, 그 밴드비 구간은 표본이 적다는 점을 명시한다",
+          "rationale": null
+        },
+        {
+          "text": "레버리지가 높으면 무조건 영향점이므로 제거하고 다시 적합한다",
+          "rationale": "레버리지는 잠재적 영향력일 뿐입니다. 잔차와 Cook's D가 작으면 실제 영향은 작습니다."
+        },
+        {
+          "text": "레버리지가 높다는 것은 y값이 튄 것이므로 현장 수심값을 재측정한다",
+          "rationale": "레버리지는 설명변수(X)만으로 정해집니다. y방향 이탈은 잔차로 봅니다."
+        },
+        {
+          "text": "Durbin-Watson 통계량으로 그 지점들의 자기상관부터 확인한다",
+          "rationale": "DW는 관측 순서상 잔차 상관을 보는 지표로, 특정 점의 레버리지 판단과 관련이 없습니다."
+        },
+        {
+          "text": "밴드비를 로그 변환해 모든 점의 레버리지를 평균(p/n) 아래로 낮춘다",
+          "rationale": "레버리지 평균은 항상 p/n이라 모든 점을 그 아래로 낮출 수 없습니다. 레버리지를 줄이는 것 자체가 목적도 아닙니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "레버리지가 높아도 잔차와 Cook's D가 작으면 회귀선과 잘 맞는 \"좋은 레버리지\" 점입니다. 이런 점은 기울기를 오히려 더 정밀하게 추정하게 해 주므로 남깁니다.",
+      "explanation_full": "고레버리지 점을 무조건 빼면 설명변수 범위가 좁아져 그 구간(밴드비가 큰 수역)은 외삽 영역이 됩니다. 다만 극단 구간 자료가 몇 개뿐이면 그 구간의 예측 불확실성이 크므로 보고서에 적용 범위를 명시하는 것이 좋습니다.",
+      "tags": [
+        "regression",
+        "diagnostics",
+        "leverage"
+      ],
+      "terms": [
+        "leverage",
+        "influential-point",
+        "cooks-distance"
+      ],
+      "source_ref": "Montgomery·Peck·Vining, Introduction to Linear Regression Analysis 6장 Diagnostics for Leverage and Influence",
+      "status": "draft"
+    }
+  ]
+}

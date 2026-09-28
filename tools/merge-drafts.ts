@@ -1,12 +1,13 @@
 // 초안(bank/incoming/*.json) + 샘플 → 원본 문제은행 DB 하나로 합치기
-// 사용: npx tsx tools/merge-drafts.ts [--out bank/visiondrill-bank.db] [--preview-pack]
+// 사용: npx tsx tools/merge-drafts.ts [--out bank/visiondrill-bank.db] [--preview-pack] [--bundle]
 //   - 장: content/curriculum.json
 //   - 용어: 샘플 용어가 우선, 같은 ID가 여러 장에 있으면 커리큘럼 순서상 먼저 나온 장의 정의를 씀
 //   - 다른 이름으로 참조한 용어는 ALIAS로 맞추고, 아무 데도 없는 용어는 STUB_TERMS로 새로 정의
 //   - 샘플 문항은 검수 상태 유지, 새 문항은 모두 초안(draft)
-//   - --preview-pack: 초안까지 전부 담은 "사람 검수 전" 미리보기 팩(bank/preview-draft.vdpack)도 만든다
+//   - --preview-pack: 초안까지 전부 담은 "사람 검수 전" 팩(bank/preview-draft.vdpack)도 만든다
+//   - --bundle: 같은 팩을 학습 앱 기본 팩(apps/drill/public/packs/default.vdpack)으로도 쓴다. 팩 버전은 <앱 버전>-draft
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
-import { dirname, join } from 'node:path';
+import { dirname, isAbsolute, join } from 'node:path';
 import {
   Bank,
   exportPack,
@@ -22,8 +23,11 @@ import {
 const ROOT = new URL('..', import.meta.url).pathname;
 const args = process.argv.slice(2);
 const outArg = args.indexOf('--out');
-const OUT = join(ROOT, outArg >= 0 ? args[outArg + 1] : 'bank/visiondrill-bank.db');
-const PREVIEW = args.includes('--preview-pack');
+const outRel = outArg >= 0 ? args[outArg + 1] : 'bank/visiondrill-bank.db';
+const OUT = isAbsolute(outRel) ? outRel : join(ROOT, outRel);
+const BUNDLE = args.includes('--bundle');
+const PREVIEW = args.includes('--preview-pack') || BUNDLE;
+const APP_VERSION: string = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8')).version;
 const INCOMING = join(ROOT, 'bank/incoming');
 
 /** 초안이 다른 이름으로 참조한 용어 → 실제 정의된 용어 ID */
@@ -155,6 +159,19 @@ if (unresolved.size) {
 
 // ---------------------------------------------------------------- DB 만들기
 const SQL = await loadSql();
+// Studio에서 이미 검수·수정을 시작한 DB는 덮어쓰지 않음 (--force로 강제)
+if (existsSync(OUT) && !args.includes('--force')) {
+  const old = Bank.open(SQL, readFileSync(OUT));
+  const reviewed = old.db.value<number>(`SELECT COUNT(*) FROM questions WHERE status='reviewed'`) ?? 0;
+  const edited = old.db.value<number>(`SELECT COUNT(*) FROM questions WHERE version > 1`) ?? 0;
+  if (reviewed > (sample.questions ?? []).length || edited > 0) {
+    console.error(
+      `${OUT.replace(ROOT, '')}에 Studio 작업 흔적이 있어 멈춤 (검수 완료 ${reviewed}, 수정된 문항 ${edited}).\n` +
+        '새 초안은 Studio의 가져오기로 들여오거나, 정말 덮어쓰려면 --force를 붙일 것. --out 으로 다른 경로를 지정해도 됨.',
+    );
+    process.exit(1);
+  }
+}
 const bank = Bank.create(SQL, 'VisionDrill Core');
 const allTerms = [...terms.values()].map(({ from: _from, ...t }) => t);
 const r1 = importExchange(
@@ -219,9 +236,14 @@ if (PREVIEW) {
   const tmp = Bank.open(SQL, bank.export());
   for (const s of tmp.listQuestions()) if (s.status === 'draft') tmp.setStatus(s.id, 'reviewed', 'Claude 교차검증(사람 검수 전)');
   tmp.db.run(`UPDATE terms SET status='reviewed'`);
-  const { bytes, manifest } = await exportPack(tmp, SQL, `preview-${new Date().toISOString().slice(0, 10)}`, '미리보기 팩 (사람 검수 전)');
-  const packPath = join(dirname(OUT), 'preview-draft.vdpack');
-  writeFileSync(packPath, bytes);
-  console.log('미리보기 팩:', packPath.replace(ROOT, ''), manifest.question_count ?? '', `${(bytes.length / 1024 / 1024).toFixed(1)} MB`);
+  const version = `${APP_VERSION}-draft`;
+  const { bytes, manifest } = await exportPack(tmp, SQL, version, 'VisionDrill 기본 팩 (사람 검수 전 초안 포함)');
+  const targets = [join(dirname(OUT), 'preview-draft.vdpack')];
+  if (BUNDLE) targets.push(join(ROOT, 'apps/drill/public/packs/default.vdpack'));
+  for (const t of targets) {
+    mkdirSync(dirname(t), { recursive: true });
+    writeFileSync(t, bytes);
+    console.log('팩:', t.replace(ROOT, ''), manifest.pack_version, `${manifest.question_count}문항`, `${(bytes.length / 1024 / 1024).toFixed(1)} MB`);
+  }
 }
 if (!existsSync(OUT)) process.exit(1);

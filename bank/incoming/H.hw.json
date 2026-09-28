@@ -1,0 +1,738 @@
+{
+  "format": "visiondrill-bank-exchange",
+  "format_version": 1,
+  "terms": [
+    {
+      "id": "sqnr",
+      "term_en": "Signal-to-Quantization-Noise Ratio",
+      "term_ko": "신호 대 양자화 잡음비",
+      "abbreviation": "SQNR",
+      "definition": "레이어 출력(또는 가중치)의 평균 제곱 신호 전력 E[X²]를 양자화 전후 차이의 평균 제곱 오차 MSE(X, X̂)로 나눈 뒤 10·log10을 취한 값(dB). 클수록 양자화 손실이 작다",
+      "usage_example": "INT8 변환본 레이어별 SQNR 뽑아 봐. 25 dB 밑으로 떨어지는 레이어만 FP16으로 남기자.",
+      "origin": "standard",
+      "track": "H"
+    },
+    {
+      "id": "post-training-quantization",
+      "term_en": "Post-Training Quantization",
+      "term_ko": "학습 후 양자화",
+      "abbreviation": "PTQ",
+      "definition": "학습이 끝난 FP32 모델을 재학습 없이, 소량의 캘리브레이션 데이터로 활성화 범위(스케일·영점)만 정해 INT8 등 저비트로 변환하는 양자화 방식. 학습 중 양자화 오차를 모사해 가중치를 함께 조정하는 QAT(Quantization-Aware Training)와 대비된다",
+      "usage_example": "일단 검증 타일 500장으로 PTQ 돌려서 mAP 얼마나 빠지는지 보고, 많이 빠지면 QAT 가자.",
+      "origin": "standard",
+      "track": "H"
+    },
+    {
+      "id": "peak-to-average-ratio",
+      "term_en": "Peak-to-Average Ratio",
+      "term_ko": "피크 대 평균비",
+      "abbreviation": "PAR",
+      "definition": "채널 c의 활성화 절댓값 최댓값을 절댓값 평균으로 나눈 값. 노트는 PAR_c > 15인 채널이 하나라도 있으면 텐서 전체에 단일 스케일을 쓰는 Per-Tensor 양자화에서 정상 채널의 표현력이 무너지는 활성화 아웃라이어 상태로 본다(잠정치)",
+      "usage_example": "SegFormer 몇몇 채널 PAR이 40 넘어. 그대로 per-tensor INT8 하면 나머지 채널이 뭉개질 거야.",
+      "origin": "standard",
+      "track": "H"
+    },
+    {
+      "id": "smoothquant",
+      "term_en": "SmoothQuant",
+      "term_ko": "스무스퀀트",
+      "abbreviation": null,
+      "definition": "활성화 X를 채널별 스무딩 벡터 s로 나누고(X·diag(s)⁻¹) 같은 s를 가중치에 곱해(diag(s)·W) 출력은 그대로 두면서 활성화의 극단치를 가중치 쪽으로 옮기는 기법. s_j = max|X_j|^α / max|W_j|^(1−α)이며 α는 이전 강도다(Xiao et al., 2023)",
+      "usage_example": "아웃라이어 채널 때문에 INT8이 안 되면 SmoothQuant α 0.5부터 걸어 보자.",
+      "origin": "standard",
+      "track": "H"
+    },
+    {
+      "id": "roofline-model",
+      "term_en": "Roofline Model",
+      "term_ko": "루프라인 모델",
+      "abbreviation": null,
+      "definition": "연산 장치가 낼 수 있는 성능을 산술 연산 밀도 I(연산 수 / DRAM 전송 바이트)의 함수 P = min(P_peak, I × BW_mem)으로 나타낸 성능 모델. I가 꺾임점 I* = P_peak / BW_mem보다 작으면 메모리 대역폭 한계(Memory-Bound), 크면 연산 한계(Compute-Bound)다",
+      "usage_example": "FLOPs 줄였는데 안 빨라지면 루프라인부터 그려. 그 레이어들 거의 다 메모리 바운드일 거야.",
+      "origin": "standard",
+      "track": "H"
+    },
+    {
+      "id": "fusion-deficiency-ratio",
+      "term_en": "Fusion Deficiency Ratio",
+      "term_ko": "오퍼레이터 융합 결손도",
+      "abbreviation": "FDR",
+      "definition": "컴파일러가 인접 연산을 하나의 커널로 합치지 못해 중간 텐서를 DRAM에 썼다 읽으면서 늘어난 트래픽을 (Traffic_Unfused − Traffic_Fused) / Traffic_Fused로 나타낸 지표. Diagnostics 노트가 정의했으며 처방 매트릭스는 FDR > 1.0을 메모리 병목 징후로 본다(잠정치). 통계의 FDR(False Discovery Rate)과 약어가 같다",
+      "usage_example": "Conv-BN-SiLU가 따로 돌고 있네. FDR 1.5면 융합만 해도 지연이 꽤 줄 거야.",
+      "origin": "project",
+      "track": "H"
+    }
+  ],
+  "questions": [
+    {
+      "id": "H-HW-001",
+      "type": "short",
+      "chapter": "H.hw",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "양자화된 레이어에서 원래 출력의 평균 제곱 E[X²]를 양자화 전후 차이의 평균 제곱 오차 MSE(X, X̂)로 나누고 10·log10을 취해 dB로 나타낸 지표의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Signal-to-Quantization-Noise Ratio (SQNR)"
+        ],
+        "ko": [
+          "신호 대 양자화 잡음비",
+          "양자화 신호 대 잡음비"
+        ]
+      },
+      "primary": "Signal-to-Quantization-Noise Ratio (SQNR)",
+      "explanation_short": "SQNR_l = 10·log10(E[X_l²] / MSE(X_l, X̂_l)) [dB]입니다. 신호 에너지에 비해 양자화 오차가 작을수록 값이 커집니다.",
+      "explanation_full": "노트는 레이어별 SQNR로 양자화 손실이 어디서 생기는지 진단합니다. 판정(잠정 기준치, 사내 데이터로 캘리브레이션 필요): 35 dB 이상 무시 가능, 25~35 dB 정상 허용 한계, 25 dB 미만 위험, 15 dB 미만 치명. 노트는 이 기준을 사내 검증 데이터에서 레이어별 ΔmAP와 SQNR 산점도를 그려 Youden's J 지점으로 확정하라고 적습니다. 위성 탑재 프로세서나 드론 엣지 보드에 탐지 모델을 올릴 때 첫 진단 도구로 쓰입니다.",
+      "tags": [
+        "quantization",
+        "sqnr"
+      ],
+      "terms": [
+        "sqnr",
+        "quantization"
+      ],
+      "source_ref": "Diagnostics/research/note/06_hardware_quantization_diagnostics/01_quantization_noise_and_sqnr.md#3.1",
+      "status": "draft"
+    },
+    {
+      "id": "H-HW-002",
+      "type": "mcq",
+      "chapter": "H.hw",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "어느 INT8 레이어 출력의 평균 제곱 E[X²]가 4.0이고, FP32 출력과 역양자화 출력의 평균 제곱 오차가 0.004이다. 이 레이어의 SQNR과 노트의 판정으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "60 dB, 양자화 손실 무시 가능(35 dB 이상)",
+          "rationale": "20·log10을 쓴 값입니다. 전력(제곱) 비에는 10·log10을 씁니다. 20·log10은 진폭 비에 씁니다."
+        },
+        {
+          "text": "3 dB, 치명(15 dB 미만)",
+          "rationale": "log10(1000) = 3에 10을 곱하지 않은 값입니다. dB는 10·log10입니다."
+        },
+        {
+          "text": "30 dB, 정상 허용 한계(25~35 dB)",
+          "rationale": null
+        },
+        {
+          "text": "30 dB, 치명(15 dB 미만)으로 FP16 강제 지정 대상",
+          "rationale": "30 dB는 15 dB 미만이 아니며 25 dB 미만 위험 구간에도 들지 않습니다."
+        },
+        {
+          "text": "−30 dB, 위험(25 dB 미만)",
+          "rationale": "잡음을 신호로 나눈(역수) 값입니다. SQNR은 신호 ÷ 잡음입니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "SQNR = 10·log10(4.0 / 0.004) = 10·log10(1000) = 30 dB입니다. 노트 기준 25 dB 이상 35 dB 미만은 '정상 허용 한계'입니다.",
+      "explanation_full": "계산: 4.0 ÷ 0.004 = 1000, log10(1000) = 3, × 10 = 30 dB. 노트의 구간(35 dB 이상 무시 가능, 25~35 dB 허용, 25 dB 미만 위험, 15 dB 미만 치명)은 통신 공학과 경량화 문헌의 경험칙에 기반한 잠정치입니다. 단, 레이어 SQNR이 높아도 비선형 활성화를 거치며 오차가 누적·증폭될 수 있어 노트는 단일 계층 민감도 주입을 함께 권합니다.",
+      "tags": [
+        "quantization",
+        "sqnr",
+        "calculation"
+      ],
+      "terms": [
+        "sqnr"
+      ],
+      "source_ref": "Diagnostics/research/note/06_hardware_quantization_diagnostics/01_quantization_noise_and_sqnr.md#3.1",
+      "status": "draft"
+    },
+    {
+      "id": "H-HW-003",
+      "type": "short",
+      "chapter": "H.hw",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "학습이 끝난 FP32 모델을 재학습 없이, 소량의 캘리브레이션 데이터로 활성화 범위(스케일·영점)만 정해 INT8로 변환하는 양자화 방식의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Post-Training Quantization (PTQ)"
+        ],
+        "ko": [
+          "학습 후 양자화",
+          "사후 양자화",
+          "훈련 후 양자화",
+          "사후 학습 양자화"
+        ]
+      },
+      "primary": "Post-Training Quantization (PTQ)",
+      "explanation_short": "재학습 없이 캘리브레이션만으로 양자화 파라미터를 정하는 방식을 학습 후 양자화(PTQ)라 합니다. 빠르고 간편하지만 민감한 레이어에서 정확도 손실이 생길 수 있습니다.",
+      "explanation_full": "반대로 QAT(Quantization-Aware Training)는 학습 중 양자화 오차를 모사해 가중치를 함께 조정하므로 비용이 크지만 손실이 작습니다. 노트의 처방 SOP도 PTQ 후 mAP가 급락하면 먼저 혼합 정밀도(민감 레이어 FP16 유지), 다음으로 SmoothQuant를 시도하고, 그래도 안 되면 마지막 단계에서 LSQ 기반 QAT로 5~10 epoch 미세조정하는 순서입니다. 양자화 수식은 q = clip(round(x / S) + Z, q_min, q_max), 복원은 x̂ = S(q − Z)이며 대칭 양자화는 Z = 0입니다.",
+      "tags": [
+        "quantization",
+        "ptq"
+      ],
+      "terms": [
+        "post-training-quantization",
+        "quantization"
+      ],
+      "source_ref": "Diagnostics/research/note/06_hardware_quantization_diagnostics/01_quantization_noise_and_sqnr.md#1",
+      "status": "draft"
+    },
+    {
+      "id": "H-HW-004",
+      "type": "mcq",
+      "chapter": "H.hw",
+      "cognitive_level": 2,
+      "difficulty": 4,
+      "stem": "TensorRT 등의 INT8 PTQ에서 쓰는 KL 발산(Kullback-Leibler Divergence) 캘리브레이션이 하는 일로 옳은 것은?",
+      "choices": [
+        {
+          "text": "활성화 분포 P와 T로 잘라 양자화한 분포 Q의 D_KL이 최소인 임계값 T*를 찾는다",
+          "rationale": null
+        },
+        {
+          "text": "양자화 오차를 모사하며 가중치를 몇 epoch 재학습해 KL 발산을 손실로 줄인다",
+          "rationale": "재학습으로 가중치를 조정하는 것은 QAT입니다. KL 캘리브레이션은 PTQ에서 가중치를 건드리지 않고 포화 임계값만 정합니다."
+        },
+        {
+          "text": "레이어별 KL 발산을 서로 비교해 FP16으로 남길 레이어와 INT8로 바꿀 레이어를 자동으로 고른다",
+          "rationale": "레이어별 정밀도 선택은 혼합 정밀도(Mixed-Precision) 할당입니다. 노트는 그 기준으로 SQNR과 단일 계층 민감도를 씁니다."
+        },
+        {
+          "text": "채널별 극단치를 가중치 쪽으로 옮겨 활성화 분포를 평평하게 만든다",
+          "rationale": "그것은 SmoothQuant입니다. 분포 자체를 바꾸는 변환이지, 클리핑 임계값을 찾는 캘리브레이션이 아닙니다."
+        },
+        {
+          "text": "입력 위성 영상의 밴드별 평균·표준편차를 구해 정규화 상수를 정한다",
+          "rationale": "입력 정규화 통계는 전처리 단계의 값입니다. 양자화 캘리브레이션과는 다른 작업입니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "KL 캘리브레이션은 T* = argmin_T D_KL(P‖Q(T))를 찾습니다. 극단치를 조금 잘라내더라도 대부분의 값을 촘촘한 양자화 간격으로 표현하는 것이 정보 손실이 적은 지점을 고르는 방법입니다.",
+      "explanation_full": "임계값을 크게 잡으면 클리핑 잡음은 줄지만 간격 S가 커져 반올림 잡음(±S/2)이 커지고, 작게 잡으면 그 반대입니다. KL 캘리브레이션은 이 균형점을 분포 비교로 찾습니다. 노트는 최소 D_KL이 0.08(잠정치)을 넘는 레이어는 대칭 클리핑 방식 자체의 한계로 판정합니다.",
+      "tags": [
+        "quantization",
+        "ptq",
+        "calibration"
+      ],
+      "terms": [
+        "post-training-quantization",
+        "tensorrt"
+      ],
+      "source_ref": "Diagnostics/research/note/06_hardware_quantization_diagnostics/01_quantization_noise_and_sqnr.md#3.2",
+      "status": "draft"
+    },
+    {
+      "id": "H-HW-005",
+      "type": "short",
+      "chapter": "H.hw",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "활성화 텐서의 채널 c에서 절댓값의 최댓값을 절댓값의 평균으로 나눈 값으로, 노트가 특정 채널에 비정상적으로 큰 값이 몰리는 아웃라이어를 진단하는 데 쓰는 지표의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Peak-to-Average Ratio (PAR)"
+        ],
+        "ko": [
+          "피크 대 평균비",
+          "최대 대 평균비",
+          "활성화 채널 극단치 지수"
+        ]
+      },
+      "primary": "Peak-to-Average Ratio (PAR)",
+      "explanation_short": "PAR_c = max|A_c| / mean|A_c|입니다. 값이 클수록 몇몇 값만 유독 크게 튀는 채널이며, 노트는 PAR_c > 15(잠정치)를 아웃라이어 채널로 봅니다.",
+      "explanation_full": "ViT·SegFormer나 최신 YOLO 백본에서는 일부 채널에만 큰 활성화가 몰리는 경우가 알려져 있습니다. 이런 채널이 있으면 텐서 전체에 하나의 스케일을 쓰는 Per-Tensor 양자화에서 스케일이 그 채널에 맞춰 커져, 나머지 정상 채널은 1~2비트 수준으로만 표현된다고 노트는 설명합니다. 처방 매트릭스는 1차로 Per-Channel 양자화, 2차로 SmoothQuant(α = 0.5)를 제시합니다.",
+      "tags": [
+        "quantization",
+        "outlier"
+      ],
+      "terms": [
+        "peak-to-average-ratio"
+      ],
+      "source_ref": "Diagnostics/research/note/06_hardware_quantization_diagnostics/01_quantization_noise_and_sqnr.md#3.3",
+      "status": "draft"
+    },
+    {
+      "id": "H-HW-006",
+      "type": "mcq",
+      "chapter": "H.hw",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "드론 정사영상 분할 모델의 한 활성화 텐서에서 PAR_c = 40인 채널이 하나 발견되었다. 이 텐서를 Per-Tensor INT8로 양자화할 때 생기는 문제로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "극단치 채널만 반올림 잡음이 커지고, 나머지 채널은 오히려 더 정밀하게 표현된다",
+          "rationale": "반대입니다. 스케일이 커지면 모든 채널의 양자화 간격이 넓어지므로, 값이 작은 정상 채널일수록 상대 오차가 커집니다."
+        },
+        {
+          "text": "PAR이 크다는 것은 그 채널이 거의 0만 출력하는 죽은 채널이라는 뜻이다",
+          "rationale": "죽은 채널은 활성이 거의 없는 경우입니다. PAR이 크다는 것은 평균보다 훨씬 큰 값이 튄다는 뜻입니다."
+        },
+        {
+          "text": "PAR은 메모리 대역폭 지표이므로 정확도에는 영향이 없고 지연시간만 늘어난다",
+          "rationale": "PAR은 활성화 분포의 극단치 지표로, 양자화 정확도 문제를 진단합니다. 루프라인·지연 지표가 아닙니다."
+        },
+        {
+          "text": "스케일이 극단치 채널에 맞춰 커져 정상 채널이 몇 단계 정수로만 표현된다",
+          "rationale": null
+        },
+        {
+          "text": "가중치를 Per-Channel로 양자화하면 활성화 극단치 문제도 함께 사라진다",
+          "rationale": "가중치 Per-Channel 양자화는 가중치 쪽 스케일 문제를 줄일 뿐, 활성화 텐서의 극단치는 그대로 남습니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "Per-Tensor 양자화는 텐서 전체에 스케일 S 하나를 씁니다. 극단치 채널 때문에 S가 커지면 작은 값들은 몇 개의 정수 단계에 몰려 표현력이 무너집니다.",
+      "explanation_full": "노트는 이 상황을 '정상 채널의 비트 유효 자릿수가 1~2비트로 축소'된다고 표현합니다. 대응은 활성화 채널별 스케일(Per-Channel, 하드웨어 지원 필요)이나 SmoothQuant로 극단치를 가중치 쪽으로 옮기는 것입니다. PAR > 15 기준은 잠정치입니다.",
+      "tags": [
+        "quantization",
+        "outlier"
+      ],
+      "terms": [
+        "peak-to-average-ratio",
+        "quantization"
+      ],
+      "source_ref": "Diagnostics/research/note/06_hardware_quantization_diagnostics/01_quantization_noise_and_sqnr.md#3.3",
+      "status": "draft"
+    },
+    {
+      "id": "H-HW-007",
+      "type": "short",
+      "chapter": "H.hw",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "활성화 X를 채널별 벡터 s로 나누고(X·diag(s)⁻¹) 가중치에는 같은 s를 곱해(diag(s)·W) 출력 XW는 그대로 두면서, 활성화의 극단치를 가중치 쪽으로 옮겨 INT8 양자화를 쉽게 만드는 기법의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "SmoothQuant"
+        ],
+        "ko": [
+          "스무스퀀트",
+          "스무드퀀트"
+        ]
+      },
+      "primary": "SmoothQuant",
+      "explanation_short": "SmoothQuant는 Y = XW = (X·diag(s)⁻¹)(diag(s)·W)라는 등가 변환으로 활성화 쪽 양자화 난이도를 가중치 쪽으로 이전합니다. 출력은 수학적으로 같습니다.",
+      "explanation_full": "스무딩 벡터는 s_j = max|X_j|^α / max|W_j|^(1−α)이며, α는 이전 강도입니다. 노트는 비전 모델에서 통상 α = 0.5를 균형점으로 봅니다. 처방 매트릭스에서 SmoothQuant는 활성화 아웃라이어(PAR_c > 15)의 2차 처방이고, 1차는 Per-Channel 양자화입니다.",
+      "tags": [
+        "quantization",
+        "smoothquant"
+      ],
+      "terms": [
+        "smoothquant"
+      ],
+      "source_ref": "Diagnostics/research/note/06_hardware_quantization_diagnostics/03_hardware_aware_prescriptions.md#2.2",
+      "status": "draft"
+    },
+    {
+      "id": "H-HW-008",
+      "type": "mcq",
+      "chapter": "H.hw",
+      "cognitive_level": 2,
+      "difficulty": 4,
+      "stem": "SmoothQuant의 스무딩 벡터 s_j = max|X_j|^α / max|W_j|^(1−α)에서 이전 강도 α를 0.5에서 0.8로 올리는 것의 의미로 옳은 것은?",
+      "choices": [
+        {
+          "text": "가중치의 극단치를 더 강하게 눌러, 양자화 난이도를 활성화 쪽으로 더 많이 옮긴다",
+          "rationale": "방향이 반대입니다. 스무딩 후 채널 j의 활성화 범위는 (max|X_j|·max|W_j|)^(1−α), 가중치 범위는 (max|X_j|·max|W_j|)^α가 되므로, α를 키우면 활성화 쪽 채널 간 차이가 더 평평해지고 가중치 쪽이 더 거칠어집니다."
+        },
+        {
+          "text": "활성화 극단치를 더 강하게 눌러, 양자화 난이도를 가중치 쪽으로 더 많이 옮긴다",
+          "rationale": null
+        },
+        {
+          "text": "양자화 비트 폭을 8비트에서 더 높은 비트로 늘린다",
+          "rationale": "α는 비트 폭이 아니라 스무딩 강도입니다. 비트 폭은 INT8 그대로입니다."
+        },
+        {
+          "text": "KL 캘리브레이션에서 쓰는 포화 임계값 T를 최댓값의 80%로 잡는다",
+          "rationale": "포화 임계값 T는 KL 캘리브레이션의 변수입니다. α와는 다른 개념입니다."
+        },
+        {
+          "text": "QAT 미세조정의 학습률을 0.8배로 줄인다",
+          "rationale": "SmoothQuant는 재학습 없는 변환으로 학습률과 관계가 없습니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "α는 양자화 난이도를 얼마나 가중치로 넘길지 정하는 이전 강도입니다. α를 키우면 활성화 쪽 극단치는 더 평평해지고 가중치 쪽 분포는 더 거칠어집니다.",
+      "explanation_full": "스무딩 후 채널 j의 범위는 활성화 max|X̂_j| = (max|X_j|·max|W_j|)^(1−α), 가중치 max|Ŵ_j| = (max|X_j|·max|W_j|)^α입니다. α = 0.5면 두 쪽이 같은 범위를 나눠 갖고, α를 0.8로 올리면 활성화 쪽 지수가 0.2로 작아져 채널 간 극단치 차이가 크게 눌리는 대신 가중치 쪽 지수가 0.8로 커집니다. 개별 s_j 값 자체는 max|X_j|가 max|W_j|보다 작은 채널에서는 α가 커질 때 오히려 줄 수도 있으므로, α의 의미는 s_j의 크기가 아니라 '채널 간 난이도를 어느 쪽이 더 떠안느냐'로 이해합니다. α가 너무 크면 가중치가 양자화하기 어려워지고, 너무 작으면 활성화 극단치가 남습니다. 노트는 비전 모델에서 통상 α = 0.5가 균형점이라고 적는데, 이는 원 논문의 경험적 권장과 같은 성격의 값으로 모델마다 α를 바꿔 가며 SQNR이나 ΔmAP로 확인하는 것이 좋습니다.",
+      "tags": [
+        "quantization",
+        "smoothquant"
+      ],
+      "terms": [
+        "smoothquant"
+      ],
+      "source_ref": "Diagnostics/research/note/06_hardware_quantization_diagnostics/03_hardware_aware_prescriptions.md#2.2",
+      "status": "draft"
+    },
+    {
+      "id": "H-HW-009",
+      "type": "mcq",
+      "chapter": "H.hw",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "가로축에 산술 연산 밀도(연산 수 / DRAM 전송 바이트), 세로축에 달성 성능을 두고, 기울어진 메모리 대역폭 한계선과 수평의 피크 연산 한계선이 꺾임점에서 만나도록 그린 성능 모델은?",
+      "choices": [
+        {
+          "text": "암달의 법칙(Amdahl's Law)",
+          "rationale": "암달의 법칙은 병렬화할 수 없는 부분이 전체 가속 한계를 정한다는 법칙입니다. 연산 밀도와 대역폭 한계선을 그리지 않습니다."
+        },
+        {
+          "text": "파레토 프런트(Pareto Front)",
+          "rationale": "파레토 프런트는 정확도-지연처럼 상충하는 목표의 최적 조합 경계입니다."
+        },
+        {
+          "text": "학습 곡선(Learning Curve)",
+          "rationale": "학습 곡선은 데이터 양이나 epoch에 따른 오차 변화를 그린 것입니다."
+        },
+        {
+          "text": "정밀도-재현율 곡선(Precision-Recall Curve)",
+          "rationale": "PR 곡선은 임계값에 따른 탐지 정밀도와 재현율의 관계입니다."
+        },
+        {
+          "text": "루프라인 모델(Roofline Model)",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "루프라인 모델은 P = min(P_peak, I × BW_mem)으로 성능 상한을 그립니다. 꺾임점 I* = P_peak / BW_mem의 왼쪽은 메모리 대역폭 한계, 오른쪽은 연산 한계 영역입니다.",
+      "explanation_full": "노트는 'FLOPs가 절반이면 속도도 두 배'라는 가정이 엣지 하드웨어에서 틀리는 이유를 루프라인으로 설명합니다. Depthwise Conv, Element-wise Add, 활성화 함수, Softmax·LayerNorm처럼 연산 밀도가 낮은 연산은 메모리 대역폭에 막혀 FLOPs를 줄여도 빨라지지 않습니다.",
+      "tags": [
+        "hardware",
+        "roofline"
+      ],
+      "terms": [
+        "roofline-model"
+      ],
+      "source_ref": "Diagnostics/research/note/06_hardware_quantization_diagnostics/02_roofline_and_latency_profiling.md#2",
+      "status": "draft"
+    },
+    {
+      "id": "H-HW-010",
+      "type": "mcq",
+      "chapter": "H.hw",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "피크 연산 성능 20 TOPS, 메모리 대역폭 100 GB/s인 엣지 NPU에서 산술 연산 밀도 I = 4 ops/Byte인 Depthwise Conv 레이어가 도달할 수 있는 이론적 성능과 병목 판정으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "Memory-Bound, 약 400 GOPS",
+          "rationale": null
+        },
+        {
+          "text": "Compute-Bound, 20 TOPS",
+          "rationale": "꺾임점 I* = 20 TOPS / 100 GB/s = 200 ops/Byte입니다. I = 4는 그보다 훨씬 작아 메모리 한계 영역입니다."
+        },
+        {
+          "text": "Memory-Bound, 20 TOPS",
+          "rationale": "메모리 한계 영역에서는 피크 연산 성능에 도달하지 못합니다. 상한은 I × BW입니다."
+        },
+        {
+          "text": "Compute-Bound, 약 400 GOPS",
+          "rationale": "성능 값은 맞지만 판정이 틀렸습니다. I < I*이면 Memory-Bound입니다."
+        },
+        {
+          "text": "Memory-Bound, 약 25 GOPS",
+          "rationale": "대역폭을 I로 나눈 값(100 / 4)입니다. 달성 가능 성능은 I × BW = 4 × 100 GB/s입니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "I* = 20×10¹² / 100×10⁹ = 200 ops/Byte이고 I = 4 < I*이므로 Memory-Bound입니다. 성능 상한은 min(20 TOPS, 4 × 100 GB/s) = 400 GOPS로, 피크의 2%에 불과합니다.",
+      "explanation_full": "계산: 4 ops/B × 100×10⁹ B/s = 4×10¹¹ ops/s = 400 GOPS. 이런 레이어는 NPU 클럭을 올려도 빨라지지 않고, 데이터 이동량을 줄이는 연산 융합·레이아웃 정리·구조적 재파라미터화가 효과적입니다. 노트의 Orin Nano 예시(68 GB/s, 40 TOPS → I* ≈ 588)처럼 정수 연산 피크(TOPS)와 대역폭으로 꺾임점을 잡을 때는 연산 단위(FLOP인지 INT8 op인지)를 맞춰 적어야 합니다.",
+      "tags": [
+        "hardware",
+        "roofline",
+        "calculation"
+      ],
+      "terms": [
+        "roofline-model",
+        "latency"
+      ],
+      "source_ref": "Diagnostics/research/note/06_hardware_quantization_diagnostics/02_roofline_and_latency_profiling.md#2.2",
+      "status": "draft"
+    },
+    {
+      "id": "H-HW-011",
+      "type": "short",
+      "chapter": "H.hw",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "엣지 추론 최적화에서, 컴파일러가 인접 연산을 하나의 커널로 합치지 못해 늘어난 DRAM 트래픽을 (비융합 트래픽 − 융합 트래픽) / 융합 트래픽으로 나타낸 노트의 지표 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Fusion Deficiency Ratio (FDR)"
+        ],
+        "ko": [
+          "오퍼레이터 융합 결손도",
+          "연산자 융합 결손도",
+          "융합 결손도"
+        ]
+      },
+      "primary": "Fusion Deficiency Ratio (FDR)",
+      "explanation_short": "FDR = (Traffic_Unfused − Traffic_Fused) / Traffic_Fused입니다. 융합하지 못해 중간 텐서를 DRAM에 불필요하게 썼다 읽은 비율을 나타냅니다.",
+      "explanation_full": "대표 예는 Conv2d + BatchNorm + SiLU가 따로 실행되는 경우입니다. 처방 매트릭스는 I < I*이면서 FDR > 1.0을 메모리 대역폭 병목으로 보고, 1차로 Conv-BN-SiLU 컴파일러 융합, 2차로 RepVGG식 구조적 재파라미터화를 권합니다(기준값은 잠정치). 통계의 FDR(False Discovery Rate, 오발견율)과 약어가 같으므로 문서에는 풀네임을 함께 씁니다. 외부와 소통할 때는 \"연산을 하나로 묶지 못해 메모리를 불필요하게 더 오간 비율\"처럼 풀어서 말하고, 통계의 FDR(오발견율)과 헷갈리지 않게 약어만 쓰지 않습니다.",
+      "tags": [
+        "hardware",
+        "fusion"
+      ],
+      "terms": [
+        "fusion-deficiency-ratio"
+      ],
+      "source_ref": "Diagnostics/research/note/06_hardware_quantization_diagnostics/02_roofline_and_latency_profiling.md#4.2",
+      "status": "draft"
+    },
+    {
+      "id": "H-HW-012",
+      "type": "mcq",
+      "chapter": "H.hw",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "SAR 선박 탐지 모델을 엣지 보드용으로 컴파일한 결과, 백본의 한 블록에서 연산을 융합했을 때 DRAM 트래픽은 40 MB, 융합하지 못한 현재 트래픽은 100 MB이며, 루프라인 분석에서 이 블록은 I < I*로 나왔다. 이 블록의 FDR과 처방 매트릭스 판정으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "FDR = 0.6, 1.0 이하라 처방 대상 아님",
+          "rationale": "(100 − 40) / 100으로 비융합 트래픽을 분모로 썼습니다. 노트의 분모는 융합 트래픽입니다."
+        },
+        {
+          "text": "FDR = 2.5, 1.0을 넘으므로 메모리 대역폭 병목 처방 대상",
+          "rationale": "100 / 40은 비융합 ÷ 융합의 단순 비입니다. FDR은 늘어난 몫(차이)을 융합 트래픽으로 나눈 값입니다."
+        },
+        {
+          "text": "FDR = 1.5, 1.0 초과라 연산 융합 처방 대상",
+          "rationale": null
+        },
+        {
+          "text": "FDR = 0.4, 1.0 이하라 처방 대상 아님",
+          "rationale": "40 / 100은 융합 ÷ 비융합의 비입니다. FDR 정의와 다릅니다."
+        },
+        {
+          "text": "FDR = 1.5, 1.0을 넘으므로 Compute-Bound 판정",
+          "rationale": "FDR은 불필요한 메모리 왕복을 재는 지표로, 높으면 메모리 쪽 병목 징후입니다. Compute-Bound와는 반대 방향입니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "FDR = (100 − 40) / 40 = 1.5입니다. 처방 매트릭스는 FDR > 1.0(그리고 I < I*)을 메모리 대역폭 병목으로 보고 1차로 Conv-BN-SiLU 컴파일러 융합을 권합니다.",
+      "explanation_full": "계산: 60 ÷ 40 = 1.5. 융합하지 못해 트래픽이 융합 대비 150% 더 발생한다는 뜻입니다. 기준 1.0은 잠정치입니다. 노트 본문에는 비융합 Conv-BN-SiLU가 '최대 300% 증가(FDR = 2.0)'한다는 예시가 있는데, 정의식으로는 FDR 2.0이 200% 증가에 해당해 본문 표현과 맞지 않으니 정의식을 기준으로 계산합니다. 외부와 소통할 때는 \"연산을 하나로 묶지 못해 메모리를 불필요하게 더 오간 비율\"처럼 풀어서 말하고, 통계의 FDR(오발견율)과 헷갈리지 않게 약어만 쓰지 않습니다.",
+      "tags": [
+        "hardware",
+        "fusion",
+        "calculation"
+      ],
+      "terms": [
+        "fusion-deficiency-ratio"
+      ],
+      "source_ref": "Diagnostics/research/note/06_hardware_quantization_diagnostics/02_roofline_and_latency_profiling.md#4.2",
+      "status": "draft"
+    },
+    {
+      "id": "H-HW-013",
+      "type": "scenario",
+      "chapter": "H.hw",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"위성 탑재 NPU용 선박 탐지 모델을 INT8 PTQ 했더니 mAP가 6%p 빠졌어. 전체를 FP16으로 되돌리지 말고, 어느 레이어 탓인지부터 찾아.\"\n\n가장 적절한 진단 절차는?",
+      "choices": [
+        {
+          "text": "전체 모델을 바로 QAT로 10 epoch 재학습한다",
+          "rationale": "QAT는 노트 SOP의 마지막 단계입니다. 어느 레이어가 원인인지 모른 채 비용이 큰 재학습부터 하는 것은 지시와 맞지 않습니다."
+        },
+        {
+          "text": "전체를 FP32로 두고 한 레이어씩만 INT8로 바꿔 ΔmAP를 재고, 레이어별 SQNR과 함께 정렬한다",
+          "rationale": null
+        },
+        {
+          "text": "캘리브레이션 영상 수를 두 배로 늘려 PTQ를 다시 돌린다",
+          "rationale": "캘리브레이션을 늘리면 나아질 수는 있지만 원인 레이어를 찾아주지 않습니다. 지시는 진단입니다."
+        },
+        {
+          "text": "루프라인 분석으로 Memory-Bound 레이어를 찾는다",
+          "rationale": "루프라인은 지연시간 병목 진단 도구입니다. 정확도 손실의 원인 레이어와는 다른 질문입니다."
+        },
+        {
+          "text": "모든 레이어에 SmoothQuant를 일괄 적용한 뒤 mAP를 다시 잰다",
+          "rationale": "SmoothQuant는 활성화 아웃라이어(PAR 초과)가 확인된 뒤 쓰는 처방입니다. 원인을 먼저 찾아야 합니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "노트의 단일 계층 민감도 주입은 전체를 FP32로 고정하고 레이어 l만 INT8로 바꿔 ΔmAP^(l)을 재는 과정을 모든 레이어에 반복한 뒤 내림차순으로 정렬합니다. SQNR 표와 함께 보면 손실을 만드는 소수 레이어가 드러납니다.",
+      "explanation_full": "노트는 개별 레이어 SQNR이 높아도 비선형 활성화를 거치며 오차가 증폭될 수 있어 SQNR만으로는 부족하다고 봅니다. 또 상위 소수(노트는 5%로 예시) 민감 레이어가 전체 양자화 손실의 대부분을 차지한다고 주장하는데, 이는 모델마다 확인해야 할 경험적 관찰입니다. 찾은 레이어는 다음 단계에서 FP16으로 남깁니다(혼합 정밀도).",
+      "tags": [
+        "quantization",
+        "sensitivity",
+        "satellite"
+      ],
+      "terms": [
+        "sqnr",
+        "post-training-quantization"
+      ],
+      "source_ref": "Diagnostics/research/note/06_hardware_quantization_diagnostics/01_quantization_noise_and_sqnr.md#4",
+      "status": "draft"
+    },
+    {
+      "id": "H-HW-014",
+      "type": "scenario",
+      "chapter": "H.hw",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"레이어별 SQNR 뽑았어. 첫 Conv가 12 dB, 검출 헤드 마지막 Conv가 18 dB, 나머지는 전부 30 dB 이상이야. 노트 SOP 1단계의 SQNR 기준대로 정밀도 할당해.\"\n\n가장 적절한 할당은?",
+      "choices": [
+        {
+          "text": "첫 Conv만 FP16(15 dB 미만), 나머지는 모두 INT8",
+          "rationale": "15 dB 미만은 노트 01장의 '치명' 구간이지만, SOP 1단계와 혼합 정밀도 규칙은 SQNR < 25 dB 레이어를 FP16으로 둡니다. 18 dB 헤드도 대상입니다."
+        },
+        {
+          "text": "정확도가 중요하므로 모델 전체를 FP16으로 되돌린다",
+          "rationale": "혼합 정밀도의 목적은 소수 민감 레이어만 FP16으로 남기고 나머지의 INT8 가속을 지키는 것입니다."
+        },
+        {
+          "text": "30 dB 이상 레이어를 FP16으로, 12·18 dB 레이어를 INT8로 둔다",
+          "rationale": "기준을 반대로 적용했습니다. SQNR이 낮은 레이어가 양자화 손실이 큰 레이어입니다."
+        },
+        {
+          "text": "두 레이어에 SmoothQuant를 적용하고 모두 INT8로 둔다",
+          "rationale": "SmoothQuant는 SOP 2단계로 PAR 초과 아웃라이어 채널이 확인됐을 때의 처방입니다. 지시는 1단계 정밀도 할당입니다."
+        },
+        {
+          "text": "첫 Conv와 검출 헤드 마지막 Conv는 FP16, 나머지는 INT8",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "노트의 혼합 정밀도 규칙은 SQNR_l < 25 dB 또는 S_l > 0.01(ΔmAP > 1%)인 레이어를 FP16, 나머지를 INT8로 둡니다. 12 dB와 18 dB 레이어 모두 25 dB 미만이므로 FP16 대상입니다.",
+      "explanation_full": "노트는 입력 첫 Conv(채널이 3개뿐이고 동적 범위가 민감)와 최종 예측 헤드(박스 좌표·로짓을 직접 계산해 반올림 오차가 위치 편향으로 이어짐)를 원래부터 FP16 유지 권장 계층으로 꼽습니다. 25 dB 기준은 잠정치입니다. 참고로 01장에는 '15 dB 미만 = FP16 강제 지정 대상'이라는 표현도 있어 두 기준이 다르게 읽힐 수 있습니다.",
+      "tags": [
+        "quantization",
+        "mixed-precision"
+      ],
+      "terms": [
+        "sqnr",
+        "quantization"
+      ],
+      "source_ref": "Diagnostics/research/note/06_hardware_quantization_diagnostics/03_hardware_aware_prescriptions.md#2.1",
+      "status": "draft"
+    },
+    {
+      "id": "H-HW-015",
+      "type": "scenario",
+      "chapter": "H.hw",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"드론 정사영상 토지피복 SegFormer INT8 변환본에서 PAR_c가 40 넘는 채널이 여럿이야. 1차 처방은 보드에서 지원이 안 돼. 처방 매트릭스 2차로 가.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "활성화 텐서를 채널별 스케일(Per-Channel)로 양자화한다",
+          "rationale": "Per-Channel 양자화는 활성화 아웃라이어의 1차 처방입니다. 지시는 1차가 보드에서 지원되지 않아 2차로 가라는 것입니다."
+        },
+        {
+          "text": "LSQ 기반 QAT로 가변 스텝 사이즈를 학습한다",
+          "rationale": "LSQ는 특정 레이어 양자화 붕괴(SQNR < 25 dB) 행의 2차 처방이자 SOP 마지막 단계입니다."
+        },
+        {
+          "text": "RepVGG 방식 구조적 재파라미터화로 분기를 하나의 3×3 Conv로 합친다",
+          "rationale": "구조적 재파라미터화는 메모리 대역폭 병목(FDR > 1.0) 처방입니다."
+        },
+        {
+          "text": "SmoothQuant를 α = 0.5부터 적용해 활성화 극단치를 가중치 쪽으로 옮긴다",
+          "rationale": null
+        },
+        {
+          "text": "텐서 레이아웃을 NHWC로 통일한다",
+          "rationale": "NHWC 일원화는 텐서 형상 불연속(TCI > 0.15) 처방입니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "처방 매트릭스에서 활성화 아웃라이어(PAR_c > 15)의 1차 처방은 Per-Channel 양자화, 2차 처방은 SmoothQuant(α = 0.5)입니다. SmoothQuant는 출력은 그대로 두고 극단치를 가중치 쪽으로 옮겨 Per-Tensor INT8도 가능하게 합니다.",
+      "explanation_full": "활성화의 채널별 스케일은 하드웨어·런타임이 지원해야 쓸 수 있어, 엣지 보드에서는 막히는 경우가 있습니다. SmoothQuant는 오프라인 가중치 변환이므로 런타임 변경 없이 적용할 수 있다는 장점이 있습니다. PAR 15, α 0.5는 노트의 잠정 기준·권장값이며 적용 후 SQNR과 ΔmAP로 효과를 확인합니다.",
+      "tags": [
+        "quantization",
+        "smoothquant",
+        "drone"
+      ],
+      "terms": [
+        "smoothquant",
+        "peak-to-average-ratio"
+      ],
+      "source_ref": "Diagnostics/research/note/06_hardware_quantization_diagnostics/03_hardware_aware_prescriptions.md#4",
+      "status": "draft"
+    },
+    {
+      "id": "H-HW-016",
+      "type": "scenario",
+      "chapter": "H.hw",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"Jetson에서 FLOPs를 절반으로 줄인 경량 건물 탐지 모델이 속도가 거의 그대로야. 프로파일 보니 Depthwise Conv랑 Element-wise Add가 시간 대부분이고, Conv-BN-SiLU도 따로따로 실행되고 있어. 원인 정리하고 조치 잡아.\"\n\n가장 적절한 해석과 조치는?",
+      "choices": [
+        {
+          "text": "Memory-Bound가 원인이니 Conv-BN-SiLU 융합·재파라미터화로 DRAM 트래픽을 줄인다",
+          "rationale": null
+        },
+        {
+          "text": "연산 코어가 부족한 Compute-Bound 상태이므로 GPU·NPU 클럭과 전력 모드를 최대로 올린다",
+          "rationale": "Depthwise Conv·Element-wise 연산은 연산 밀도가 매우 낮은 Memory-Bound 연산입니다. 클럭을 올려도 DRAM 전송에 막혀 빨라지지 않습니다."
+        },
+        {
+          "text": "채널 수를 더 줄여 FLOPs를 다시 절반으로 줄이면 이번에는 속도도 비례해서 빨라진다",
+          "rationale": "이미 FLOPs 감소가 속도로 이어지지 않는 상황입니다. 병목이 데이터 이동이면 FLOPs를 더 줄여도 효과가 작습니다."
+        },
+        {
+          "text": "배치 크기를 1로 줄여 한 장당 지연을 줄인다",
+          "rationale": "배치 크기는 병목의 원인(비융합 연산의 메모리 왕복)을 바꾸지 않습니다."
+        },
+        {
+          "text": "SQNR을 측정해 민감 레이어를 FP16으로 되돌린다",
+          "rationale": "SQNR·혼합 정밀도는 양자화 정확도 진단 도구입니다. 지시는 지연시간 문제입니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "Depthwise Conv(I ≈ 1~5)와 Element-wise 연산(I ≈ 0.1~0.5)은 꺾임점보다 한참 낮은 Memory-Bound 연산이라 FLOPs를 줄여도 속도가 거의 안 바뀝니다. 연산을 따로 실행하면 중간 텐서가 DRAM을 오가므로(FDR 증가) 융합과 재파라미터화가 효과적입니다.",
+      "explanation_full": "처방 매트릭스는 I < I*, FDR > 1.0을 메모리 대역폭 병목으로 보고 1차로 Conv-BN-SiLU 컴파일러 융합, 2차로 RepVGG식 구조적 재파라미터화(W_fused = W_3×3 + Pad(W_1×1) + Pad(I))를 제시합니다. 노트는 지연 30~50% 단축을 기대 효과로 적는데, 이는 노트의 목표치입니다. 먼저 루프라인 효율 η_roof와 FDR을 재서 예상 효과를 가늠합니다. 외부와 소통할 때는 \"연산을 하나로 묶지 못해 메모리를 불필요하게 더 오간 비율\"처럼 풀어서 말하고, 통계의 FDR(오발견율)과 헷갈리지 않게 약어만 쓰지 않습니다.",
+      "tags": [
+        "hardware",
+        "roofline",
+        "fusion"
+      ],
+      "terms": [
+        "roofline-model",
+        "fusion-deficiency-ratio"
+      ],
+      "source_ref": "Diagnostics/research/note/06_hardware_quantization_diagnostics/03_hardware_aware_prescriptions.md#4",
+      "status": "draft"
+    },
+    {
+      "id": "H-HW-017",
+      "type": "scenario",
+      "chapter": "H.hw",
+      "cognitive_level": 3,
+      "difficulty": 2,
+      "stem": "지시: \"드론 탑재 엣지 보드용 양식장 탐지 모델을 채널 가지치기했더니 처리 효율이 오히려 떨어졌어. 레이어 채널 수가 61, 45, 93 이런 식이야. 노트의 정렬 제약식대로 다시 맞춰.\"\n\n다시 맞춘 채널 수로 옳은 것은?",
+      "choices": [
+        {
+          "text": "64, 48, 96 (가장 가까운 16의 배수로 반올림)",
+          "rationale": "노트의 제약식은 ⌊C_target / 16⌋ × 16, 즉 내림입니다. 가지치기 목표보다 채널을 늘리지 않습니다."
+        },
+        {
+          "text": "60, 40, 90 (10의 배수로 내림)",
+          "rationale": "10의 배수는 Tensor Core·NPU 벡터 폭과 맞지 않습니다. 노트는 16의 배수를 요구합니다."
+        },
+        {
+          "text": "48, 32, 80 (16의 배수로 내림)",
+          "rationale": null
+        },
+        {
+          "text": "32, 32, 64 (2의 거듭제곱으로 내림)",
+          "rationale": "2의 거듭제곱일 필요는 없습니다. 16의 배수면 되므로 48, 80처럼 더 많은 채널을 남길 수 있습니다."
+        },
+        {
+          "text": "61, 45, 93 그대로 두고 레이아웃만 NHWC로 바꾼다",
+          "rationale": "레이아웃 변경은 텐서 형상 불연속(TCI) 대응입니다. 16의 배수가 아닌 채널 수는 하드웨어 내부 제로 패딩을 그대로 유발합니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "노트는 C_pruned = ⌊C_target / 16⌋ × 16을 필수 제약으로 둡니다. ⌊61/16⌋ × 16 = 48, ⌊45/16⌋ × 16 = 32, ⌊93/16⌋ × 16 = 80입니다.",
+      "explanation_full": "계산: 61 ÷ 16 = 3.8 → 3 × 16 = 48, 45 ÷ 16 = 2.8 → 2 × 16 = 32, 93 ÷ 16 = 5.8 → 5 × 16 = 80. 노트는 16의 배수가 아닌 채널 수가 하드웨어 내부의 무의미한 제로 패딩을 일으켜 루프라인 효율 η_roof를 20~30% 떨어뜨린다고 적는데, 이 폭은 장비마다 다른 경험치입니다. 요구되는 배수(8·16·32)는 하드웨어 사양서에서 확인합니다.",
+      "tags": [
+        "hardware",
+        "pruning",
+        "calculation"
+      ],
+      "terms": [
+        "roofline-model"
+      ],
+      "source_ref": "Diagnostics/research/note/06_hardware_quantization_diagnostics/03_hardware_aware_prescriptions.md#2.4",
+      "status": "draft"
+    }
+  ]
+}

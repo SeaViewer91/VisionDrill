@@ -1,0 +1,747 @@
+{
+  "format": "visiondrill-bank-exchange",
+  "format_version": 1,
+  "terms": [
+    {
+      "id": "stereo-baseline",
+      "term_en": "Stereo Baseline",
+      "term_ko": "스테레오 기선",
+      "abbreviation": "B",
+      "definition": "스테레오 촬영에서 두 카메라(또는 두 촬영 위치)의 투영 중심 사이 거리. 촬영 거리(높이) H에 대한 비율 B/H가 높이 정밀도와 정합 난이도를 좌우한다",
+      "usage_example": "이번 입체쌍은 B/H가 0.2도 안 돼서 건물 높이 정밀도가 안 나올 거야. 기선 긴 쌍 있는지 찾아봐.",
+      "origin": "standard",
+      "track": "D"
+    },
+    {
+      "id": "disparity",
+      "term_en": "Disparity",
+      "term_ko": "시차",
+      "abbreviation": "d",
+      "definition": "정류된 좌우 스테레오 영상에서 같은 지점의 가로 좌표 차이. 깊이와 반비례한다(Z = f·B/d)",
+      "usage_example": "시차 지도에서 값이 0인 구멍들은 정합 실패야. 깊이로 바꾸기 전에 마스킹해.",
+      "origin": "standard",
+      "track": "D"
+    },
+    {
+      "id": "epipolar-geometry",
+      "term_en": "Epipolar Geometry",
+      "term_ko": "에피폴라 기하",
+      "abbreviation": null,
+      "definition": "두 카메라로 같은 장면을 볼 때의 투영 기하 관계. 한 영상의 점에 대응하는 점은 다른 영상의 특정 직선(에피폴라 선) 위에 있다",
+      "usage_example": "대응점이 위아래로 어긋나 있으면 에피폴라 정렬이 깨진 거야. 정류부터 다시 해.",
+      "origin": "standard",
+      "track": "D"
+    },
+    {
+      "id": "stereo-matching",
+      "term_en": "Stereo Matching",
+      "term_ko": "스테레오 정합",
+      "abbreviation": null,
+      "definition": "스테레오 영상쌍에서 같은 지점을 찾아 픽셀별 시차(또는 높이)를 계산하는 과정. SGM(Semi-Global Matching)이 대표적이다",
+      "usage_example": "수면이랑 그림자는 스테레오 정합이 안 되니까 결과 DSM에서 따로 마스크 쳐.",
+      "origin": "standard",
+      "track": "D"
+    },
+    {
+      "id": "digital-surface-model",
+      "term_en": "Digital Surface Model",
+      "term_ko": "수치표면모델",
+      "abbreviation": "DSM",
+      "definition": "건물·수목 등 지표 위 물체의 높이를 포함한 최상단 표면의 고도 모델",
+      "usage_example": "건물 높이 뽑으려면 DSM에서 DTM 빼서 nDSM 만들어.",
+      "origin": "standard",
+      "track": "D"
+    },
+    {
+      "id": "digital-terrain-model",
+      "term_en": "Digital Terrain Model",
+      "term_ko": "수치지형모델",
+      "abbreviation": "DTM",
+      "definition": "건물·수목 등 지표 위 물체를 제거한 맨땅(bare earth) 지표의 고도 모델",
+      "usage_example": "홍수 범람 시뮬레이션은 건물 빠진 DTM 기준으로 돌려야 해.",
+      "origin": "standard",
+      "track": "D"
+    },
+    {
+      "id": "digital-elevation-model",
+      "term_en": "Digital Elevation Model",
+      "term_ko": "수치표고모델",
+      "abbreviation": "DEM",
+      "definition": "지표 고도를 규칙적인 격자(래스터)로 저장한 수치 고도 모델을 통칭하는 용어. 기관에 따라 맨땅 모델(DTM)과 같은 뜻으로 쓰기도 한다",
+      "usage_example": "정사보정용 DEM이 30 m라 산악 지역 고해상도 영상엔 거칠어. 5 m급으로 바꿔.",
+      "origin": "standard",
+      "track": "D"
+    }
+  ],
+  "questions": [
+    {
+      "id": "D-STR-001",
+      "type": "short",
+      "chapter": "D.str",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "스테레오 촬영에서 두 카메라(또는 두 촬영 위치)의 투영 중심 사이 거리를 무엇이라 하는가? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Baseline",
+          "Stereo baseline",
+          "Air base"
+        ],
+        "ko": [
+          "기선",
+          "기선 길이",
+          "스테레오 기선",
+          "베이스라인",
+          "촬영 기선"
+        ]
+      },
+      "primary": "Baseline",
+      "explanation_short": "기선(baseline, B)은 두 시점 사이 거리입니다. 기선이 길수록 같은 깊이 차이에 대해 시차가 크게 생겨 깊이(높이) 정밀도가 좋아집니다.",
+      "explanation_full": "항공·위성 사진측량에서는 기선과 촬영 높이의 비 B/H를 입체 기하의 핵심 지표로 봅니다. 드론 사진측량에서는 진행 방향 중복도(예: 80%)가 사진 간 기선 길이를 정합니다.",
+      "tags": [
+        "stereo"
+      ],
+      "terms": [
+        "stereo-baseline"
+      ],
+      "source_ref": "Mikhail et al., Introduction to Modern Photogrammetry",
+      "status": "draft"
+    },
+    {
+      "id": "D-STR-002",
+      "type": "mcq",
+      "chapter": "D.str",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "스테레오 촬영에서 촬영 높이(H)는 그대로 두고 기선(B)을 늘려 B/H 비를 키우면 일반적으로 어떤 변화가 생기는가?",
+      "choices": [
+        {
+          "text": "시차가 오히려 작아져서 높이 정밀도가 전반적으로 떨어진다",
+          "rationale": "기선이 길수록 같은 높이 차이에 대한 시차가 커지므로 높이 정밀도는 좋아집니다."
+        },
+        {
+          "text": "높이 정밀도는 좋아지지만, 두 영상의 겉모습 차이와 가림이 커져 정합이 어려울 수 있다",
+          "rationale": null
+        },
+        {
+          "text": "높이 정밀도와 정합 성공률이 둘 다 조건 없이 함께 좋아진다",
+          "rationale": "시점 차이가 커질수록 건물 옆면·가려진 영역이 서로 달라져 정합 실패가 늘 수 있습니다. 둘 다 좋아지기만 하지는 않습니다."
+        },
+        {
+          "text": "기선 길이는 시차와 무관하므로 높이 정밀도에 아무 영향이 없다",
+          "rationale": "Z = f·B/d에서 보듯 기선은 시차 크기를 직접 결정합니다."
+        },
+        {
+          "text": "두 영상의 시차가 모두 0이 되어 깊이를 계산할 수 없게 된다",
+          "rationale": "시차가 0이 되는 것은 기선이 0일 때(같은 위치에서 촬영)입니다. 기선을 늘리면 시차는 커집니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "기선이 길면 같은 높이 차이가 더 큰 시차로 나타나 높이 정밀도가 좋아집니다. 반면 시점 차이가 커져 가림(occlusion)과 외관 차이가 늘어나 정합이 어려워지는 상충 관계가 있습니다.",
+      "explanation_full": "위성 입체 영상은 대상 지형에 맞춰 B/H를 고르며, 도심처럼 고층 건물이 많은 곳은 가림을 줄이려고 B/H를 작게 잡기도 합니다. 여러 시점을 함께 쓰는 멀티뷰 스테레오는 이 상충을 완화하는 방법입니다.",
+      "tags": [
+        "stereo"
+      ],
+      "terms": [
+        "stereo-baseline"
+      ],
+      "source_ref": "Mikhail et al., Introduction to Modern Photogrammetry; Szeliski, Computer Vision: Algorithms and Applications 2판 12장",
+      "status": "draft"
+    },
+    {
+      "id": "D-STR-003",
+      "type": "short",
+      "chapter": "D.str",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "정류(rectify)된 좌우 스테레오 영상에서 같은 지점의 가로 좌표 차이(x_left − x_right)를 무엇이라 하는가? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Disparity",
+          "Parallax",
+          "Stereo disparity",
+          "x-parallax"
+        ],
+        "ko": [
+          "시차",
+          "양안 시차",
+          "디스패리티",
+          "x 시차"
+        ]
+      },
+      "primary": "Disparity",
+      "explanation_short": "시차(disparity, d)는 같은 점이 두 영상에서 가로로 얼마나 떨어져 찍혔는지입니다. 가까운 물체일수록 시차가 크고, 먼 물체일수록 작습니다.",
+      "explanation_full": "깊이와 시차는 Z = f·B/d로 반비례합니다. 사진측량에서는 같은 개념을 x-시차(x-parallax)라고 부르며, 남는 y 방향 어긋남(y-parallax)은 정류·표정이 잘못되었다는 신호입니다.",
+      "tags": [
+        "stereo"
+      ],
+      "terms": [
+        "disparity"
+      ],
+      "source_ref": "Szeliski, Computer Vision: Algorithms and Applications 2판 12장",
+      "status": "draft"
+    },
+    {
+      "id": "D-STR-004",
+      "type": "mcq",
+      "chapter": "D.str",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "고정형 스테레오 카메라의 초점거리가 f = 1,400 px, 기선이 B = 12 cm이다. 어떤 점의 시차가 d = 28 px일 때 이 점까지의 깊이 Z는?",
+      "choices": [
+        {
+          "text": "0.0024 m",
+          "rationale": "B·d/f = 0.12 × 28 / 1,400으로 공식을 뒤집어 계산했습니다. 깊이는 f·B/d입니다."
+        },
+        {
+          "text": "600 m",
+          "rationale": "기선을 m로 바꾸지 않고 12(cm)를 그대로 넣은 값입니다(1,400 × 12 / 28)."
+        },
+        {
+          "text": "12.0 m",
+          "rationale": "시차를 절반인 14 px로 넣은 값입니다. 절반 해상도에서 구한 시차를 원해상도로 환산하지 않을 때 흔히 생기는 실수입니다."
+        },
+        {
+          "text": "416.7 m",
+          "rationale": "f / (B·d) = 1,400 / 3.36으로 계산한 값입니다. 기선이 분모가 아니라 분자에 들어가야 합니다."
+        },
+        {
+          "text": "6.0 m",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "Z = f·B/d = 1,400 × 0.12 / 28 = 168 / 28 = 6.0 m입니다. 초점거리와 시차를 모두 픽셀 단위로 쓰면 깊이는 기선과 같은 단위(m)로 나옵니다.",
+      "explanation_full": "단위를 맞추는 것이 핵심입니다. f와 d는 같은 단위(픽셀), B는 원하는 결과 단위(m)로 둡니다. 영상 크기를 줄여 시차를 계산했다면 그 배율만큼 시차(또는 f)를 환산해야 합니다. 이 관계는 드론 영상·수중 스테레오 계측에서도 그대로 쓰입니다.",
+      "tags": [
+        "stereo",
+        "calculation"
+      ],
+      "terms": [
+        "disparity",
+        "stereo-baseline"
+      ],
+      "source_ref": "Szeliski, Computer Vision: Algorithms and Applications 2판 12장",
+      "status": "draft"
+    },
+    {
+      "id": "D-STR-005",
+      "type": "mcq",
+      "chapter": "D.str",
+      "cognitive_level": 2,
+      "difficulty": 4,
+      "stem": "같은 스테레오 장비(f, B 고정)로 측정할 때, 대상까지의 거리가 2배가 되면 시차 1픽셀 오차가 만드는 깊이 오차는 대략 몇 배가 되는가?",
+      "choices": [
+        {
+          "text": "1/2배",
+          "rationale": "거리가 멀어질수록 시차가 작아져 같은 픽셀 오차가 더 큰 깊이 오차가 됩니다. 줄어들지 않습니다."
+        },
+        {
+          "text": "2배",
+          "rationale": "깊이 오차는 거리에 비례하는 것이 아니라 거리의 제곱에 비례합니다."
+        },
+        {
+          "text": "4배",
+          "rationale": null
+        },
+        {
+          "text": "변하지 않는다",
+          "rationale": "Z = f·B/d는 비선형이라 같은 시차 오차라도 거리에 따라 깊이 오차가 달라집니다."
+        },
+        {
+          "text": "√2배",
+          "rationale": "제곱근 관계는 이 식에서 나오지 않습니다. ΔZ ∝ Z²입니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "Z = f·B/d를 d로 미분하면 |ΔZ| ≈ Z²/(f·B)·Δd입니다. 거리 Z가 2배면 깊이 오차는 2² = 4배가 됩니다.",
+      "explanation_full": "그래서 멀리 있는 대상일수록 깊이 정밀도가 급격히 나빠집니다. 정밀도를 높이려면 기선 B나 초점거리 f를 키우거나, 서브픽셀 정합으로 Δd를 줄입니다. 위성 입체 영상에서 높이 정밀도를 B/H 비로 이야기하는 것도 같은 관계에서 나옵니다.",
+      "tags": [
+        "stereo",
+        "calculation"
+      ],
+      "terms": [
+        "disparity",
+        "stereo-baseline"
+      ],
+      "source_ref": "Szeliski, Computer Vision: Algorithms and Applications 2판 12장",
+      "status": "draft"
+    },
+    {
+      "id": "D-STR-006",
+      "type": "mcq",
+      "chapter": "D.str",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "스테레오 영상에서 한 영상의 점에 대응하는 점이 다른 영상에서 반드시 놓이게 되는 직선을 무엇이라 하는가?",
+      "choices": [
+        {
+          "text": "에피폴라 선(epipolar line)",
+          "rationale": null
+        },
+        {
+          "text": "기선(baseline)",
+          "rationale": "기선은 두 카메라 투영 중심을 잇는 3D 선분입니다. 에피폴라 선들은 기선이 영상면과 만나는 점(에피폴)을 지나지만 기선 자체와는 다릅니다."
+        },
+        {
+          "text": "광축(optical axis, 카메라의 중심 시선)",
+          "rationale": "광축은 투영 중심에서 영상면에 수직으로 나가는 카메라의 중심선입니다."
+        },
+        {
+          "text": "소실선(vanishing line)",
+          "rationale": "소실선은 한 평면 위 평행선들의 소실점이 모여 이루는 선으로, 대응점 탐색과 관계없습니다."
+        },
+        {
+          "text": "등고선(contour line)",
+          "rationale": "등고선은 같은 고도를 잇는 지도 위의 선입니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "3D 점, 두 투영 중심이 이루는 평면(에피폴라 평면)이 각 영상면과 만나는 선이 에피폴라 선입니다. 대응점은 반드시 이 선 위에 있으므로 탐색을 2차원에서 1차원으로 줄일 수 있습니다.",
+      "explanation_full": "에피폴라 기하는 기본행렬 F(보정되지 않은 카메라) 또는 본질행렬 E(내부 파라미터를 아는 카메라)로 표현됩니다. 대응점 x, x′에 대해 x′ᵀFx = 0이 성립합니다. 푸시브룸 위성영상은 에피폴라 '선'이 엄밀하게는 곡선에 가까워 별도 근사를 씁니다.",
+      "tags": [
+        "stereo",
+        "epipolar"
+      ],
+      "terms": [
+        "epipolar-geometry"
+      ],
+      "source_ref": "Hartley & Zisserman, Multiple View Geometry 2판 9~11장",
+      "status": "draft"
+    },
+    {
+      "id": "D-STR-007",
+      "type": "mcq",
+      "chapter": "D.str",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "스테레오 정류(rectification)를 하는 주된 목적은?",
+      "choices": [
+        {
+          "text": "두 영상의 밝기 차이를 맞춰 정합 비용 계산을 안정시키기 위해",
+          "rationale": "밝기 차이 보정은 방사 처리이며 정류와 다릅니다. 정류는 기하학적 재배열입니다."
+        },
+        {
+          "text": "물리적 기선 길이를 늘려 깊이 정밀도를 높이기 위해",
+          "rationale": "정류는 영상을 다시 투영할 뿐 실제 카메라 사이 거리(기선)를 바꾸지 못합니다."
+        },
+        {
+          "text": "두 영상을 지도 좌표계의 정사영상으로 바꾸기 위해",
+          "rationale": "정사영상 생성은 DEM이 필요한 정사보정입니다. 정류는 두 영상을 서로 맞출 뿐 지도 좌표로 보내지 않습니다."
+        },
+        {
+          "text": "에피폴라 선을 수평 행과 일치시켜 대응점 탐색을 같은 행 안에서 하기 위해",
+          "rationale": null
+        },
+        {
+          "text": "모든 점의 시차를 0으로 만들어 깊이 계산을 생략하기 위해",
+          "rationale": "시차가 0이면 깊이 정보가 사라집니다. 정류 후에도 시차는 그대로 남아 깊이 계산에 쓰입니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "정류는 두 영상을 가상의 평행 카메라 배치로 다시 투영해 에피폴라 선을 모두 수평 행으로 맞춥니다. 그러면 대응점은 같은 행에 있으므로 가로 방향 1차원 탐색만 하면 되고, 시차도 가로 좌표 차이로 단순해집니다.",
+      "explanation_full": "OpenCV의 stereoRectify·initUndistortRectifyMap이 이 과정을 수행합니다. 정류가 잘못되면 대응점이 위아래로 어긋나 SGBM 같은 행 기반 정합이 크게 실패합니다. 위성 입체 영상에서는 에피폴라 영상(epipolar image) 생성이 같은 역할을 합니다.",
+      "tags": [
+        "stereo",
+        "epipolar"
+      ],
+      "terms": [
+        "epipolar-geometry"
+      ],
+      "source_ref": "Hartley & Zisserman, Multiple View Geometry 2판 9~11장; OpenCV 문서 calib3d stereoRectify",
+      "status": "draft"
+    },
+    {
+      "id": "D-STR-008",
+      "type": "short",
+      "chapter": "D.str",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "스테레오 영상쌍에서 같은 지점을 찾아 픽셀마다 시차(또는 높이)를 계산해 시차 지도를 만드는 과정을 무엇이라 하는가? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Stereo matching",
+          "Dense matching",
+          "Stereo correspondence",
+          "Dense image matching"
+        ],
+        "ko": [
+          "스테레오 정합",
+          "스테레오 매칭",
+          "조밀 정합",
+          "밀집 정합",
+          "양안 정합"
+        ]
+      },
+      "primary": "Stereo matching",
+      "explanation_short": "스테레오 정합은 정류된 영상쌍에서 픽셀마다 대응점을 찾아 시차 지도를 만드는 과정입니다. 결과 시차는 Z = f·B/d로 깊이나 높이로 바뀝니다.",
+      "explanation_full": "특징점 몇 개만 맞추는 특징 매칭과 달리 모든 픽셀의 대응을 구하는 조밀(dense) 정합입니다. 원격탐사·사진측량에서는 SGM(Semi-Global Matching)과 그 변형이 DSM 생성의 표준처럼 쓰입니다.",
+      "tags": [
+        "stereo",
+        "matching"
+      ],
+      "terms": [
+        "stereo-matching"
+      ],
+      "source_ref": "Hirschmüller (2008), Stereo Processing by Semiglobal Matching and Mutual Information, IEEE TPAMI",
+      "status": "draft"
+    },
+    {
+      "id": "D-STR-009",
+      "type": "mcq",
+      "chapter": "D.str",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "위성 입체 영상으로 스테레오 정합을 할 때, 정합이 가장 실패하기 쉬운 영역은?",
+      "choices": [
+        {
+          "text": "모서리가 뚜렷한 건물 지붕의 코너",
+          "rationale": "코너는 두 방향으로 밝기 변화가 있어 위치가 잘 정해지는, 정합에 유리한 지점입니다."
+        },
+        {
+          "text": "차선 표시가 선명한 도로 교차로",
+          "rationale": "차선·교차 구조는 텍스처가 풍부해 대응점을 찾기 쉽습니다."
+        },
+        {
+          "text": "암석이 드러나 불규칙한 무늬가 있는 노두(outcrop)",
+          "rationale": "불규칙한 무늬는 위치마다 모양이 달라 정합에 유리합니다."
+        },
+        {
+          "text": "크기·모양이 제각각인 논밭 경계가 교차하는 농경지",
+          "rationale": "경계 모양이 제각각이면 반복 패턴 문제가 적고 텍스처가 충분합니다."
+        },
+        {
+          "text": "바람이 없어 잔잔하고 균일한 넓은 호수 수면",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "스테레오 정합은 주변 밝기 패턴이 비슷한 곳을 찾는 방식이라, 텍스처가 거의 없는 균일한 수면에서는 어느 위치든 비슷해 보여 대응점을 정하지 못합니다. 수면 반사도 두 시점에서 달라져 오류를 키웁니다.",
+      "explanation_full": "정합 실패 영역은 텍스처 없는 곳(수면, 눈, 균일한 지붕), 반복 패턴(양식장 격자, 태양광 패널), 가림(건물 뒤편), 그림자 등입니다. 이런 곳은 DSM에 구멍이나 스파이크로 나타나므로, 수계 마스크 등으로 후처리합니다.",
+      "tags": [
+        "stereo",
+        "matching"
+      ],
+      "terms": [
+        "stereo-matching"
+      ],
+      "source_ref": "Hirschmüller (2008), Stereo Processing by Semiglobal Matching and Mutual Information, IEEE TPAMI; Szeliski, Computer Vision: Algorithms and Applications 2판 12장",
+      "status": "draft"
+    },
+    {
+      "id": "D-STR-010",
+      "type": "short",
+      "chapter": "D.str",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "건물·수목 등 지표 위 물체의 높이까지 포함한 최상단 표면의 고도를 나타내는 모델의 이름은? (영문 약어 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Digital Surface Model (DSM)"
+        ],
+        "ko": [
+          "수치표면모델",
+          "수치표면모형",
+          "표면 모델"
+        ]
+      },
+      "primary": "Digital Surface Model (DSM)",
+      "explanation_short": "DSM(수치표면모델)은 위에서 내려다본 첫 번째 표면, 즉 건물 지붕·나무 꼭대기 높이를 담습니다. 스테레오 정합이나 LiDAR 첫 반사로 바로 얻어지는 것이 DSM입니다.",
+      "explanation_full": "스테레오 영상은 눈에 보이는 표면만 볼 수 있으므로 정합 결과는 본질적으로 DSM입니다. 맨땅 모델(DTM)은 DSM에서 건물·식생을 걸러내는 필터링을 거쳐 만듭니다.",
+      "tags": [
+        "elevation-model"
+      ],
+      "terms": [
+        "digital-surface-model"
+      ],
+      "source_ref": "Mikhail et al., Introduction to Modern Photogrammetry; ASPRS DEM Users Manual",
+      "status": "draft"
+    },
+    {
+      "id": "D-STR-011",
+      "type": "short",
+      "chapter": "D.str",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "DSM(수치표면모델)과 짝을 이루어, 건물·수목 등을 제거한 맨땅(bare earth) 지표의 높이만 나타내는 모델의 이름은? (영문 약어 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Digital Terrain Model (DTM)",
+          "Bare-earth model",
+          "Bare-earth DEM"
+        ],
+        "ko": [
+          "수치지형모델",
+          "수치지형모형",
+          "맨땅 모델"
+        ]
+      },
+      "primary": "Digital Terrain Model (DTM)",
+      "explanation_short": "DTM(수치지형모델)은 지표 위 물체를 걷어낸 맨땅 높이입니다. 홍수 범람 분석, 경사 분석, 정사보정용 지형 입력 등에 씁니다.",
+      "explanation_full": "기관·국가에 따라 DEM을 맨땅 모델과 같은 뜻으로 쓰는 경우도 있어, 데이터를 받을 때 '건물·식생이 제거된 것인지'를 메타데이터로 꼭 확인해야 합니다. DSM − DTM은 지상 물체 높이(nDSM)가 됩니다.",
+      "tags": [
+        "elevation-model"
+      ],
+      "terms": [
+        "digital-terrain-model"
+      ],
+      "source_ref": "Mikhail et al., Introduction to Modern Photogrammetry; ASPRS DEM Users Manual",
+      "status": "draft"
+    },
+    {
+      "id": "D-STR-012",
+      "type": "mcq",
+      "chapter": "D.str",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "지표 고도를 규칙적인 격자(래스터)로 저장한 수치 고도 모델을 통칭하는 용어는?",
+      "choices": [
+        {
+          "text": "TIN(불규칙 삼각망)",
+          "rationale": "TIN은 불규칙하게 배치된 점을 삼각형으로 이은 벡터 구조로, 규칙적인 격자가 아닙니다."
+        },
+        {
+          "text": "DEM(수치표고모델)",
+          "rationale": null
+        },
+        {
+          "text": "nDSM(정규화 수치표면모델)",
+          "rationale": "nDSM은 DSM − DTM으로 얻은 지상 물체의 높이로, 지표 고도 자체가 아닙니다."
+        },
+        {
+          "text": "등고선도(contour map)",
+          "rationale": "등고선도는 같은 고도를 잇는 선(벡터)으로 지형을 표현한 지도입니다."
+        },
+        {
+          "text": "시차 지도(disparity map)",
+          "rationale": "시차 지도는 픽셀별 시차 값을 담은 격자로, 고도로 변환하기 전 단계의 중간 결과입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "DEM(Digital Elevation Model, 수치표고모델)은 격자 형태의 고도 데이터를 부르는 가장 일반적인 이름입니다. 그 안에 표면을 담은 DSM과 맨땅을 담은 DTM이 구분됩니다.",
+      "explanation_full": "용어 사용이 기관마다 조금씩 달라, DEM을 맨땅 모델만 가리키는 말로 쓰는 경우도 많습니다. SRTM·Copernicus DEM처럼 레이더·광학으로 만든 전 지구 DEM은 실제로는 식생·건물 영향이 섞인 표면에 가까울 수 있어 용도에 맞게 확인합니다.",
+      "tags": [
+        "elevation-model"
+      ],
+      "terms": [
+        "digital-elevation-model"
+      ],
+      "source_ref": "ASPRS DEM Users Manual; 국토지리정보원 수치표고모델 설명",
+      "status": "draft"
+    },
+    {
+      "id": "D-STR-013",
+      "type": "mcq",
+      "chapter": "D.str",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "DSM에서 DTM을 뺀 값(DSM − DTM)으로 얻는 것은?",
+      "choices": [
+        {
+          "text": "지표면의 경사도(slope)와 경사 방향 분포",
+          "rationale": "경사도는 한 고도 모델의 인접 격자 간 고도 변화율로 계산하며, 두 모델의 차이가 아닙니다."
+        },
+        {
+          "text": "두 시기 사이 지형의 변화량",
+          "rationale": "시기별 변화량은 서로 다른 시기의 같은 종류 모델끼리 뺀 것(DoD)입니다. DSM과 DTM은 같은 시기의 서로 다른 표면입니다."
+        },
+        {
+          "text": "건물·수목 등 지상 물체의 높이(nDSM)",
+          "rationale": null
+        },
+        {
+          "text": "해수면을 기준으로 한 맨땅의 고도",
+          "rationale": "해수면 기준 맨땅 고도는 DTM 자체입니다. 빼기 결과가 아닙니다."
+        },
+        {
+          "text": "좌우 영상 사이의 시차 지도",
+          "rationale": "시차 지도는 DSM을 만들기 전 정합 단계의 결과입니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "DSM은 지붕·나무 꼭대기 높이, DTM은 그 아래 맨땅 높이이므로 둘을 빼면 지표 위 물체의 높이만 남습니다. 이를 정규화 DSM(nDSM)이라 합니다.",
+      "explanation_full": "건물 높이 추출, 산림 수고(canopy height) 추정, 불법 건축물 탐지 등에 쓰입니다. DTM을 잘못 만들면(예: 넓은 건물을 땅으로 남김) nDSM에서 그 건물이 0 m로 사라지므로, DTM 필터링 품질을 함께 점검합니다.",
+      "tags": [
+        "elevation-model"
+      ],
+      "terms": [
+        "digital-surface-model",
+        "digital-terrain-model"
+      ],
+      "source_ref": "ASPRS DEM Users Manual",
+      "status": "draft"
+    },
+    {
+      "id": "D-STR-014",
+      "type": "mcq",
+      "chapter": "D.str",
+      "cognitive_level": 2,
+      "difficulty": 4,
+      "stem": "DTM으로 정사보정한 도심 고해상도 위성영상에서 고층 건물이 여전히 한쪽으로 기울어져 보이고, 지붕이 건물 바닥 위치에서 벗어나 있다. 이유로 옳은 것은?",
+      "choices": [
+        {
+          "text": "DTM 해상도가 너무 높아서 건물 부분이 과보정되었기 때문",
+          "rationale": "해상도가 높다고 과보정이 생기지는 않습니다. 해상도와 관계없이 DTM에는 건물 높이가 들어 있지 않다는 점이 핵심입니다."
+        },
+        {
+          "text": "쌍선형 보간 때문에 건물 경계가 흐려졌기 때문",
+          "rationale": "보간은 경계를 약간 흐리게 할 뿐, 지붕이 바닥에서 몇 m씩 벗어나는 기울어짐을 만들지 않습니다."
+        },
+        {
+          "text": "RPC가 건물 높이를 이미 포함하고 있어 이중 보정되었기 때문",
+          "rationale": "RPC는 센서 기하 모델일 뿐 건물 높이 정보를 담지 않습니다."
+        },
+        {
+          "text": "DTM에는 건물 높이가 없어 지붕의 기복 변위가 보정되지 않았기 때문",
+          "rationale": null
+        },
+        {
+          "text": "대기보정을 하지 않아 건물 그림자가 그대로 남았기 때문",
+          "rationale": "그림자는 태양 방향에 따른 밝기 현상이며, 대기보정 여부와도 관계가 없습니다. 기울어짐은 기하 문제입니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "정사보정은 입력한 고도 모델의 높이만큼만 기복 변위를 없앱니다. DTM은 맨땅 높이라 지붕이 실제보다 낮다고 보고 처리되므로, 지붕은 촬영 방향으로 밀린 채 남아 건물이 기울어 보입니다.",
+      "explanation_full": "건물까지 바로 세우려면 DSM으로 정사보정하고 가려진 영역(건물 뒤편)을 다른 영상으로 채우는 트루 정사영상(true ortho)이 필요합니다. 일반 정사영상에서 건물 외곽선을 추출할 때는 지붕이 아니라 바닥 위치를 기준으로 삼아야 지도와 맞습니다.",
+      "tags": [
+        "elevation-model",
+        "orthorectification"
+      ],
+      "terms": [
+        "digital-terrain-model",
+        "digital-surface-model",
+        "digital-elevation-model"
+      ],
+      "source_ref": "Mikhail et al., Introduction to Modern Photogrammetry",
+      "status": "draft"
+    },
+    {
+      "id": "D-STR-015",
+      "type": "mcq",
+      "chapter": "D.str",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "위성이 같은 궤도에서 앞쪽·뒤쪽을 차례로 바라보며 찍은 궤도 방향(along-track) 입체 영상쌍이, 다른 날 다른 궤도에서 찍은 영상쌍보다 정합에 유리한 주된 이유는?",
+      "choices": [
+        {
+          "text": "두 영상의 촬영 시각 차이가 짧아 지표 상태·조명 변화가 거의 없어서",
+          "rationale": null
+        },
+        {
+          "text": "기선을 원하는 만큼 무한히 늘릴 수 있어서 시차가 항상 충분히 크게 나와서",
+          "rationale": "궤도 방향 입체도 센서가 기울일 수 있는 각도 한계 때문에 B/H가 제한됩니다."
+        },
+        {
+          "text": "태양 고도가 서로 크게 달라 그림자로 입체감이 더 강조되어서",
+          "rationale": "같은 궤도에서 짧은 시간 안에 찍으므로 태양 조건은 거의 같습니다. 조명이 크게 다르면 오히려 정합이 어려워집니다."
+        },
+        {
+          "text": "두 영상이 같은 시선 각도로 찍혀 가림이 전혀 생기지 않아서",
+          "rationale": "시선 각도가 같으면 시차가 생기지 않아 입체 영상이 되지 않습니다. 앞·뒤 시선이 다르기 때문에 가림도 생길 수 있습니다."
+        },
+        {
+          "text": "센서가 SAR라서 구름을 투과해 두 영상 모두 맑게 찍혀서",
+          "rationale": "궤도 방향 광학 입체는 SAR가 아니라 광학 센서로 촬영합니다. 구름은 여전히 영향을 줍니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "궤도 방향 입체는 수십 초~수 분 사이에 두 영상을 찍으므로 식생·수면·그림자·차량 등이 거의 변하지 않습니다. 반면 다른 날짜의 궤도 교차(across-track) 입체는 그 사이 지표·조명 변화 때문에 정합 오류가 늘어납니다.",
+      "explanation_full": "고해상도 광학 위성은 자세를 기울여 같은 궤도에서 입체쌍이나 삼중 입체(tri-stereo)를 찍는 경우가 많습니다. 시간차 입체쌍을 써야 한다면 계절·태양 조건이 비슷한 영상을 고르는 것이 좋습니다.",
+      "tags": [
+        "stereo",
+        "satellite"
+      ],
+      "terms": [
+        "stereo-matching"
+      ],
+      "source_ref": "Mikhail et al., Introduction to Modern Photogrammetry; Szeliski, Computer Vision: Algorithms and Applications 2판 12장",
+      "status": "draft"
+    },
+    {
+      "id": "D-STR-016",
+      "type": "scenario",
+      "chapter": "D.str",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"위성 입체쌍으로 만든 DSM에서 저수지 수면에 구멍이랑 뾰족한 스파이크가 잔뜩 있어. 건물 높이 뽑기 전에 정리해.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "기선이 더 긴 입체쌍으로 재촬영을 요청한다",
+          "rationale": "수면 정합 실패의 원인은 텍스처가 없다는 점이라, 기선을 늘려도 해결되지 않습니다."
+        },
+        {
+          "text": "시차 탐색 범위를 두 배로 늘려 다시 정합한다",
+          "rationale": "탐색 범위를 넓히면 오히려 텍스처 없는 영역에서 엉뚱한 후보가 더 많아져 스파이크가 늘 수 있습니다."
+        },
+        {
+          "text": "수계 마스크(NDWI 등)로 수면을 무효 처리하고 수면 높이를 평탄하게 채운다",
+          "rationale": null
+        },
+        {
+          "text": "DSM 전체를 쌍선형으로 한 번 더 리샘플링해서 튀는 스파이크를 부드럽게 만든다",
+          "rationale": "보간은 스파이크를 주변으로 번지게 할 뿐 제거하지 못하고, 건물 경계 높이까지 뭉개 건물 높이 추출을 망칩니다."
+        },
+        {
+          "text": "DSM 대신 같은 입체쌍으로 만든 DTM을 쓰면 수면 문제가 사라진다",
+          "rationale": "DTM은 DSM에서 필터링해 만들기 때문에 수면의 정합 실패를 그대로 물려받습니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "수면은 텍스처가 없어 스테레오 정합이 실패하는 대표 영역입니다. 수계 마스크로 해당 영역을 무효 처리하고, 호안(물가) 높이 등으로 일정한 수면 높이를 채우는 수면 평탄화(hydro-flattening)가 표준적인 후처리입니다.",
+      "explanation_full": "수계 마스크는 같은 영상의 NDWI나 기존 수계 벡터로 만들 수 있습니다. 수면 외의 고립 스파이크는 메디안 필터나 주변 대비 이상치 제거로 처리합니다. 후처리 영역은 품질 마스크로 남겨 두어 나중에 분석에서 구분할 수 있게 합니다.",
+      "tags": [
+        "stereo",
+        "elevation-model"
+      ],
+      "terms": [
+        "stereo-matching",
+        "digital-surface-model"
+      ],
+      "source_ref": "Hirschmüller (2008), Stereo Processing by Semiglobal Matching and Mutual Information, IEEE TPAMI; ASPRS DEM Users Manual (hydro-flattening)",
+      "status": "draft"
+    },
+    {
+      "id": "D-STR-017",
+      "type": "scenario",
+      "chapter": "D.str",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"드론 사진 두 장으로 SGBM 시차 지도 뽑는데 결과가 엉망이야. 대응점 몇 개 찍어 보니 같은 점이 위아래로 15픽셀씩 어긋나 있어.\"\n\n가장 먼저 할 조치는?",
+      "choices": [
+        {
+          "text": "최대 시차(numDisparities) 값을 두 배로 늘려 다시 돌린다",
+          "rationale": "최대 시차는 가로 방향 탐색 범위입니다. 세로로 어긋난 대응점은 가로 탐색을 넓혀도 찾을 수 없습니다."
+        },
+        {
+          "text": "스테레오 정류를 다시 해 에피폴라 선이 수평 행과 맞는지 확인한다",
+          "rationale": null
+        },
+        {
+          "text": "정합 블록 크기를 키워 잡음에 덜 민감하게 만든다",
+          "rationale": "블록을 키우면 잡음은 줄지만 같은 행에 대응점이 없다는 근본 문제는 그대로입니다."
+        },
+        {
+          "text": "기선을 줄이기 위해 더 가까이 붙은 사진 쌍을 고른다",
+          "rationale": "기선을 줄여도 정류가 틀려 있으면 세로 어긋남은 남고, 깊이 정밀도만 떨어집니다."
+        },
+        {
+          "text": "결과 시차 지도에 메디안 필터를 걸어 튀는 값을 지운다",
+          "rationale": "후처리 필터는 증상만 가릴 뿐, 정류 실패로 생긴 잘못된 시차를 바로잡지 못합니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "SGBM 같은 정합기는 정류된 영상에서 대응점이 같은 행에 있다고 가정하고 가로로만 탐색합니다. 세로로 15픽셀 어긋났다는 것은 정류(에피폴라 정렬)가 틀렸다는 신호이므로, 캘리브레이션·상대 자세 추정과 정류부터 다시 합니다.",
+      "explanation_full": "정류 품질은 대응점들의 세로 좌표 차이(y-시차)가 1픽셀 이내인지로 간단히 확인할 수 있습니다. 드론처럼 두 사진의 자세가 자유로운 경우 특징점 매칭으로 기본행렬·상대 자세를 추정한 뒤 정류하며, 렌즈 왜곡 보정도 이 단계에 포함합니다.",
+      "tags": [
+        "stereo",
+        "epipolar"
+      ],
+      "terms": [
+        "epipolar-geometry",
+        "stereo-matching"
+      ],
+      "source_ref": "Hartley & Zisserman, Multiple View Geometry 2판 9~11장; OpenCV 문서 calib3d StereoSGBM",
+      "status": "draft"
+    }
+  ]
+}

@@ -1,0 +1,668 @@
+{
+  "format": "visiondrill-bank-exchange",
+  "format_version": 1,
+  "terms": [
+    {
+      "id": "anchor-box",
+      "term_en": "Anchor Box",
+      "term_ko": "앵커 박스",
+      "abbreviation": null,
+      "definition": "특징 맵의 각 위치에 미리 깔아 두는 정해진 크기·종횡비의 기준 박스. 탐지기는 이 박스를 기준으로 클래스와 좌표 보정량(오프셋)을 예측한다",
+      "usage_example": "부표 데이터는 COCO보다 박스가 훨씬 작으니까 앵커 크기부터 라벨 분포에 맞춰 다시 잡아.",
+      "origin": "standard",
+      "track": "F"
+    },
+    {
+      "id": "anchor-free-detection",
+      "term_en": "Anchor-free Detection",
+      "term_ko": "앵커 프리 탐지",
+      "abbreviation": null,
+      "definition": "미리 정한 앵커 박스 없이 특징 맵의 각 위치(점)를 기준으로 객체 여부와 박스(경계까지 거리나 크기)를 직접 예측하는 탐지 방식. FCOS, CenterNet, YOLOX, YOLOv8 등이 해당한다",
+      "usage_example": "앵커 프리로 바꿨다고 할당이나 NMS가 없어지는 건 아니야. 할당 규칙은 그대로 확인해.",
+      "origin": "standard",
+      "track": "F"
+    },
+    {
+      "id": "label-assignment",
+      "term_en": "Label Assignment",
+      "term_ko": "라벨 할당",
+      "abbreviation": null,
+      "definition": "학습 시 각 예측 후보(앵커·특징 맵 위치)를 어느 정답 객체의 양성으로 볼지, 음성(배경)으로 볼지, 무시할지 정하는 과정",
+      "usage_example": "소형 선박 recall이 낮으면 모델 구조 바꾸기 전에 라벨 할당에서 양성이 몇 개 붙는지부터 찍어봐.",
+      "origin": "standard",
+      "track": "F"
+    },
+    {
+      "id": "iou-based-assignment",
+      "term_en": "IoU-based Assignment",
+      "term_ko": "IoU 기반 할당",
+      "abbreviation": null,
+      "definition": "앵커와 정답 박스의 IoU를 임계값과 비교해 양성·음성·무시를 고정적으로 정하는 할당 방식(예: Faster R-CNN RPN의 0.7/0.3 규칙)",
+      "usage_example": "IoU 기반 할당이라 대각선으로 누운 방파제는 앵커랑 IoU가 안 나와서 양성이 거의 없어.",
+      "origin": "standard",
+      "track": "F"
+    },
+    {
+      "id": "simota",
+      "term_en": "SimOTA",
+      "term_ko": "SimOTA",
+      "abbreviation": "SimOTA",
+      "definition": "YOLOX가 쓰는 동적 라벨 할당. 정답마다 후보 예측들의 분류·회귀 비용을 계산하고, 예측 IoU로 정한 개수(dynamic k)만큼 비용이 낮은 예측을 양성으로 고른다. 최적 수송 기반 할당(OTA)을 단순화한 것",
+      "usage_example": "YOLOX는 SimOTA라 에폭마다 양성 수가 달라지는 게 정상이야. 버그로 보지 마.",
+      "origin": "standard",
+      "track": "F"
+    },
+    {
+      "id": "task-alignment-learning",
+      "term_en": "Task Alignment Learning",
+      "term_ko": "태스크 정렬 학습",
+      "abbreviation": "TAL",
+      "definition": "분류 점수와 예측 박스의 IoU를 결합한 정렬 지표가 높은 예측을 양성으로 고르고 손실에도 반영해, 분류 점수가 높은 예측이 위치도 정확하도록 맞추는 방법. TOOD에서 제안되었고 YOLOv8 등이 할당기로 채택했다",
+      "usage_example": "YOLOv8 할당은 TAL이라 분류 점수랑 IoU가 둘 다 높은 앵커만 양성이 돼. 앵커 크기 튜닝은 의미 없어.",
+      "origin": "standard",
+      "track": "F"
+    }
+  ],
+  "questions": [
+    {
+      "id": "F-ANC-001",
+      "type": "short",
+      "chapter": "F.anc",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "특징 맵의 각 위치에 미리 깔아 두는 정해진 크기·종횡비의 기준 박스로, 탐지기가 이 박스에 대한 좌표 보정량(오프셋)을 예측하게 되는 것의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Anchor box",
+          "Anchor",
+          "Prior box",
+          "Default box"
+        ],
+        "ko": [
+          "앵커 박스",
+          "앵커",
+          "기준 박스"
+        ]
+      },
+      "primary": "Anchor box",
+      "explanation_short": "앵커 박스(anchor box)는 탐지기가 박스를 처음부터 예측하지 않고 '기준 박스를 얼마나 옮기고 늘릴지'만 예측하도록 미리 깔아 두는 박스입니다. SSD에서는 default box, 일부 문헌에서는 prior box라고도 부릅니다.",
+      "explanation_full": "Faster R-CNN, SSD, RetinaNet, YOLOv2~v5 등이 앵커 기반입니다. 한 위치에 크기 3종 × 종횡비 3종처럼 여러 개를 두고, 각 앵커가 클래스 점수와 (Δx, Δy, Δw, Δh)를 예측합니다. 원격탐사 데이터는 COCO보다 객체가 훨씬 작거나 길쭉한 경우가 많아 앵커를 그대로 쓰면 성능이 떨어지기 쉽습니다.",
+      "tags": [
+        "detection",
+        "anchor"
+      ],
+      "terms": [
+        "anchor-box"
+      ],
+      "source_ref": "Ren et al., Faster R-CNN (NeurIPS 2015) 3.1절",
+      "status": "draft"
+    },
+    {
+      "id": "F-ANC-002",
+      "type": "short",
+      "chapter": "F.anc",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "학습 단계에서 각 예측 후보(앵커나 특징 맵 위치)를 어느 정답 객체의 양성으로 볼지, 음성(배경)으로 볼지, 학습에서 무시할지 정하는 과정을 무엇이라 하는가? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Label assignment",
+          "Target assignment",
+          "Sample assignment"
+        ],
+        "ko": [
+          "라벨 할당",
+          "레이블 할당",
+          "정답 할당",
+          "샘플 할당"
+        ]
+      },
+      "primary": "Label assignment",
+      "explanation_short": "라벨 할당(label assignment)은 '어떤 예측 후보가 어떤 정답을 맞혀야 하는가'를 정하는 학습 단계의 규칙입니다. 양성으로 할당된 후보만 박스 회귀 손실을 받습니다.",
+      "explanation_full": "IoU 임계값으로 고정적으로 정하는 정적 할당(Faster R-CNN, RetinaNet)과, 학습 중 모델 예측 품질을 반영해 매번 다시 정하는 동적 할당(SimOTA, TAL)이 있습니다. 소형 객체는 할당 단계에서 양성을 거의 받지 못해 학습 신호가 부족해지는 경우가 많으므로, 성능이 안 나올 때 정답별 양성 개수를 찍어 보는 것이 좋은 첫 진단입니다.",
+      "tags": [
+        "detection",
+        "assignment"
+      ],
+      "terms": [
+        "label-assignment"
+      ],
+      "source_ref": "Zhang et al., ATSS (CVPR 2020) 1절",
+      "status": "draft"
+    },
+    {
+      "id": "F-ANC-003",
+      "type": "short",
+      "chapter": "F.anc",
+      "cognitive_level": 1,
+      "difficulty": 3,
+      "stem": "YOLOX에서 쓰는 동적 라벨 할당으로, 최적 수송(OT) 기반 할당을 단순화해 정답마다 비용이 가장 낮은 예측 k개를 양성으로 고르되 k를 예측 IoU로 정하는 방식의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "SimOTA",
+          "Simplified OTA",
+          "Simplified Optimal Transport Assignment"
+        ],
+        "ko": [
+          "심오타",
+          "단순화 OTA",
+          "단순화된 최적 수송 할당"
+        ]
+      },
+      "primary": "SimOTA",
+      "explanation_short": "SimOTA는 OTA(Optimal Transport Assignment)의 반복 최적화를 생략하고 정답별 상위 k개만 고르는 방식으로 단순화한 동적 할당입니다. YOLOX가 제안해 널리 알려졌습니다.",
+      "explanation_full": "비용은 분류 손실과 회귀(IoU) 손실의 가중합이며, 정답 중심 근처에 있지 않은 후보에는 큰 비용을 줘 사실상 제외합니다. 한 예측이 여러 정답에 동시에 뽑히면 비용이 가장 낮은 정답 하나에만 배정합니다.",
+      "tags": [
+        "detection",
+        "assignment"
+      ],
+      "terms": [
+        "simota"
+      ],
+      "source_ref": "Ge et al., YOLOX (arXiv 2021) 2.2절",
+      "status": "draft"
+    },
+    {
+      "id": "F-ANC-004",
+      "type": "short",
+      "chapter": "F.anc",
+      "cognitive_level": 1,
+      "difficulty": 3,
+      "stem": "TOOD에서 제안되어 YOLOv8 등이 할당기로 채택한 방법으로, 분류 점수와 예측 박스 IoU를 결합한 정렬 지표가 높은 앵커를 양성으로 고르는 라벨 할당·학습 방식의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Task Alignment Learning (TAL)",
+          "Task-aligned assigner",
+          "Task-aligned assignment"
+        ],
+        "ko": [
+          "태스크 정렬 학습",
+          "태스크 정렬 할당",
+          "작업 정렬 학습"
+        ]
+      },
+      "primary": "Task Alignment Learning (TAL)",
+      "explanation_short": "TAL(Task Alignment Learning)은 분류와 위치 추정이라는 두 태스크의 품질이 함께 높은 예측을 양성으로 골라, 분류 점수가 높은 박스가 위치도 정확하도록 맞춥니다.",
+      "explanation_full": "정렬 지표는 t = s^α · u^β (s: 분류 점수, u: 정답과의 IoU)입니다. 정답마다 박스 안에 중심이 있는 앵커 중 t가 큰 상위 m개를 양성으로 뽑고, t를 정규화해 분류 손실의 목표값으로도 씁니다. 구현에 따라 α, β, m 기본값이 다르므로 설정 파일에서 확인합니다.",
+      "tags": [
+        "detection",
+        "assignment"
+      ],
+      "terms": [
+        "task-alignment-learning"
+      ],
+      "source_ref": "Feng et al., TOOD (ICCV 2021) 3.2절",
+      "status": "draft"
+    },
+    {
+      "id": "F-ANC-005",
+      "type": "mcq",
+      "chapter": "F.anc",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "앵커 프리(anchor-free) 탐지의 뜻으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "박스를 출력하지 않고 객체마다 픽셀 마스크만 출력한다",
+          "rationale": "마스크를 내는 것은 분할 태스크의 특징입니다. 앵커 프리 탐지기도 박스를 출력합니다."
+        },
+        {
+          "text": "미리 정한 앵커 박스 없이 특징 맵의 각 위치를 기준으로 박스를 직접 예측한다",
+          "rationale": null
+        },
+        {
+          "text": "정답 라벨 없이 영상만으로 객체를 찾도록 자기지도 학습한다",
+          "rationale": "라벨이 없다는 뜻이 아닙니다. 앵커 프리 탐지기도 정답 박스로 지도 학습합니다."
+        },
+        {
+          "text": "학습을 시작할 때 앵커 크기를 데이터 분포에 맞춰 자동으로 다시 계산하는 기능(autoanchor)을 쓴다",
+          "rationale": "자동 앵커 조정(autoanchor)은 여전히 앵커를 쓰는 앵커 기반 방식의 보조 기능입니다."
+        },
+        {
+          "text": "박스 좌표는 예측하지 않고 영상에 들어 있는 클래스 목록만 출력한다",
+          "rationale": "클래스 목록만 내는 것은 (다중 라벨) 분류입니다. 앵커 프리 탐지기도 박스 좌표를 예측합니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "앵커 프리는 앵커 박스라는 '기준 박스'를 두지 않는다는 뜻입니다. 특징 맵의 한 점에서 객체 중심 여부와 경계까지의 거리(또는 박스 크기)를 바로 예측합니다.",
+      "explanation_full": "FCOS는 각 점에서 박스 네 변까지의 거리(l, t, r, b)를, CenterNet은 중심점 히트맵과 크기를 예측합니다. YOLOX·YOLOv8도 앵커 프리입니다. 앵커 크기·종횡비라는 하이퍼파라미터가 사라져 원격탐사처럼 객체 크기 분포가 COCO와 다른 데이터에 적용하기 편하다는 장점이 있습니다.",
+      "tags": [
+        "detection",
+        "anchor"
+      ],
+      "terms": [
+        "anchor-free-detection"
+      ],
+      "source_ref": "Tian et al., FCOS (ICCV 2019)",
+      "status": "draft"
+    },
+    {
+      "id": "F-ANC-006",
+      "type": "mcq",
+      "chapter": "F.anc",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "Faster R-CNN의 RPN처럼 IoU 기반 할당을 쓰는 탐지기에서 앵커를 나누는 일반적인 규칙으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "정답과 IoU가 0.3 이상인 앵커는 양성, 0.7 미만인 앵커는 음성으로 두고, 두 구간이 겹치는 앵커는 양성을 우선한다",
+          "rationale": "임계값의 방향이 뒤바뀌었습니다. 이렇게 하면 IoU 0.3~0.7의 애매한 앵커까지 모두 양성이 되고 무시 구간도 사라집니다. 실제 규칙은 IoU가 높은 앵커를 양성, 낮은 앵커를 음성으로 둡니다."
+        },
+        {
+          "text": "모델이 예측한 신뢰도 점수가 높은 앵커를 양성으로, 낮은 앵커를 음성으로 둔다",
+          "rationale": "모델 예측을 반영하는 것은 SimOTA·TAL 같은 동적 할당의 특징입니다. IoU 기반 할당은 앵커와 정답의 기하 관계만 봅니다."
+        },
+        {
+          "text": "정답 박스 안에 중심이 들어간 앵커는 IoU와 상관없이 모두 양성으로 둔다",
+          "rationale": "중심 포함 여부로 정하는 것은 FCOS 같은 위치 기반 할당에 가깝습니다. IoU 기반 할당은 IoU 임계값을 씁니다."
+        },
+        {
+          "text": "정답과 IoU가 높은 앵커(예: 0.7 이상)는 양성, 낮은 앵커(예: 0.3 미만)는 음성, 그 사이는 무시한다",
+          "rationale": null
+        },
+        {
+          "text": "모든 앵커를 양성으로 두고 IoU에 비례하는 가중치로 손실을 계산한다",
+          "rationale": "모든 앵커를 양성으로 두면 배경을 학습할 음성 샘플이 없어집니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "IoU 기반 할당은 앵커와 정답 박스의 IoU만 보고 양성·음성을 정합니다. 애매한 중간 구간은 학습에서 빼서 잘못된 신호를 막습니다.",
+      "explanation_full": "Faster R-CNN RPN은 IoU 0.7 이상 또는 각 정답과 IoU가 가장 높은 앵커를 양성, 0.3 미만을 음성으로 둡니다. RetinaNet은 0.5/0.4를 씁니다. 대각선으로 누운 길쭉한 객체는 축 정렬 앵커와 IoU가 잘 나오지 않아 양성이 부족해지기 쉬우므로, 이런 데이터에서는 '정답마다 최대 IoU 앵커는 양성' 규칙이 중요합니다.",
+      "tags": [
+        "detection",
+        "assignment"
+      ],
+      "terms": [
+        "iou-based-assignment",
+        "iou"
+      ],
+      "source_ref": "Ren et al., Faster R-CNN (NeurIPS 2015) 3.1.2절",
+      "status": "draft"
+    },
+    {
+      "id": "F-ANC-007",
+      "type": "mcq",
+      "chapter": "F.anc",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "앵커 박스의 크기·종횡비를 학습 데이터에 맞게 정하는 방법으로 널리 알려진 것은?",
+      "choices": [
+        {
+          "text": "학습 라벨 박스의 중심 좌표를 k-means로 군집해 자주 나오는 위치를 앵커로 쓴다",
+          "rationale": "앵커는 특징 맵 모든 위치에 깔리므로 위치가 아니라 모양(너비·높이)을 정해야 합니다."
+        },
+        {
+          "text": "클래스마다 박스 평균 면적을 구해 그 크기의 정사각형 앵커 하나씩을 쓴다",
+          "rationale": "평균 면적 하나로는 같은 클래스 안의 크기·종횡비 다양성을 반영하지 못합니다."
+        },
+        {
+          "text": "입력 해상도의 1/2, 1/4, 1/8 크기 정사각형 세 가지를 데이터와 무관하게 모든 과제에 고정해서 쓴다",
+          "rationale": "데이터 분포를 전혀 보지 않는 방법입니다. 원격탐사처럼 객체가 작으면 대부분의 앵커가 쓸모없어집니다."
+        },
+        {
+          "text": "학습 라벨 박스에 NMS를 적용해 남은 박스들을 그대로 앵커 목록으로 쓴다",
+          "rationale": "NMS는 예측 중복을 지우는 후처리입니다. 라벨 박스에 적용해도 대표 크기를 뽑는 방법이 되지 않습니다."
+        },
+        {
+          "text": "학습 라벨 박스의 너비·높이를 1−IoU 거리로 k-means 군집해 군집 중심을 앵커로 쓴다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "YOLOv2가 제안한 방법으로, 라벨 박스의 (너비, 높이)를 거리 d = 1 − IoU로 k-means 군집합니다. 유클리드 거리를 쓰면 큰 박스의 오차가 과하게 반영되므로 IoU를 거리로 씁니다.",
+      "explanation_full": "군집 개수 k는 앵커 수(예: 3개 스케일 × 3개)에 맞춥니다. 라벨 박스는 반드시 학습 입력 크기로 리사이즈한 뒤의 픽셀 크기로 환산해 군집해야 합니다. 이후 '각 정답과 가장 잘 맞는 앵커의 IoU' 분포를 확인해 앵커가 데이터를 잘 덮는지 점검합니다.",
+      "tags": [
+        "detection",
+        "anchor"
+      ],
+      "terms": [
+        "anchor-box"
+      ],
+      "source_ref": "Redmon & Farhadi, YOLO9000 (CVPR 2017) 2절 Dimension Clusters",
+      "status": "draft"
+    },
+    {
+      "id": "F-ANC-008",
+      "type": "mcq",
+      "chapter": "F.anc",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "앵커 기반 탐지기와 앵커 프리 탐지기의 차이로 옳은 것은?",
+      "choices": [
+        {
+          "text": "앵커 기반은 기준 박스에 대한 보정량을 회귀하고, 앵커 프리는 위치별로 박스를 직접 회귀해 앵커 크기·비율 설정이 없다",
+          "rationale": null
+        },
+        {
+          "text": "앵커 프리 탐지기는 기준 박스가 없으므로 학습 시 라벨 할당 단계도 필요 없다",
+          "rationale": "앵커 프리 탐지기도 어떤 위치가 어떤 정답의 양성인지 정해야 하므로 할당이 필요합니다(FCOS의 중심 영역 규칙, YOLOX의 SimOTA 등)."
+        },
+        {
+          "text": "앵커 프리 탐지기는 중복 박스를 내지 않으므로 추론 후처리에서 NMS가 필요 없다",
+          "rationale": "FCOS·YOLOX·YOLOv8 같은 대표적 앵커 프리 탐지기도 NMS를 씁니다. 앵커 프리와 NMS-free는 다른 개념입니다."
+        },
+        {
+          "text": "앵커 기반 탐지기는 앵커보다 작은 객체를 구조적으로 탐지할 수 없다",
+          "rationale": "앵커는 기준일 뿐이며 오프셋으로 크기를 줄일 수 있습니다. 다만 앵커와 차이가 크면 학습이 어려워집니다."
+        },
+        {
+          "text": "앵커 프리 탐지기는 FPN 같은 다중 스케일 특징 맵을 함께 쓸 수 없다",
+          "rationale": "FCOS는 FPN의 여러 레벨에 객체 크기별로 할당하는 대표적인 앵커 프리 구조입니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "차이는 '기준 박스를 두느냐'입니다. 앵커 프리는 앵커 크기·종횡비 하이퍼파라미터가 없을 뿐, 라벨 할당과 NMS는 여전히 필요합니다.",
+      "explanation_full": "앵커 프리로 바꾸면 앵커 설계 부담은 사라지지만 할당 규칙(어느 위치를 양성으로 볼지)의 영향이 더 커집니다. ATSS 논문은 앵커 기반과 앵커 프리의 성능 차이가 주로 라벨 할당 방식의 차이에서 온다는 점을 보였습니다.",
+      "tags": [
+        "detection",
+        "anchor"
+      ],
+      "terms": [
+        "anchor-free-detection",
+        "anchor-box"
+      ],
+      "source_ref": "Tian et al., FCOS (ICCV 2019); Zhang et al., ATSS (CVPR 2020)",
+      "status": "draft"
+    },
+    {
+      "id": "F-ANC-009",
+      "type": "mcq",
+      "chapter": "F.anc",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "IoU 기반 할당 같은 정적 할당과 SimOTA·TAL 같은 동적 할당의 핵심 차이로 옳은 것은?",
+      "choices": [
+        {
+          "text": "동적 할당은 추론할 때마다 정답과 예측을 다시 짝지어 최종 박스를 고른다",
+          "rationale": "라벨 할당은 학습 단계에서만 쓰입니다. 추론 때는 정답이 없으므로 할당을 하지 않습니다."
+        },
+        {
+          "text": "동적 할당은 음성(배경) 샘플을 두지 않고 모든 후보를 양성으로만 학습한다",
+          "rationale": "동적 할당에서도 양성으로 뽑히지 않은 후보는 음성(배경)으로 학습됩니다."
+        },
+        {
+          "text": "동적 할당은 학습 중 모델의 현재 예측(분류 점수·예측 박스 IoU)을 반영하므로 같은 정답에 붙는 양성이 학습 진행에 따라 바뀐다",
+          "rationale": null
+        },
+        {
+          "text": "정적 할당은 앵커 프리 탐지기에서만, 동적 할당은 앵커 기반 탐지기에서만 쓸 수 있다",
+          "rationale": "관계가 없습니다. 예컨대 FCOS는 앵커 프리이면서 정적 할당이고, YOLOX는 앵커 프리이면서 동적 할당입니다."
+        },
+        {
+          "text": "동적 할당은 정답 박스 없이 예측 점수만으로 양성·음성을 정한다",
+          "rationale": "동적 할당도 정답 박스와의 IoU·비용을 계산합니다. 다만 예측 품질을 함께 본다는 점이 다릅니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "정적 할당은 앵커와 정답의 기하 관계만으로 할당이 한 번 정해지면 바뀌지 않습니다. 동적 할당은 매 반복마다 모델의 예측 품질을 비용에 넣어 다시 정하므로 양성이 학습 중에 바뀝니다.",
+      "explanation_full": "동적 할당은 '지금 모델이 잘 맞히고 있는 후보'를 양성으로 밀어주므로 분류 점수와 위치 품질이 잘 맞는 예측을 얻기 쉽습니다. 반면 학습 초반 예측이 엉망일 때 할당이 불안정할 수 있어, 중심 영역 제한(center prior) 같은 기하 조건을 함께 둡니다.",
+      "tags": [
+        "detection",
+        "assignment"
+      ],
+      "terms": [
+        "label-assignment",
+        "iou-based-assignment"
+      ],
+      "source_ref": "Ge et al., YOLOX (arXiv 2021); Feng et al., TOOD (ICCV 2021)",
+      "status": "draft"
+    },
+    {
+      "id": "F-ANC-010",
+      "type": "mcq",
+      "chapter": "F.anc",
+      "cognitive_level": 2,
+      "difficulty": 4,
+      "stem": "SimOTA가 정답 객체마다 양성 예측의 개수 k(dynamic k)를 정하는 방식으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "모든 정답 객체에 k = 1을 적용해 정답 하나에 예측 하나만 양성으로 둔다",
+          "rationale": "정답 하나에 예측 하나만 두는 것은 DETR 계열의 일대일(헝가리안) 매칭입니다. SimOTA는 정답마다 여러 양성을 둡니다."
+        },
+        {
+          "text": "정답 박스의 픽셀 면적에 비례하도록 k를 정해 큰 객체일수록 양성을 많이 준다",
+          "rationale": "면적은 k를 정하는 기준이 아닙니다. 예측이 그 정답을 얼마나 잘 맞히고 있는지(IoU)를 기준으로 씁니다."
+        },
+        {
+          "text": "그 정답과 후보 예측들의 IoU 중 상위 몇 개(예: 10개)를 더한 값을 정수로 만들어 k로 쓴다",
+          "rationale": null
+        },
+        {
+          "text": "데이터셋의 클래스 개수를 k로 써서 모든 정답에 같은 개수를 할당한다",
+          "rationale": "클래스 개수와는 무관합니다. k는 정답마다 따로 계산됩니다."
+        },
+        {
+          "text": "정답과 IoU가 0.5 이상인 후보의 개수를 세어 k로 쓰고, 비용과 상관없이 그 후보들을 모두 양성으로 둔다",
+          "rationale": "고정 IoU 임계값을 쓰는 것은 정적 IoU 기반 할당에 가깝습니다. SimOTA는 IoU 합으로 k를 정한 뒤 비용이 낮은 순으로 고릅니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "SimOTA는 '잘 맞는 예측이 많은 정답일수록 양성을 더 준다'는 생각으로, 상위 IoU들의 합을 k로 씁니다. 그다음 분류+회귀 비용이 가장 낮은 k개를 양성으로 고릅니다.",
+      "explanation_full": "YOLOX 구현은 정답마다 IoU 상위 10개의 합을 정수로 내리고 최소 1로 보장합니다. 그래서 학습이 진행돼 예측이 좋아질수록 k가 커지는 경향이 있습니다. 소형 객체는 예측 IoU가 낮게 나오기 쉬워 k가 작게(최소 1) 잡히는 경우가 있습니다.",
+      "tags": [
+        "detection",
+        "assignment"
+      ],
+      "terms": [
+        "simota"
+      ],
+      "source_ref": "Ge et al., YOLOX (arXiv 2021) 2.2절",
+      "status": "draft"
+    },
+    {
+      "id": "F-ANC-011",
+      "type": "mcq",
+      "chapter": "F.anc",
+      "cognitive_level": 2,
+      "difficulty": 4,
+      "stem": "TAL(Task Alignment Learning)이 해결하려는 주된 문제는?",
+      "choices": [
+        {
+          "text": "분류 점수가 높은 예측과 위치가 정확한 예측이 서로 달라, 부정확한 박스가 NMS에서 살아남는 문제",
+          "rationale": null
+        },
+        {
+          "text": "배경 샘플이 전경보다 압도적으로 많아, 쉬운 배경 예시들이 분류 손실을 지배하게 되는 전경-배경 불균형 문제",
+          "rationale": "배경-전경 불균형은 Focal Loss가 다루는 문제입니다. TAL은 분류와 위치 추정 두 태스크의 불일치를 다룹니다."
+        },
+        {
+          "text": "출력 스트라이드가 커서 소형 객체가 특징 맵에서 사라지는 해상도 문제",
+          "rationale": "특징 맵 해상도 문제는 FPN·P2 헤드 추가 같은 구조로 다룹니다."
+        },
+        {
+          "text": "앵커 종횡비가 데이터와 맞지 않아 IoU 기반 양성이 부족한 문제",
+          "rationale": "앵커 설계 문제는 k-means 앵커 재산출로 다룹니다. TAL을 쓰는 탐지기는 보통 앵커 프리입니다."
+        },
+        {
+          "text": "라벨러마다 박스 여유를 다르게 그려 정답 좌표가 흔들리는 라벨 노이즈 문제",
+          "rationale": "라벨 품질 문제는 라벨링 가이드·감수로 다룹니다. TAL은 모델 예측의 두 태스크 품질을 맞추는 방법입니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "탐지기는 분류 점수로 NMS 순위를 정하므로, 점수는 높은데 박스가 부정확한 예측이 남으면 성능이 떨어집니다. TAL은 두 품질이 함께 높은 예측을 양성으로 골라 이 불일치(task misalignment)를 줄입니다.",
+      "explanation_full": "TOOD는 정렬 지표 t = s^α · u^β로 양성을 고르고, 정규화한 t를 분류 목표값으로 써서 IoU가 높은 예측일수록 점수도 높게 나오도록 학습합니다. 결과적으로 NMS에서 점수 1등 박스가 위치도 가장 정확할 가능성이 높아집니다.",
+      "tags": [
+        "detection",
+        "assignment"
+      ],
+      "terms": [
+        "task-alignment-learning"
+      ],
+      "source_ref": "Feng et al., TOOD (ICCV 2021) 1절",
+      "status": "draft"
+    },
+    {
+      "id": "F-ANC-012",
+      "type": "scenario",
+      "chapter": "F.anc",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"Sentinel-2 10m에서 20~40m급 어선이 2~4픽셀밖에 안 돼서 거의 못 잡아. 지금 헤드가 스트라이드 8·16·32인데, 스트라이드 4짜리 P2 헤드를 추가해서 다시 학습해봐.\"\n\n이 지시의 의도로 옳은 것은?",
+      "choices": [
+        {
+          "text": "스트라이드를 키워 수용영역을 넓히면 주변 해역 맥락까지 보게 되어 소형 어선 판별이 쉬워지기 때문이다",
+          "rationale": "스트라이드 4는 8보다 작은 값입니다. 지시는 격자를 더 촘촘하게 만드는 것이지 수용영역을 넓히는 것이 아닙니다."
+        },
+        {
+          "text": "P2 헤드를 추가하면 한 위치에 박스가 하나만 나와 NMS를 생략할 수 있기 때문이다",
+          "rationale": "헤드를 추가하면 예측 후보가 오히려 늘어나므로 NMS는 여전히 필요합니다."
+        },
+        {
+          "text": "해상도가 높은 헤드를 추가하면 연산량이 줄어 추론 속도가 빨라지기 때문이다",
+          "rationale": "고해상도 특징 맵(P2)은 위치 수가 4배라 연산량과 메모리가 늘어납니다. 속도는 오히려 느려집니다."
+        },
+        {
+          "text": "앵커 종횡비를 늘려 길쭉한 어선 모양에 맞추려는 것이기 때문이다",
+          "rationale": "종횡비는 앵커 설계 문제이고, 지시는 특징 맵 해상도(스트라이드)를 바꾸는 것입니다."
+        },
+        {
+          "text": "스트라이드 8 격자에선 2~4픽셀 객체에 배정될 위치가 거의 없어, 더 촘촘한 스트라이드 4 격자로 양성 위치를 확보하려는 것이다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "스트라이드 8 특징 맵의 한 칸은 입력 8×8픽셀을 담당합니다. 2~4픽셀 객체는 격자점이 박스 안에 거의 들어가지 않아 양성을 받지 못하거나 인접 객체와 한 칸을 나눠 써야 하므로, 스트라이드 4 격자로 촘촘하게 만듭니다.",
+      "explanation_full": "예를 들어 격자점이 박스 안에 있어야 후보가 되는 할당(FCOS, TAL 등)에서는 3픽셀 박스가 스트라이드 8 격자점(4, 12, 20, …) 사이에 놓이면 후보가 0개가 됩니다. P2 헤드는 연산·메모리 부담이 크므로, 입력 영상 업샘플링이나 타일 크기 조정과 비용 대비 효과를 비교해 결정합니다.",
+      "tags": [
+        "detection",
+        "small-object",
+        "assignment"
+      ],
+      "terms": [
+        "stride",
+        "label-assignment"
+      ],
+      "source_ref": "Lin et al., Feature Pyramid Networks (CVPR 2017); Tian et al., FCOS (ICCV 2019)",
+      "status": "draft"
+    },
+    {
+      "id": "F-ANC-013",
+      "type": "scenario",
+      "chapter": "F.anc",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"고해상도 위성(0.5m) 양식장 부표 데이터로 넘어왔는데 앵커가 COCO 기본값 그대로네. 학습은 512 타일을 2배로 키워 1024로 넣고 있으니까, 라벨 박스 분포 보고 앵커 다시 잡아.\"\n\n가장 적절한 수행 방법은?",
+      "choices": [
+        {
+          "text": "원본 영상의 픽셀 단위 박스 크기를 그대로 군집해 앵커로 쓴다",
+          "rationale": "학습 입력은 원본 타일을 2배로 키운 것이므로 모델이 보는 박스는 원본 픽셀 크기의 2배입니다. 원본 기준으로 군집하면 앵커가 실제보다 절반 크기로 잡힙니다."
+        },
+        {
+          "text": "학습 입력 크기 기준의 라벨 박스 너비·높이로 k-means 앵커를 다시 구하고, 정답별 최대 앵커 IoU를 확인한다",
+          "rationale": null
+        },
+        {
+          "text": "검증셋과 테스트셋 라벨까지 모두 모아 군집해 앵커가 평가 데이터에도 딱 맞게 한다",
+          "rationale": "평가 데이터의 정보를 설계에 쓰면 평가 결과가 낙관적으로 부풀려집니다. 앵커는 학습 데이터로만 정합니다."
+        },
+        {
+          "text": "COCO 기본 앵커를 모두 2배로 키워서, 부표처럼 멀리서 촬영돼 작게 보이는 객체도 앵커와 충분히 크게 겹치도록 맞춘다",
+          "rationale": "입력 배율(2배)과 앵커 배율은 별개의 문제입니다. COCO 앵커는 COCO 객체 분포에 맞춘 것이라, 일괄 2배 확대는 부표 분포와 맞는다는 근거가 없고 부표는 COCO 객체보다 훨씬 작아 오히려 반대 방향일 수 있습니다."
+        },
+        {
+          "text": "앵커 개수만 위치당 9개에서 27개로 늘려 어떤 크기든 하나는 맞도록 한다",
+          "rationale": "개수만 늘리면 연산량과 음성 샘플만 늘어나고, 데이터 분포와 맞지 않는 앵커가 대부분이 됩니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "앵커는 모델이 실제로 보는 입력 기준의 박스 분포에 맞춰야 합니다. 리사이즈·타일링 후 크기로 환산해 1−IoU 거리 k-means로 군집하고, 모든 정답이 충분히 겹치는 앵커를 갖는지 확인합니다.",
+      "explanation_full": "0.5m 해상도에서 지름 1m 안팎의 부표는 원본에서 2×2픽셀, 2배 업샘플링한 입력에서도 4×4픽셀 수준이므로, 앵커 조정만으로 부족하면 더 큰 업샘플링 배율이나 고해상도 헤드도 검토합니다. 일부 YOLO 구현은 학습 시작 시 앵커 적합도를 계산해 기준 미달이면 자동으로 앵커를 다시 구하는 기능이 있으니 로그를 확인합니다.",
+      "tags": [
+        "detection",
+        "anchor"
+      ],
+      "terms": [
+        "anchor-box"
+      ],
+      "source_ref": "Redmon & Farhadi, YOLO9000 (CVPR 2017) 2절",
+      "status": "draft"
+    },
+    {
+      "id": "F-ANC-014",
+      "type": "scenario",
+      "chapter": "F.anc",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"IoU 기반 할당에서 양성 기준이 0.5라 소형 선박은 양성 앵커가 거의 안 붙어. 양성 기준을 0.4로 낮춰서 다시 학습해봐.\"\n\n이 조치에서 함께 감수해야 할 부작용은?",
+      "choices": [
+        {
+          "text": "추론 시 NMS IoU 임계값도 학습 설정을 따라 함께 0.4로 바뀌므로, 서로 붙어 정박한 선박끼리 박스가 지워지게 된다",
+          "rationale": "학습 할당 임계값과 추론 NMS 임계값은 별개의 설정입니다. 하나를 바꿔도 다른 하나는 바뀌지 않습니다."
+        },
+        {
+          "text": "평가에서 TP를 가르는 매칭 기준(mAP50의 0.5)도 0.4로 바뀌어 성능이 부풀려진다",
+          "rationale": "평가 매칭 기준은 학습 할당 설정과 독립입니다. 평가 기준은 그대로 유지됩니다."
+        },
+        {
+          "text": "양성 기준을 낮추면 음성 앵커 수가 크게 늘어나 배경 불균형이 더 심해진다",
+          "rationale": "양성 기준을 낮추면 양성이 늘어납니다. 음성 기준을 따로 바꾸지 않는 한 음성이 늘지는 않습니다."
+        },
+        {
+          "text": "정답과 덜 겹치는 앵커까지 양성으로 학습돼 박스 회귀 품질이 떨어지거나 한 객체에 고득점 예측이 늘 수 있다",
+          "rationale": null
+        },
+        {
+          "text": "큰 선박은 앵커와 IoU가 너무 높아져 양성 앵커를 하나도 받지 못하게 된다",
+          "rationale": "IoU가 높은 앵커는 새 기준에서도 여전히 양성입니다. 기준을 낮추면 모든 크기에서 양성이 같거나 늘어납니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "양성 기준을 낮추면 소형 객체의 양성 수는 늘지만, 위치가 덜 맞는 앵커까지 '이 객체를 맞혀라'라고 학습합니다. 그 결과 박스가 헐거워지거나 중복 예측이 늘 수 있습니다.",
+      "explanation_full": "그래서 변경 후에는 AP50뿐 아니라 AP75·AP50-95와 이미지당 중복 박스 수를 함께 비교합니다. 소형 객체만 문제라면 전역 임계값을 낮추기보다 ATSS처럼 정답별 IoU 통계로 임계값을 정하는 할당이나 동적 할당으로 바꾸는 방법도 있습니다.",
+      "tags": [
+        "detection",
+        "assignment",
+        "small-object"
+      ],
+      "terms": [
+        "iou-based-assignment",
+        "label-assignment"
+      ],
+      "source_ref": "Zhang et al., ATSS (CVPR 2020) 3절",
+      "status": "draft"
+    },
+    {
+      "id": "F-ANC-015",
+      "type": "scenario",
+      "chapter": "F.anc",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"YOLOX로 바꾸고 나서 학습 로그 보니까 이미지당 양성 샘플 수가 에폭마다 달라져. 버그인지 확인해봐.\"\n\n가장 적절한 판단은?",
+      "choices": [
+        {
+          "text": "양성 수가 에폭마다 달라지면 학습이 불안정해지므로, 정답마다 양성 개수를 k = 10으로 고정하도록 할당 코드를 고친다",
+          "rationale": "고정 k는 SimOTA의 핵심인 동적 조정을 없애는 것입니다. 정상 동작을 버그로 보고 고치는 셈입니다."
+        },
+        {
+          "text": "SimOTA는 예측 IoU로 정답별 양성 수를 정하므로 학습 중 변하는 것은 정상이며, 추이가 안정되는지 모니터링한다",
+          "rationale": null
+        },
+        {
+          "text": "할당 결과가 바뀌는 것은 명백한 버그이므로 IoU 0.5 기준 정적 할당으로 되돌린다",
+          "rationale": "동적 할당에서 양성이 바뀌는 것은 설계된 동작입니다. 되돌리면 동적 할당의 이점도 잃습니다."
+        },
+        {
+          "text": "앵커 크기가 데이터와 맞지 않아 생기는 현상이므로 k-means로 앵커를 다시 구한다",
+          "rationale": "YOLOX는 앵커 프리 탐지기라 조정할 앵커 크기가 없습니다."
+        },
+        {
+          "text": "데이터 로더 셔플 때문에 생기는 현상이므로 셔플을 끄고 같은 순서로 학습한다",
+          "rationale": "셔플은 배치 구성만 바꿀 뿐, 같은 이미지의 양성 수가 바뀌는 원인은 예측 품질의 변화입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "SimOTA는 매 반복 모델의 예측 IoU로 dynamic k를 계산하므로, 학습이 진행돼 예측이 좋아지면 양성 수가 달라지는 것이 정상입니다. 버그 여부는 추이가 안정되는지로 판단합니다.",
+      "explanation_full": "확인할 만한 이상 신호는 ① 학습 후반까지 양성 수가 크게 요동치는 경우 ② 특정 정답(주로 소형 객체)이 계속 최소 양성만 받는 경우입니다. 후자라면 입력 해상도나 고해상도 헤드를 검토합니다. 보고할 때는 '동적 할당의 정상 동작'이라고 근거와 함께 설명합니다.",
+      "tags": [
+        "detection",
+        "assignment"
+      ],
+      "terms": [
+        "simota",
+        "label-assignment"
+      ],
+      "source_ref": "Ge et al., YOLOX (arXiv 2021) 2.2절",
+      "status": "draft"
+    }
+  ]
+}

@@ -1,0 +1,536 @@
+{
+  "format": "visiondrill-bank-exchange",
+  "format_version": 1,
+  "terms": [
+    {
+      "id": "giou",
+      "term_en": "Generalized Intersection over Union",
+      "term_ko": "일반화 IoU",
+      "abbreviation": "GIoU",
+      "definition": "IoU에서 두 박스를 감싸는 최소 외접 박스 중 두 박스가 덮지 않는 영역의 비율을 뺀 값(−1~1). 겹치지 않는 박스끼리도 떨어진 정도를 반영한다",
+      "usage_example": "초반에 예측이랑 정답이 안 겹치는 소형 선박이 많으니까 박스 손실을 GIoU로 바꿔봐.",
+      "origin": "standard",
+      "track": "F"
+    },
+    {
+      "id": "diou",
+      "term_en": "Distance Intersection over Union",
+      "term_ko": "거리 IoU",
+      "abbreviation": "DIoU",
+      "definition": "IoU에서 두 박스 중심점 거리의 제곱을 외접 박스 대각선 길이의 제곱으로 나눈 페널티를 뺀 값. 중심점을 직접 가깝게 만드는 방향으로 학습시킨다",
+      "usage_example": "박스가 정답 안에 쏙 들어가 있는데 중심이 계속 안 맞네. DIoU 손실로 비교해봐.",
+      "origin": "standard",
+      "track": "F"
+    },
+    {
+      "id": "ciou",
+      "term_en": "Complete Intersection over Union",
+      "term_ko": "완전 IoU",
+      "abbreviation": "CIoU",
+      "definition": "DIoU에 두 박스의 종횡비(가로세로 비) 차이 페널티를 추가한 값. 겹침·중심 거리·종횡비를 함께 반영하는 박스 회귀 손실로 쓰인다",
+      "usage_example": "길쭉한 방파제 박스 비율이 자꾸 뭉개지네. 박스 손실 CIoU로 되어 있는지부터 확인해.",
+      "origin": "standard",
+      "track": "F"
+    },
+    {
+      "id": "mask-iou",
+      "term_en": "Mask Intersection over Union",
+      "term_ko": "마스크 IoU",
+      "abbreviation": "Mask IoU",
+      "definition": "두 픽셀 마스크에서 둘 다 객체인 픽셀 수를 둘 중 하나라도 객체인 픽셀 수로 나눈 값. 박스가 아닌 실제 모양의 겹침을 잰다",
+      "usage_example": "건물 폴리곤 평가는 박스 IoU 말고 래스터화해서 마스크 IoU로 매칭해.",
+      "origin": "standard",
+      "track": "F"
+    }
+  ],
+  "questions": [
+    {
+      "id": "F-IOU-003",
+      "type": "short",
+      "chapter": "F.iou",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "두 박스가 전혀 겹치지 않으면 IoU는 얼마나 떨어져 있든 0이 됩니다. 이 한계를 보완하려고 '두 박스를 감싸는 최소 외접 박스'를 이용해 IoU를 확장한 지표(범위 −1~1)의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Generalized Intersection over Union (GIoU)",
+          "GIoU loss"
+        ],
+        "ko": [
+          "일반화 IoU",
+          "일반화된 IoU",
+          "GIoU 손실"
+        ]
+      },
+      "primary": "Generalized Intersection over Union (GIoU)",
+      "explanation_short": "GIoU(Generalized IoU)는 IoU에서 '외접 박스 중 두 박스가 덮지 않는 부분의 비율'을 뺍니다. 두 박스가 멀어질수록 값이 −1에 가까워져 겹치지 않는 경우에도 차이가 드러납니다.",
+      "explanation_full": "GIoU = IoU − |C − (A∪B)| / |C| (C: 두 박스를 감싸는 최소 박스). Rezatofighi 등(2019)이 제안했고, 손실로 쓸 때는 1 − GIoU를 씁니다. IoU 손실(1 − IoU)은 겹침이 없으면 항상 1이라 기울기가 0이지만, GIoU 손실은 떨어진 박스를 정답 쪽으로 끌어오는 기울기를 줍니다.",
+      "tags": [
+        "iou",
+        "loss"
+      ],
+      "terms": [
+        "giou",
+        "iou"
+      ],
+      "source_ref": "Rezatofighi et al., Generalized Intersection over Union (CVPR 2019)",
+      "status": "draft"
+    },
+    {
+      "id": "F-IOU-004",
+      "type": "short",
+      "chapter": "F.iou",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "IoU에서 '두 박스 중심점 사이 거리의 제곱 ÷ 외접 박스 대각선 길이의 제곱'을 뺀 지표로, 박스 회귀에서 중심점을 직접 가깝게 만드는 손실로 쓰이는 것의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Distance Intersection over Union (DIoU)",
+          "Distance-IoU",
+          "DIoU loss"
+        ],
+        "ko": [
+          "거리 IoU",
+          "거리 기반 IoU",
+          "DIoU 손실"
+        ]
+      },
+      "primary": "Distance Intersection over Union (DIoU)",
+      "explanation_short": "DIoU(Distance-IoU)는 IoU에서 중심점 거리 페널티를 뺀 형태(손실로는 1 − IoU에 페널티를 더한 형태)입니다. 겹침이 없거나 한 박스가 다른 박스 안에 들어가 있어도 중심 거리가 줄어드는 방향으로 학습이 진행됩니다.",
+      "explanation_full": "DIoU = IoU − ρ²(b, b_gt) / c² (ρ: 두 박스 중심점 거리, c: 외접 박스 대각선 길이). Zheng 등(2020)이 CIoU와 함께 제안했습니다. 중심 거리를 대각선으로 나누므로 박스 크기(축척)에 무관한 값이 되고, NMS의 겹침 기준으로 쓰는 DIoU-NMS도 있습니다.",
+      "tags": [
+        "iou",
+        "loss"
+      ],
+      "terms": [
+        "diou",
+        "iou"
+      ],
+      "source_ref": "Zheng et al., Distance-IoU Loss (AAAI 2020)",
+      "status": "draft"
+    },
+    {
+      "id": "F-IOU-005",
+      "type": "short",
+      "chapter": "F.iou",
+      "cognitive_level": 1,
+      "difficulty": 3,
+      "stem": "IoU, 중심점 거리, 종횡비(가로세로 비) 차이의 세 요소를 모두 반영해 YOLO 계열 박스 회귀 손실로 널리 쓰여 온 IoU 변형의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Complete Intersection over Union (CIoU)",
+          "Complete-IoU",
+          "CIoU loss"
+        ],
+        "ko": [
+          "완전 IoU",
+          "완전한 IoU",
+          "CIoU 손실"
+        ]
+      },
+      "primary": "Complete Intersection over Union (CIoU)",
+      "explanation_short": "CIoU(Complete-IoU)는 DIoU(겹침 + 중심 거리)에 종횡비 차이 항을 더한 것입니다. 박스 회귀의 세 가지 기하 요소를 모두 반영한다는 뜻에서 'Complete'라는 이름이 붙었습니다.",
+      "explanation_full": "CIoU = IoU − ρ²/c² − αv. v = (4/π²)(arctan(w_gt/h_gt) − arctan(w/h))²는 종횡비 차이, α는 IoU가 높을수록 v의 비중을 키우는 가중치입니다. 방파제·선박처럼 길쭉한 객체에서 박스 비율을 맞추는 데 도움이 됩니다.",
+      "tags": [
+        "iou",
+        "loss"
+      ],
+      "terms": [
+        "ciou",
+        "iou"
+      ],
+      "source_ref": "Zheng et al., Distance-IoU Loss (AAAI 2020)",
+      "status": "draft"
+    },
+    {
+      "id": "F-IOU-006",
+      "type": "mcq",
+      "chapter": "F.iou",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "인스턴스 분할 평가에 쓰는 마스크 IoU(mask IoU)의 계산 방법으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "두 마스크를 각각 감싸는 최소 경계 박스를 만든 뒤 두 박스끼리 계산한 IoU",
+          "rationale": "박스 IoU입니다. 마스크의 실제 모양 차이가 박스 안에 가려져 반영되지 않습니다."
+        },
+        {
+          "text": "정답 마스크 픽셀 중 예측 마스크가 맞힌 픽셀의 비율",
+          "rationale": "정답 기준 재현율(recall)에 해당합니다. 예측이 정답 밖으로 넘친 픽셀은 반영하지 못합니다."
+        },
+        {
+          "text": "두 마스크에서 모두 객체인 픽셀 수 ÷ 둘 중 하나라도 객체인 픽셀 수",
+          "rationale": null
+        },
+        {
+          "text": "2 × 겹친 픽셀 수 ÷ (두 마스크 픽셀 수의 합)",
+          "rationale": "다이스 계수(Dice coefficient, F1 점수와 동일)입니다. IoU와 단조 관계지만 다른 지표입니다."
+        },
+        {
+          "text": "영상 전체 픽셀 중 예측과 정답 라벨이 같은 픽셀의 비율",
+          "rationale": "픽셀 정확도(pixel accuracy)입니다. 배경이 대부분인 영상에서는 거의 항상 높게 나옵니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "마스크 IoU는 박스 IoU와 같은 '교집합 ÷ 합집합'을 픽셀 집합에 적용한 것입니다. 교집합은 둘 다 1인 픽셀, 합집합은 어느 한쪽이라도 1인 픽셀입니다.",
+      "explanation_full": "COCO의 segm 평가는 박스 대신 마스크 IoU로 예측과 정답을 매칭해 AP를 계산합니다. 다이스 계수와는 Dice = 2·IoU / (1 + IoU) 관계가 있어 순위는 같지만 값이 다르므로(IoU 0.5 → Dice 약 0.67), 보고서에 어떤 지표인지 명시해야 합니다.",
+      "tags": [
+        "iou",
+        "segmentation",
+        "metric"
+      ],
+      "terms": [
+        "mask-iou",
+        "iou"
+      ],
+      "source_ref": "COCO detection evaluation (segm)",
+      "status": "draft"
+    },
+    {
+      "id": "F-IOU-007",
+      "type": "mcq",
+      "chapter": "F.iou",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "정답 박스 A는 (x1, y1, x2, y2) = (0, 0, 20, 20), 예측 박스 B는 (30, 0, 50, 20)이다(단위: 픽셀). 두 박스의 GIoU는?",
+      "choices": [
+        {
+          "text": "−0.2",
+          "rationale": null
+        },
+        {
+          "text": "0",
+          "rationale": "IoU 값입니다. 겹침이 없으니 IoU는 0이지만, GIoU는 외접 박스 페널티가 더해져 음수가 됩니다."
+        },
+        {
+          "text": "0.2",
+          "rationale": "페널티 항의 부호를 반대로 적용했습니다. GIoU는 IoU에서 페널티를 뺍니다."
+        },
+        {
+          "text": "−0.8",
+          "rationale": "합집합 비율(U/C = 800/1000)을 뺐습니다. 빼는 것은 외접 박스 중 두 박스가 덮지 않는 부분의 비율((C−U)/C)입니다."
+        },
+        {
+          "text": "−0.25",
+          "rationale": "빈 영역(200)을 외접 박스 면적(1000)이 아닌 합집합 면적(800)으로 나눴습니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "IoU = 0, 합집합 U = 400 + 400 = 800, 외접 박스 C = (0, 0, 50, 20) → 1000입니다. GIoU = 0 − (1000 − 800) / 1000 = −0.2입니다.",
+      "explanation_full": "계산 순서: ① 두 박스 면적 각 20×20 = 400 ② 교집합 0(가로 20~30 사이가 비어 있음) ③ 합집합 800 ④ 외접 박스 50×20 = 1000 ⑤ 빈 영역 200 → 비율 0.2 ⑥ GIoU = 0 − 0.2. 두 박스를 더 멀리 떨어뜨리면 외접 박스가 커져 값이 −1 쪽으로 내려가므로, IoU가 0으로 같은 경우라도 GIoU로는 '얼마나 멀리 빗나갔는지'를 구분할 수 있습니다.",
+      "tags": [
+        "iou",
+        "calculation"
+      ],
+      "terms": [
+        "giou"
+      ],
+      "source_ref": "Rezatofighi et al., Generalized Intersection over Union (CVPR 2019)",
+      "status": "draft"
+    },
+    {
+      "id": "F-IOU-008",
+      "type": "mcq",
+      "chapter": "F.iou",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "IoU 변형 지표별로 IoU에서 빼는 추가 페널티 항을 옳게 짝지은 것은?",
+      "choices": [
+        {
+          "text": "GIoU: 중심점 거리 / DIoU: 외접 박스 중 빈 영역 비율 / CIoU: 종횡비 차이",
+          "rationale": "GIoU와 DIoU의 페널티가 뒤바뀌었고, CIoU는 종횡비만이 아니라 중심점 거리도 포함합니다."
+        },
+        {
+          "text": "GIoU: 외접 박스 중 빈 영역 비율 / DIoU: 종횡비 차이 / CIoU: 중심점 거리 + 빈 영역 비율",
+          "rationale": "DIoU의 D는 거리(Distance)입니다. 종횡비 항은 CIoU에서 처음 추가됩니다."
+        },
+        {
+          "text": "GIoU: 외접 박스 중 빈 영역 비율 / DIoU: 중심점 거리 / CIoU: 빈 영역 비율 + 종횡비 차이",
+          "rationale": "CIoU는 GIoU가 아니라 DIoU를 확장한 것이라 빈 영역 비율 대신 중심점 거리 항을 가집니다."
+        },
+        {
+          "text": "GIoU: 외접 박스 중 빈 영역 비율 / DIoU: 중심점 거리 / CIoU: 중심점 거리 + 종횡비 차이",
+          "rationale": null
+        },
+        {
+          "text": "GIoU: 종횡비 차이 / DIoU: 중심점 거리 / CIoU: 빈 영역 비율 + 중심점 거리",
+          "rationale": "GIoU에는 종횡비 항이 없습니다. 종횡비 항은 CIoU의 특징입니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "GIoU는 외접 박스의 빈 영역, DIoU는 중심점 거리, CIoU는 DIoU에 종횡비 차이를 더합니다. CIoU는 DIoU의 확장이라는 점이 핵심입니다.",
+      "explanation_full": "외울 때는 'G(외접 박스) → D(거리) → C(거리 + 종횡비)'로 기억하면 됩니다. 세 지표 모두 페널티가 0 이상이므로 값이 IoU보다 크지 않습니다. 원격탐사 선박·방파제처럼 종횡비가 극단적인 객체는 CIoU의 종횡비 항이 학습에 영향을 크게 주므로, 회전 박스(OBB)가 필요한지도 함께 검토합니다.",
+      "tags": [
+        "iou",
+        "loss"
+      ],
+      "terms": [
+        "giou",
+        "diou",
+        "ciou"
+      ],
+      "source_ref": "Zheng et al., Distance-IoU Loss (AAAI 2020)",
+      "status": "draft"
+    },
+    {
+      "id": "F-IOU-009",
+      "type": "mcq",
+      "chapter": "F.iou",
+      "cognitive_level": 2,
+      "difficulty": 4,
+      "stem": "예측 박스가 정답 박스 안에 완전히 들어가 있고 두 박스의 중심은 서로 어긋나 있다. 이 상황에서 GIoU와 DIoU에 대한 설명으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "GIoU는 IoU보다 커지고, DIoU는 IoU와 같아진다",
+          "rationale": "GIoU는 IoU에서 0 이상의 값을 빼므로 IoU보다 커질 수 없고, 중심이 어긋나 있으면 DIoU는 IoU보다 작습니다."
+        },
+        {
+          "text": "외접 박스가 정답 박스 자체가 되어 GIoU는 IoU와 같아지지만, DIoU는 중심점 거리 항이 남아 중심을 맞추는 방향으로 학습을 이끈다",
+          "rationale": null
+        },
+        {
+          "text": "두 박스가 겹쳐 있으므로 GIoU와 DIoU 모두 IoU와 같아진다",
+          "rationale": "GIoU는 같아지지만 DIoU는 중심점 거리가 0이 아니므로 IoU보다 작아집니다."
+        },
+        {
+          "text": "외접 박스가 무한히 커져 GIoU는 −1이 된다",
+          "rationale": "포함 관계에서는 외접 박스가 바깥 박스(정답)와 같아지므로 오히려 빈 영역이 0입니다. GIoU가 −1에 가까워지는 것은 두 박스가 아주 멀리 떨어질 때입니다."
+        },
+        {
+          "text": "GIoU와 DIoU 모두 0이 되어 박스 회귀가 멈춘다",
+          "rationale": "두 박스가 겹쳐 있으므로 IoU가 0보다 크고, GIoU·DIoU도 0이 되지 않습니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "한 박스가 다른 박스를 포함하면 외접 박스 = 바깥 박스이므로 빈 영역이 0이 되어 GIoU = IoU로 퇴화합니다. DIoU는 중심점 거리 페널티가 남아 있어 중심을 맞추도록 계속 기울기를 줍니다.",
+      "explanation_full": "예: 정답 (0,0,100,100), 예측 (10,10,50,50)이면 IoU = 1600/10000 = 0.16, GIoU = 0.16, 중심점은 (50, 50)과 (30, 30)이므로 DIoU = 0.16 − (20²+20²)/(100²+100²) = 0.16 − 800/20000 = 0.16 − 0.04 = 0.12입니다. Zheng 등(2020)이 DIoU를 제안한 주요 동기 중 하나가 이 포함 관계에서 GIoU 손실의 수렴이 느려지는 문제였습니다.",
+      "tags": [
+        "iou",
+        "loss"
+      ],
+      "terms": [
+        "diou",
+        "giou"
+      ],
+      "source_ref": "Zheng et al., Distance-IoU Loss (AAAI 2020) 3절",
+      "status": "draft"
+    },
+    {
+      "id": "F-IOU-010",
+      "type": "mcq",
+      "chapter": "F.iou",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "대각선 방향으로 놓인 가늘고 긴 선박에 대해, 예측과 정답의 축 정렬 박스 IoU는 0.9인데 마스크 IoU는 0.4로 나왔다. 가장 타당한 해석은?",
+      "choices": [
+        {
+          "text": "마스크 IoU는 정답 마스크 면적만 분모로 쓰므로 박스 IoU보다 항상 작게 나온다",
+          "rationale": "마스크 IoU의 분모도 합집합입니다. 또한 마스크 IoU가 박스 IoU보다 항상 작다는 고정된 관계는 없습니다."
+        },
+        {
+          "text": "박스 IoU는 GIoU처럼 외접 박스 페널티가 없어 값이 과대평가되었다",
+          "rationale": "외접 박스 페널티는 겹치지 않는 박스를 구분하기 위한 것입니다. 이 차이는 박스가 모양을 표현하지 못해서 생깁니다."
+        },
+        {
+          "text": "같은 예측이라면 박스 IoU와 마스크 IoU는 항상 같은 값이 나와야 하므로, 이 결과는 계산 과정의 오류로 봐야 한다",
+          "rationale": "박스와 마스크는 서로 다른 영역을 비교하므로 값이 다른 것이 정상입니다."
+        },
+        {
+          "text": "마스크 IoU는 해상도를 절반으로 줄여 계산하는 것이 표준이라 값이 낮아졌다",
+          "rationale": "마스크 IoU는 원래 해상도(또는 정답과 같은 격자)의 픽셀로 계산하며, 해상도를 줄이는 것이 표준은 아닙니다."
+        },
+        {
+          "text": "축 정렬 박스는 객체를 감싼 사각형만 비교하므로, 박스 안이 대부분 배경이면 선박 픽셀이 덜 겹쳐도 박스 IoU는 높다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "대각선의 가늘고 긴 객체는 축 정렬 박스 안의 대부분이 배경입니다. 박스가 거의 일치해도 선박 픽셀끼리의 겹침은 작을 수 있어 마스크 IoU가 훨씬 낮게 나옵니다.",
+      "explanation_full": "이런 객체는 박스 기준으로는 '맞았다'고 평가돼도 실제 모양·면적은 틀릴 수 있습니다. 선박 면적·방향이 필요한 과제라면 마스크 IoU로 평가하거나 회전 박스(OBB)의 회전 IoU를 쓰는 것이 적절합니다. 반대로 예측 박스가 조금 어긋나도 모양이 잘 맞으면 마스크 IoU가 박스 IoU보다 높을 수도 있습니다.",
+      "tags": [
+        "iou",
+        "segmentation",
+        "metric"
+      ],
+      "terms": [
+        "mask-iou",
+        "iou"
+      ],
+      "source_ref": "COCO detection evaluation (bbox vs segm)",
+      "status": "draft"
+    },
+    {
+      "id": "F-IOU-011",
+      "type": "mcq",
+      "chapter": "F.iou",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "Sentinel-2 10m 영상에서 길이 40m 선박의 정답 박스가 4×4 픽셀이다. 크기가 같은 예측 박스가 가로·세로로 각각 1픽셀씩 어긋났다면 IoU는?",
+      "choices": [
+        {
+          "text": "약 0.56",
+          "rationale": "교집합 9를 한 박스 면적 16으로 나눴습니다. 분모는 합집합(16 + 16 − 9 = 23)입니다."
+        },
+        {
+          "text": "약 0.39",
+          "rationale": null
+        },
+        {
+          "text": "0.75",
+          "rationale": "한 축 방향의 겹침 비율(3/4)만 계산했습니다. 가로와 세로가 모두 어긋나 면적 겹침은 3×3입니다."
+        },
+        {
+          "text": "0.60",
+          "rationale": "가로로만 1픽셀 어긋난 경우(12/20)입니다. 세로 어긋남까지 반영해야 합니다."
+        },
+        {
+          "text": "약 0.91",
+          "rationale": "40×40 픽셀 박스가 가로·세로 1픽셀씩 어긋난 경우의 값입니다. 소형 박스에서는 같은 1픽셀이 훨씬 큰 비율을 차지합니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "교집합 3×3 = 9, 합집합 16 + 16 − 9 = 23이므로 IoU = 9/23 ≈ 0.39입니다. 1픽셀 어긋남만으로 매칭 기준 0.5에 못 미쳐 FP·FN이 됩니다.",
+      "explanation_full": "같은 1픽셀 어긋남이라도 40×40 박스라면 교집합 39×39 = 1521, 합집합 3200 − 1521 = 1679로 IoU ≈ 0.91입니다. 소형 객체는 라벨 경계의 1픽셀 흔들림만으로도 IoU가 크게 떨어지므로, 소형 객체 성능을 볼 때는 느슨한 IoU 기준(예: 0.3)을 함께 보고하거나 중심점 거리 기반 매칭을 보조 지표로 쓰는 방법이 있습니다.",
+      "tags": [
+        "iou",
+        "calculation",
+        "small-object"
+      ],
+      "terms": [
+        "iou"
+      ],
+      "source_ref": "COCO detection evaluation; 객체 탐지 일반",
+      "status": "draft"
+    },
+    {
+      "id": "F-IOU-012",
+      "type": "scenario",
+      "chapter": "F.iou",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"0.5m급 위성 영상 차량 탐지 결과, IoU 0.5 기준이랑 0.75 기준으로 둘 다 성능 뽑아줘. 모델은 그대로 두고.\"\n\n이 작업을 옳게 이해한 것은?",
+      "choices": [
+        {
+          "text": "후처리의 NMS IoU 임계값을 0.5와 0.75로 각각 바꿔 두 번 추론하고, 두 결과를 기존 매칭 기준으로 평가해 성능을 비교한다",
+          "rationale": "NMS IoU 임계값은 예측끼리 중복을 지우는 후처리 기준입니다. 지시가 말하는 것은 예측과 정답을 짝짓는 평가 매칭 기준입니다."
+        },
+        {
+          "text": "신뢰도 임계값을 0.5와 0.75로 바꿔 각각 남는 박스로 성능을 계산한다",
+          "rationale": "신뢰도 임계값은 점수가 낮은 박스를 버리는 기준입니다. IoU 매칭 기준과는 별개의 값입니다."
+        },
+        {
+          "text": "0.75 기준에서는 FP만 늘고 FN은 0.5 기준과 같게 유지된다",
+          "rationale": "짝을 잃은 예측이 FP가 되면, 그 예측과 짝이던 정답도 IoU 0.75 이상인 다른 예측과 새로 짝지어지지 않는 한 FN으로 바뀝니다. FN이 항상 그대로 유지되는 것은 아닙니다."
+        },
+        {
+          "text": "매칭 IoU 기준만 바꿔 TP·FP·FN을 다시 센다. 0.75 기준에선 IoU 0.5~0.75였던 예측이 FP, 짝 잃은 정답은 FN이 된다",
+          "rationale": null
+        },
+        {
+          "text": "기준을 0.75로 올리면 엄격해진 만큼 더 정확한 박스만 남아 TP가 늘어난다",
+          "rationale": "기준이 엄격해지면 TP는 같거나 줄어듭니다. 예측 박스 자체는 그대로이기 때문입니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "IoU 0.5·0.75는 예측과 정답을 짝짓는 평가 기준입니다. 모델·후처리는 그대로 두고 매칭만 다시 하면 되며, 기준이 엄격해지면 일부 TP가 FP와 FN으로 바뀝니다.",
+      "explanation_full": "COCO 지표의 AP50과 AP75가 바로 이 두 기준의 AP입니다. 두 값의 차이가 크면 '차량은 찾지만 박스가 헐겁다'는 뜻이므로 박스 회귀 손실·해상도·라벨 경계 일관성을 점검합니다. 0.5m 해상도에서 승용차는 길이 9~10픽셀, 폭 4픽셀 안팎이라 1~2픽셀 어긋남에도 IoU가 크게 떨어진다는 점을 보고서에 함께 적으면 좋습니다.",
+      "tags": [
+        "iou",
+        "matching",
+        "metric"
+      ],
+      "terms": [
+        "iou"
+      ],
+      "source_ref": "COCO detection evaluation",
+      "status": "draft"
+    },
+    {
+      "id": "F-IOU-013",
+      "type": "scenario",
+      "chapter": "F.iou",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"소형 선박 박스 회귀를 IoU 손실로 하는데, 학습 초반에 예측이 정답이랑 아예 안 겹치는 경우가 많아서 손실이 안 줄어. GIoU나 DIoU 손실로 바꿔봐.\"\n\n이 지시의 근거로 옳은 것은?",
+      "choices": [
+        {
+          "text": "IoU 손실은 박스가 겹치지 않으면 거리와 무관하게 값이 같아 기울기가 없지만, GIoU·DIoU는 떨어진 정도를 반영해 겹치지 않아도 박스를 정답 쪽으로 끌어온다",
+          "rationale": null
+        },
+        {
+          "text": "GIoU·DIoU는 항상 IoU보다 큰 값을 내므로 손실이 작아져 학습이 안정된다",
+          "rationale": "GIoU·DIoU는 IoU에서 0 이상의 페널티를 빼므로 IoU보다 크지 않습니다. 값의 크기가 아니라 기울기가 생긴다는 점이 핵심입니다."
+        },
+        {
+          "text": "GIoU·DIoU 손실을 쓰면 추론 시 NMS가 더 빨라져 소형 선박이 덜 지워진다",
+          "rationale": "손실 함수는 학습 중 박스 회귀에만 쓰입니다. NMS 속도나 억제 방식과는 무관합니다(DIoU-NMS는 별도 기법입니다)."
+        },
+        {
+          "text": "GIoU·DIoU는 분류 손실까지 대신하므로 클래스 불균형 문제도 함께 해결된다",
+          "rationale": "GIoU·DIoU는 박스 위치를 위한 회귀 손실입니다. 분류 손실과 클래스 불균형은 따로 다룹니다."
+        },
+        {
+          "text": "GIoU·DIoU는 소형 박스를 자동으로 확대해 계산하므로 겹침이 생긴다",
+          "rationale": "박스 크기를 바꾸지 않습니다. 외접 박스 빈 영역이나 중심점 거리라는 추가 항으로 떨어진 정도를 잽니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "겹침이 0이면 IoU 손실(1 − IoU)은 얼마나 멀든 1로 일정해 기울기가 0입니다. GIoU는 외접 박스 빈 영역, DIoU는 중심점 거리로 떨어진 정도를 반영해 겹치지 않는 박스에도 학습 신호를 줍니다.",
+      "explanation_full": "소형 객체는 조금만 빗나가도 겹침이 0이 되기 쉬워 이 차이가 특히 큽니다. 단, 예측이 정답을 완전히 포함하거나 포함될 때는 GIoU가 IoU와 같아져 수렴이 느려지므로 DIoU·CIoU가 더 유리할 수 있습니다. 변경 전후는 AP50뿐 아니라 AP75나 AP50-95로도 비교해 박스 정밀도가 실제로 좋아졌는지 확인합니다.",
+      "tags": [
+        "iou",
+        "loss",
+        "small-object"
+      ],
+      "terms": [
+        "giou",
+        "diou"
+      ],
+      "source_ref": "Rezatofighi et al. (CVPR 2019); Zheng et al., Distance-IoU Loss (AAAI 2020)",
+      "status": "draft"
+    },
+    {
+      "id": "F-IOU-014",
+      "type": "scenario",
+      "chapter": "F.iou",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"건물 추출 결과를 박스 IoU로 평가하니까 거의 다 맞았다고 나와. ㄱ자·ㄷ자 건물 모양까지 맞았는지 보고 싶으니까 평가 방식을 바꿔줘.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "박스 IoU 매칭 기준을 0.5에서 0.95로 올려, 거의 완벽하게 겹친 박스만 정답으로 인정하도록 다시 평가한다",
+          "rationale": "기준을 올려도 여전히 사각형끼리 비교하므로, 박스가 딱 맞는 한 ㄱ자·ㄷ자 모양의 차이는 드러나지 않습니다."
+        },
+        {
+          "text": "영상 전체 픽셀 정확도(pixel accuracy)로 평가 지표를 바꾼다",
+          "rationale": "배경 픽셀이 대부분이라 값이 항상 높게 나오고, 건물별로 모양이 맞았는지도 알 수 없습니다."
+        },
+        {
+          "text": "박스 중심점 거리(DIoU)로 매칭해 위치 정밀도를 평가한다",
+          "rationale": "DIoU도 박스끼리의 비교라 건물의 실제 모양은 반영하지 못합니다."
+        },
+        {
+          "text": "신뢰도 임계값을 높여 확실한 건물만 남긴 뒤 박스 IoU로 다시 평가한다",
+          "rationale": "남는 예측 수만 바뀔 뿐, 평가가 여전히 박스 기준이라 모양 일치 여부를 알 수 없습니다."
+        },
+        {
+          "text": "예측·정답 폴리곤을 같은 좌표계·격자로 래스터화해 건물별 마스크 IoU로 매칭하고 평가한다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "모양까지 평가하려면 박스가 아니라 픽셀(또는 폴리곤) 겹침을 봐야 합니다. 예측·정답을 같은 격자로 래스터화해 마스크 IoU로 매칭하면 ㄱ자·ㄷ자 모양 차이가 값에 반영됩니다.",
+      "explanation_full": "래스터화 전에 두 레이어의 좌표계(예: EPSG:5186)와 격자 원점·해상도를 맞추지 않으면 모양이 같아도 IoU가 낮게 나옵니다. 벡터 상태에서 폴리곤 교집합·합집합 면적으로 직접 계산해도 같은 의미의 값을 얻을 수 있습니다. 매칭 기준은 박스 평가처럼 마스크 IoU 0.5부터 시작하는 것이 일반적입니다.",
+      "tags": [
+        "iou",
+        "segmentation",
+        "gis"
+      ],
+      "terms": [
+        "mask-iou"
+      ],
+      "source_ref": "COCO detection evaluation (segm)",
+      "status": "draft"
+    }
+  ]
+}

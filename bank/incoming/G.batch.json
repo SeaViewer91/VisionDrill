@@ -1,0 +1,800 @@
+{
+  "format": "visiondrill-bank-exchange",
+  "format_version": 1,
+  "terms": [
+    {
+      "id": "batch-size",
+      "term_en": "Batch Size",
+      "term_ko": "배치 크기",
+      "abbreviation": null,
+      "definition": "한 번의 순전파·역전파와 파라미터 업데이트에 함께 사용하는 샘플(이미지·타일) 수",
+      "usage_example": "1024 타일이라 GPU당 batch size 4가 한계야. 나머지는 accumulation으로 채워.",
+      "origin": "standard",
+      "track": "G"
+    },
+    {
+      "id": "effective-batch-size",
+      "term_en": "Effective Batch Size",
+      "term_ko": "유효 배치 크기",
+      "abbreviation": null,
+      "definition": "파라미터를 한 번 업데이트할 때 기울기에 실제로 반영되는 전체 샘플 수로, GPU당 배치 × GPU 수 × gradient accumulation 스텝 수",
+      "usage_example": "보고서에 GPU당 배치 말고 유효 배치 크기로 적어. 그래야 LR이랑 같이 비교가 돼.",
+      "origin": "standard",
+      "track": "G"
+    },
+    {
+      "id": "out-of-memory",
+      "term_en": "Out of Memory",
+      "term_ko": "메모리 부족",
+      "abbreviation": "OOM",
+      "definition": "GPU(또는 시스템) 메모리가 부족해 텐서 할당에 실패하는 오류 상황",
+      "usage_example": "타일을 2048로 올렸더니 첫 배치에서 바로 OOM 나. 타일 크기부터 다시 정하자.",
+      "origin": "standard",
+      "track": "G"
+    },
+    {
+      "id": "mixed-precision-training",
+      "term_en": "Mixed Precision Training",
+      "term_ko": "혼합 정밀도 학습",
+      "abbreviation": "AMP",
+      "definition": "연산별로 FP16·BF16 같은 16비트 형식과 FP32를 섞어 써서, 정확도를 유지하면서 메모리 사용량과 학습 시간을 줄이는 학습 방식",
+      "usage_example": "메모리 모자라면 배치 줄이기 전에 AMP부터 켜 봐.",
+      "origin": "standard",
+      "track": "G"
+    },
+    {
+      "id": "bfloat16",
+      "term_en": "bfloat16 (Brain Floating Point 16)",
+      "term_ko": "bfloat16",
+      "abbreviation": "BF16",
+      "definition": "부호 1비트·지수 8비트·가수 7비트로 이루어진 16비트 부동소수점 형식. FP32와 지수 범위가 같아 오버플로·언더플로에 강하지만 정밀도는 FP16보다 낮음",
+      "usage_example": "FP16으로 하면 자꾸 inf 뜨니까 A100에서는 bf16으로 바꿔서 돌려.",
+      "origin": "standard",
+      "track": "G"
+    },
+    {
+      "id": "gradient-accumulation",
+      "term_en": "Gradient Accumulation",
+      "term_ko": "기울기 누적",
+      "abbreviation": null,
+      "definition": "여러 미니배치의 기울기를 누적한 뒤 정해진 횟수마다 한 번만 파라미터를 업데이트해, 메모리 한계보다 큰 배치로 학습한 효과를 내는 기법",
+      "usage_example": "GPU당 2장밖에 안 들어가니까 accumulation 8로 유효 배치 16 맞춰.",
+      "origin": "standard",
+      "track": "G"
+    },
+    {
+      "id": "data-loader",
+      "term_en": "Data Loader",
+      "term_ko": "데이터로더",
+      "abbreviation": null,
+      "definition": "디스크에서 샘플을 읽고 전처리·증강한 뒤 배치로 묶어 GPU에 공급하는 구성요소. 워커 프로세스 수(num_workers) 등으로 병렬화함",
+      "usage_example": "GPU 사용률이 30%면 모델 말고 데이터로더가 병목이야. num_workers부터 올려 봐.",
+      "origin": "standard",
+      "track": "G"
+    },
+    {
+      "id": "distributed-data-parallel",
+      "term_en": "Distributed Data Parallel",
+      "term_ko": "분산 데이터 병렬",
+      "abbreviation": "DDP",
+      "definition": "GPU마다 프로세스와 모델 사본을 두고 데이터를 나눠 처리한 뒤, 역전파 중 기울기를 all-reduce로 평균해 모든 사본을 똑같이 업데이트하는 다중 GPU 학습 방식",
+      "usage_example": "서버 GPU 4장이니까 DataParallel 말고 DDP로 띄워.",
+      "origin": "standard",
+      "track": "G"
+    }
+  ],
+  "questions": [
+    {
+      "id": "G-BATCH-001",
+      "type": "short",
+      "chapter": "G.batch",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "한 번의 순전파·역전파와 파라미터 업데이트에 함께 넣는 샘플(이미지·타일) 수를 가리키는 하이퍼파라미터의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Batch size",
+          "Mini-batch size"
+        ],
+        "ko": [
+          "배치 크기",
+          "배치 사이즈",
+          "미니배치 크기"
+        ]
+      },
+      "primary": "Batch size",
+      "explanation_short": "배치 크기(batch size)는 한 스텝에서 기울기를 평균 내는 샘플 수입니다. 클수록 기울기 추정의 잡음이 줄고 GPU 병렬성을 잘 활용하지만 메모리를 더 씁니다.",
+      "explanation_full": "배치 크기는 메모리(활성값 저장량), 학습 속도(에폭당 스텝 수), 일반화, 적정 학습률에 모두 영향을 줍니다. BatchNorm은 배치 안에서 통계를 내므로 배치가 너무 작으면(예: 2 이하) 불안정해집니다. 고해상도 위성 타일은 장당 메모리가 커서 GPU당 배치가 작아지기 쉬우므로 gradient accumulation이나 GroupNorm 같은 대안을 함께 고려합니다.",
+      "tags": [
+        "batch",
+        "basics"
+      ],
+      "terms": [
+        "batch-size"
+      ],
+      "source_ref": "Goodfellow et al., Deep Learning 8.1.3",
+      "status": "draft"
+    },
+    {
+      "id": "G-BATCH-002",
+      "type": "short",
+      "chapter": "G.batch",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "학습 중 'CUDA out of memory' 메시지와 함께 GPU 메모리가 부족해 텐서 할당에 실패하는 상황을 흔히 무엇이라 부르는가? (영문 약어 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Out of memory (OOM)"
+        ],
+        "ko": [
+          "메모리 부족",
+          "메모리 초과",
+          "아웃 오브 메모리"
+        ]
+      },
+      "primary": "Out of memory (OOM)",
+      "explanation_short": "OOM(Out of Memory)은 학습에 필요한 메모리가 GPU 용량을 넘을 때 생깁니다. 대개 배치 크기, 입력 해상도, 모델 크기가 원인입니다.",
+      "explanation_full": "흔한 대응 순서는 ① 배치 크기 줄이기(+gradient accumulation으로 유효 배치 유지) ② AMP(혼합 정밀도) 켜기 ③ 입력 타일 크기 줄이기 ④ gradient checkpointing 적용입니다. torch.cuda.empty_cache()는 캐시된 미사용 블록을 돌려줄 뿐 실제로 사용 중인 메모리를 줄이지 못해 OOM 해결책이 아닙니다. nvidia-smi 수치에는 PyTorch 캐시까지 포함되므로 실제 최대 사용량은 torch.cuda.max_memory_allocated()로 확인합니다.",
+      "tags": [
+        "memory",
+        "basics"
+      ],
+      "terms": [
+        "out-of-memory"
+      ],
+      "source_ref": "PyTorch 문서 CUDA semantics (Memory management)",
+      "status": "draft"
+    },
+    {
+      "id": "G-BATCH-003",
+      "type": "short",
+      "chapter": "G.batch",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "GPU에 한 번에 올릴 수 있는 배치가 작을 때, 여러 미니배치의 기울기를 더해 두었다가 몇 번에 한 번만 옵티마이저 스텝을 밟아 더 큰 유효 배치로 학습한 효과를 내는 기법의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Gradient accumulation"
+        ],
+        "ko": [
+          "기울기 누적",
+          "그래디언트 누적",
+          "그라디언트 누적",
+          "경사 누적"
+        ]
+      },
+      "primary": "Gradient accumulation",
+      "explanation_short": "Gradient accumulation은 loss.backward()를 여러 번 호출해 기울기를 누적한 뒤 k번마다 optimizer.step()을 하는 방식입니다. 유효 배치 크기는 미니배치 크기 × k가 됩니다.",
+      "explanation_full": "각 미니배치의 손실을 k로 나눠 두어야 누적 기울기가 큰 배치의 평균 기울기와 같은 크기가 됩니다. 나누지 않으면 누적 기울기가 평균의 k배가 되어, 특히 SGD에서는 학습률을 k배 올린 것과 같은 효과가 납니다. 메모리는 미니배치 하나 분량만 쓰지만 시간은 큰 배치 한 번보다 더 걸리고, BatchNorm 통계는 여전히 작은 미니배치 단위로 계산된다는 한계가 있습니다.",
+      "tags": [
+        "batch",
+        "memory"
+      ],
+      "terms": [
+        "gradient-accumulation",
+        "effective-batch-size"
+      ],
+      "source_ref": "Hugging Face 문서 Methods and tools for efficient training on a single GPU",
+      "status": "draft"
+    },
+    {
+      "id": "G-BATCH-004",
+      "type": "short",
+      "chapter": "G.batch",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "GPU마다 별도 프로세스가 모델 사본 전체를 갖고 서로 다른 데이터를 처리한 뒤, 역전파 중 all-reduce로 기울기를 평균해 모든 사본을 똑같이 업데이트하는 PyTorch의 다중 GPU 학습 방식은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Distributed Data Parallel (DDP)"
+        ],
+        "ko": [
+          "분산 데이터 병렬",
+          "분산 데이터 병렬 처리",
+          "분산 데이터 병렬화"
+        ]
+      },
+      "primary": "Distributed Data Parallel (DDP)",
+      "explanation_short": "DDP(DistributedDataParallel)는 GPU당 1프로세스 구조로 데이터를 나눠 처리하고, 역전파가 진행되는 동안 기울기를 all-reduce로 평균해 모든 GPU의 모델이 같은 가중치를 유지합니다.",
+      "explanation_full": "구형 DataParallel(DP)은 한 프로세스가 여러 GPU를 스레드로 다루며 GPU 0에 출력과 기울기가 몰려 느리고 불균형해서, PyTorch 문서도 단일 머신에서도 DDP를 권장합니다. DDP에서는 DistributedSampler로 각 프로세스가 겹치지 않는 데이터 조각을 보게 하고, 보통 torchrun으로 프로세스를 띄웁니다. 모델이 GPU 한 장에 들어가지 않을 만큼 크면 FSDP 같은 샤딩 방식을 씁니다.",
+      "tags": [
+        "multi-gpu",
+        "basics"
+      ],
+      "terms": [
+        "distributed-data-parallel"
+      ],
+      "source_ref": "PyTorch 문서 DistributedDataParallel",
+      "status": "draft"
+    },
+    {
+      "id": "G-BATCH-005",
+      "type": "short",
+      "chapter": "G.batch",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "행렬곱·합성곱 같은 연산은 FP16/BF16으로, 수치에 민감한 연산과 가중치 원본은 FP32로 나눠 처리해 메모리와 학습 시간을 줄이는 학습 방식의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Mixed precision training",
+          "Automatic Mixed Precision (AMP)",
+          "Mixed precision"
+        ],
+        "ko": [
+          "혼합 정밀도 학습",
+          "혼합 정밀도",
+          "자동 혼합 정밀도"
+        ]
+      },
+      "primary": "Mixed precision training",
+      "explanation_short": "혼합 정밀도(mixed precision) 학습은 Tensor Core가 빠르게 처리하는 16비트 연산을 최대한 활용하면서, 가중치 원본과 민감한 연산은 FP32로 유지해 정확도 손실을 막습니다. PyTorch에서는 torch.autocast(AMP)로 적용합니다.",
+      "explanation_full": "활성값을 16비트로 저장하므로 메모리가 줄어 더 큰 배치나 타일을 쓸 수 있고, Tensor Core가 있는 GPU에서는 속도도 빨라집니다. FP16을 쓸 때는 작은 기울기가 0으로 사라지는 언더플로를 막으려고 손실에 큰 수를 곱했다가 되돌리는 loss scaling(GradScaler)을 함께 씁니다. BF16은 지수 범위가 FP32와 같아 보통 loss scaling이 필요 없습니다.",
+      "tags": [
+        "precision",
+        "memory",
+        "basics"
+      ],
+      "terms": [
+        "mixed-precision-training"
+      ],
+      "source_ref": "Micikevicius et al. 2018, Mixed Precision Training; PyTorch 문서 torch.amp",
+      "status": "draft"
+    },
+    {
+      "id": "G-BATCH-006",
+      "type": "mcq",
+      "chapter": "G.batch",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "BF16(bfloat16)의 비트 구성(부호 / 지수 / 가수)으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "1 / 5 / 10",
+          "rationale": "FP16(IEEE 반정밀도)의 구성입니다. 지수가 5비트라 표현 범위가 좁습니다."
+        },
+        {
+          "text": "1 / 8 / 23",
+          "rationale": "FP32(단정밀도)의 구성입니다. BF16은 FP32의 상위 16비트만 남긴 형태입니다."
+        },
+        {
+          "text": "1 / 8 / 7",
+          "rationale": null
+        },
+        {
+          "text": "1 / 11 / 52",
+          "rationale": "FP64(배정밀도)의 구성입니다."
+        },
+        {
+          "text": "1 / 4 / 3",
+          "rationale": "FP8 중 E4M3 형식의 구성입니다. 최신 GPU의 8비트 학습·추론에 쓰입니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "BF16은 부호 1, 지수 8, 가수 7비트입니다. 지수 비트가 FP32와 같아 표현 범위(약 10⁻³⁸~10³⁸)는 같고, 가수가 짧아 정밀도는 FP16보다 낮습니다.",
+      "explanation_full": "FP16은 지수 5비트라 최댓값이 약 65,504로 작아 오버플로·언더플로가 잦은 대신, 가수 10비트로 BF16보다 촘촘합니다. 딥러닝 학습은 정밀도보다 표현 범위에 더 민감한 경우가 많아 BF16이 널리 쓰입니다. NVIDIA GPU에서는 Ampere 세대(A100, RTX 30 시리즈) 이후 BF16 연산을 하드웨어로 지원합니다.",
+      "tags": [
+        "precision",
+        "number-format"
+      ],
+      "terms": [
+        "bfloat16"
+      ],
+      "source_ref": "Google Cloud TPU 문서 bfloat16; NVIDIA Ampere 아키텍처 백서",
+      "status": "draft"
+    },
+    {
+      "id": "G-BATCH-007",
+      "type": "mcq",
+      "chapter": "G.batch",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "FP16 혼합 정밀도 학습에서는 loss scaling(PyTorch GradScaler)을 함께 쓰는 것이 일반적이지만, BF16에서는 보통 생략한다. 그 이유로 옳은 것은?",
+      "choices": [
+        {
+          "text": "BF16은 지수 비트가 FP32와 같은 8비트라 표현 범위가 넓어, 작은 기울기가 0으로 사라지는 언더플로가 훨씬 드물기 때문에",
+          "rationale": null
+        },
+        {
+          "text": "BF16은 가수 비트가 FP16보다 많아서 같은 16비트라도 더 정밀하게 기울기를 표현할 수 있기 때문에",
+          "rationale": "반대입니다. BF16의 가수는 7비트로 FP16(10비트)보다 짧아 정밀도가 더 낮습니다."
+        },
+        {
+          "text": "BF16 연산은 GPU 내부에서 자동으로 FP32로 바뀌어 계산되므로, 사실상 16비트 효과가 없기 때문에",
+          "rationale": "BF16은 Tensor Core에서 실제로 16비트 입력으로 계산되어 메모리·속도 이득이 있습니다. 누적만 FP32로 하는 경우가 많을 뿐입니다."
+        },
+        {
+          "text": "BF16은 순전파의 손실 계산에만 쓰이고 역전파에서는 전혀 쓰이지 않아, 기울기가 항상 FP32이기 때문에",
+          "rationale": "autocast 구간의 연산은 역전파에서도 같은 dtype으로 계산됩니다. BF16이 순전파에만 쓰인다는 설명은 틀렸습니다."
+        },
+        {
+          "text": "BF16을 쓰면 옵티마이저가 기울기 클리핑을 자동으로 적용해서, 기울기가 너무 작아지거나 커지지 않기 때문에",
+          "rationale": "dtype이 기울기 클리핑을 자동으로 켜 주지 않습니다. 클리핑은 clip_grad_norm_ 등으로 따로 적용해야 합니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "loss scaling은 FP16의 좁은 표현 범위 때문에 작은 기울기가 0으로 사라지는 것을 막는 장치입니다. BF16은 지수 8비트로 FP32와 범위가 같아 이런 언더플로가 드물어 보통 필요 없습니다.",
+      "explanation_full": "FP16의 가장 작은 정규화 수는 약 6×10⁻⁵이고(비정규화 수까지 포함해도 약 6×10⁻⁸), 이보다 작은 기울기는 0이 됩니다. GradScaler는 손실에 큰 수를 곱해 역전파한 뒤 업데이트 전에 다시 나누고, inf/NaN이 생기면 그 스텝을 건너뛰며 배율을 줄입니다. BF16은 정밀도가 낮은 대신 범위가 넓어 이 과정이 필요 없는 경우가 대부분입니다.",
+      "tags": [
+        "precision",
+        "amp"
+      ],
+      "terms": [
+        "bfloat16",
+        "mixed-precision-training"
+      ],
+      "source_ref": "Micikevicius et al. 2018, Mixed Precision Training; PyTorch 문서 torch.amp",
+      "status": "draft"
+    },
+    {
+      "id": "G-BATCH-008",
+      "type": "mcq",
+      "chapter": "G.batch",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "PyTorch DataLoader의 num_workers 값이 뜻하는 것은?",
+      "choices": [
+        {
+          "text": "학습에 함께 사용하는 GPU의 수",
+          "rationale": "GPU 수는 DDP의 world size 등으로 정합니다. DataLoader 설정과는 별개입니다."
+        },
+        {
+          "text": "한 에폭에 처리하는 배치의 개수",
+          "rationale": "한 에폭의 배치 수는 len(dataloader)이며 데이터셋 크기와 배치 크기로 정해집니다."
+        },
+        {
+          "text": "한 배치에 들어가는 샘플의 수",
+          "rationale": "한 배치의 샘플 수는 batch_size 인자입니다."
+        },
+        {
+          "text": "데이터를 읽고 전처리·증강하는 병렬 워커 프로세스 수",
+          "rationale": null
+        },
+        {
+          "text": "GPU 연산을 나누어 병렬로 처리하는 CUDA 스트림의 수",
+          "rationale": "CUDA 스트림은 GPU 연산 순서를 관리하는 개념으로 DataLoader 워커와 무관합니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "num_workers는 배치를 미리 준비하는 하위 프로세스 수입니다. 0이면 메인 프로세스가 직접 읽고 전처리하므로 그동안 GPU가 기다리기 쉽습니다.",
+      "explanation_full": "보통 CPU 코어 수 범위 안에서 늘려 가며 GPU 사용률이 충분히 오르는 지점을 찾습니다. 워커가 너무 많으면 워커마다 데이터셋 객체를 복제해 RAM을 많이 쓰고 디스크 I/O 경합도 커집니다. pin_memory=True는 CPU→GPU 전송을 빠르게 하는 옵션입니다. 큰 GeoTIFF를 읽는 원격탐사 데이터에서는 워커 수보다 파일 읽기 방식(사전 타일링, 윈도 읽기)이 더 큰 병목일 때가 많습니다.",
+      "tags": [
+        "data-pipeline",
+        "basics"
+      ],
+      "terms": [
+        "data-loader"
+      ],
+      "source_ref": "PyTorch 문서 torch.utils.data.DataLoader",
+      "status": "draft"
+    },
+    {
+      "id": "G-BATCH-009",
+      "type": "mcq",
+      "chapter": "G.batch",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "학습 중 nvidia-smi로 보니 GPU 사용률이 0%와 100% 사이를 톱니처럼 오가며 평균 30% 수준이고, GPU 메모리는 절반만 쓰고 있다. 가장 가능성 높은 원인은?",
+      "choices": [
+        {
+          "text": "학습률이 너무 낮아서 GPU가 스텝마다 해야 할 연산량이 줄었다",
+          "rationale": "학습률은 업데이트 크기만 바꿀 뿐 한 스텝의 연산량과 무관합니다."
+        },
+        {
+          "text": "데이터로더가 배치를 준비하는 속도가 GPU 연산 속도를 따라가지 못하고 있다",
+          "rationale": null
+        },
+        {
+          "text": "GPU 메모리가 부족해서 일부 연산이 자동으로 CPU로 넘어가 처리되고 있다",
+          "rationale": "메모리가 절반이나 남아 있고, PyTorch는 메모리가 부족하면 CPU로 넘기지 않고 OOM 오류를 냅니다."
+        },
+        {
+          "text": "혼합 정밀도(AMP)를 켜서 GPU의 행렬 연산 자체가 느려지고 있다",
+          "rationale": "AMP는 Tensor Core를 활용해 일반적으로 GPU 연산을 빠르게 합니다. 사용률의 톱니 패턴과 무관합니다."
+        },
+        {
+          "text": "모델이 너무 커서 GPU 연산 장치가 계속 포화 상태로 돌고 있다",
+          "rationale": "연산이 포화 상태라면 사용률이 100% 근처에 계속 머뭅니다. 0%로 떨어지는 구간이 있다는 것은 GPU가 쉬고 있다는 뜻입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "GPU가 배치를 빨리 처리한 뒤 다음 배치를 기다리며 쉬는 패턴입니다. 데이터 읽기·디코딩·증강이 느린 입력 병목(input bottleneck)의 전형입니다.",
+      "explanation_full": "확인 방법: 모델 없이 데이터로더만 돌려 초당 배치 수를 재거나, 한 스텝에서 데이터 대기 시간과 연산 시간을 따로 측정합니다(PyTorch Profiler도 유용합니다). 처방은 num_workers·pin_memory 조정, 미리 타일링·캐시, 무거운 증강을 GPU로 옮기기, 디코딩이 빠른 저장 형식 사용 등입니다.",
+      "tags": [
+        "data-pipeline",
+        "profiling"
+      ],
+      "terms": [
+        "data-loader"
+      ],
+      "source_ref": "PyTorch 문서 Performance Tuning Guide",
+      "status": "draft"
+    },
+    {
+      "id": "G-BATCH-010",
+      "type": "mcq",
+      "chapter": "G.batch",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "GPU 2장으로 DDP 학습을 하며 GPU당 배치 6, gradient accumulation 8 스텝을 설정했다. 한 번의 옵티마이저 업데이트에 반영되는 유효 배치 크기(effective batch size)는?",
+      "choices": [
+        {
+          "text": "6",
+          "rationale": "GPU당 배치 크기만 본 값입니다. GPU 수와 누적 스텝이 빠졌습니다."
+        },
+        {
+          "text": "12",
+          "rationale": "GPU 수(2)만 곱하고 gradient accumulation(8)을 빠뜨린 값입니다."
+        },
+        {
+          "text": "48",
+          "rationale": "accumulation(8)만 곱하고 GPU 수(2)를 빠뜨린 값입니다."
+        },
+        {
+          "text": "16",
+          "rationale": "세 값을 곱하지 않고 더한 값(6 + 2 + 8)입니다."
+        },
+        {
+          "text": "96",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "유효 배치 = GPU당 배치 × GPU 수 × accumulation 스텝 = 6 × 2 × 8 = 96입니다.",
+      "explanation_full": "DDP는 매 스텝 GPU 사이 기울기를 평균하므로 한 스텝이 12장 배치와 같고, 이를 8번 누적한 뒤 업데이트하므로 96장입니다. 학습률 스케일링, 논문 재현, 실험 비교는 이 유효 배치 기준으로 해야 합니다. 에폭당 옵티마이저 업데이트 수는 대략 전체 샘플 수 ÷ 96입니다.",
+      "tags": [
+        "batch",
+        "calculation",
+        "multi-gpu"
+      ],
+      "terms": [
+        "effective-batch-size",
+        "gradient-accumulation",
+        "distributed-data-parallel"
+      ],
+      "source_ref": "PyTorch 문서 DistributedDataParallel; Goyal et al. 2017",
+      "status": "draft"
+    },
+    {
+      "id": "G-BATCH-011",
+      "type": "mcq",
+      "chapter": "G.batch",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "CNN 분할 모델의 입력 타일을 512×512에서 1024×1024로 바꾸고 배치 크기는 그대로 두었더니 OOM이 났다. 메모리 증가를 주로 일으킨 항목과 대략적인 배율로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "모델 가중치, 약 4배",
+          "rationale": "합성곱 가중치 수는 커널 크기와 채널 수로 정해지며 입력 해상도와 무관합니다."
+        },
+        {
+          "text": "옵티마이저 상태(Adam의 1·2차 모멘트), 약 2배",
+          "rationale": "옵티마이저 상태는 파라미터 수에 비례하므로 입력 해상도가 바뀌어도 그대로입니다."
+        },
+        {
+          "text": "역전파용으로 저장하는 중간 활성값(activation), 약 4배",
+          "rationale": null
+        },
+        {
+          "text": "역전파용으로 저장하는 중간 활성값(activation), 약 2배",
+          "rationale": "한 변이 2배면 픽셀 수는 2 × 2 = 4배입니다. 활성값은 픽셀 수에 비례하므로 2배가 아닙니다."
+        },
+        {
+          "text": "파라미터 기울기(gradient), 약 4배",
+          "rationale": "파라미터 기울기는 가중치와 같은 크기의 텐서라 입력 해상도와 무관합니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "CNN의 활성값 메모리는 대략 배치 크기 × 픽셀 수(H×W)에 비례합니다. 한 변이 2배면 픽셀 수가 4배이므로 활성값도 약 4배가 됩니다. 가중치·기울기·옵티마이저 상태는 입력 크기와 무관합니다.",
+      "explanation_full": "학습 메모리 ≈ 가중치 + 기울기 + 옵티마이저 상태(Adam은 가중치의 약 2배) + 활성값입니다. 앞의 셋은 모델 크기로 고정되고 활성값만 배치 크기 × 해상도에 비례합니다. ViT처럼 전역 self-attention을 쓰면 attention 행렬이 토큰 수의 제곱에 비례해, 한 변 2배(토큰 4배)에 attention 행렬 메모리는 약 16배가 될 수 있습니다(FlashAttention처럼 행렬 전체를 저장하지 않는 구현은 예외). 고해상도 위성 타일에서는 배치 대신 타일 크기와 overlap을 조절하는 것도 방법입니다.",
+      "tags": [
+        "memory",
+        "resolution"
+      ],
+      "terms": [
+        "out-of-memory",
+        "batch-size"
+      ],
+      "source_ref": "PyTorch 문서 Understanding CUDA Memory Usage; Chen et al. 2016 (Gradient Checkpointing)",
+      "status": "draft"
+    },
+    {
+      "id": "G-BATCH-012",
+      "type": "mcq",
+      "chapter": "G.batch",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "GPU당 배치 8로 gradient accumulation 4 스텝(유효 배치 32)을 쓰고 있고, 손실은 누적 횟수로 나눠 주었다. 그래도 배치 32로 한 번에 학습한 것과 결과가 달라질 수 있는 대표적인 원인은?",
+      "choices": [
+        {
+          "text": "BatchNorm의 평균·분산이 32장이 아니라 8장 단위로 계산되기 때문에",
+          "rationale": null
+        },
+        {
+          "text": "옵티마이저 업데이트 횟수가 배치 32로 학습할 때보다 4배 많아지기 때문에",
+          "rationale": "4번 누적한 뒤 1번 업데이트하므로 업데이트 횟수는 배치 32일 때와 같습니다."
+        },
+        {
+          "text": "미니배치마다 역전파를 하지 않고, 4번째 미니배치에서만 한 번 역전파하기 때문에",
+          "rationale": "역전파는 매 미니배치마다 수행해 기울기를 누적합니다. 4번에 한 번인 것은 옵티마이저 업데이트입니다."
+        },
+        {
+          "text": "누적하는 동안에는 Dropout이 꺼져서 정규화 효과가 사라지기 때문에",
+          "rationale": "Dropout은 train 모드에서 매 순전파마다 동작하며 누적 여부와 무관합니다."
+        },
+        {
+          "text": "GPU 메모리를 배치 32로 학습할 때와 똑같이 사용하기 때문에",
+          "rationale": "메모리는 미니배치 8장 분량만 씁니다. 또한 메모리 사용량은 학습 결과를 바꾸는 요인이 아닙니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "손실을 누적 횟수로 나누면 누적 기울기는 큰 배치의 평균 기울기와 같아지지만, BatchNorm은 순전파 때 미니배치(8장) 안에서 통계를 내므로 배치 32와 정규화 결과가 달라집니다.",
+      "explanation_full": "미니배치가 매우 작으면 BN 통계가 불안정해 성능이 떨어질 수 있습니다. 이때는 GroupNorm·LayerNorm으로 바꾸거나, 여러 GPU를 쓴다면 SyncBatchNorm으로 GPU 간 통계를 모아 계산합니다(단, SyncBN도 accumulation 스텝 사이의 통계까지 합치지는 못합니다).",
+      "tags": [
+        "batch",
+        "normalization"
+      ],
+      "terms": [
+        "gradient-accumulation"
+      ],
+      "source_ref": "Ioffe & Szegedy 2015 (Batch Normalization); Wu & He 2018 (Group Normalization)",
+      "status": "draft"
+    },
+    {
+      "id": "G-BATCH-013",
+      "type": "mcq",
+      "chapter": "G.batch",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "GPU 4장으로 DDP 학습을 하면서 DataLoader의 batch_size를 16으로 두었다. 옳은 설명은?",
+      "choices": [
+        {
+          "text": "모델을 층 단위로 4조각 내어 각 GPU에 나눠 올리고, 16장이 GPU를 차례로 통과한다",
+          "rationale": "모델 병렬(파이프라인 병렬) 설명입니다. DDP는 GPU마다 모델 전체 사본을 둡니다."
+        },
+        {
+          "text": "각 프로세스가 서로 다른 16장을 처리하고, 역전파 중 기울기를 평균해 4개 사본이 같은 가중치로 업데이트된다",
+          "rationale": null
+        },
+        {
+          "text": "GPU 0이 모든 GPU의 출력과 기울기를 모아 업데이트한 뒤, 새 가중치를 나머지 GPU 3장에 다시 복사해 준다",
+          "rationale": "구형 DataParallel(DP)의 동작 방식입니다. DDP는 all-reduce로 모든 GPU가 대등하게 기울기를 평균합니다."
+        },
+        {
+          "text": "16장을 4장씩 나눠 GPU마다 4장을 처리하므로, 전체 유효 배치는 16이다",
+          "rationale": "하나의 배치를 GPU 수로 쪼개는 것은 DataParallel 방식입니다. DDP에서 batch_size는 프로세스(GPU)당 값입니다."
+        },
+        {
+          "text": "각 GPU가 독립적으로 끝까지 학습한 뒤, 마지막에 4개 모델의 가중치를 한 번 평균한다",
+          "rationale": "학습 후 가중치 평균(모델 수프 등)과는 다릅니다. DDP는 매 스텝 기울기를 동기화합니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "DDP에서 DataLoader의 batch_size는 프로세스(GPU)당 값이므로 유효 배치는 16 × 4 = 64입니다. 기울기가 매 스텝 all-reduce로 평균되어 모든 사본이 항상 같은 가중치를 유지합니다.",
+      "explanation_full": "DDP는 역전파 중 기울기를 버킷 단위로 묶어 계산과 통신을 겹치게 해 효율이 높습니다. 모든 프로세스가 같은 초기 가중치에서 시작하고 같은 평균 기울기로 업데이트하므로 사본이 어긋나지 않습니다. 체크포인트 저장·로그 출력은 보통 rank 0 프로세스에서만 합니다.",
+      "tags": [
+        "multi-gpu"
+      ],
+      "terms": [
+        "distributed-data-parallel"
+      ],
+      "source_ref": "PyTorch 문서 DistributedDataParallel; Li et al. 2020 (PyTorch Distributed)",
+      "status": "draft"
+    },
+    {
+      "id": "G-BATCH-014",
+      "type": "scenario",
+      "chapter": "G.batch",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"KOMPSAT-3A 팬샤프닝 영상 1024×1024 타일로 건물 분할 돌리는데 GPU당 배치 8에서 OOM이야. 24GB 한 장뿐이고 배치 4까지는 돌아가는 거 확인했어. 유효 배치 32는 유지하면서 돌아가게 만들어.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "배치를 4로 줄이고, 메모리 여유를 위해 학습률도 절반으로 낮춘다",
+          "rationale": "유효 배치가 4가 되어 '유효 배치 32 유지' 지시를 어깁니다. 학습률은 메모리와 무관합니다."
+        },
+        {
+          "text": "배치 8을 유지하고 gradient accumulation을 4 스텝으로 설정한다",
+          "rationale": "메모리는 미니배치 크기로 정해지므로 배치 8 자체가 여전히 OOM입니다."
+        },
+        {
+          "text": "매 스텝 torch.cuda.empty_cache()를 호출해 GPU 메모리를 비워 준다",
+          "rationale": "캐시된 미사용 블록만 반환할 뿐 사용 중인 활성값 메모리는 줄지 않아 OOM이 해결되지 않습니다."
+        },
+        {
+          "text": "배치를 4로 줄이고 gradient accumulation을 8 스텝으로 설정한다",
+          "rationale": null
+        },
+        {
+          "text": "타일을 2048×2048로 키워서 에폭당 처리할 배치 수를 줄인다",
+          "rationale": "장당 픽셀 수가 4배가 되어 메모리 요구량이 더 커집니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "메모리는 미니배치 크기가 정하므로 배치를 들어가는 크기(4)로 줄이고, 4 × 8 = 32로 유효 배치를 맞추는 것이 지시에 맞습니다.",
+      "explanation_full": "유효 배치가 같으므로 학습률은 그대로 둡니다. AMP(혼합 정밀도)를 추가로 켜면 배치 8이 들어갈 수도 있어 누적 스텝을 줄여 속도를 높일 수 있습니다. 단, BatchNorm은 4장 단위로 통계를 내므로 성능이 떨어지면 GroupNorm이나 사전학습 BN 고정을 검토합니다.",
+      "tags": [
+        "memory",
+        "batch"
+      ],
+      "terms": [
+        "out-of-memory",
+        "gradient-accumulation",
+        "effective-batch-size"
+      ],
+      "source_ref": "Hugging Face 문서 Methods and tools for efficient training on a single GPU",
+      "status": "draft"
+    },
+    {
+      "id": "G-BATCH-015",
+      "type": "scenario",
+      "chapter": "G.batch",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"A100에서 FP16 AMP로 학습하는데 가끔 loss가 inf로 튀고 GradScaler scale 값이 계속 줄어들어. A100은 bf16 되니까 그걸로 바꿔.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "모델 전체를 .half()로 변환해 모든 가중치와 연산을 FP16으로 통일한다",
+          "rationale": "순수 FP16 학습은 범위 문제가 더 심해집니다. 지시는 BF16으로 바꾸라는 것입니다."
+        },
+        {
+          "text": "GradScaler의 초기 scale을 더 크게 고정해 기울기 언더플로를 막는다",
+          "rationale": "inf와 scale 감소는 오버플로 신호입니다. 배율을 키우면 오버플로가 더 잦아집니다."
+        },
+        {
+          "text": "autocast의 dtype을 bfloat16으로 바꾸되, 가수가 짧으니 GradScaler scale을 FP16 때보다 크게 잡는다",
+          "rationale": "loss scaling은 표현 범위 문제에 대한 대응이지 가수 길이와 무관합니다. BF16은 범위가 넓어 보통 scaling이 필요 없습니다."
+        },
+        {
+          "text": "입력 영상을 8비트로 양자화해서 네트워크에 들어가는 값의 범위를 줄인다",
+          "rationale": "입력 양자화는 학습 중 활성값·기울기 오버플로를 해결하지 못하고 반사율 정보만 잃습니다."
+        },
+        {
+          "text": "autocast의 dtype을 torch.bfloat16으로 바꾸고, 범위가 FP32와 같으므로 GradScaler는 뺀다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "inf와 계속 줄어드는 loss scale은 FP16의 좁은 표현 범위(최대 약 65,504)에서 오버플로가 반복된다는 신호입니다. BF16은 지수 8비트로 FP32와 범위가 같아 이런 문제가 거의 없고, loss scaling도 보통 필요 없습니다.",
+      "explanation_full": "BF16은 가수가 7비트라 정밀도는 낮지만 대부분의 학습에서 FP32와 비슷한 결과를 냅니다. BF16으로 바꾼 뒤에도 inf/NaN이 나면 학습률이나 입력 데이터의 nodata·극단값(예: 16비트 DN 원값을 정규화 없이 입력)을 확인하세요.",
+      "tags": [
+        "precision",
+        "amp"
+      ],
+      "terms": [
+        "bfloat16",
+        "mixed-precision-training"
+      ],
+      "source_ref": "PyTorch 문서 torch.amp; NVIDIA A100 Tensor Core GPU 아키텍처 백서",
+      "status": "draft"
+    },
+    {
+      "id": "G-BATCH-016",
+      "type": "scenario",
+      "chapter": "G.batch",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"Sentinel-2 L2A 원본 장면(10980×10980 GeoTIFF)을 매 스텝 통째로 열어서 256×256 랜덤 크롭하는데 GPU 사용률이 15%야. 병목 잡아.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "학습 전에 장면을 작은 타일(예: 512×512)로 잘라 저장해 두고 거기서 크롭하며, num_workers를 늘린다",
+          "rationale": null
+        },
+        {
+          "text": "배치 크기를 두 배로 늘려서 한 스텝에 GPU가 처리할 일을 늘린다",
+          "rationale": "스텝마다 읽어야 할 장면이 두 배가 되어 데이터 대기 시간도 함께 늘어납니다."
+        },
+        {
+          "text": "AMP를 켜서 GPU 연산 속도를 높인다",
+          "rationale": "GPU가 더 빨리 끝나면 데이터를 기다리는 비율만 커집니다. 병목은 입력 쪽입니다."
+        },
+        {
+          "text": "학습률을 높여서 더 적은 스텝으로 수렴하도록 만든다",
+          "rationale": "학습률은 스텝당 처리 속도와 무관하며 데이터 병목을 해결하지 못합니다."
+        },
+        {
+          "text": "메모리가 더 큰 상위 GPU로 교체해서 다시 학습한다",
+          "rationale": "병목은 GPU가 아니라 파일 읽기입니다. 더 빠른 GPU는 더 오래 기다릴 뿐입니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "매 스텝 약 1억 2천만 픽셀짜리 장면 전체를 읽고 256×256만 쓰는 것은 I/O 낭비가 큽니다. 미리 타일링하고 워커를 늘리면 GPU 대기 시간이 크게 줄어듭니다.",
+      "explanation_full": "사전 타일링이 어려우면 내부 타일 구조를 가진 GeoTIFF(예: Cloud Optimized GeoTIFF)로 변환해 rasterio의 window 읽기로 필요한 부분만 읽는 방법도 있습니다. 타일을 저장할 때 좌표계와 지오트랜스폼 메타데이터를 함께 남겨 두면 추론 결과를 지도 좌표로 되돌리기 쉽습니다.",
+      "tags": [
+        "data-pipeline",
+        "geotiff"
+      ],
+      "terms": [
+        "data-loader"
+      ],
+      "source_ref": "PyTorch 문서 Performance Tuning Guide; rasterio 문서 Windowed reading and writing",
+      "status": "draft"
+    },
+    {
+      "id": "G-BATCH-017",
+      "type": "scenario",
+      "chapter": "G.batch",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"학습 서버를 GPU 2장에서 8장으로 바꿔서 DDP로 돌릴 거야. GPU당 배치 16, accumulation 없음 그대로면 유효 배치랑 에폭당 업데이트 횟수가 어떻게 바뀌는지 보고해.\"\n\n보고 내용으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "유효 배치 32→128로 4배가 되고, 에폭당 업데이트 횟수는 그대로 유지된다",
+          "rationale": "한 번에 처리하는 샘플이 4배가 되므로 같은 데이터를 도는 데 필요한 업데이트 횟수는 약 1/4로 줄어듭니다."
+        },
+        {
+          "text": "유효 배치는 GPU당 16으로 그대로이고, 에폭당 업데이트 횟수가 4배로 늘어난다",
+          "rationale": "DDP는 매 스텝 기울기를 평균하므로 한 번의 업데이트가 16 × GPU 수의 샘플을 반영합니다."
+        },
+        {
+          "text": "유효 배치 32→128로 4배가 되고, 에폭당 업데이트 횟수는 약 1/4로 줄어든다",
+          "rationale": null
+        },
+        {
+          "text": "유효 배치 32→64로 2배가 되고, 에폭당 업데이트 횟수는 약 1/2로 줄어든다",
+          "rationale": "GPU가 2장에서 8장으로 4배가 되었으므로 유효 배치도 4배(128)입니다."
+        },
+        {
+          "text": "유효 배치 16→128로 8배가 되고, 에폭당 업데이트 횟수는 약 1/8로 줄어든다",
+          "rationale": "기존에도 GPU 2장이었으므로 기존 유효 배치는 16이 아니라 32입니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "유효 배치 = GPU당 배치 × GPU 수이므로 2장일 때 32, 8장일 때 128입니다. 에폭당 샘플 수는 같으므로 업데이트 횟수는 약 1/4이 됩니다.",
+      "explanation_full": "에폭당 업데이트가 줄어 같은 에폭 수로는 학습이 덜 진행될 수 있으므로, 선형 스케일링 규칙으로 학습률을 키우거나(워밍업 병행) 에폭 수를 조정하는 방안을 함께 보고하면 좋습니다. iteration 단위로 설정한 스케줄러·워밍업 길이도 다시 계산해야 합니다.",
+      "tags": [
+        "multi-gpu",
+        "batch",
+        "calculation"
+      ],
+      "terms": [
+        "effective-batch-size",
+        "distributed-data-parallel"
+      ],
+      "source_ref": "PyTorch 문서 DistributedDataParallel; Goyal et al. 2017",
+      "status": "draft"
+    },
+    {
+      "id": "G-BATCH-018",
+      "type": "scenario",
+      "chapter": "G.batch",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"DDP로 4장 돌렸는데 에폭 시간이 1장일 때랑 거의 같고, 로그 보니까 GPU 4개가 매 스텝 같은 파일명의 타일을 읽고 있어. 고쳐.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "num_workers를 4배로 늘려서 각 GPU가 데이터를 더 빨리 읽게 한다",
+          "rationale": "읽기 속도가 빨라져도 4개 프로세스가 같은 데이터를 중복 처리하는 문제는 그대로입니다."
+        },
+        {
+          "text": "DataLoader에 DistributedSampler를 지정하고, 매 에폭 시작 때 sampler.set_epoch(epoch)를 호출한다",
+          "rationale": null
+        },
+        {
+          "text": "DDP 대신 DataParallel로 바꿔서 한 프로세스가 배치를 나눠 주게 한다",
+          "rationale": "원인은 샘플러 설정입니다. DataParallel은 더 느린 구형 방식이라 해결책으로 권장되지 않습니다."
+        },
+        {
+          "text": "각 프로세스의 DataLoader에서 shuffle=True만 켜서 순서를 섞는다",
+          "rationale": "순서만 섞일 뿐 각 프로세스가 여전히 전체 데이터셋을 한 바퀴씩 돌아 에폭 시간이 줄지 않고 데이터도 겹칩니다."
+        },
+        {
+          "text": "gradient accumulation을 4 스텝으로 설정해 중복된 기울기를 상쇄한다",
+          "rationale": "누적은 업데이트 주기를 바꿀 뿐 데이터 분배 문제와 무관합니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "DistributedSampler 없이 DDP를 쓰면 모든 프로세스가 전체 데이터셋을 똑같이 돌아 같은 일을 4번 중복합니다. DistributedSampler가 데이터셋을 프로세스 수로 나눠 겹치지 않게 배분합니다.",
+      "explanation_full": "set_epoch를 호출하지 않으면 매 에폭 같은 셔플 순서가 반복됩니다. sampler를 지정할 때 DataLoader의 shuffle은 켜지 않습니다(셔플은 샘플러가 담당). 데이터셋 크기가 GPU 수로 나누어떨어지지 않으면 기본 설정에서 일부 샘플을 중복해 채우므로, 검증 지표를 계산할 때 이 점을 주의합니다.",
+      "tags": [
+        "multi-gpu",
+        "data-pipeline"
+      ],
+      "terms": [
+        "distributed-data-parallel",
+        "data-loader"
+      ],
+      "source_ref": "PyTorch 문서 torch.utils.data.distributed.DistributedSampler",
+      "status": "draft"
+    }
+  ]
+}

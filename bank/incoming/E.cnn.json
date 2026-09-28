@@ -1,0 +1,1116 @@
+{
+  "format": "visiondrill-bank-exchange",
+  "format_version": 1,
+  "terms": [
+    {
+      "id": "convolutional-layer",
+      "term_en": "Convolutional Layer",
+      "term_ko": "합성곱 층",
+      "abbreviation": "Conv",
+      "definition": "작은 커널을 입력 위에서 이동시키며 국소 영역과의 가중합을 계산해 특징맵을 만드는 층. 같은 커널 가중치를 모든 위치에서 공유한다",
+      "usage_example": "첫 conv 입력 채널을 3에서 4로 늘려서 NIR 밴드까지 받게 바꿔.",
+      "origin": "standard",
+      "track": "E"
+    },
+    {
+      "id": "kernel",
+      "term_en": "Kernel (Filter)",
+      "term_ko": "커널(필터)",
+      "abbreviation": null,
+      "definition": "합성곱에서 입력 위를 이동하며 가중합을 계산하는 작은 가중치 텐서(크기 k×k×입력 채널 수). 커널 개수가 출력 채널 수가 된다",
+      "usage_example": "입력이 13밴드면 3×3 커널 하나가 3×3×13이고, 그걸 64개 두면 출력이 64채널이야.",
+      "origin": "standard",
+      "track": "E"
+    },
+    {
+      "id": "stride",
+      "term_en": "Stride",
+      "term_ko": "스트라이드",
+      "abbreviation": null,
+      "definition": "커널이나 풀링 창이 한 번에 이동하는 픽셀 간격. 2 이상이면 출력 특징맵이 줄어든다(다운샘플링)",
+      "usage_example": "첫 conv stride 2면 10m 영상이 특징맵에선 20m 간격이 되는 거야.",
+      "origin": "standard",
+      "track": "E"
+    },
+    {
+      "id": "padding",
+      "term_en": "Padding",
+      "term_ko": "패딩",
+      "abbreviation": null,
+      "definition": "합성곱 전에 입력 가장자리에 값(보통 0)을 덧대 출력 크기를 조절하고 경계 픽셀도 커널 중심에 오게 하는 것",
+      "usage_example": "3×3 conv에 padding 1 줘서 512 타일이 512 그대로 나오게 맞춰.",
+      "origin": "standard",
+      "track": "E"
+    },
+    {
+      "id": "receptive-field",
+      "term_en": "Receptive Field",
+      "term_ko": "수용영역",
+      "abbreviation": "RF",
+      "definition": "출력 특징맵의 한 값이 영향을 받는 입력 영상의 영역. 층을 쌓고 다운샘플링할수록 넓어진다",
+      "usage_example": "선착장 전체 맥락을 보려면 마지막 단 수용영역이 최소 200픽셀은 돼야 해.",
+      "origin": "standard",
+      "track": "E"
+    },
+    {
+      "id": "pooling",
+      "term_en": "Pooling",
+      "term_ko": "풀링",
+      "abbreviation": null,
+      "definition": "특징맵을 작은 창으로 나눠 창마다 최댓값(max)이나 평균(average) 하나만 남겨 공간 크기를 줄이는, 학습 파라미터가 없는 연산",
+      "usage_example": "max pooling 한 번에 해상도가 절반이니까 소형 차량 탐지면 초반 pooling은 조심해.",
+      "origin": "standard",
+      "track": "E"
+    },
+    {
+      "id": "pointwise-convolution",
+      "term_en": "Pointwise Convolution (1×1 Convolution)",
+      "term_ko": "1×1 합성곱(점별 합성곱)",
+      "abbreviation": "1×1 conv",
+      "definition": "커널 크기가 1×1인 합성곱. 공간 정보는 섞지 않고 픽셀마다 채널들을 선형 결합해 채널 수를 바꾼다",
+      "usage_example": "초분광 224밴드는 1×1 conv로 32채널까지 줄인 다음에 3×3 블록에 넣어.",
+      "origin": "standard",
+      "track": "E"
+    },
+    {
+      "id": "dilated-convolution",
+      "term_en": "Dilated Convolution (Atrous Convolution)",
+      "term_ko": "팽창 합성곱",
+      "abbreviation": null,
+      "definition": "커널 원소 사이에 간격(dilation rate − 1칸)을 두어, 가중치 수와 해상도는 그대로 두고 수용영역을 넓히는 합성곱",
+      "usage_example": "해상도 더 줄이지 말고 마지막 단 3×3 conv에 dilation 2, 4 걸어서 수용영역만 넓혀.",
+      "origin": "standard",
+      "track": "E"
+    },
+    {
+      "id": "depthwise-separable-convolution",
+      "term_en": "Depthwise Separable Convolution",
+      "term_ko": "깊이별 분리 합성곱",
+      "abbreviation": null,
+      "definition": "표준 합성곱을 채널마다 따로 하는 공간 합성곱(depthwise)과 채널을 섞는 1×1 합성곱(pointwise) 두 단계로 나눠 파라미터·연산량을 줄인 구조",
+      "usage_example": "드론 보드에 올릴 거니까 백본 3×3 conv는 depthwise separable로 바꿔서 경량화해.",
+      "origin": "standard",
+      "track": "E"
+    }
+  ],
+  "questions": [
+    {
+      "id": "E-CNN-001",
+      "type": "short",
+      "chapter": "E.cnn",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "작은 가중치 행렬(커널)이 입력 위를 이동하며 국소 영역과의 가중합을 계산해 특징맵을 만드는, CNN의 기본 층 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Convolutional Layer",
+          "Convolution Layer",
+          "Conv Layer",
+          "Conv",
+          "Conv2d"
+        ],
+        "ko": [
+          "합성곱 층",
+          "합성곱 레이어",
+          "컨볼루션 층",
+          "컨볼루션 레이어",
+          "합성곱"
+        ]
+      },
+      "primary": "Convolutional Layer",
+      "explanation_short": "합성곱 층(convolutional layer)은 커널을 슬라이딩하며 국소 영역의 가중합을 계산합니다. 같은 커널을 모든 위치에 공유하므로 영상의 어느 위치에 있는 패턴이든 같은 방식으로 찾을 수 있습니다.",
+      "explanation_full": "출력 한 칸 = Σ(커널 가중치 × 입력 국소 영역) + 편향 입니다. 엄밀히는 커널을 뒤집지 않는 교차상관(cross-correlation)이지만 딥러닝에서는 관례적으로 합성곱이라 부릅니다. 원격탐사에서는 입력 채널이 RGB 3개가 아니라 다중분광 밴드 수(예: Sentinel-2 13밴드)가 되므로, 사전학습 가중치를 쓸 때 첫 층의 입력 채널을 맞추는 작업이 자주 필요합니다.",
+      "tags": [
+        "cnn",
+        "convolution"
+      ],
+      "terms": [
+        "convolutional-layer"
+      ],
+      "source_ref": "CS231n 강의노트 Convolutional Neural Networks",
+      "status": "draft"
+    },
+    {
+      "id": "E-CNN-002",
+      "type": "mcq",
+      "chapter": "E.cnn",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "256×256×3 영상을 입력으로 받을 때, 출력 뉴런마다 모든 입력 픽셀과 연결되는 완전연결(FC) 층보다 합성곱 층의 파라미터가 훨씬 적은 주된 이유는?",
+      "choices": [
+        {
+          "text": "같은 커널 가중치를 모든 공간 위치에서 공유하고, 각 출력이 입력의 국소 영역에만 연결되기 때문",
+          "rationale": null
+        },
+        {
+          "text": "뒤따르는 pooling 층이 합성곱 층의 파라미터 절반을 제거하기 때문",
+          "rationale": "pooling은 파라미터가 없는 연산이며, 앞 층의 파라미터를 없애지도 않습니다."
+        },
+        {
+          "text": "ReLU가 음수 가중치를 0으로 만들어 실제 파라미터가 절반으로 줄기 때문",
+          "rationale": "ReLU는 가중치가 아니라 활성값(출력)에 적용됩니다. 파라미터 수는 그대로입니다."
+        },
+        {
+          "text": "합성곱은 입력 채널 중 하나만 골라 계산하므로 채널 수만큼 줄기 때문",
+          "rationale": "표준 합성곱의 커널은 모든 입력 채널을 함께 봅니다. 채널마다 따로 계산하는 것은 depthwise 합성곱입니다."
+        },
+        {
+          "text": "합성곱 층에는 편향(bias)이 없어서 그만큼 파라미터가 줄기 때문",
+          "rationale": "합성곱 층도 보통 출력 채널마다 편향을 가집니다. 편향은 전체에서 차지하는 비율도 아주 작습니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "합성곱 층은 가중치 공유(weight sharing)와 국소 연결(local connectivity) 덕분에 파라미터 수가 입력 영상 크기와 무관합니다. 커널 크기·입력 채널·출력 채널만으로 결정됩니다.",
+      "explanation_full": "예를 들어 256×256×3 입력을 뉴런 64개짜리 FC 층에 연결하면 196,608×64 = 12,582,912개(약 1,258만 개)의 가중치가 필요하지만, 3×3 합성곱으로 64채널을 만들면 3×3×3×64+64 = 1,792개면 됩니다. 이 성질 덕분에 같은 모델을 512×512든 1024×1024든 다른 크기의 위성영상 타일에 그대로 적용할 수 있습니다.",
+      "tags": [
+        "cnn",
+        "convolution",
+        "parameters"
+      ],
+      "terms": [
+        "convolutional-layer"
+      ],
+      "source_ref": "CS231n 강의노트 Convolutional Neural Networks; Goodfellow et al., Deep Learning 9.2절",
+      "status": "draft"
+    },
+    {
+      "id": "E-CNN-003",
+      "type": "short",
+      "chapter": "E.cnn",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "합성곱 층에서 입력 위를 이동하며 가중합을 계산하는 작은 가중치 묶음(예: 3×3)을 부르는 말은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Kernel (Filter)",
+          "Convolution kernel"
+        ],
+        "ko": [
+          "커널",
+          "필터",
+          "합성곱 커널"
+        ]
+      },
+      "primary": "Kernel (Filter)",
+      "explanation_short": "커널(kernel) 또는 필터(filter)는 합성곱에서 학습되는 작은 가중치 텐서입니다. 커널 하나가 출력 채널 하나를 만듭니다.",
+      "explanation_full": "커널의 실제 모양은 k×k×(입력 채널 수)입니다. 예를 들어 Sentinel-2 10개 밴드 입력에 3×3 커널을 쓰면 커널 하나는 3×3×10개의 가중치를 가집니다. 학습 초기 층의 커널은 경계·질감 같은 저수준 패턴을, 깊은 층은 건물·도로 같은 고수준 패턴에 반응하도록 학습됩니다.",
+      "tags": [
+        "cnn",
+        "kernel"
+      ],
+      "terms": [
+        "kernel"
+      ],
+      "source_ref": "CS231n 강의노트 Convolutional Neural Networks",
+      "status": "draft"
+    },
+    {
+      "id": "E-CNN-004",
+      "type": "mcq",
+      "chapter": "E.cnn",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "입력 64채널 특징맵에 3×3 합성곱을 적용해 출력 128채널을 만든다. 이 층의 커널 구성으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "3×3×1 크기의 커널 128개",
+          "rationale": "커널 하나는 입력의 모든 채널을 함께 봐야 하므로 깊이가 입력 채널 수(64)여야 합니다. 깊이 1짜리는 depthwise 합성곱의 커널입니다."
+        },
+        {
+          "text": "3×3×128 크기의 커널 64개",
+          "rationale": "입력·출력이 뒤바뀌었습니다. 커널 깊이는 입력 채널 수, 커널 개수는 출력 채널 수입니다."
+        },
+        {
+          "text": "3×3×64 크기의 커널 128개",
+          "rationale": null
+        },
+        {
+          "text": "모든 채널이 함께 쓰는 3×3 커널 1개",
+          "rationale": "출력 채널마다 서로 다른 커널이 있어야 다른 특징을 뽑을 수 있습니다. 공유되는 것은 공간 위치 방향입니다."
+        },
+        {
+          "text": "3×3×64 크기의 커널 1개와 그 출력의 128배 복사",
+          "rationale": "같은 출력을 복사하면 128채널이 모두 똑같아져 새로운 정보가 없습니다. 출력 채널마다 별도 커널이 필요합니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "표준 합성곱에서 커널 하나의 깊이는 입력 채널 수(64)와 같고, 커널 개수가 출력 채널 수(128)가 됩니다. 따라서 3×3×64 커널 128개가 있습니다.",
+      "explanation_full": "가중치 텐서 모양은 PyTorch 기준 (출력 채널, 입력 채널, k, k) = (128, 64, 3, 3)이고, 가중치 수는 3×3×64×128 = 73,728개(+편향 128개)입니다. 각 커널이 64개 채널의 3×3 영역을 모두 합쳐 출력 채널 하나를 만든다는 점을 이해하면 파라미터 수 계산이 쉬워집니다.",
+      "tags": [
+        "cnn",
+        "kernel",
+        "channels"
+      ],
+      "terms": [
+        "kernel",
+        "convolutional-layer"
+      ],
+      "source_ref": "PyTorch 문서 torch.nn.Conv2d; CS231n 강의노트",
+      "status": "draft"
+    },
+    {
+      "id": "E-CNN-005",
+      "type": "mcq",
+      "chapter": "E.cnn",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "합성곱 층에서 다른 설정은 그대로 두고 stride만 1에서 2로 바꾸면 일어나는 변화로 옳은 것은?",
+      "choices": [
+        {
+          "text": "커널 크기가 3×3에서 6×6으로 두 배 커진다",
+          "rationale": "커널 크기는 stride와 별개인 하이퍼파라미터입니다. stride는 이동 간격만 바꿉니다."
+        },
+        {
+          "text": "출력 채널 수가 두 배로 늘어난다",
+          "rationale": "출력 채널 수는 커널 개수로 정해지며 stride와 무관합니다."
+        },
+        {
+          "text": "학습할 파라미터 수가 절반으로 줄어든다",
+          "rationale": "파라미터 수는 커널 크기와 입출력 채널로 정해집니다. stride가 바뀌어도 파라미터 수는 같고 연산량만 줄어듭니다."
+        },
+        {
+          "text": "커널이 두 칸씩 이동해 출력 특징맵의 가로·세로가 약 절반으로 줄어든다",
+          "rationale": null
+        },
+        {
+          "text": "커널 원소 사이에 한 칸씩 빈칸이 생겨 같은 가중치로 더 넓은 범위를 본다",
+          "rationale": "커널 원소 사이에 간격을 두는 것은 dilation(팽창 합성곱)입니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "stride는 커널이 한 번에 이동하는 간격입니다. 2로 바꾸면 출력 위치가 두 칸마다 하나씩만 계산되어 특징맵 가로·세로가 약 절반이 됩니다.",
+      "explanation_full": "stride 2 합성곱은 pooling 대신 다운샘플링에 자주 쓰이며, pooling과 달리 줄이는 방식을 학습할 수 있습니다. 파라미터는 그대로지만 출력 픽셀 수가 1/4이 되어 그 층의 연산량도 약 1/4로 줄어듭니다. 원격탐사 관점에서는 특징맵 한 칸이 대응하는 지상 간격이 두 배(예: 10m → 20m)가 된다고 이해하면 됩니다.",
+      "tags": [
+        "cnn",
+        "stride"
+      ],
+      "terms": [
+        "stride"
+      ],
+      "source_ref": "Dumoulin & Visin 2016, A guide to convolution arithmetic for deep learning",
+      "status": "draft"
+    },
+    {
+      "id": "E-CNN-006",
+      "type": "mcq",
+      "chapter": "E.cnn",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "입력 224×224, 커널 3×3, stride 2, padding 1(한쪽)인 합성곱의 출력 크기는?",
+      "choices": [
+        {
+          "text": "111×111",
+          "rationale": "padding을 빼고 ⌊(224−3)/2⌋+1 = 111로 계산한 값입니다. 양쪽 padding 2픽셀(2P)을 더해야 합니다."
+        },
+        {
+          "text": "113×113",
+          "rationale": "(224+2−3)/2 = 111.5를 올림해 +1 한 값입니다. 공식은 내림(floor)을 씁니다."
+        },
+        {
+          "text": "224×224",
+          "rationale": "stride 1일 때의 결과입니다. stride 2면 약 절반으로 줄어듭니다."
+        },
+        {
+          "text": "222×222",
+          "rationale": "padding 없이 stride 1로 계산한 값(224−3+1)입니다."
+        },
+        {
+          "text": "112×112",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "출력 크기 = ⌊(W − K + 2P) / S⌋ + 1 = ⌊(224 − 3 + 2) / 2⌋ + 1 = ⌊111.5⌋ + 1 = 112 입니다.",
+      "explanation_full": "이 공식은 dilation이 1일 때 기준이며, dilation d가 있으면 K 대신 유효 커널 크기 d(K−1)+1을 넣습니다. 3×3·padding 1·stride 2 조합은 입력이 짝수 크기일 때 정확히 절반을 만들어 ResNet 등 백본에서 흔히 쓰입니다. 타일 크기를 정할 때 32나 64의 배수로 맞추는 이유도 이런 반복된 절반 축소에서 나머지가 생기지 않게 하려는 것입니다.",
+      "tags": [
+        "cnn",
+        "stride",
+        "padding",
+        "calculation",
+        "output-size"
+      ],
+      "terms": [
+        "stride",
+        "padding",
+        "convolutional-layer"
+      ],
+      "source_ref": "Dumoulin & Visin 2016, A guide to convolution arithmetic for deep learning",
+      "status": "draft"
+    },
+    {
+      "id": "E-CNN-007",
+      "type": "short",
+      "chapter": "E.cnn",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "합성곱 전에 입력 가장자리에 값(보통 0)을 덧대어 출력 크기를 조절하고 경계 픽셀 정보를 보존하는 것을 부르는 말은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Padding",
+          "Zero padding"
+        ],
+        "ko": [
+          "패딩",
+          "제로 패딩",
+          "영 패딩"
+        ]
+      },
+      "primary": "Padding",
+      "explanation_short": "패딩(padding)은 입력 테두리에 값을 덧대는 것입니다. 이것이 없으면 합성곱을 거칠 때마다 출력이 줄고, 가장자리 픽셀은 계산에 덜 참여합니다.",
+      "explanation_full": "0으로 채우는 zero padding이 기본이며, 경계 인공물을 줄이려고 가장자리를 거울처럼 반사하는 reflect padding이나 복제하는 replicate padding도 씁니다. 위성영상을 타일로 잘라 추론할 때 타일 가장자리 예측이 나빠지는 현상이 있어, overlap을 두고 가장자리 예측을 버리는 방식과 함께 씁니다.",
+      "tags": [
+        "cnn",
+        "padding"
+      ],
+      "terms": [
+        "padding"
+      ],
+      "source_ref": "Dumoulin & Visin 2016, A guide to convolution arithmetic for deep learning",
+      "status": "draft"
+    },
+    {
+      "id": "E-CNN-008",
+      "type": "mcq",
+      "chapter": "E.cnn",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "stride 1, dilation 1인 5×5 합성곱에서 출력의 가로·세로를 입력과 같게('same') 유지하려면 한쪽에 몇 픽셀씩 padding해야 하는가?",
+      "choices": [
+        {
+          "text": "1픽셀",
+          "rationale": "W − 5 + 2 + 1 = W − 2가 되어 출력이 2픽셀 줄어듭니다. 1픽셀은 3×3 커널의 same padding입니다."
+        },
+        {
+          "text": "2픽셀",
+          "rationale": null
+        },
+        {
+          "text": "3픽셀",
+          "rationale": "W − 5 + 6 + 1 = W + 2가 되어 출력이 오히려 2픽셀 커집니다."
+        },
+        {
+          "text": "4픽셀",
+          "rationale": "양쪽 합계로 필요한 4픽셀(K−1)을 한쪽에 모두 넣은 값입니다. 출력이 4픽셀 커집니다."
+        },
+        {
+          "text": "5픽셀",
+          "rationale": "커널 크기 자체를 넣은 값입니다. 출력이 6픽셀 커집니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "stride 1에서 same 출력이 되려면 2P = K − 1이어야 하므로 P = (5 − 1)/2 = 2입니다. 검산: W − 5 + 2×2 + 1 = W.",
+      "explanation_full": "홀수 커널(3, 5, 7)은 (K−1)/2로 양쪽 대칭 padding이 가능해 중심이 명확하므로 CNN에서 주로 쓰입니다. 짝수 커널은 한쪽만 1픽셀 더 채우는 비대칭 padding이 필요해 픽셀 정렬이 어긋나기 쉽습니다. 분할 모델에서 출력 마스크와 라벨 래스터의 픽셀이 정확히 맞아야 하므로 same padding 설정은 중요합니다.",
+      "tags": [
+        "cnn",
+        "padding",
+        "calculation"
+      ],
+      "terms": [
+        "padding"
+      ],
+      "source_ref": "Dumoulin & Visin 2016, A guide to convolution arithmetic for deep learning",
+      "status": "draft"
+    },
+    {
+      "id": "E-CNN-009",
+      "type": "scenario",
+      "chapter": "E.cnn",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"건물 분할 모델 첫 블록이 3×3 conv 두 번인데, 512×512 타일을 넣으면 508×508로 나와서 라벨 래스터랑 픽셀이 안 맞아. conv 설정 고쳐.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "두 3×3 conv의 stride를 2로 바꿔 입력 타일 크기와 출력 크기를 다시 계산한다",
+          "rationale": "stride 2면 가로·세로가 각각 약 1/4(127×127)로 더 줄어듭니다. 크기 불일치가 심해집니다."
+        },
+        {
+          "text": "커널을 5×5로 키워 가장자리 정보를 더 넓게 본다",
+          "rationale": "padding 없이 5×5를 두 번 쓰면 504×504로 더 줄어듭니다."
+        },
+        {
+          "text": "두 3×3 conv에 padding=1을 줘서 층마다 입력 크기가 유지되게 한다",
+          "rationale": null
+        },
+        {
+          "text": "타일링 overlap을 64픽셀로 늘려 타일 경계를 겹치게 한다",
+          "rationale": "overlap은 타일을 자르는 간격을 바꿀 뿐, 한 타일이 모델을 통과할 때 줄어드는 크기는 그대로입니다."
+        },
+        {
+          "text": "블록 끝에 1×1 conv를 추가해 채널 수를 라벨과 맞춘다",
+          "rationale": "문제는 채널 수가 아니라 공간 크기입니다. 1×1 conv는 가로·세로를 바꾸지 않습니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "padding 없는 3×3 conv는 한 번에 가로·세로가 2픽셀씩 줄어 512 → 510 → 508이 됩니다. padding=1(same)을 주면 층마다 512가 유지되어 라벨과 픽셀이 맞습니다.",
+      "explanation_full": "계산: 512 − 3 + 2×0 + 1 = 510, 510 − 3 + 1 = 508. padding=1이면 512 − 3 + 2 + 1 = 512입니다. 원조 U-Net은 padding 없는(valid) 합성곱을 써서 출력이 입력보다 작았고, 입력 타일을 크게 잘라 가운데만 예측하는 방식(overlap-tile)을 썼습니다. 요즘 구현은 대부분 same padding을 써서 입력·출력 크기를 맞추며, 결과를 GeoTIFF로 저장할 때 지리참조(geotransform)도 그대로 유지됩니다.",
+      "tags": [
+        "cnn",
+        "padding",
+        "segmentation",
+        "tiling"
+      ],
+      "terms": [
+        "padding",
+        "convolutional-layer"
+      ],
+      "source_ref": "Dumoulin & Visin 2016; Ronneberger et al. 2015, U-Net",
+      "status": "draft"
+    },
+    {
+      "id": "E-CNN-010",
+      "type": "mcq",
+      "chapter": "E.cnn",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "Sentinel-2의 10개 밴드를 쌓은 입력에 3×3 합성곱을 적용해 32채널 특징맵을 만든다. 편향(bias)을 포함한 이 층의 파라미터 수는?",
+      "choices": [
+        {
+          "text": "2,912개",
+          "rationale": null
+        },
+        {
+          "text": "2,880개",
+          "rationale": "3×3×10×32 = 2,880은 가중치만 센 값입니다. 출력 채널마다 편향 1개씩 32개를 더해야 합니다."
+        },
+        {
+          "text": "320개",
+          "rationale": "10×32로 커널의 공간 크기(3×3)를 빠뜨렸습니다."
+        },
+        {
+          "text": "9,248개",
+          "rationale": "입력 채널을 32로 잘못 넣은 값(3×3×32×32+32)입니다. 입력 채널은 밴드 수 10입니다."
+        },
+        {
+          "text": "2,890개",
+          "rationale": "편향을 입력 채널 수(10)만큼 더했습니다. 편향은 출력 채널마다 1개입니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "파라미터 수 = K×K×C_in×C_out + C_out = 3×3×10×32 + 32 = 2,880 + 32 = 2,912개입니다.",
+      "explanation_full": "합성곱 층의 파라미터 수는 입력 영상의 가로·세로와 무관하고 커널 크기·입력 채널·출력 채널로만 정해집니다. 사전학습된 RGB(3채널) 모델에 다중분광 10밴드를 넣으려면 첫 층 가중치 모양이 (32, 3, 3, 3)에서 (32, 10, 3, 3)으로 바뀌므로, 첫 층만 새로 초기화하거나 RGB 가중치를 평균해 추가 밴드에 복사하는 방법을 씁니다. 첫 층 뒤에 BN이 오는 경우엔 편향을 빼기도 합니다(bias=False).",
+      "tags": [
+        "cnn",
+        "parameters",
+        "calculation",
+        "multispectral"
+      ],
+      "terms": [
+        "convolutional-layer",
+        "kernel"
+      ],
+      "source_ref": "PyTorch 문서 torch.nn.Conv2d; CS231n 강의노트",
+      "status": "draft"
+    },
+    {
+      "id": "E-CNN-011",
+      "type": "short",
+      "chapter": "E.cnn",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "CNN 출력 특징맵의 한 값이 입력 영상에서 영향을 받는 영역(범위)을 부르는 말은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Receptive Field",
+          "RF"
+        ],
+        "ko": [
+          "수용영역",
+          "수용장",
+          "리셉티브 필드"
+        ]
+      },
+      "primary": "Receptive Field",
+      "explanation_short": "수용영역(receptive field)은 출력 한 칸을 계산하는 데 관여하는 입력 픽셀들의 범위입니다. 층이 깊어지고 다운샘플링이 쌓일수록 넓어집니다.",
+      "explanation_full": "수용영역이 객체와 주변 맥락을 충분히 덮어야 모델이 그 객체를 인식할 수 있습니다. 예를 들어 항공영상에서 200픽셀 크기 선착장을 통째로 판단하려면 깊은 층의 수용영역이 그 이상이어야 합니다. 이론적 수용영역 안에서도 가운데 픽셀의 영향이 훨씬 크고 가장자리는 약하다는 '유효 수용영역(effective receptive field)' 개념도 있습니다.",
+      "tags": [
+        "cnn",
+        "receptive-field"
+      ],
+      "terms": [
+        "receptive-field"
+      ],
+      "source_ref": "Araujo et al. 2019, Computing Receptive Fields of Convolutional Neural Networks (Distill)",
+      "status": "draft"
+    },
+    {
+      "id": "E-CNN-012",
+      "type": "mcq",
+      "chapter": "E.cnn",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "3×3 합성곱(stride 1, dilation 1)을 3개 연달아 쌓았을 때, 마지막 층 출력 한 픽셀의 수용영역(입력 기준)은?",
+      "choices": [
+        {
+          "text": "3×3",
+          "rationale": "합성곱 한 층만의 수용영역입니다. 층을 쌓을 때마다 넓어집니다."
+        },
+        {
+          "text": "5×5",
+          "rationale": "3×3 합성곱을 두 층 쌓았을 때의 수용영역입니다."
+        },
+        {
+          "text": "7×7",
+          "rationale": null
+        },
+        {
+          "text": "9×9",
+          "rationale": "커널 크기 3을 세 번 더했습니다(3+3+3). 인접 층 커널이 겹치므로 층마다 K−1=2씩만 늘어납니다."
+        },
+        {
+          "text": "27×27",
+          "rationale": "커널 크기를 곱했습니다(3×3×3). stride 1에서는 수용영역이 더해지는 방식으로 커집니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "stride 1에서는 층마다 수용영역이 (K−1)=2씩 늘어납니다. 1 + 2 + 2 + 2 = 7이므로 7×7입니다.",
+      "explanation_full": "일반식은 r_L = r_(L−1) + (K_L − 1) × (앞 층들 stride의 곱)입니다. VGG는 이 성질을 이용해 7×7 합성곱 1개 대신 3×3 세 개를 써서 같은 수용영역을 얻으면서 파라미터를 줄이고(채널 C일 때 49C² → 27C²) 비선형성을 늘렸습니다. 중간에 stride 2 층이 끼면 그 뒤 층부터는 수용영역이 두 배 빠르게 넓어집니다.",
+      "tags": [
+        "cnn",
+        "receptive-field",
+        "calculation"
+      ],
+      "terms": [
+        "receptive-field"
+      ],
+      "source_ref": "Simonyan & Zisserman 2015, VGG; Araujo et al. 2019 (Distill)",
+      "status": "draft"
+    },
+    {
+      "id": "E-CNN-013",
+      "type": "scenario",
+      "chapter": "E.cnn",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"Sentinel-2 10m 밴드로 학습한 백본 최종 특징맵이 입력 대비 1/32 크기야. 특징맵 한 칸이 지상에서 어느 정도인지 보고서에 정리해.\"\n\n가장 정확한 정리는?",
+      "choices": [
+        {
+          "text": "한 칸의 간격은 10m×32 = 320m이고, 한 칸이 참고하는 입력 범위(수용영역)는 보통 이보다 넓다",
+          "rationale": null
+        },
+        {
+          "text": "한 칸의 간격과 수용영역이 모두 정확히 320m×320m로 같다",
+          "rationale": "누적 stride(격자 간격)와 수용영역은 다른 개념입니다. 커널이 서로 겹치므로 일반적인 백본의 수용영역은 격자 간격보다 넓습니다."
+        },
+        {
+          "text": "한 칸의 간격은 10m÷32 ≈ 0.31m로 입력보다 더 세밀해진다",
+          "rationale": "나눗셈 방향이 반대입니다. 특징맵이 1/32로 작아지면 한 칸이 덮는 지상 간격은 32배로 커집니다."
+        },
+        {
+          "text": "다운샘플링해도 GSD는 그대로이므로 한 칸은 여전히 10m이다",
+          "rationale": "입력 영상의 GSD는 그대로지만, 특징맵 격자는 32픽셀마다 한 칸이므로 한 칸 간격은 320m에 해당합니다."
+        },
+        {
+          "text": "한 칸의 간격은 가로·세로를 곱한 10m×32×32 = 10,240m이다",
+          "rationale": "32×32=1,024는 한 칸이 대응하는 입력 픽셀 개수(면적 비)입니다. 길이 방향 간격은 32배인 320m입니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "누적 stride가 32이므로 특징맵 한 칸은 입력 32픽셀 간격, 즉 10m×32 = 320m 격자에 해당합니다. 다만 한 칸의 값이 실제로 영향을 받는 범위는 (이론적) 수용영역으로, 커널이 겹치므로 보통 320m보다 넓습니다.",
+      "explanation_full": "격자 간격(output stride)은 '출력이 얼마나 촘촘히 배치되는가', 수용영역은 '출력 하나가 얼마나 넓게 보는가'를 뜻합니다. 예를 들어 ResNet-50 계열은 최종 stride가 32지만 이론적 수용영역은 수백 픽셀에 이릅니다. 보고서에서는 두 값을 구분해 쓰고, 320m보다 작은 객체(예: 작은 저수지)는 이 해상도의 특징맵만으로 경계를 정확히 잡기 어렵다는 점도 함께 적는 것이 좋습니다.",
+      "tags": [
+        "cnn",
+        "stride",
+        "receptive-field",
+        "gsd",
+        "sentinel-2"
+      ],
+      "terms": [
+        "stride",
+        "receptive-field"
+      ],
+      "source_ref": "Araujo et al. 2019, Computing Receptive Fields of CNNs (Distill)",
+      "status": "draft"
+    },
+    {
+      "id": "E-CNN-014",
+      "type": "short",
+      "chapter": "E.cnn",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "특징맵을 작은 창으로 나눠 창마다 최댓값이나 평균 하나만 남겨 공간 크기를 줄이는, 학습 파라미터가 없는 연산을 통틀어 부르는 말은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Pooling",
+          "Pooling layer"
+        ],
+        "ko": [
+          "풀링",
+          "풀링 층",
+          "풀링 레이어"
+        ]
+      },
+      "primary": "Pooling",
+      "explanation_short": "풀링(pooling)은 창마다 대표값 하나만 남겨 특징맵을 줄이는 연산입니다. 최댓값을 쓰면 max pooling, 평균을 쓰면 average pooling입니다.",
+      "explanation_full": "학습할 가중치가 없고 채널마다 독립적으로 적용되므로 채널 수는 그대로입니다. 공간 크기를 줄여 연산량을 낮추고, 작은 위치 이동에 덜 민감하게 만드는 효과가 있습니다. 백본 마지막의 global average pooling은 특징맵 전체를 채널별 평균 하나로 줄여 분류 헤드에 넘깁니다. 서브샘플링(subsampling)·다운샘플링은 stride 2 합성곱까지 포함하는 더 넓은 말이라 이 문항의 답으로는 보지 않습니다.",
+      "tags": [
+        "cnn",
+        "pooling"
+      ],
+      "terms": [
+        "pooling"
+      ],
+      "source_ref": "CS231n 강의노트 Convolutional Neural Networks",
+      "status": "draft"
+    },
+    {
+      "id": "E-CNN-015",
+      "type": "mcq",
+      "chapter": "E.cnn",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "2×2 max pooling(stride 2)에 대한 설명으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "2×2 창 안 값들의 평균을 출력해 가로·세로를 절반으로 줄인다",
+          "rationale": "평균을 내는 것은 average pooling입니다. max pooling은 최댓값을 고릅니다."
+        },
+        {
+          "text": "학습 가능한 가중치로 창 안 값을 결합해 가로·세로를 절반으로 줄인다",
+          "rationale": "가중치를 학습하며 줄이는 것은 stride 2 합성곱입니다. pooling에는 학습 파라미터가 없습니다."
+        },
+        {
+          "text": "가로·세로와 함께 채널 수도 절반으로 줄여 연산량을 1/8로 만든다",
+          "rationale": "pooling은 채널마다 독립적으로 적용되므로 채널 수는 변하지 않습니다."
+        },
+        {
+          "text": "서로 겹치는 탐지 박스들 가운데 신뢰도 점수가 가장 높은 박스 하나만 남기고 나머지를 지운다",
+          "rationale": "NMS(비최대 억제)의 설명입니다. '최대만 남긴다'는 말이 비슷해 헷갈리지만 대상이 박스입니다."
+        },
+        {
+          "text": "학습 가중치 없이 창마다 최댓값만 남기고, 채널 수는 두고 가로·세로만 절반으로 줄인다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "2×2 max pooling(stride 2)은 겹치지 않는 2×2 창마다 가장 큰 값 하나만 남깁니다. 학습 가중치가 없고, 채널 수는 그대로이며, 가로·세로가 절반이 됩니다.",
+      "explanation_full": "창 안에서 가장 강하게 반응한 특징만 남기므로 작은 위치 이동에 둔감해집니다. 반면 해상도를 잃기 때문에, GSD 대비 아주 작은 객체(몇 픽셀짜리 차량·부표)는 초반 pooling을 거치며 정보가 사라질 수 있습니다. 최근 백본은 pooling 대신 stride 2 합성곱을 쓰는 경우도 많습니다.",
+      "tags": [
+        "cnn",
+        "pooling"
+      ],
+      "terms": [
+        "pooling",
+        "nms"
+      ],
+      "source_ref": "CS231n 강의노트 Convolutional Neural Networks",
+      "status": "draft"
+    },
+    {
+      "id": "E-CNN-016",
+      "type": "scenario",
+      "chapter": "E.cnn",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"0.5m 해상도 영상에서 소형 어선은 6×6픽셀 정도밖에 안 돼. 근데 백본 첫 단이 stride 2 conv 뒤에 바로 stride 2 max pooling이라 초반에 1/4로 줄어. 초반 다운샘플링을 줄여봐.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "첫 conv 커널을 7×7에서 11×11로 키워 작은 선박 주변 맥락을 더 넓게 보게 한다",
+          "rationale": "커널을 키우면 수용영역은 넓어지지만 stride와 pooling은 그대로라 1/4 축소는 변하지 않습니다."
+        },
+        {
+          "text": "백본 마지막 단에 max pooling을 하나 더 추가한다",
+          "rationale": "다운샘플링을 더 늘리는 조치로, 지시와 반대 방향입니다."
+        },
+        {
+          "text": "첫 단 뒤에 1×1 conv를 넣어 채널 수를 절반으로 줄인다",
+          "rationale": "1×1 conv는 채널만 바꾸고 가로·세로 해상도는 그대로 둡니다. 다운샘플링 문제와 무관합니다."
+        },
+        {
+          "text": "첫 단 max pooling을 빼거나 첫 conv의 stride를 1로 바꾼다",
+          "rationale": null
+        },
+        {
+          "text": "첫 단 뒤에 dropout 0.3을 넣어 과적합을 줄인다",
+          "rationale": "dropout은 규제 기법으로, 특징맵 해상도와는 관계가 없습니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "6픽셀짜리 선박은 1/4 축소 후 약 1.5픽셀이 되어 정보가 거의 남지 않습니다. 초반 pooling을 빼거나 stride를 1로 바꾸면 초기 특징맵 해상도가 유지되어 작은 객체 정보가 보존됩니다.",
+      "explanation_full": "계산: 6px ÷ 4 = 1.5px, 지상 거리로는 특징맵 한 칸이 0.5m×4 = 2m가 됩니다. 대신 초반 해상도를 두 배로 유지하면 이후 모든 층의 특징맵 픽셀 수가 4배가 되어 메모리·연산량이 크게 늘어나므로, pooling 하나만 빼는 식으로 단계적으로 조정합니다. 작은 객체 탐지에는 FPN처럼 고해상도 특징을 함께 쓰는 구조나 입력 영상을 확대(업샘플)하는 방법도 흔히 병행합니다.",
+      "tags": [
+        "cnn",
+        "stride",
+        "pooling",
+        "small-object",
+        "ship-detection"
+      ],
+      "terms": [
+        "stride",
+        "pooling"
+      ],
+      "source_ref": "He et al. 2016, ResNet (stem 구조); CS231n 강의노트",
+      "status": "draft"
+    },
+    {
+      "id": "E-CNN-017",
+      "type": "short",
+      "chapter": "E.cnn",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "커널 크기가 1×1이어서 공간 정보는 섞지 않고, 각 픽셀 위치에서 채널들만 선형 결합해 채널 수를 바꾸는 합성곱은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "1×1 Convolution (Pointwise Convolution)",
+          "1x1 Convolution",
+          "1×1 conv",
+          "1x1 conv",
+          "Pointwise conv"
+        ],
+        "ko": [
+          "1×1 합성곱",
+          "1x1 합성곱",
+          "점별 합성곱",
+          "포인트와이즈 합성곱",
+          "1×1 컨볼루션",
+          "1x1 컨볼루션"
+        ]
+      },
+      "primary": "1×1 Convolution (Pointwise Convolution)",
+      "explanation_short": "1×1 합성곱(pointwise convolution)은 픽셀마다 입력 채널 값들을 가중합해 새 채널을 만듭니다. 공간 크기는 그대로 두고 채널 수만 늘리거나 줄일 수 있습니다.",
+      "explanation_full": "픽셀별로 적용되는 작은 완전연결 층이라고 볼 수 있습니다. Network in Network에서 제안되어 GoogLeNet(Inception)·ResNet bottleneck에서 채널을 줄여 연산량을 낮추는 용도로 널리 쓰였습니다. 다중분광·초분광 영상에서는 밴드 간 조합(분광 특징)을 학습하는 층으로 이해하면 직관적입니다.",
+      "tags": [
+        "cnn",
+        "1x1-conv",
+        "channels"
+      ],
+      "terms": [
+        "pointwise-convolution"
+      ],
+      "source_ref": "Lin et al. 2014, Network in Network; Szegedy et al. 2015, GoogLeNet",
+      "status": "draft"
+    },
+    {
+      "id": "E-CNN-018",
+      "type": "mcq",
+      "chapter": "E.cnn",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "256채널 특징맵에 1×1 합성곱을 적용해 64채널로 줄인다. 편향(bias)을 포함한 이 층의 파라미터 수는?",
+      "choices": [
+        {
+          "text": "16,384개",
+          "rationale": "256×64 = 16,384는 가중치만 센 값입니다. 출력 채널마다 편향 1개씩 64개를 더해야 합니다."
+        },
+        {
+          "text": "16,448개",
+          "rationale": null
+        },
+        {
+          "text": "147,520개",
+          "rationale": "3×3 커널로 계산한 값(3×3×256×64+64)입니다. 1×1 합성곱은 커널 공간 크기가 1입니다."
+        },
+        {
+          "text": "320개",
+          "rationale": "입력·출력 채널 수를 더했습니다(256+64). 가중치는 입력×출력 채널 쌍마다 하나씩입니다."
+        },
+        {
+          "text": "4,160개",
+          "rationale": "입력 채널을 64로 잘못 넣은 값(64×64+64)입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "1×1 합성곱의 파라미터 = 1×1×C_in×C_out + C_out = 256×64 + 64 = 16,448개입니다.",
+      "explanation_full": "같은 채널 변환을 3×3으로 하면 147,520개로 약 9배가 됩니다. 그래서 ResNet의 bottleneck 블록은 1×1로 채널을 줄이고(256→64), 3×3을 적용한 뒤, 다시 1×1로 늘리는(64→256) 구조를 씁니다. 공간 크기와 무관하게 이 값은 고정입니다.",
+      "tags": [
+        "cnn",
+        "1x1-conv",
+        "parameters",
+        "calculation"
+      ],
+      "terms": [
+        "pointwise-convolution"
+      ],
+      "source_ref": "He et al. 2016, ResNet (bottleneck); PyTorch 문서 torch.nn.Conv2d",
+      "status": "draft"
+    },
+    {
+      "id": "E-CNN-019",
+      "type": "scenario",
+      "chapter": "E.cnn",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"초분광 224밴드를 바로 3×3 conv(64채널)에 넣으니까 파라미터가 너무 많아. 앞에 1×1 conv 넣어서 32채널로 줄이고 들어가.\"\n\n이 지시의 의도로 옳은 것은?",
+      "choices": [
+        {
+          "text": "영상의 가로·세로 해상도를 줄여 뒤 3×3 conv의 연산량을 줄이려는 것",
+          "rationale": "stride 1인 1×1 conv는 가로·세로를 바꾸지 않습니다. 줄어드는 것은 채널 수입니다."
+        },
+        {
+          "text": "224개 밴드 중 정보가 많은 32개 밴드를 골라 나머지 밴드는 버리려는 것",
+          "rationale": "밴드 선택이 아니라 모든 밴드의 가중합입니다. 출력 32채널 각각이 224개 밴드 전체를 조합합니다."
+        },
+        {
+          "text": "이웃 픽셀 값을 평균해 초분광 영상의 잡음을 줄이려는 것",
+          "rationale": "1×1 conv는 한 픽셀 위치 안에서만 계산하므로 이웃 픽셀을 섞지 않습니다. 공간 평활은 3×3 이상 커널이나 필터링의 역할입니다."
+        },
+        {
+          "text": "학습 없이 PCA와 똑같은 고정 변환을 적용해 224개 밴드를 분산이 큰 32개 주성분으로 줄이려는 것",
+          "rationale": "1×1 conv의 가중치는 과제 손실로 학습됩니다. PCA처럼 분산 기준 고정 변환이 아닙니다."
+        },
+        {
+          "text": "픽셀마다 224개 밴드를 학습되는 가중합으로 32채널에 압축해 뒤 conv를 가볍게 하려는 것",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "1×1 conv는 픽셀마다 224개 밴드를 가중합해 32개 채널로 만드는, 학습 가능한 분광 차원 축소입니다. 뒤따르는 3×3 conv의 입력 채널이 224에서 32로 줄어 파라미터와 연산량이 크게 감소합니다.",
+      "explanation_full": "편향을 빼고 계산하면, 바로 3×3 conv에 넣을 때 3×3×224×64 = 129,024개, 1×1(224→32) + 3×3(32→64)이면 224×32 + 3×3×32×64 = 7,168 + 18,432 = 25,600개로 약 1/5입니다. PCA로 먼저 차원을 줄이는 방법도 있지만, 1×1 conv는 과제(분류·분할)에 맞는 밴드 조합을 직접 학습한다는 차이가 있습니다.",
+      "tags": [
+        "cnn",
+        "1x1-conv",
+        "hyperspectral"
+      ],
+      "terms": [
+        "pointwise-convolution"
+      ],
+      "source_ref": "Lin et al. 2014, Network in Network",
+      "status": "draft"
+    },
+    {
+      "id": "E-CNN-020",
+      "type": "short",
+      "chapter": "E.cnn",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "커널 원소 사이에 간격(빈칸)을 두어, 가중치 수와 출력 해상도는 그대로 두면서 수용영역을 넓히는 합성곱은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Dilated Convolution (Atrous Convolution)",
+          "Dilated conv",
+          "Atrous conv"
+        ],
+        "ko": [
+          "팽창 합성곱",
+          "확장 합성곱",
+          "아트러스 합성곱",
+          "딜레이티드 합성곱",
+          "딜레이티드 컨볼루션"
+        ]
+      },
+      "primary": "Dilated Convolution (Atrous Convolution)",
+      "explanation_short": "팽창 합성곱(dilated convolution, atrous convolution)은 커널 원소를 dilation rate만큼 벌려 배치합니다. 가중치 수는 같지만 더 넓은 범위를 봅니다.",
+      "explanation_full": "dilation rate d인 K×K 커널의 유효 크기는 d(K−1)+1입니다. pooling·stride 없이 수용영역을 넓힐 수 있어 해상도가 중요한 의미 분할에서 널리 쓰이며, DeepLab의 ASPP는 서로 다른 rate의 팽창 합성곱을 병렬로 써서 여러 규모의 맥락을 함께 봅니다. rate를 크게 한 층만 반복하면 격자 모양 구멍이 생기는 gridding 문제가 있어 rate를 섞어 씁니다.",
+      "tags": [
+        "cnn",
+        "dilated-conv"
+      ],
+      "terms": [
+        "dilated-convolution"
+      ],
+      "source_ref": "Yu & Koltun 2016, Multi-Scale Context Aggregation by Dilated Convolutions; Chen et al., DeepLab",
+      "status": "draft"
+    },
+    {
+      "id": "E-CNN-021",
+      "type": "mcq",
+      "chapter": "E.cnn",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "3×3 커널에 dilation rate 2를 적용한 합성곱이 한 번에 덮는 입력 범위(유효 커널 크기)와 채널 1개 기준 학습 가중치 수는?",
+      "choices": [
+        {
+          "text": "5×5 범위, 가중치 9개",
+          "rationale": null
+        },
+        {
+          "text": "5×5 범위, 가중치 25개",
+          "rationale": "범위는 맞지만, 팽창 합성곱은 빈칸에 가중치를 두지 않으므로 가중치는 원래 커널의 9개 그대로입니다."
+        },
+        {
+          "text": "6×6 범위, 가중치 9개",
+          "rationale": "커널 크기에 rate를 곱했습니다(3×2). 유효 크기는 d(K−1)+1 = 5입니다."
+        },
+        {
+          "text": "7×7 범위, 가중치 9개",
+          "rationale": "커널 양쪽에 rate만큼 더한 값(3+2×2)입니다. 원소 사이 간격은 2칸이 아니라 1칸(d−1)입니다."
+        },
+        {
+          "text": "3×3 범위, 가중치 18개",
+          "rationale": "dilation은 커널을 벌릴 뿐 가중치를 늘리지 않으며, 덮는 범위는 넓어집니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "유효 커널 크기 = d(K−1)+1 = 2×(3−1)+1 = 5이므로 5×5 범위를 봅니다. 가중치는 원래 3×3의 9개 그대로이고, 사이의 빈칸은 계산에 쓰지 않습니다.",
+      "explanation_full": "dilation 2인 3×3 커널은 5×5 격자의 한 칸 건너 한 칸 위치에만 가중치가 놓인 모양입니다. 출력 크기 공식에서도 K 대신 유효 크기 5를 넣습니다. 같은 수용영역을 일반 5×5로 얻으려면 가중치가 25개 필요하므로 파라미터 면에서 유리하지만, 빈칸 때문에 인접 픽셀 사이의 세밀한 정보는 덜 봅니다.",
+      "tags": [
+        "cnn",
+        "dilated-conv",
+        "calculation"
+      ],
+      "terms": [
+        "dilated-convolution",
+        "receptive-field"
+      ],
+      "source_ref": "Yu & Koltun 2016; Dumoulin & Visin 2016",
+      "status": "draft"
+    },
+    {
+      "id": "E-CNN-022",
+      "type": "scenario",
+      "chapter": "E.cnn",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"Sentinel-1 VV 영상 유막 분할인데 유막이 수백 픽셀 크기로 넓게 퍼져 있어. 특징맵 해상도는 더 줄이지 말고 마지막 단 수용영역만 넓혀봐.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "마지막 단 앞에 2×2 max pooling을 추가해 수용영역을 두 배로 키운다",
+          "rationale": "수용영역은 넓어지지만 특징맵 해상도가 절반으로 줄어 '해상도는 줄이지 말라'는 조건을 어깁니다."
+        },
+        {
+          "text": "마지막 단 3×3 conv에 dilation(예: 2, 4)을 적용한다",
+          "rationale": null
+        },
+        {
+          "text": "마지막 단 conv의 stride를 2로 바꿔 더 넓은 범위를 보게 한다",
+          "rationale": "stride 2도 해상도를 절반으로 줄이는 다운샘플링입니다. 조건에 맞지 않습니다."
+        },
+        {
+          "text": "마지막 단 3×3 conv를 1×1 conv로 바꿔 연산을 가볍게 한다",
+          "rationale": "1×1 conv는 공간 범위를 전혀 넓히지 않아, 그 층만큼 수용영역 증가가 사라집니다."
+        },
+        {
+          "text": "입력 타일을 1024에서 256픽셀로 줄여 유막이 타일을 가득 채우게 한다",
+          "rationale": "타일을 줄이면 모델이 볼 수 있는 맥락이 오히려 줄고 큰 유막이 여러 타일로 잘립니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "팽창 합성곱은 가중치 수와 특징맵 해상도를 그대로 두고 커널이 덮는 범위만 넓힙니다. '해상도는 유지, 수용영역만 확대'라는 지시에 정확히 맞는 방법입니다.",
+      "explanation_full": "DeepLab 계열은 백본 마지막 단의 stride를 없애고 대신 dilation을 넣어(output stride 16 또는 8) 해상도를 지키면서 수용영역을 유지합니다. 넓게 퍼진 유막처럼 큰 객체나 해수면 배경과의 대비를 넓게 봐야 하는 SAR 분할에 유용합니다. rate를 한 가지로만 크게 반복하면 격자 구멍(gridding)이 생기므로 1, 2, 4처럼 섞어 씁니다.",
+      "tags": [
+        "cnn",
+        "dilated-conv",
+        "sar",
+        "segmentation"
+      ],
+      "terms": [
+        "dilated-convolution",
+        "receptive-field"
+      ],
+      "source_ref": "Yu & Koltun 2016; Chen et al. 2018, DeepLabv3+",
+      "status": "draft"
+    },
+    {
+      "id": "E-CNN-023",
+      "type": "short",
+      "chapter": "E.cnn",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "표준 합성곱을 채널마다 따로 하는 공간 합성곱(depthwise)과 채널을 섞는 1×1 합성곱(pointwise) 두 단계로 나눠, 파라미터와 연산량을 크게 줄이는 구조의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Depthwise Separable Convolution",
+          "Depthwise separable conv"
+        ],
+        "ko": [
+          "깊이별 분리 합성곱",
+          "깊이 분리 합성곱",
+          "깊이별 분리 가능 합성곱",
+          "뎁스와이즈 세퍼러블 합성곱"
+        ]
+      },
+      "primary": "Depthwise Separable Convolution",
+      "explanation_short": "깊이별 분리 합성곱(depthwise separable convolution)은 '공간 방향 처리'와 '채널 섞기'를 분리합니다. 3×3 기준으로 표준 합성곱보다 파라미터·연산량이 약 8~9배 적습니다.",
+      "explanation_full": "MobileNet·Xception에서 핵심 블록으로 쓰였고, 드론·위성 탑재 보드 같은 엣지 장비용 경량 모델의 기본 구성요소입니다. 절감 비율은 대략 1/C_out + 1/K²입니다. 정확도는 표준 합성곱보다 약간 떨어질 수 있어 채널 수를 늘리는 식으로 보완합니다. 그냥 'separable convolution'이라고 하면 3×3을 3×1·1×3으로 쪼개는 공간 분리 합성곱과 헷갈리므로 depthwise를 붙여 말합니다.",
+      "tags": [
+        "cnn",
+        "depthwise-separable",
+        "efficiency"
+      ],
+      "terms": [
+        "depthwise-separable-convolution"
+      ],
+      "source_ref": "Howard et al. 2017, MobileNets; Chollet 2017, Xception",
+      "status": "draft"
+    },
+    {
+      "id": "E-CNN-024",
+      "type": "mcq",
+      "chapter": "E.cnn",
+      "cognitive_level": 2,
+      "difficulty": 4,
+      "stem": "입력 128채널, 출력 256채널, 3×3 커널인 층(편향 제외)을 표준 합성곱에서 depthwise separable 합성곱으로 바꿀 때 파라미터 수의 변화로 옳은 것은?",
+      "choices": [
+        {
+          "text": "294,912개 → 32,768개",
+          "rationale": "pointwise(128×256 = 32,768)만 셌습니다. depthwise 3×3×128 = 1,152개를 더해야 합니다."
+        },
+        {
+          "text": "294,912개 → 35,072개",
+          "rationale": "depthwise를 출력 채널 256 기준(3×3×256)으로 셌습니다. depthwise는 입력 채널 128개에 커널 하나씩입니다."
+        },
+        {
+          "text": "294,912개 → 1,152개",
+          "rationale": "depthwise만 셌습니다. 채널을 섞고 256채널을 만드는 pointwise 1×1 단계가 빠졌습니다."
+        },
+        {
+          "text": "294,912개 → 33,920개",
+          "rationale": null
+        },
+        {
+          "text": "294,912개 → 294,912개(분해해도 수는 같다)",
+          "rationale": "분해의 목적이 바로 파라미터·연산량 감소입니다. 약 8.7배 줄어듭니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "표준: 3×3×128×256 = 294,912개. depthwise: 3×3×128 = 1,152개, pointwise: 1×1×128×256 = 32,768개, 합계 33,920개로 약 8.7배 줄어듭니다.",
+      "explanation_full": "비율은 1/C_out + 1/K² = 1/256 + 1/9 ≈ 0.115로, 33,920/294,912 ≈ 0.115와 일치합니다. 연산량(곱셈 수)도 같은 비율로 줄어듭니다. 이 때문에 드론·엣지 장비에서 실시간 추론이 필요할 때 MobileNet 계열 백본을 먼저 검토합니다.",
+      "tags": [
+        "cnn",
+        "depthwise-separable",
+        "parameters",
+        "calculation"
+      ],
+      "terms": [
+        "depthwise-separable-convolution",
+        "pointwise-convolution"
+      ],
+      "source_ref": "Howard et al. 2017, MobileNets",
+      "status": "draft"
+    },
+    {
+      "id": "E-CNN-025",
+      "type": "scenario",
+      "chapter": "E.cnn",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"드론 탑재 보드에서 실시간으로 돌려야 하니까 백본의 3×3 conv들을 depthwise separable로 바꿔서 연산량 줄여.\"\n\n이 지시를 올바르게 수행한 것은?",
+      "choices": [
+        {
+          "text": "3×3 conv를 3×1 conv와 1×3 conv의 두 단계로 나눠 적용한다",
+          "rationale": "커널을 가로·세로로 쪼개는 공간 분리(spatially separable) 합성곱입니다. depthwise separable과는 나누는 축이 다릅니다."
+        },
+        {
+          "text": "입력 채널을 두 그룹으로 나눠 그룹마다 3×3 conv를 따로 적용한다",
+          "rationale": "groups=2인 그룹 합성곱입니다. depthwise는 그룹 수가 입력 채널 수와 같아야 하고, 뒤에 pointwise가 붙어야 합니다."
+        },
+        {
+          "text": "3×3 depthwise conv(groups=입력 채널 수) 뒤에 채널을 섞는 1×1 pointwise conv를 붙인다",
+          "rationale": null
+        },
+        {
+          "text": "3×3 depthwise conv만 남기고 1×1 pointwise conv는 생략한다",
+          "rationale": "depthwise만으로는 채널 간 정보가 섞이지 않고 출력 채널 수도 바꿀 수 없습니다."
+        },
+        {
+          "text": "3×3 conv를 2×2 max pooling으로 바꿔 학습 파라미터를 없앤다",
+          "rationale": "pooling은 특징을 학습하지 못하고 해상도만 줄입니다. 합성곱의 역할을 대신할 수 없습니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "depthwise separable 합성곱은 채널마다 3×3 공간 합성곱을 따로 하는 depthwise 단계(groups=C_in)와, 1×1로 채널을 섞는 pointwise 단계로 이루어집니다. 두 단계가 모두 있어야 표준 합성곱을 대체할 수 있습니다.",
+      "explanation_full": "PyTorch에서는 nn.Conv2d(C_in, C_in, 3, padding=1, groups=C_in) 뒤에 nn.Conv2d(C_in, C_out, 1)을 두는 식으로 구현합니다. MobileNetV1은 두 단계 각각 뒤에 BN과 ReLU를 넣었습니다. 실제 보드에서의 속도 향상은 연산량 감소 비율보다 작을 수 있으므로(depthwise 연산은 메모리 접근 비중이 큼), 교체 후 목표 장비에서 직접 지연시간을 측정해야 합니다.",
+      "tags": [
+        "cnn",
+        "depthwise-separable",
+        "edge",
+        "drone"
+      ],
+      "terms": [
+        "depthwise-separable-convolution",
+        "pointwise-convolution"
+      ],
+      "source_ref": "Howard et al. 2017, MobileNets; PyTorch 문서 torch.nn.Conv2d (groups)",
+      "status": "draft"
+    }
+  ]
+}

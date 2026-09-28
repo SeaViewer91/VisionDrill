@@ -1,0 +1,954 @@
+{
+  "format": "visiondrill-bank-exchange",
+  "format_version": 1,
+  "terms": [
+    {
+      "id": "regularization",
+      "term_en": "Regularization",
+      "term_ko": "규제(정규화)",
+      "abbreviation": null,
+      "definition": "학습 데이터에 과적합하지 않도록 모델에 제약이나 잡음을 더해, 처음 보는 데이터에서의 일반화 성능을 높이는 기법 전반",
+      "usage_example": "검증 loss가 20 epoch부터 올라가네. 규제 좀 세게 걸어봐, dropout이랑 weight decay 둘 다.",
+      "origin": "standard",
+      "track": "E"
+    },
+    {
+      "id": "batch-normalization",
+      "term_en": "Batch Normalization",
+      "term_ko": "배치 정규화",
+      "abbreviation": "BN",
+      "definition": "미니배치 안에서 채널별 평균·분산으로 활성값을 정규화한 뒤 학습 가능한 scale(γ)·shift(β)를 적용하는 층. 추론 때는 학습 중 누적한 이동평균 통계를 쓴다",
+      "usage_example": "GPU당 배치가 2밖에 안 되면 BN 통계가 흔들려. 사전학습 백본 BN은 freeze 해둬.",
+      "origin": "standard",
+      "track": "E"
+    },
+    {
+      "id": "layer-normalization",
+      "term_en": "Layer Normalization",
+      "term_ko": "레이어 정규화",
+      "abbreviation": "LN",
+      "definition": "배치의 다른 샘플과 무관하게, 샘플(트랜스포머에서는 토큰) 하나의 특징 차원 전체에 대해 평균·분산을 구해 정규화하는 방법",
+      "usage_example": "ViT 블록은 LayerNorm이라 SAR 타일 배치를 1로 줄여도 정규화 통계는 그대로야.",
+      "origin": "standard",
+      "track": "E"
+    },
+    {
+      "id": "group-normalization",
+      "term_en": "Group Normalization",
+      "term_ko": "그룹 정규화",
+      "abbreviation": "GN",
+      "definition": "채널을 G개 그룹으로 나눈 뒤 샘플마다 각 그룹 안의 평균·분산으로 정규화하는 방법. 배치 크기와 무관해 작은 배치에서 BN 대안으로 쓴다",
+      "usage_example": "2048 타일이라 배치가 2야. 디코더 BN은 GN 32그룹으로 바꿔서 다시 돌려.",
+      "origin": "standard",
+      "track": "E"
+    },
+    {
+      "id": "dropout",
+      "term_en": "Dropout",
+      "term_ko": "드롭아웃",
+      "abbreviation": null,
+      "definition": "학습 중 활성값을 확률 p로 무작위로 0으로 만들어 특정 뉴런에 대한 의존을 줄이는 규제 기법. 추론 때는 끈다",
+      "usage_example": "분류 헤드에 dropout 0.3 넣고, 평가할 땐 model.eval() 꼭 호출해.",
+      "origin": "standard",
+      "track": "E"
+    },
+    {
+      "id": "weight-decay",
+      "term_en": "Weight Decay",
+      "term_ko": "가중치 감쇠",
+      "abbreviation": null,
+      "definition": "업데이트마다 가중치를 일정 비율씩 0 쪽으로 줄여 큰 가중치를 억제하는 규제. SGD에서는 손실에 L2 패널티를 더한 것과 같다",
+      "usage_example": "옵티마이저는 AdamW로 바꾸고 weight decay는 0.05로 맞춰.",
+      "origin": "standard",
+      "track": "E"
+    },
+    {
+      "id": "early-stopping",
+      "term_en": "Early Stopping",
+      "term_ko": "조기 종료",
+      "abbreviation": null,
+      "definition": "검증 지표가 정해진 에폭 수(patience) 동안 개선되지 않으면 학습을 멈추고 가장 좋았던 시점의 가중치를 쓰는 기법",
+      "usage_example": "val mIoU가 10 epoch 동안 안 오르면 멈추고 best 체크포인트로 추론 돌려.",
+      "origin": "standard",
+      "track": "E"
+    },
+    {
+      "id": "label-smoothing",
+      "term_en": "Label Smoothing",
+      "term_ko": "라벨 스무딩",
+      "abbreviation": null,
+      "definition": "원-핫 정답의 1을 1−ε로 낮추고 ε를 전체 클래스에 나눠 주어 모델의 과신을 줄이는 기법",
+      "usage_example": "토지피복 경계 픽셀 라벨이 애매하니까 label smoothing 0.1 줘봐.",
+      "origin": "standard",
+      "track": "E"
+    }
+  ],
+  "questions": [
+    {
+      "id": "E-REG-001",
+      "type": "mcq",
+      "chapter": "E.reg",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "딥러닝에서 규제(regularization)를 적용하는 주된 목적으로 가장 알맞은 것은?",
+      "choices": [
+        {
+          "text": "입력 픽셀값을 0~1 범위로 맞춰 층마다 값의 크기를 비슷하게 하고 학습을 안정시키는 것",
+          "rationale": "값의 스케일을 맞추는 것은 입력 정규화(normalization)입니다. 한국어로 둘 다 '정규화'라 불러 헷갈리지만 목적이 다릅니다."
+        },
+        {
+          "text": "과적합을 줄여 처음 보는 데이터에서의 성능(일반화)을 높이는 것",
+          "rationale": null
+        },
+        {
+          "text": "학습 손실을 가능한 한 빨리 0에 가깝게 만드는 것",
+          "rationale": "그것은 최적화(optimization)의 목표입니다. 규제는 오히려 학습 손실을 조금 높이는 대가로 검증 성능을 얻습니다."
+        },
+        {
+          "text": "모델 크기를 줄여 추론 속도를 높이는 것",
+          "rationale": "가지치기(pruning)·양자화 같은 모델 경량화의 목적입니다. 규제의 목적은 속도가 아니라 일반화입니다."
+        },
+        {
+          "text": "클래스별 샘플 수 차이를 맞춰 소수 클래스 성능을 높이는 것",
+          "rationale": "클래스 불균형 대응(재표집, 클래스 가중치)의 목적입니다. 규제와는 다른 문제입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "규제(regularization)는 모델이 학습 데이터의 잡음까지 외우는 과적합(overfitting)을 막아, 처음 보는 데이터에서의 성능을 높이려는 기법들을 통틀어 부르는 말입니다.",
+      "explanation_full": "대표적인 규제로 weight decay(L2), dropout, 조기 종료(early stopping), 데이터 증강, 라벨 스무딩이 있습니다. 공통점은 학습 데이터에 딱 맞추는 능력을 일부 제한한다는 것입니다. 한국어 자료에서는 regularization과 normalization을 모두 '정규화'로 옮기는 경우가 많으므로, 팀 안에서는 '규제' 또는 영어 원어를 함께 쓰면 오해가 줄어듭니다. 원격탐사처럼 라벨 영상이 수백 장 수준인 과제에서는 규제가 사실상 필수입니다.",
+      "tags": [
+        "regularization",
+        "overfitting"
+      ],
+      "terms": [
+        "regularization",
+        "overfitting"
+      ],
+      "source_ref": "Goodfellow et al., Deep Learning 7장",
+      "status": "draft"
+    },
+    {
+      "id": "E-REG-002",
+      "type": "mcq",
+      "chapter": "E.reg",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "팀 문서에서 '정규화'라는 말이 normalization(값의 분포·스케일 맞추기)과 regularization(과적합 규제) 두 뜻으로 섞여 쓰이고 있다. 다음 중 regularization이 아니라 normalization에 해당하는 작업은?",
+      "choices": [
+        {
+          "text": "Sentinel-2 밴드마다 학습셋 평균·표준편차로 입력값을 표준화하는 것",
+          "rationale": null
+        },
+        {
+          "text": "손실 함수에 가중치 제곱합 패널티를 더하는 것",
+          "rationale": "L2 패널티(weight decay)는 가중치 크기를 억제하는 대표적인 regularization입니다."
+        },
+        {
+          "text": "학습 중 분류 헤드 활성값의 30%를 무작위로 0으로 만드는 것",
+          "rationale": "dropout으로, 학습에 잡음을 넣어 과적합을 줄이는 regularization입니다."
+        },
+        {
+          "text": "정답 라벨의 목표 확률 1.0을 0.9 근처로 낮추는 것",
+          "rationale": "라벨 스무딩으로, 모델의 과신을 줄이는 regularization입니다."
+        },
+        {
+          "text": "검증 손실이 계속 오르면 학습을 멈추고 가장 좋았던 시점의 가중치를 되살려 쓰는 것",
+          "rationale": "조기 종료(early stopping)로, 학습 기간을 제한해 과적합을 막는 regularization입니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "밴드별 평균·표준편차로 입력을 표준화하는 것은 값의 스케일을 맞추는 normalization입니다. 나머지 넷은 모두 과적합을 줄이려는 regularization 기법입니다.",
+      "explanation_full": "normalization은 입력이나 중간 활성값의 분포를 맞춰 학습을 안정·가속하는 것이고, regularization은 일반화 성능을 높이려고 모델에 제약을 거는 것입니다. 배치 정규화(BN)처럼 normalization이 부수적으로 약한 규제 효과를 내는 경우도 있지만, 목적 자체는 다릅니다. 위성영상 입력 표준화에 쓰는 평균·표준편차는 학습셋에서만 계산하고 검증·테스트에는 같은 값을 그대로 적용해야 합니다.",
+      "tags": [
+        "regularization",
+        "normalization",
+        "terminology"
+      ],
+      "terms": [
+        "regularization",
+        "weight-decay"
+      ],
+      "source_ref": "Goodfellow et al., Deep Learning 7장·8.7절",
+      "status": "draft"
+    },
+    {
+      "id": "E-REG-003",
+      "type": "short",
+      "chapter": "E.reg",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "미니배치 안에서 채널별 평균과 분산으로 활성값을 정규화한 뒤, 학습 가능한 scale(γ)과 shift(β)를 적용하는 층의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Batch Normalization (BatchNorm)",
+          "BN"
+        ],
+        "ko": [
+          "배치 정규화",
+          "배치놈"
+        ]
+      },
+      "primary": "Batch Normalization (BatchNorm)",
+      "explanation_short": "배치 정규화(Batch Normalization, BN)는 미니배치의 채널별 통계로 활성값을 평균 0·분산 1로 맞춘 뒤 γ·β로 다시 스케일·이동합니다. 학습을 안정시켜 더 큰 학습률을 쓸 수 있게 해 줍니다.",
+      "explanation_full": "BN은 보통 합성곱 층과 활성함수 사이에 놓입니다. 학습 때는 현재 미니배치의 평균·분산을 쓰면서 이동평균(running mean/var)을 누적하고, 추론 때는 그 이동평균을 씁니다. 통계가 배치에 의존하므로 배치 크기가 아주 작으면(예: GPU당 1~2장) 통계가 불안정해집니다. 고해상도 항공영상 타일처럼 배치를 크게 잡기 어려운 과제에서 자주 문제가 됩니다.",
+      "tags": [
+        "normalization",
+        "batchnorm"
+      ],
+      "terms": [
+        "batch-normalization"
+      ],
+      "source_ref": "Ioffe & Szegedy 2015, Batch Normalization",
+      "status": "draft"
+    },
+    {
+      "id": "E-REG-004",
+      "type": "mcq",
+      "chapter": "E.reg",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "배치 정규화(BN) 층이 학습 모드와 추론 모드에서 동작하는 방식으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "학습·추론 모두 그때 들어온 입력 배치의 평균·분산으로 정규화한다",
+          "rationale": "그것은 학습 모드의 동작입니다. 추론까지 그렇게 하면 같은 영상도 함께 들어온 배치에 따라 결과가 달라집니다."
+        },
+        {
+          "text": "추론 때는 BN 층을 통째로 건너뛰고 앞 층의 출력을 그대로 다음 층에 넘겨 계산을 줄인다",
+          "rationale": "추론 때 꺼지는 것은 dropout입니다. BN을 건너뛰면 다음 층이 학습 때와 다른 스케일의 입력을 받습니다."
+        },
+        {
+          "text": "학습 때 채널 일부를 무작위로 0으로 만들고, 추론 때는 모든 채널을 쓴다",
+          "rationale": "채널 단위 dropout(spatial dropout)의 설명입니다. BN은 무작위로 값을 끄지 않습니다."
+        },
+        {
+          "text": "학습 때는 미니배치 통계를 쓰며 이동평균을 쌓고, 추론 때는 그 이동평균으로 정규화한다",
+          "rationale": null
+        },
+        {
+          "text": "추론 때는 평균·분산 정규화를 생략하고 γ·β만 곱하고 더한다",
+          "rationale": "정규화를 생략하면 스케일이 맞지 않습니다. 추론 때도 정규화는 하되 통계만 이동평균을 씁니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "BN은 학습 때 현재 미니배치의 평균·분산으로 정규화하면서 이동평균을 쌓고, 추론 때는 그 고정된 이동평균을 씁니다. 그래서 추론 결과가 배치 구성과 무관하게 결정적(deterministic)이 됩니다.",
+      "explanation_full": "PyTorch에서는 model.train()/model.eval()로 두 모드를 전환합니다. eval()을 빼먹으면 추론 때도 배치 통계를 써서 배치 크기나 함께 들어온 타일에 따라 결과가 달라집니다. 배포 단계에서는 이동평균 통계를 앞 합성곱 가중치에 합쳐(BN folding) 속도를 높이기도 합니다. 학습 데이터와 분포가 크게 다른 영상(예: 다른 센서·다른 계절)에서는 이동평균 통계가 맞지 않아 성능이 떨어질 수 있다는 점도 기억해 두면 좋습니다.",
+      "tags": [
+        "normalization",
+        "batchnorm",
+        "inference"
+      ],
+      "terms": [
+        "batch-normalization"
+      ],
+      "source_ref": "Ioffe & Szegedy 2015; PyTorch 문서 torch.nn.BatchNorm2d",
+      "status": "draft"
+    },
+    {
+      "id": "E-REG-005",
+      "type": "scenario",
+      "chapter": "E.reg",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"Sentinel-2 타일을 1장씩 넣을 때랑 16장씩 묶어 넣을 때 수계 추출 결과가 달라. 평가 스크립트에서 BN이 어떻게 돌고 있는지부터 봐.\"\n\n가장 먼저 확인할 것은?",
+      "choices": [
+        {
+          "text": "타일 overlap 값이 배치 크기에 따라 달라졌는지",
+          "rationale": "overlap은 타일을 자르는 설정으로, 한 번에 몇 장을 묶어 넣는지와 무관합니다. 지시도 BN을 지목했습니다."
+        },
+        {
+          "text": "입력 밴드 순서(B2·B3·B4·B8)가 뒤바뀌었는지",
+          "rationale": "밴드 순서 오류는 배치 크기와 상관없이 항상 같은 방향으로 결과를 망칩니다. 배치 크기에 따라 달라지는 현상과 맞지 않습니다."
+        },
+        {
+          "text": "model.eval()이 호출되어 BN이 이동평균 통계를 쓰는지",
+          "rationale": null
+        },
+        {
+          "text": "학습률 스케줄러의 warmup·decay 설정이 추론 스크립트에도 그대로 들어가 있는지",
+          "rationale": "학습률은 학습 중 가중치 갱신에만 영향을 줍니다. 추론 결과가 배치 크기에 따라 바뀌는 원인이 될 수 없습니다."
+        },
+        {
+          "text": "NMS IoU 임계값이 적절한지",
+          "rationale": "수계 추출은 픽셀 분할이라 NMS를 쓰지 않으며, NMS 결과는 배치 크기와 무관합니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "같은 입력인데 배치 크기에 따라 출력이 바뀐다면 BN이 추론 중에도 배치 통계를 쓰고 있다는 신호입니다. 모델이 eval 모드여서 학습 때 누적한 이동평균을 쓰는지부터 확인합니다.",
+      "explanation_full": "train 모드의 BN은 현재 배치의 평균·분산으로 정규화하므로 1장일 때와 16장일 때 통계가 달라집니다. model.eval()을 호출하면 이동평균 통계로 고정되어 결과가 배치와 무관해집니다. dropout이 켜져 있어도 결과가 흔들리는데(이 경우는 같은 입력을 반복해 넣어도 매번 달라짐), 이것도 eval() 하나로 함께 해결됩니다. 추론 코드에는 torch.no_grad()와 model.eval()을 함께 두는 습관을 들이면 좋습니다.",
+      "tags": [
+        "normalization",
+        "batchnorm",
+        "debugging"
+      ],
+      "terms": [
+        "batch-normalization"
+      ],
+      "source_ref": "PyTorch 문서 torch.nn.Module.eval, torch.nn.BatchNorm2d",
+      "status": "draft"
+    },
+    {
+      "id": "E-REG-006",
+      "type": "short",
+      "chapter": "E.reg",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "배치의 다른 샘플과 무관하게, 샘플 하나(트랜스포머에서는 토큰 하나)의 특징 차원 전체에 대해 평균·분산을 구해 정규화하며, 트랜스포머 블록의 표준 정규화 층으로 쓰이는 것은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Layer Normalization (LayerNorm)",
+          "LN"
+        ],
+        "ko": [
+          "레이어 정규화",
+          "층 정규화",
+          "레이어놈"
+        ]
+      },
+      "primary": "Layer Normalization (LayerNorm)",
+      "explanation_short": "레이어 정규화(Layer Normalization, LN)는 샘플 내부의 특징 차원에서 통계를 구하므로 배치 크기에 영향을 받지 않습니다. 트랜스포머·ViT의 각 블록에 기본으로 들어갑니다.",
+      "explanation_full": "BN이 '같은 채널을 배치 전체에서' 모아 통계를 낸다면, LN은 '한 샘플의 모든 특징을' 모아 통계를 냅니다. 학습과 추론에서 계산 방식이 같아 이동평균이 필요 없고, 배치 1로도 동작합니다. 가변 길이 시퀀스나 작은 배치에서 유리해 NLP에서 먼저 자리 잡았고, 위성영상용 ViT·Swin 계열 백본에도 그대로 쓰입니다.",
+      "tags": [
+        "normalization",
+        "layernorm",
+        "transformer"
+      ],
+      "terms": [
+        "layer-normalization"
+      ],
+      "source_ref": "Ba et al. 2016, Layer Normalization",
+      "status": "draft"
+    },
+    {
+      "id": "E-REG-007",
+      "type": "mcq",
+      "chapter": "E.reg",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "배치 정규화(BN)와 비교한 레이어 정규화(LN)의 특징으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "채널마다 배치 전체의 평균·분산을 구해 정규화한다",
+          "rationale": "배치 전체에서 채널별 통계를 모으는 것은 BN의 방식입니다."
+        },
+        {
+          "text": "추론 때는 학습 중 누적한 이동평균 통계로 정규화한다",
+          "rationale": "이동평균 통계를 쓰는 것은 BN입니다. LN은 매번 입력 샘플에서 직접 통계를 구하므로 이동평균이 필요 없습니다."
+        },
+        {
+          "text": "학습 가능한 scale(γ)·shift(β) 파라미터 없이 평균·분산 정규화만 수행한다",
+          "rationale": "LN도 일반적으로 원소별 γ·β를 학습합니다(PyTorch의 elementwise_affine 기본값 True)."
+        },
+        {
+          "text": "학습 중 특징 일부를 무작위로 0으로 만들어 과적합을 막는다",
+          "rationale": "무작위로 값을 끄는 것은 dropout입니다. LN은 결정적인 정규화 연산입니다."
+        },
+        {
+          "text": "샘플 하나 안에서 통계를 구해 배치 크기와 무관하고, 학습·추론 계산이 같다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "LN은 각 샘플 안에서 평균·분산을 계산하므로 배치 크기에 영향을 받지 않고, 학습과 추론의 계산 방식이 같습니다. 이 점이 배치 통계와 이동평균에 의존하는 BN과의 핵심 차이입니다.",
+      "explanation_full": "그래서 LN은 배치가 작거나 시퀀스 길이가 제각각인 트랜스포머 계열의 기본 정규화가 되었습니다. 반대로 CNN에서는 BN이 여전히 흔한데, 배치가 충분히 클 때 합성곱 특징에서는 경험적으로 BN의 성능이 좋았기 때문입니다. CNN에서 배치가 작을 때는 LN보다 GroupNorm을 더 많이 씁니다.",
+      "tags": [
+        "normalization",
+        "layernorm",
+        "batchnorm"
+      ],
+      "terms": [
+        "layer-normalization",
+        "batch-normalization"
+      ],
+      "source_ref": "Ba et al. 2016, Layer Normalization",
+      "status": "draft"
+    },
+    {
+      "id": "E-REG-008",
+      "type": "short",
+      "chapter": "E.reg",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "채널을 여러 묶음으로 나눈 뒤 샘플마다 각 묶음 안에서 평균·분산을 구해 정규화하는 방법으로, 배치가 작을 때 배치 정규화의 대안으로 쓰이는 것은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Group Normalization (GroupNorm)",
+          "GN"
+        ],
+        "ko": [
+          "그룹 정규화",
+          "그룹놈"
+        ]
+      },
+      "primary": "Group Normalization (GroupNorm)",
+      "explanation_short": "그룹 정규화(Group Normalization, GN)는 채널을 G개 그룹으로 나눠 샘플별·그룹별 통계로 정규화합니다. 배치 차원을 쓰지 않으므로 배치가 1~2여도 안정적입니다.",
+      "explanation_full": "원 논문은 G=32를 기본으로 제안했고, 배치 크기가 작을 때 BN보다 오차가 크게 낮음을 보였습니다. 고해상도 입력 때문에 GPU당 배치가 작은 탐지·분할 모델(예: Mask R-CNN 계열 헤드)에서 널리 쓰입니다. 대용량 항공영상·SAR 타일 분할처럼 배치를 키우기 어려운 원격탐사 과제에서도 유용한 선택지입니다.",
+      "tags": [
+        "normalization",
+        "groupnorm",
+        "small-batch"
+      ],
+      "terms": [
+        "group-normalization"
+      ],
+      "source_ref": "Wu & He 2018, Group Normalization",
+      "status": "draft"
+    },
+    {
+      "id": "E-REG-009",
+      "type": "mcq",
+      "chapter": "E.reg",
+      "cognitive_level": 2,
+      "difficulty": 4,
+      "stem": "C개 채널을 G개 그룹으로 나누는 그룹 정규화(GN)는 G 값에 따라 다른 정규화와 같아진다. 옳은 것은?",
+      "choices": [
+        {
+          "text": "G=1이면 배치 정규화(BN)와, G=C이면 레이어 정규화(LN)와 같다",
+          "rationale": "GN은 어떤 G에서도 배치 차원으로 통계를 모으지 않으므로 BN이 될 수 없습니다. G=C는 채널 하나씩 정규화하는 IN입니다."
+        },
+        {
+          "text": "G=1이면 레이어 정규화(LN)와, G=C이면 인스턴스 정규화(IN)와 같다",
+          "rationale": null
+        },
+        {
+          "text": "G=1이면 인스턴스 정규화(IN)와, G=C이면 레이어 정규화(LN)와 같다",
+          "rationale": "양 끝이 뒤바뀌었습니다. 그룹이 하나(G=1)면 모든 채널을 함께 정규화하는 LN, 그룹이 채널 수만큼(G=C)이면 채널별로 정규화하는 IN입니다."
+        },
+        {
+          "text": "G를 배치 크기와 같게 두면 배치 정규화(BN)와 같아진다",
+          "rationale": "G는 채널을 나누는 수일 뿐 배치와 관계가 없습니다. GN의 통계는 항상 샘플 하나 안에서 계산됩니다."
+        },
+        {
+          "text": "G가 클수록 정규화 통계가 배치 크기에 더 크게 의존한다",
+          "rationale": "GN의 통계는 G와 상관없이 배치 크기와 무관합니다. 그 점이 BN 대비 GN의 장점입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "GN은 한 샘플 안에서 채널 그룹별로 통계를 냅니다. 그룹이 1개면 모든 채널·위치를 함께 정규화하는 LN, 그룹이 채널 수만큼이면 채널마다 따로 정규화하는 IN이 됩니다.",
+      "explanation_full": "Wu & He(2018)는 LN과 IN을 GN의 양 극단(G=1, G=C)으로 설명합니다. LN은 모든 채널이 같은 통계를 공유한다고 가정하고, IN은 채널 간 관계를 전혀 쓰지 않는데, GN은 그 중간에서 '비슷한 채널끼리 묶는' 절충을 합니다. 어느 경우든 배치 차원은 쓰지 않으므로 배치 크기와 무관합니다. 실무에서는 G=32가 흔한 출발점이며, 채널 수가 G로 나누어떨어져야 합니다.",
+      "tags": [
+        "normalization",
+        "groupnorm"
+      ],
+      "terms": [
+        "group-normalization",
+        "layer-normalization"
+      ],
+      "source_ref": "Wu & He 2018, Group Normalization",
+      "status": "draft"
+    },
+    {
+      "id": "E-REG-010",
+      "type": "scenario",
+      "chapter": "E.reg",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"2048×2048 항공 정사영상 타일로 건물 분할 학습 중인데 GPU당 배치가 2야. 정규화 층 때문에 loss가 들쭉날쭉한 것 같으니 손봐.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "dropout 비율을 0.5로 올려 학습을 안정시킨다",
+          "rationale": "dropout은 오히려 학습에 잡음을 더하는 규제입니다. 배치 2에서 흔들리는 BN 통계 문제는 그대로 남습니다."
+        },
+        {
+          "text": "학습률을 10배 높여 BN의 이동평균 통계가 더 빨리 안정되도록 만든다",
+          "rationale": "학습률은 이동평균 갱신 속도를 정하지 않습니다. 학습률만 키우면 불안정이 더 심해집니다."
+        },
+        {
+          "text": "weight decay를 0으로 꺼서 가중치가 자유롭게 움직이게 한다",
+          "rationale": "weight decay는 가중치 크기 규제로, 배치 통계의 잡음과는 관계가 없습니다."
+        },
+        {
+          "text": "BN을 GroupNorm으로 바꾸거나 사전학습 백본의 BN 통계를 고정한다",
+          "rationale": null
+        },
+        {
+          "text": "라벨 스무딩 0.1을 적용해 손실 변동을 줄인다",
+          "rationale": "라벨 스무딩은 목표 분포를 부드럽게 할 뿐, 정규화 층의 배치 통계 문제를 해결하지 못합니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "배치 2에서는 BN이 매 스텝 2장만으로 평균·분산을 추정해 통계가 크게 흔들립니다. 배치와 무관한 GroupNorm으로 바꾸거나, 사전학습된 BN 통계를 고정해 배치 통계 의존을 없애는 것이 정석입니다.",
+      "explanation_full": "탐지·분할 프레임워크에서는 사전학습 백본의 BN을 고정한 FrozenBN을 흔히 쓰고, 새로 학습하는 헤드·디코더에는 GN을 씁니다. 여러 GPU를 쓴다면 GPU 간 통계를 모아 계산하는 SyncBN도 방법입니다. 타일을 잘게 잘라 배치를 늘리는 것도 가능하지만, 건물 같은 큰 객체의 맥락이 잘릴 수 있어 트레이드오프를 따져야 합니다.",
+      "tags": [
+        "normalization",
+        "groupnorm",
+        "small-batch",
+        "aerial"
+      ],
+      "terms": [
+        "group-normalization",
+        "batch-normalization"
+      ],
+      "source_ref": "Wu & He 2018, Group Normalization",
+      "status": "draft"
+    },
+    {
+      "id": "E-REG-011",
+      "type": "short",
+      "chapter": "E.reg",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "학습 중 각 활성값(뉴런 출력)을 확률 p로 무작위로 0으로 만들어 특정 뉴런에 대한 의존을 줄이는 규제 기법의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Dropout"
+        ],
+        "ko": [
+          "드롭아웃",
+          "드랍아웃"
+        ]
+      },
+      "primary": "Dropout",
+      "explanation_short": "드롭아웃(Dropout)은 학습 때마다 무작위로 일부 활성값을 꺼서, 여러 부분 네트워크를 함께 학습하는 앙상블과 비슷한 효과를 냅니다. 추론 때는 끄고 전체 네트워크를 씁니다.",
+      "explanation_full": "뉴런들이 서로의 특정 조합에 기대는 공적응(co-adaptation)을 막아 과적합을 줄입니다. 완전연결 층에서는 p=0.5, 분류 헤드에서는 0.1~0.3 정도가 흔합니다. 합성곱 특징맵에는 인접 픽셀이 강하게 상관되어 있어 개별 원소 dropout 효과가 약하므로, 채널 단위로 끄는 spatial dropout(Dropout2d)을 쓰기도 합니다.",
+      "tags": [
+        "regularization",
+        "dropout"
+      ],
+      "terms": [
+        "dropout"
+      ],
+      "source_ref": "Srivastava et al. 2014, Dropout",
+      "status": "draft"
+    },
+    {
+      "id": "E-REG-012",
+      "type": "mcq",
+      "chapter": "E.reg",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "PyTorch 등에서 일반적으로 쓰는 inverted dropout을 p=0.2로 적용했을 때의 동작으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "학습 때 활성값의 20%를 무작위로 0으로 만들고 남은 값은 1.25배로 키우며, 추론 때는 모든 값을 그대로 통과시킨다",
+          "rationale": null
+        },
+        {
+          "text": "학습 때와 마찬가지로 추론 때도 활성값의 20%를 무작위로 0으로 만든다",
+          "rationale": "추론 때도 dropout을 켜는 것은 불확실성 추정용 MC dropout처럼 일부러 선택하는 방식입니다. 기본 동작은 추론 때 끄는 것입니다."
+        },
+        {
+          "text": "학습 때 20%를 0으로 만들되 스케일은 그대로 두고, 추론 때 모든 출력에 0.8을 곱한다",
+          "rationale": "원 논문의 비반전(non-inverted) 방식입니다. inverted dropout은 스케일 보정을 학습 쪽으로 옮겨 추론 때는 아무 처리도 하지 않습니다."
+        },
+        {
+          "text": "학습 시작 때 가중치의 20%를 골라 영구히 삭제한다",
+          "rationale": "가중치를 영구히 없애는 것은 가지치기(pruning)입니다. dropout은 매 스텝 새로 무작위 마스크를 뽑습니다."
+        },
+        {
+          "text": "학습 때 활성값의 20%를 0으로 만들고 남은 값에 0.8을 곱한다",
+          "rationale": "남은 값을 줄이면 출력 기댓값이 0.8×0.8=0.64배가 됩니다. 기댓값을 유지하려면 1/(1−0.2)=1.25배로 키워야 합니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "inverted dropout은 학습 때 남은 활성값을 1/(1−p)=1/0.8=1.25배로 키워 출력의 기댓값을 유지합니다. 덕분에 추론 때는 아무 보정 없이 모든 값을 그대로 쓰면 됩니다.",
+      "explanation_full": "기댓값 계산: 각 값이 0.8 확률로 살아남고 1.25배가 되므로 E = 0.8 × 1.25 × x = x 입니다. 원 논문(Srivastava 2014)은 학습 때 스케일하지 않고 추론 때 가중치에 (1−p)를 곱했지만, 현재 대부분의 프레임워크는 추론 코드를 단순하게 하려고 inverted 방식을 씁니다. model.eval()을 호출해야 dropout이 꺼진다는 점을 꼭 기억하세요.",
+      "tags": [
+        "regularization",
+        "dropout",
+        "calculation"
+      ],
+      "terms": [
+        "dropout"
+      ],
+      "source_ref": "PyTorch 문서 torch.nn.Dropout; Srivastava et al. 2014",
+      "status": "draft"
+    },
+    {
+      "id": "E-REG-013",
+      "type": "scenario",
+      "chapter": "E.reg",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"해안 쓰레기 분할 모델에 dropout 0.5 넣었더니 train loss가 val loss보다 계속 높게 나와. 버그인지 아닌지 판단해서 알려줘.\"\n\n가장 적절한 판단은?",
+      "choices": [
+        {
+          "text": "val loss가 더 낮으니 과적합이 심한 상태이므로 dropout을 0.8로 올린다",
+          "rationale": "과적합은 보통 val loss가 train loss보다 높을 때의 신호입니다. 이 상황에서 dropout을 더 올리면 과소적합 위험만 커집니다."
+        },
+        {
+          "text": "dropout은 평가 때도 켜져 있어야 하므로 검증을 model.train() 상태로 다시 돌린다",
+          "rationale": "inverted dropout은 평가 때 끄도록 설계되어 있습니다. train 모드로 검증하면 결과가 무작위로 흔들리고 BN 통계도 바뀝니다."
+        },
+        {
+          "text": "학습이 수렴하지 않는다는 신호이므로 즉시 조기 종료한다",
+          "rationale": "조기 종료는 검증 지표가 개선을 멈출 때 쓰는 기준입니다. train loss가 val보다 높다는 사실만으로 멈출 이유는 없습니다."
+        },
+        {
+          "text": "weight decay를 0으로 꺼서 train loss를 낮춘다",
+          "rationale": "원인을 확인하지 않고 다른 규제를 끄는 것은 증상만 가리는 조치입니다. 먼저 같은 조건에서 두 loss를 비교해야 합니다."
+        },
+        {
+          "text": "dropout은 학습 때만 켜지므로 train loss가 더 높게 나올 수 있다. dropout을 끈 eval 모드로 학습셋 loss를 다시 재서 비교한다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "train loss는 dropout이 켜진 상태에서, val loss는 꺼진 상태에서 계산되므로 train 쪽이 더 높게 나오는 것은 흔한 현상입니다. 공정하게 비교하려면 eval 모드로 학습셋 loss를 다시 계산합니다.",
+      "explanation_full": "dropout 0.5는 매 스텝 활성값 절반을 끄므로 학습 중 모델은 일부러 약해진 상태입니다. 여기에 데이터 증강도 학습셋에만 걸려 있다면 train loss는 더 높아집니다. eval 모드로 잰 train loss가 val loss보다 낮고 차이가 작다면 정상이고, eval 모드에서도 train이 val보다 높다면 그때 데이터 분할(누수, 분포 차이)이나 코드 문제를 의심합니다.",
+      "tags": [
+        "regularization",
+        "dropout",
+        "debugging"
+      ],
+      "terms": [
+        "dropout"
+      ],
+      "source_ref": "Srivastava et al. 2014, Dropout; PyTorch 문서 torch.nn.Module.eval",
+      "status": "draft"
+    },
+    {
+      "id": "E-REG-014",
+      "type": "short",
+      "chapter": "E.reg",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "학습 중 매 업데이트마다 가중치를 일정 비율씩 0 쪽으로 줄여, 가중치가 커지는 것을 억제하는 규제 기법의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Weight Decay"
+        ],
+        "ko": [
+          "가중치 감쇠",
+          "가중치 감소",
+          "웨이트 디케이"
+        ]
+      },
+      "primary": "Weight Decay",
+      "explanation_short": "가중치 감쇠(weight decay)는 업데이트마다 가중치에 1보다 약간 작은 값을 곱하는 것과 같아, 큰 가중치를 억제합니다. 일반 SGD에서는 손실에 L2 패널티(λ/2·‖w‖²)를 더한 것과 수학적으로 같습니다.",
+      "explanation_full": "SGD 기준으로 L2 패널티의 기울기 λw를 더하면 w ← w − η(∇L + λw) = (1 − ηλ)w − η∇L이 되어 '매번 일정 비율 감쇠'가 됩니다. 다만 Adam 같은 적응적 옵티마이저에서는 두 방식이 달라지므로, 감쇠를 기울기와 분리한 AdamW를 씁니다. 편향(bias)과 정규화 층의 γ·β에는 감쇠를 빼는 설정이 흔합니다. 이 문항은 '업데이트 때 가중치를 직접 줄이는' 방식을 물으므로 L2 규제(손실에 패널티를 더하는 방식)와 구분해 weight decay만 정답으로 봅니다.",
+      "tags": [
+        "regularization",
+        "weight-decay"
+      ],
+      "terms": [
+        "weight-decay"
+      ],
+      "source_ref": "Goodfellow et al., Deep Learning 7.1절; Loshchilov & Hutter 2019",
+      "status": "draft"
+    },
+    {
+      "id": "E-REG-015",
+      "type": "mcq",
+      "chapter": "E.reg",
+      "cognitive_level": 2,
+      "difficulty": 4,
+      "stem": "Adam 옵티마이저에서 '손실에 L2 패널티를 더하는 방식'과 AdamW의 '분리된 가중치 감쇠(decoupled weight decay)'의 차이로 옳은 것은?",
+      "choices": [
+        {
+          "text": "Adam에서도 두 방식은 수학적으로 완전히 같아 결과 차이가 없다",
+          "rationale": "두 방식이 같아지는 것은 적응적 스케일링이 없는 일반 SGD에서입니다. Adam에서는 기울기가 2차 모멘트로 나뉘어 달라집니다."
+        },
+        {
+          "text": "AdamW는 가중치 절댓값의 합(L1)에 패널티를 준다",
+          "rationale": "절댓값 합 패널티는 L1(Lasso) 규제입니다. AdamW의 감쇠는 L2 계열로, 가중치에 비례해 줄입니다."
+        },
+        {
+          "text": "Adam+L2는 패널티 기울기도 적응적 학습률로 나뉘어 가중치마다 감쇠 강도가 달라지지만, AdamW는 이를 분리해 모든 가중치를 같은 비율로 직접 줄인다",
+          "rationale": null
+        },
+        {
+          "text": "AdamW는 검증 손실이 오르면 감쇠 계수를 자동으로 키운다",
+          "rationale": "AdamW의 감쇠 계수는 사용자가 정하는 고정 하이퍼파라미터입니다. 검증 지표를 보고 스스로 바꾸지 않습니다."
+        },
+        {
+          "text": "AdamW는 BN의 γ·β에만 감쇠를 적용하고 합성곱 가중치는 제외한다",
+          "rationale": "반대에 가깝습니다. 실무에서는 합성곱·선형 가중치에 감쇠를 걸고 정규화 층 파라미터와 편향은 빼는 설정이 흔합니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "Adam+L2에서는 λw가 기울기에 섞여 2차 모멘트로 나뉘므로, 기울기가 컸던 가중치일수록 감쇠가 약해집니다. AdamW는 감쇠를 기울기 계산과 분리해 w ← w − ηλw 형태로 모든 가중치를 같은 비율로 줄입니다.",
+      "explanation_full": "Loshchilov & Hutter(2019)는 이 차이 때문에 Adam+L2의 규제 효과가 의도와 다르게 약해진다는 것을 보이고 AdamW를 제안했습니다. 현재 ViT·Swin 등 트랜스포머 계열 학습의 표준 옵티마이저가 AdamW이며, weight decay 0.05 전후가 흔한 출발점입니다. 논문·코드에서 'weight_decay' 인자가 어느 방식인지는 옵티마이저 종류에 따라 다르니 문서를 확인하는 습관이 필요합니다.",
+      "tags": [
+        "regularization",
+        "weight-decay",
+        "optimizer"
+      ],
+      "terms": [
+        "weight-decay",
+        "adamw"
+      ],
+      "source_ref": "Loshchilov & Hutter 2019, Decoupled Weight Decay Regularization",
+      "status": "draft"
+    },
+    {
+      "id": "E-REG-016",
+      "type": "scenario",
+      "chapter": "E.reg",
+      "cognitive_level": 3,
+      "difficulty": 2,
+      "stem": "지시: \"KOMPSAT-3A 영상 지붕 재질 분류 모델, train 정확도 99%인데 val은 81%야. 옵티마이저는 AdamW 그대로 두고 설정값 하나만 바꿔서 규제를 세게 걸어봐.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "라벨 스무딩 ε를 0.1에서 0으로 꺼서 정답 클래스를 더 확실히 학습시킨다",
+          "rationale": "라벨 스무딩도 규제 기법이므로 끄면 규제가 약해집니다. 과신이 커져 과적합이 오히려 심해질 수 있습니다."
+        },
+        {
+          "text": "epoch 수를 두 배로 늘려 검증 정확도가 따라 올라올 때까지 학습한다",
+          "rationale": "이미 과적합 상태에서 더 오래 학습하면 학습셋을 더 외워 격차가 커집니다."
+        },
+        {
+          "text": "AdamW의 weight_decay를 0.01에서 0.05로 올린다",
+          "rationale": null
+        },
+        {
+          "text": "weight_decay를 0으로 내려 가중치 제약을 푼다",
+          "rationale": "감쇠를 없애면 규제가 약해지는 방향입니다. 지시와 반대입니다."
+        },
+        {
+          "text": "백본을 더 깊은 모델로 바꿔 표현력을 키운다",
+          "rationale": "모델 용량을 키우면 과적합 위험이 커지고, '설정값 하나만 바꾸라'는 조건에도 맞지 않습니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "train 99%·val 81%는 전형적인 과적합입니다. AdamW를 유지한 채 설정값 하나로 규제를 강화하려면 weight_decay 계수를 키우는 것이 가장 직접적입니다.",
+      "explanation_full": "weight decay를 올리면 가중치가 커지는 것을 더 강하게 억제해 학습셋에 과하게 맞추는 것을 막습니다. 너무 크게 올리면 과소적합이 되므로 0.01 → 0.05 → 0.1처럼 단계적으로 올리며 검증 지표를 봅니다. 고해상도 위성영상은 같은 장면에서 잘라낸 타일끼리 비슷해 학습·검증이 섞이면 과적합이 가려지므로, 공간적으로 분리된 검증셋인지도 함께 확인하는 것이 좋습니다.",
+      "tags": [
+        "regularization",
+        "weight-decay",
+        "optical"
+      ],
+      "terms": [
+        "weight-decay",
+        "overfitting"
+      ],
+      "source_ref": "Loshchilov & Hutter 2019; Goodfellow et al., Deep Learning 7장",
+      "status": "draft"
+    },
+    {
+      "id": "E-REG-017",
+      "type": "short",
+      "chapter": "E.reg",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "검증 성능이 정해진 에폭 수(patience) 동안 개선되지 않으면 학습을 멈추고, 가장 좋았던 시점의 가중치를 쓰는 기법의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Early Stopping"
+        ],
+        "ko": [
+          "조기 종료",
+          "조기 중단",
+          "조기 멈춤",
+          "얼리 스토핑"
+        ]
+      },
+      "primary": "Early Stopping",
+      "explanation_short": "조기 종료(early stopping)는 검증 지표를 감시하다가 일정 기간 나아지지 않으면 학습을 멈추고 최고 시점의 체크포인트를 씁니다. 추가 비용 없이 과적합을 막는 가장 간단한 규제입니다.",
+      "explanation_full": "설정 요소는 감시 지표(val loss, val mIoU 등), 개선으로 볼 최소 변화량(min_delta), 기다릴 에폭 수(patience)입니다. 지표가 잡음처럼 오르내리면 patience를 넉넉히 둡니다. 감시는 반드시 검증셋으로 하고, 테스트셋은 최종 보고에만 씁니다.",
+      "tags": [
+        "regularization",
+        "early-stopping"
+      ],
+      "terms": [
+        "early-stopping"
+      ],
+      "source_ref": "Goodfellow et al., Deep Learning 7.8절",
+      "status": "draft"
+    },
+    {
+      "id": "E-REG-018",
+      "type": "mcq",
+      "chapter": "E.reg",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "조기 종료(early stopping)가 규제(regularization) 효과를 내는 이유로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "학습 영상을 무작위로 회전·반전시켜 데이터 수를 늘린 것과 같은 효과를 내기 때문",
+          "rationale": "데이터 증강의 원리입니다. 조기 종료는 데이터를 바꾸지 않고 학습 기간만 제한합니다."
+        },
+        {
+          "text": "학습 중 뉴런을 무작위로 꺼서 여러 부분 네트워크를 앙상블한 것과 같은 효과를 내기 때문",
+          "rationale": "dropout의 원리입니다. 조기 종료에는 무작위 마스크가 없습니다."
+        },
+        {
+          "text": "각 층의 활성값 분포를 평균 0·분산 1로 맞추기 때문",
+          "rationale": "배치 정규화 같은 정규화 층의 동작입니다. 조기 종료는 활성값 분포를 건드리지 않습니다."
+        },
+        {
+          "text": "업데이트 횟수를 제한해 가중치가 초기값 근처에 머물게 하기 때문(L2 규제와 유사)",
+          "rationale": null
+        },
+        {
+          "text": "정답 클래스의 목표 확률을 1보다 낮춰 과신을 막기 때문",
+          "rationale": "라벨 스무딩의 원리입니다. 조기 종료는 목표 라벨을 바꾸지 않습니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "학습 스텝 수를 제한하면 가중치가 초기값에서 멀리 이동하지 못해, 모델이 표현할 수 있는 함수의 범위가 좁아집니다. 이는 가중치 크기를 억제하는 L2 규제와 비슷한 효과로 해석됩니다.",
+      "explanation_full": "Goodfellow 등의 Deep Learning 교재는 손실을 2차 함수로 근사하면 조기 종료가 L2 규제와 거의 같아짐을 보입니다(학습률×스텝 수가 1/λ 역할). 차이점은 규제 강도를 학습 곡선을 보며 자동으로 정한다는 것입니다. 실무에서는 weight decay와 함께 쓰는 경우가 많습니다.",
+      "tags": [
+        "regularization",
+        "early-stopping"
+      ],
+      "terms": [
+        "early-stopping",
+        "regularization"
+      ],
+      "source_ref": "Goodfellow et al., Deep Learning 7.8절",
+      "status": "draft"
+    },
+    {
+      "id": "E-REG-019",
+      "type": "scenario",
+      "chapter": "E.reg",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"변화탐지 모델 val F1이 35 epoch에서 0.78로 최고 찍고 그 뒤로 계속 떨어져. patience 10으로 early stopping 걸고, best 체크포인트로 결과 보고해.\"\n\n이 지시대로 했을 때 옳은 것은?",
+      "choices": [
+        {
+          "text": "val F1이 10 epoch 연속 최고치를 넘지 못한 45 epoch 무렵 학습을 멈추고, 35 epoch 체크포인트를 최종 모델로 쓴다",
+          "rationale": null
+        },
+        {
+          "text": "학습이 멈춘 45 epoch의 마지막 가중치를 최종 모델로 쓴다",
+          "rationale": "마지막 가중치는 최고점 이후 10 epoch 동안 성능이 떨어진 상태입니다. 지시는 best 체크포인트를 쓰라고 했습니다."
+        },
+        {
+          "text": "학습 시작 후 10 epoch째에 학습을 멈춘다",
+          "rationale": "patience는 '개선 없이 기다리는 에폭 수'이지 전체 학습 에폭 수가 아닙니다."
+        },
+        {
+          "text": "테스트셋 F1이 가장 높은 epoch의 체크포인트를 고른다",
+          "rationale": "테스트셋으로 모델을 고르면 테스트 정보가 선택에 새어 들어가 성능이 부풀려집니다. 선택은 검증셋으로 합니다."
+        },
+        {
+          "text": "train loss가 10 epoch 동안 줄지 않을 때까지 계속 학습한다",
+          "rationale": "과적합 중에도 train loss는 계속 줄어드는 경우가 많습니다. 감시 대상은 검증 지표여야 합니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "patience 10은 검증 지표가 최고치를 10 epoch 동안 갱신하지 못하면 멈춘다는 뜻이므로, 35 epoch 최고 이후 45 epoch 무렵 멈춥니다. 보고에는 멈춘 시점이 아닌 최고 시점(35 epoch) 체크포인트를 씁니다.",
+      "explanation_full": "PyTorch Lightning의 EarlyStopping과 ModelCheckpoint(save_top_k=1)처럼 '멈추는 기능'과 '최고 가중치를 저장하는 기능'은 따로 설정하는 경우가 많습니다. 멈춤만 걸고 best 저장을 빼먹으면 마지막 가중치가 남으니 주의합니다. 변화탐지처럼 양성 픽셀이 적은 과제는 F1이 epoch마다 크게 흔들리므로 patience를 조금 넉넉히 두는 편이 안전합니다.",
+      "tags": [
+        "regularization",
+        "early-stopping",
+        "change-detection"
+      ],
+      "terms": [
+        "early-stopping"
+      ],
+      "source_ref": "Goodfellow et al., Deep Learning 7.8절",
+      "status": "draft"
+    },
+    {
+      "id": "E-REG-020",
+      "type": "short",
+      "chapter": "E.reg",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "원-핫 정답 라벨의 1을 1−ε로 낮추고 ε만큼을 전체 클래스에 나눠 주어, 모델이 지나치게 확신하지 않게 하는 기법의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Label Smoothing"
+        ],
+        "ko": [
+          "라벨 스무딩",
+          "레이블 스무딩",
+          "라벨 평활화"
+        ]
+      },
+      "primary": "Label Smoothing",
+      "explanation_short": "라벨 스무딩(label smoothing)은 목표 분포를 원-핫에서 조금 평평하게 만들어, 로짓이 한없이 커지며 과신하는 것을 막습니다. Inception-v3에서 규제 기법으로 소개되었습니다.",
+      "explanation_full": "교차엔트로피는 목표가 정확히 1이면 해당 로짓을 무한히 키우도록 밀어붙입니다. ε(보통 0.1)를 나눠 주면 이 압력이 줄어 일반화와 확률 보정(calibration)이 좋아지는 경우가 많습니다. 토지피복 분류처럼 클래스 경계 라벨이 애매하거나 라벨 잡음이 있는 원격탐사 데이터에서 자주 시도합니다. 다만 지식 증류(knowledge distillation)의 교사 모델에는 해로울 수 있다는 보고도 있습니다.",
+      "tags": [
+        "regularization",
+        "label-smoothing"
+      ],
+      "terms": [
+        "label-smoothing"
+      ],
+      "source_ref": "Szegedy et al. 2016, Rethinking the Inception Architecture",
+      "status": "draft"
+    },
+    {
+      "id": "E-REG-021",
+      "type": "mcq",
+      "chapter": "E.reg",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "5개 클래스 토지피복 분류에 ε=0.1인 라벨 스무딩을 적용한다. ε를 정답을 포함한 5개 클래스 모두에 균등하게 나눠 주는 표준 방식(q = (1−ε)·원핫 + ε/K)일 때, 목표 확률은?",
+      "choices": [
+        {
+          "text": "정답 0.90, 나머지 클래스 각 0.025",
+          "rationale": "ε를 정답을 뺀 4개 클래스에만 나눈(ε/(K−1)) 변형입니다. 문제에서 지정한 표준 방식은 정답에도 ε/K를 더합니다."
+        },
+        {
+          "text": "정답 0.92, 나머지 클래스 각 0.02",
+          "rationale": null
+        },
+        {
+          "text": "정답 0.90, 나머지 클래스 각 0.02",
+          "rationale": "정답에 ε/K=0.02를 더하는 것을 빠뜨렸습니다. 합이 0.98이 되어 확률분포가 아닙니다."
+        },
+        {
+          "text": "정답 0.98, 나머지 클래스 각 0.005",
+          "rationale": "ε 대신 ε/K=0.02만 옮긴 계산입니다. 스무딩 강도가 의도의 1/5로 줄어듭니다."
+        },
+        {
+          "text": "정답 0.90, 나머지 클래스 각 0.10",
+          "rationale": "각 오답 클래스에 ε를 통째로 주면 합이 1.3이 되어 확률분포가 아닙니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "표준 라벨 스무딩은 (1−ε)·원핫 + ε/K 입니다. K=5, ε=0.1이면 ε/K=0.02이므로 정답은 0.9+0.02=0.92, 나머지는 각 0.02이며 합은 0.92+4×0.02=1.00입니다.",
+      "explanation_full": "Szegedy 등(2016)의 정의이며, PyTorch CrossEntropyLoss의 label_smoothing 인자도 이 방식(균등분포와 혼합)을 따릅니다. 일부 구현은 ε를 오답 클래스에만 ε/(K−1)씩 나누기도 하므로, 코드를 옮길 때 어느 방식인지 확인해야 합니다. 클래스 수가 많을수록 오답 클래스 하나가 받는 확률은 작아집니다.",
+      "tags": [
+        "regularization",
+        "label-smoothing",
+        "calculation",
+        "land-cover"
+      ],
+      "terms": [
+        "label-smoothing"
+      ],
+      "source_ref": "Szegedy et al. 2016; PyTorch 문서 torch.nn.CrossEntropyLoss",
+      "status": "draft"
+    },
+    {
+      "id": "E-REG-022",
+      "type": "scenario",
+      "chapter": "E.reg",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"드론 정사영상 양식장 부표 탐지 학습 데이터가 300장뿐이라 과적합이 심해. 모델 구조는 그대로 두고 데이터 쪽에서 규제 효과를 내봐.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "검증셋에도 매번 다른 무작위 증강을 적용해 학습 조건과 맞춘다",
+          "rationale": "검증셋이 매번 바뀌면 epoch 간 성능을 비교할 수 없습니다. 검증 데이터는 고정해 두어야 합니다."
+        },
+        {
+          "text": "증강 영상을 미리 만들어 원본과 섞은 뒤 학습·검증셋으로 무작위 분할해 데이터 수를 늘린다",
+          "rationale": "같은 원본의 변형이 학습과 검증 양쪽에 들어가 데이터 누수가 생깁니다. 검증 성능이 부풀려집니다."
+        },
+        {
+          "text": "입력 정규화용 평균·표준편차를 검증셋 기준으로 다시 계산한다",
+          "rationale": "입력 스케일링(normalization) 설정일 뿐 과적합 규제가 아니며, 검증셋 정보를 학습 설정에 쓰는 누수이기도 합니다."
+        },
+        {
+          "text": "탐지하기 어려운 영상을 학습셋에서 빼서 잡음을 줄인다",
+          "rationale": "가뜩이나 적은 데이터를 더 줄이고, 어려운 사례를 못 배우게 되어 일반화가 나빠집니다."
+        },
+        {
+          "text": "학습 때만 무작위 90° 회전·뒤집기·밝기 변화를 박스와 함께 적용한다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "학습 때만 무작위 증강을 걸면 모델이 같은 영상을 매번 조금씩 다른 모습으로 보게 되어, 특정 배경·방향을 외우기 어려워집니다. 모델을 바꾸지 않고 데이터로 규제 효과를 내는 대표적 방법입니다.",
+      "explanation_full": "연직(nadir) 촬영한 드론·위성 영상은 방향에 정해진 위아래가 없어 90° 회전·상하좌우 뒤집기가 라벨 의미를 바꾸지 않는 안전한 증강입니다. 탐지 과제에서는 박스·마스크 좌표를 영상과 똑같이 변환해야 합니다. 밝기·대비 변화는 촬영 시각·태양 고도 차이를 흉내 냅니다. 증강은 학습 파이프라인에서 즉석(on-the-fly)으로 적용하고, 검증·테스트는 원본 그대로 평가합니다.",
+      "tags": [
+        "regularization",
+        "augmentation",
+        "drone"
+      ],
+      "terms": [
+        "data-augmentation",
+        "regularization"
+      ],
+      "source_ref": "Goodfellow et al., Deep Learning 7.4절",
+      "status": "draft"
+    }
+  ]
+}

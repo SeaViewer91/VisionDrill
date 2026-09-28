@@ -1,0 +1,536 @@
+{
+  "format": "visiondrill-bank-exchange",
+  "format_version": 1,
+  "terms": [
+    {
+      "id": "generalized-least-squares",
+      "term_en": "Generalized Least Squares",
+      "term_ko": "일반화최소제곱법",
+      "abbreviation": "GLS",
+      "definition": "오차의 공분산 구조(자기상관·이분산)를 모형에 반영해 자료를 변환한 뒤 최소제곱을 적용하는 추정법. 공분산 구조를 추정해서 쓰면 FGLS라 한다",
+      "usage_example": "월별 자료라 AR(1) 오차 가정하고 GLS로 다시 적합해서 OLS 결과랑 나란히 비교해줘.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "newey-west-standard-error",
+      "term_en": "Newey-West Standard Error",
+      "term_ko": "뉴이-웨스트 표준오차",
+      "abbreviation": "HAC SE",
+      "definition": "OLS 계수는 그대로 두고, 정해진 시차까지의 잔차 자기공분산을 시차가 멀수록 줄어드는 가중치로 더해 자기상관과 이분산에 강건하게 만든 표준오차(HAC 표준오차의 대표)",
+      "usage_example": "계수는 OLS 그대로 쓰고 표준오차만 Newey-West로 바꿔. 시차는 3개월로 잡아봐.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "lagged-variable",
+      "term_en": "Lagged Variable",
+      "term_ko": "시차 변수",
+      "abbreviation": null,
+      "definition": "yₜ₋₁, xₜ₋₁처럼 이전 시점의 값을 설명변수로 넣은 변수. 시간 의존성을 모형 구조로 흡수해 잔차 자기상관을 줄이는 데 쓴다",
+      "usage_example": "강수 영향이 한 달 늦게 나타나니까 전월 강수량을 시차 변수로 넣어봐.",
+      "origin": "standard",
+      "track": "B"
+    }
+  ],
+  "questions": [
+    {
+      "id": "B-DW-002",
+      "type": "short",
+      "chapter": "B.dw",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "잔차의 1차 자기상관을 검정하는 통계량으로, 0~4 사이 값을 가지며 2 근처면 자기상관이 없다고 보는 것의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Durbin-Watson statistic (DW)",
+          "Durbin-Watson test",
+          "Durbin-Watson"
+        ],
+        "ko": [
+          "더빈-왓슨 통계량",
+          "더빈-왓슨 검정",
+          "더빈왓슨"
+        ]
+      },
+      "primary": "Durbin-Watson statistic (DW)",
+      "explanation_short": "Durbin-Watson 통계량은 DW = Σ(eₜ − eₜ₋₁)² / Σeₜ²로 계산하며, 2 근처면 1차 자기상관 없음, 0 쪽이면 양의 자기상관, 4 쪽이면 음의 자기상관입니다.",
+      "explanation_full": "DW ≈ 2(1 − ρ̂)라서 ρ̂(잔차 1차 자기상관계수)가 0이면 2, 1이면 0, −1이면 4에 가까워집니다. 통계 패키지의 OLS 요약표에 기본으로 나오는 경우가 많지만, 관측치가 시간(또는 의미 있는 순서)대로 정렬되어 있을 때만 해석할 수 있습니다. \"2 근처면 자기상관 없음\"은 대략적 해석이고, 정식 판정은 표본 수·설명변수 수에 따른 임계값표(d_L·d_U)나 소프트웨어의 p값으로 합니다.",
+      "tags": [
+        "regression",
+        "diagnostics",
+        "time-series"
+      ],
+      "terms": [
+        "durbin-watson",
+        "autocorrelation"
+      ],
+      "source_ref": "Montgomery·Peck·Vining, Introduction to Linear Regression Analysis 14장 Regression Analysis of Time Series Data",
+      "status": "draft"
+    },
+    {
+      "id": "B-DW-003",
+      "type": "mcq",
+      "chapter": "B.dw",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "월별 해수면온도 회귀의 잔차에서 1차 자기상관계수 추정치가 ρ̂ = 0.35였다. 근사식 DW ≈ 2(1 − ρ̂)로 구한 Durbin-Watson 통계량은?",
+      "choices": [
+        {
+          "text": "2.7",
+          "rationale": "2.7은 2(1 + ρ̂)로 부호를 반대로 넣은 값입니다. 양의 자기상관이면 DW는 2보다 작아집니다."
+        },
+        {
+          "text": "0.7",
+          "rationale": "0.7은 2ρ̂입니다. 식의 (1 − ρ̂) 부분을 빠뜨렸습니다."
+        },
+        {
+          "text": "1.3",
+          "rationale": null
+        },
+        {
+          "text": "0.65",
+          "rationale": "0.65는 1 − ρ̂만 계산하고 2를 곱하지 않은 값입니다."
+        },
+        {
+          "text": "2.35",
+          "rationale": "2.35는 2 + ρ̂입니다. 근사식은 2에 (1 − ρ̂)를 곱합니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "DW ≈ 2(1 − 0.35) = 2 × 0.65 = 1.3입니다. 2보다 작으므로 양의 자기상관 방향입니다.",
+      "explanation_full": "근사식 DW ≈ 2(1 − ρ̂)는 표본이 충분히 클 때 잘 맞습니다. 정확한 유의성 판단은 표본 수와 설명변수 수에 따른 DW 임계값표의 하한(d_L)·상한(d_U)과 비교하거나, 소프트웨어가 주는 p값을 씁니다. 1.3 정도면 표본이 수십 개 이상일 때 양의 자기상관이 유의하게 나오는 경우가 많습니다.",
+      "tags": [
+        "regression",
+        "diagnostics",
+        "time-series",
+        "calculation"
+      ],
+      "terms": [
+        "durbin-watson"
+      ],
+      "source_ref": "Montgomery·Peck·Vining, Introduction to Linear Regression Analysis 14장 Regression Analysis of Time Series Data",
+      "status": "draft"
+    },
+    {
+      "id": "B-DW-004",
+      "type": "mcq",
+      "chapter": "B.dw",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "월별 NDVI 시계열을 OLS로 회귀했는데 잔차에 양의 자기상관이 뚜렷하다. 일반 OLS 표준오차를 그대로 쓰면 보통 어떤 문제가 생기는가? (설명변수는 오차와 무관하다고 가정)",
+      "choices": [
+        {
+          "text": "표준오차가 과소추정되어 실제보다 유의한 결과가 나오기 쉽다",
+          "rationale": null
+        },
+        {
+          "text": "회귀계수 추정치 자체가 편향되어 부호가 반대로 나오기 쉽다",
+          "rationale": "설명변수가 오차와 무관하면 자기상관이 있어도 OLS 계수는 불편입니다. 문제는 계수의 불확실성(표준오차) 추정입니다."
+        },
+        {
+          "text": "표준오차가 과대추정되어 검정 결과가 지나치게 보수적이 된다",
+          "rationale": "양의 자기상관(설명변수도 시간적으로 매끄러운 흔한 경우)에서는 보통 반대로 표준오차가 작게 추정됩니다."
+        },
+        {
+          "text": "결정계수 R²가 항상 0으로 계산된다",
+          "rationale": "자기상관은 R² 계산을 막지 않습니다. 오히려 추세를 공유하는 시계열끼리는 R²가 부풀려지기 쉽습니다."
+        },
+        {
+          "text": "설명변수 사이의 다중공선성이 새로 생긴다",
+          "rationale": "다중공선성은 설명변수끼리의 관계로, 잔차 자기상관과는 별개 문제입니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "양의 자기상관이 있으면 이웃한 관측치가 비슷한 정보를 반복하므로 실제 독립 정보량이 표본 수보다 적습니다. 일반 OLS 표준오차는 이를 무시해 작게 나오고, t값이 부풀려져 가짜 유의성이 생깁니다.",
+      "explanation_full": "대응: (1) 계수는 두고 Newey-West(HAC) 표준오차 사용, (2) AR(1) 등 오차 구조를 넣은 GLS, (3) 시차 변수·계절 항으로 시간 구조를 모형에 반영. 위성 시계열은 합성 주기(8일·16일·월)와 식생 계절성 때문에 잔차 자기상관이 거의 늘 있다고 보고 확인해야 합니다.",
+      "tags": [
+        "regression",
+        "diagnostics",
+        "time-series"
+      ],
+      "terms": [
+        "autocorrelation"
+      ],
+      "source_ref": "Wooldridge, Introductory Econometrics 12장 Serial Correlation and Heteroskedasticity in Time Series Regressions",
+      "status": "draft"
+    },
+    {
+      "id": "B-DW-005",
+      "type": "mcq",
+      "chapter": "B.dw",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "Durbin-Watson 검정에 대한 설명으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "관측치를 어떤 순서로 정렬하든 계산 결과가 항상 같은 값으로 나온다",
+          "rationale": "DW는 이웃한 잔차 차이 eₜ − eₜ₋₁로 계산하므로 정렬 순서가 바뀌면 값이 달라집니다. 반드시 시간 순서로 정렬해야 합니다."
+        },
+        {
+          "text": "0~1 사이 값을 가지며 1에 가까울수록 자기상관이 없다",
+          "rationale": "DW는 0~4 사이 값이며 자기상관이 없으면 2 근처입니다."
+        },
+        {
+          "text": "잔차의 이분산 여부도 함께 검정해 준다",
+          "rationale": "DW는 순서상 인접 잔차의 상관만 봅니다. 이분산은 Breusch-Pagan 등으로 따로 확인합니다."
+        },
+        {
+          "text": "인접 잔차 간 1차 상관만 봐서 12개월 주기 같은 상관은 놓칠 수 있다",
+          "rationale": null
+        },
+        {
+          "text": "종속변수의 시차항을 설명변수로 넣은 동적 모형에서 특히 정확한 결과를 준다",
+          "rationale": "반대입니다. 종속변수 시차항이 있으면 DW가 2 쪽으로 치우쳐 자기상관을 놓치기 쉽습니다. 이때는 Durbin h나 Breusch-Godfrey 검정을 씁니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "DW는 eₜ와 eₜ₋₁ 사이의 1차 자기상관만 봅니다. 월별 위성 자료처럼 12개월 주기 상관이 있으면 DW가 2 근처로 나와도 고차 자기상관이 남아 있을 수 있습니다.",
+      "explanation_full": "고차 자기상관은 잔차의 자기상관 함수(ACF) 그림, Ljung-Box 검정, Breusch-Godfrey 검정으로 확인합니다. DW의 또 다른 한계는 판정 불가 구간(d_L ~ d_U 사이)이 있다는 점과, 종속변수 시차항이 있는 모형에서 믿기 어렵다는 점입니다.",
+      "tags": [
+        "regression",
+        "diagnostics",
+        "time-series"
+      ],
+      "terms": [
+        "durbin-watson",
+        "autocorrelation"
+      ],
+      "source_ref": "Wooldridge, Introductory Econometrics 12장 Serial Correlation and Heteroskedasticity in Time Series Regressions",
+      "status": "draft"
+    },
+    {
+      "id": "B-DW-006",
+      "type": "mcq",
+      "chapter": "B.dw",
+      "cognitive_level": 2,
+      "difficulty": 4,
+      "stem": "해안 격자(500m) 단위 해양쓰레기 밀도 회귀에서, 격자를 행 순서(북→남, 서→동)로 늘어놓고 Durbin-Watson을 계산했더니 1.95였다. 가장 적절한 해석은?",
+      "choices": [
+        {
+          "text": "DW가 2에 가까우므로 공간 자기상관이 없다고 결론 내린다",
+          "rationale": "DW는 한 줄로 늘어놓은 순서의 바로 앞뒤만 봅니다. 위아래(남북) 이웃이나 대각 이웃 사이의 상관은 반영되지 않아 공간 자기상관이 없다는 근거가 되지 못합니다."
+        },
+        {
+          "text": "DW는 1차원 순서를 전제로 하므로 2차원 공간 자기상관은 Moran's I 등으로 따로 확인한다",
+          "rationale": null
+        },
+        {
+          "text": "1.95는 강한 음의 자기상관이므로 GLS를 적용한다",
+          "rationale": "음의 자기상관은 DW가 4에 가까울 때입니다. 1.95는 2 근처입니다."
+        },
+        {
+          "text": "잔차가 정규분포를 따른다는 뜻이므로 추가 진단은 필요 없다",
+          "rationale": "DW는 정규성과 무관합니다. 정규성은 Q-Q 플롯·Shapiro-Wilk로 봅니다."
+        },
+        {
+          "text": "격자 순서를 무작위로 섞어 다시 계산하면 정확한 공간 자기상관을 얻는다",
+          "rationale": "무작위로 섞으면 이웃 관계가 모두 사라져 DW는 늘 2 근처가 됩니다. 공간 구조를 더 못 보게 됩니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "DW는 관측치를 한 줄로 세운 순서의 바로 이웃만 봅니다. 공간 자료는 상하좌우·대각으로 이웃이 있어 한 줄 순서로는 공간 자기상관을 제대로 잡지 못하므로, 공간 가중 행렬을 쓰는 Moran's I 같은 지표로 확인해야 합니다.",
+      "explanation_full": "공간 자료의 잔차 진단 순서: (1) 잔차를 지도로 그려 뭉침 확인, (2) 인접(rook/queen) 또는 거리 기반 공간 가중 행렬로 잔차의 Moran's I 계산, (3) 유의하면 공간 회귀모형이나 공간 교차검증 등으로 대응합니다. 행 순서 DW는 같은 행 안의 동서 이웃만 일부 반영할 뿐입니다.",
+      "tags": [
+        "regression",
+        "diagnostics",
+        "spatial"
+      ],
+      "terms": [
+        "durbin-watson",
+        "spatial-autocorrelation",
+        "morans-i"
+      ],
+      "source_ref": "Anselin, Spatial Econometrics (1988); de Smith·Goodchild·Longley, Geospatial Analysis 5장",
+      "status": "draft"
+    },
+    {
+      "id": "B-DW-007",
+      "type": "short",
+      "chapter": "B.dw",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "오차의 공분산 구조(예: AR(1) 자기상관)를 모형에 반영해 자료를 변환한 뒤 최소제곱을 적용하는 추정법의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Generalized Least Squares (GLS)",
+          "Feasible Generalized Least Squares (FGLS)"
+        ],
+        "ko": [
+          "일반화최소제곱법",
+          "일반화최소제곱",
+          "일반화최소자승법",
+          "실행가능 일반화최소제곱"
+        ]
+      },
+      "primary": "Generalized Least Squares (GLS)",
+      "explanation_short": "일반화최소제곱(GLS)은 오차 공분산 행렬 Ω를 반영해 β̂ = (XᵀΩ⁻¹X)⁻¹XᵀΩ⁻¹y로 추정합니다. 오차 구조가 맞게 지정되면 OLS보다 효율적입니다.",
+      "explanation_full": "Ω를 모르기 때문에 실제로는 잔차로 ρ 등을 추정해 쓰는 실행가능 GLS(FGLS)를 씁니다. AR(1) 오차에 대한 Cochrane-Orcutt, Prais-Winsten 절차가 대표적입니다. WLS는 Ω가 대각행렬(상관 없음, 분산만 다름)인 GLS의 특수한 경우입니다.",
+      "tags": [
+        "regression",
+        "time-series",
+        "prescription"
+      ],
+      "terms": [
+        "generalized-least-squares"
+      ],
+      "source_ref": "Wooldridge, Introductory Econometrics 12장 Serial Correlation and Heteroskedasticity in Time Series Regressions",
+      "status": "draft"
+    },
+    {
+      "id": "B-DW-008",
+      "type": "mcq",
+      "chapter": "B.dw",
+      "cognitive_level": 2,
+      "difficulty": 4,
+      "stem": "AR(1) 오차를 가정한 GLS와 Newey-West 표준오차를 비교한 설명으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "둘 다 OLS 계수를 그대로 두고 표준오차만 바꾼다",
+          "rationale": "GLS는 자료를 변환해 계수를 새로 추정합니다. 계수를 그대로 두는 것은 Newey-West 쪽입니다."
+        },
+        {
+          "text": "Newey-West는 계수를 새로 추정하고, GLS는 표준오차만 바꾼다",
+          "rationale": "두 방법의 역할이 뒤바뀌었습니다."
+        },
+        {
+          "text": "GLS는 이분산만, Newey-West는 다중공선성만 다룬다",
+          "rationale": "GLS는 자기상관·이분산을 포함한 오차 공분산 구조를 다루고, Newey-West는 자기상관과 이분산을 다룹니다. 다중공선성과는 무관합니다."
+        },
+        {
+          "text": "Newey-West는 격자 형태의 2차원 공간 자료에만 쓸 수 있다",
+          "rationale": "Newey-West는 시계열처럼 1차원 순서가 있는 자료용입니다. 공간 자료에는 Conley 표준오차 같은 공간판 방법을 씁니다."
+        },
+        {
+          "text": "GLS는 오차 구조를 모형화해 계수도 다시 추정하고, Newey-West는 표준오차만 보정한다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "GLS는 오차 구조(예: AR(1))를 명시해 계수와 표준오차를 모두 새로 추정하고, 구조가 맞으면 더 효율적입니다. Newey-West는 계수는 OLS 그대로 두고 표준오차만 자기상관·이분산에 강건하게 고칩니다.",
+      "explanation_full": "선택 기준: 오차 구조를 어느 정도 안다면 GLS가 효율적이지만, 구조를 잘못 지정하면 결과가 틀릴 수 있습니다. 구조를 모르거나 계수를 이미 보고했다면 Newey-West가 안전합니다. 이분산만 있을 때의 HC 표준오차와 짝을 이루는 관계로 기억하면 쉽습니다.",
+      "tags": [
+        "regression",
+        "time-series",
+        "prescription"
+      ],
+      "terms": [
+        "generalized-least-squares",
+        "newey-west-standard-error"
+      ],
+      "source_ref": "Newey & West (1987), Econometrica 55(3); Wooldridge 12.5절",
+      "status": "draft"
+    },
+    {
+      "id": "B-DW-009",
+      "type": "mcq",
+      "chapter": "B.dw",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "Newey-West 표준오차는 일반 OLS 표준오차의 어떤 문제를 보정하기 위한 것인가?",
+      "choices": [
+        {
+          "text": "설명변수 간 다중공선성",
+          "rationale": "다중공선성은 표준오차 계산 방식을 바꿔서 해결되는 문제가 아닙니다. 변수 정리·Ridge 등으로 대응합니다."
+        },
+        {
+          "text": "잔차의 자기상관과 이분산",
+          "rationale": null
+        },
+        {
+          "text": "고레버리지 영향점",
+          "rationale": "영향점은 Cook's D 등으로 진단하고 원자료 확인·로버스트 회귀로 대응합니다."
+        },
+        {
+          "text": "설명변수와 종속변수 관계의 비선형성",
+          "rationale": "비선형성은 모형식 문제라 표준오차 보정으로는 해결되지 않습니다. 변환·다항항을 씁니다."
+        },
+        {
+          "text": "잔차의 비정규성",
+          "rationale": "Newey-West의 목적은 정규성이 아니라 오차의 상관·분산 구조에 강건한 추론입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "Newey-West 표준오차는 HAC(Heteroskedasticity and Autocorrelation Consistent) 표준오차의 대표로, 잔차의 자기상관과 이분산이 있어도 일관된 표준오차를 줍니다.",
+      "explanation_full": "정해진 시차(lag)까지의 잔차 자기공분산을 시차가 멀수록 선형으로 줄어드는 Bartlett 가중치로 더해 계산합니다. 시차 수는 자료 길이에 따라 정하며, 월별 자료라면 계절 주기를 고려해 정하기도 합니다. 계수는 OLS와 같습니다.",
+      "tags": [
+        "regression",
+        "time-series",
+        "prescription"
+      ],
+      "terms": [
+        "newey-west-standard-error",
+        "autocorrelation"
+      ],
+      "source_ref": "Newey & West (1987), Econometrica 55(3); Wooldridge 12.5절",
+      "status": "draft"
+    },
+    {
+      "id": "B-DW-010",
+      "type": "short",
+      "chapter": "B.dw",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "종속변수 yₜ를 설명하려고 yₜ₋₁이나 xₜ₋₁처럼 이전 시점의 값을 넣은 설명변수를 무엇이라 하나? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Lagged variable",
+          "Lag variable",
+          "Lagged term",
+          "Lag term"
+        ],
+        "ko": [
+          "시차 변수",
+          "지연 변수",
+          "시차항",
+          "래그 변수"
+        ]
+      },
+      "primary": "Lagged variable",
+      "explanation_short": "시차 변수(lagged variable)는 이전 시점의 값을 설명변수로 쓰는 것입니다. 종속변수 자신의 과거값(yₜ₋₁)이나, 효과가 늦게 나타나는 설명변수의 과거값(xₜ₋₁)을 넣습니다.",
+      "explanation_full": "예: 강수 → 탁도, 수온 → 적조처럼 영향이 한두 달 늦게 나타나면 xₜ₋₁을 넣습니다. 시차를 하나 넣을 때마다 시계열 앞부분 관측치가 하나씩 빠진다는 점도 기억해야 합니다.",
+      "tags": [
+        "regression",
+        "time-series"
+      ],
+      "terms": [
+        "lagged-variable"
+      ],
+      "source_ref": "Wooldridge, Introductory Econometrics 12장 Serial Correlation and Heteroskedasticity in Time Series Regressions",
+      "status": "draft"
+    },
+    {
+      "id": "B-DW-011",
+      "type": "mcq",
+      "chapter": "B.dw",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "월별 NDVI 시계열 회귀에서 전월 NDVI(yₜ₋₁)를 설명변수로 추가했다. 주된 목적으로 가장 옳은 것은?",
+      "choices": [
+        {
+          "text": "설명변수 간 다중공선성을 줄이기 위해",
+          "rationale": "전월 NDVI는 다른 계절성 설명변수와 상관이 높은 경우가 많아 오히려 공선성을 키울 수 있습니다."
+        },
+        {
+          "text": "잔차의 이분산을 없애기 위해",
+          "rationale": "이분산은 분산 구조 문제로, WLS·변환·강건 표준오차로 대응합니다."
+        },
+        {
+          "text": "잔차가 정규분포를 따르도록 분포 모양을 바로잡기 위해",
+          "rationale": "시차 변수의 목적은 분포 모양이 아니라 시간 의존성 반영입니다."
+        },
+        {
+          "text": "잔차에 남은 시간 의존성을 모형에 흡수하기 위해",
+          "rationale": null
+        },
+        {
+          "text": "관측치 수를 늘려 표준오차를 줄이기 위해",
+          "rationale": "시차 변수를 넣으면 첫 시점 관측치가 빠지므로 관측치 수는 오히려 하나 줄어듭니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "식생은 한 달 사이에 급변하지 않아 이번 달 NDVI는 지난달 NDVI와 강하게 연결됩니다. 이 관성을 yₜ₋₁로 모형에 넣으면 잔차에 남던 자기상관이 줄어듭니다.",
+      "explanation_full": "주의: 종속변수 시차항을 넣은 모형에서는 DW가 2 쪽으로 치우쳐 자기상관을 놓치기 쉬우므로 Durbin h나 Breusch-Godfrey 검정으로 다시 확인합니다. 또 시차항을 넣은 뒤에도 오차 자기상관이 남아 있으면 OLS 계수가 일치성을 잃으므로 반드시 재진단해야 합니다.",
+      "tags": [
+        "regression",
+        "time-series",
+        "prescription"
+      ],
+      "terms": [
+        "lagged-variable",
+        "autocorrelation"
+      ],
+      "source_ref": "Wooldridge, Introductory Econometrics 12장 Serial Correlation and Heteroskedasticity in Time Series Regressions",
+      "status": "draft"
+    },
+    {
+      "id": "B-DW-012",
+      "type": "scenario",
+      "chapter": "B.dw",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"Landsat 월별 지표면온도로 녹지율 효과 회귀했는데 DW가 0.9야. 이대로 p값 보고하지 말고 보정해서 다시 가져와.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "AR(1) 오차 GLS나 Newey-West 표준오차로 추론을 다시 한다",
+          "rationale": null
+        },
+        {
+          "text": "같은 방식으로 관측 기간을 몇 년 더 늘려서 DW가 2에 가까워지는지 본다",
+          "rationale": "자기상관은 자료의 성질이라 같은 방식으로 기간만 늘려도 DW는 비슷하게 나오고, 일반 OLS 표준오차의 과소추정 문제도 그대로 남습니다."
+        },
+        {
+          "text": "Cook's D가 큰 달을 찾아 제거한 뒤 다시 적합한다",
+          "rationale": "영향점 제거는 자기상관 처방이 아닙니다. 시계열에서 중간 시점을 빼면 순서 구조도 망가집니다."
+        },
+        {
+          "text": "녹지율과 다른 설명변수들의 VIF를 확인한다",
+          "rationale": "VIF는 다중공선성 진단입니다. DW 0.9가 가리키는 잔차 자기상관과는 다른 문제입니다."
+        },
+        {
+          "text": "지표면온도를 로그 변환해 다시 적합한다",
+          "rationale": "로그 변환은 이분산·비선형 처방입니다. 시간 순서상 잔차 상관은 그대로 남습니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "DW 0.9는 ρ̂ ≈ 0.55 정도의 양의 자기상관으로 일반 OLS 표준오차가 과소추정됐을 가능성이 큽니다. AR(1) 오차를 넣은 GLS나 Newey-West 표준오차로 추론을 다시 하는 것이 정석입니다.",
+      "explanation_full": "계산: DW ≈ 2(1 − ρ̂) → ρ̂ ≈ 1 − 0.9/2 = 0.55. 추가로 계절 더미나 전월 값 같은 시차 변수를 넣어 시간 구조를 모형에 반영할 수도 있습니다. 보고서에는 \"표준오차: Newey-West(lag 3)\"처럼 방법과 시차를 명시합니다.",
+      "tags": [
+        "regression",
+        "time-series",
+        "prescription"
+      ],
+      "terms": [
+        "durbin-watson",
+        "generalized-least-squares",
+        "newey-west-standard-error"
+      ],
+      "source_ref": "Wooldridge, Introductory Econometrics 12장 Serial Correlation and Heteroskedasticity in Time Series Regressions",
+      "status": "draft"
+    },
+    {
+      "id": "B-DW-013",
+      "type": "scenario",
+      "chapter": "B.dw",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"해안 격자별 쓰레기 밀도 회귀 잔차의 Moran's I가 0.42로 유의하게 나왔어. 지금 계수 p값 그대로 쓰면 안 되니까 대응해.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "시계열용 Newey-West 표준오차를 격자 행 순서 기준으로 적용한다",
+          "rationale": "행 순서는 공간 이웃 관계를 제대로 나타내지 못합니다. 1차원 순서용 방법을 2차원 공간 자료에 그대로 쓰면 보정이 불완전합니다."
+        },
+        {
+          "text": "격자 순서를 무작위로 섞어 다시 적합한다",
+          "rationale": "OLS 결과는 행 순서와 무관해 섞어도 계수·표준오차가 똑같습니다. 공간 상관은 그대로 남습니다."
+        },
+        {
+          "text": "Moran's I가 양수이니 음의 자기상관으로 보고 표준오차가 과대추정됐다고 본다",
+          "rationale": "Moran's I가 양수면 비슷한 값끼리 뭉치는 양의 공간 자기상관입니다. 이 경우 보통 표준오차가 과소추정됩니다."
+        },
+        {
+          "text": "Cook's D가 큰 격자를 제거하면 공간 자기상관이 사라지므로 제거 후 재적합한다",
+          "rationale": "공간 자기상관은 넓은 영역에 걸친 구조라 몇 개 점을 지워도 사라지지 않습니다."
+        },
+        {
+          "text": "공간 오차 모형 등으로 공간 구조를 반영하거나 공간 강건 표준오차로 추론한다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "Moran's I 0.42(유의)는 인접 격자끼리 잔차가 비슷한 양의 공간 자기상관입니다. 일반 OLS 표준오차는 과소추정되므로, 공간 구조를 모형(공간 오차·공간 시차 모형)에 넣거나 공간 자기상관에 강건한 표준오차(예: Conley)로 추론합니다.",
+      "explanation_full": "예측 성능을 평가할 때도 인접 격자가 학습·검증에 나뉘어 들어가면 성능이 부풀려지므로, 인접 격자를 같은 묶음으로 나누는 공간 교차검증(spatial block CV)을 함께 씁니다. 잔차 공간 상관의 원인이 빠진 설명변수(해류, 하구 거리 등)일 수도 있으니 변수 추가도 검토합니다.",
+      "tags": [
+        "regression",
+        "spatial",
+        "prescription"
+      ],
+      "terms": [
+        "spatial-autocorrelation",
+        "morans-i"
+      ],
+      "source_ref": "Anselin, Spatial Econometrics (1988); de Smith·Goodchild·Longley, Geospatial Analysis 5장",
+      "status": "draft"
+    }
+  ]
+}

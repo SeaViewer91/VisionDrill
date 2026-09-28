@@ -191,6 +191,35 @@ export class Learner {
     }
   }
 
+  /**
+   * 앱에 내장된 기본 팩 적용.
+   * - 설치된 팩이 없으면 설치
+   * - 지금 설치된 팩이 예전에 앱이 넣어 준 기본 팩이고 새 기본 팩과 버전이 다르면 교체 (앱 업데이트로 문항이 늘어난 경우)
+   * - 사용자가 직접 가져온 팩을 쓰고 있으면 건드리지 않음
+   * 교체했으면 importPack 결과, 아니면 null.
+   */
+  applyBundledPack(SQL: SqlJsStatic, packBytes: Uint8Array) {
+    const pack = Db.create(SQL, packBytes);
+    let bundled: PackManifest;
+    try {
+      bundled = readPackManifest(pack);
+    } finally {
+      pack.close();
+    }
+    const current = this.packInfo()?.pack_version;
+    const lastBundled =
+      this.db.value<string>(`SELECT value FROM learner_meta WHERE key='bundled_pack'`) ??
+      (current?.startsWith('sample-') ? current : undefined); // 0.1.0 이전 설치본은 샘플 팩이 기본 팩이었음
+    const shouldApply = !current || (current === lastBundled && current !== bundled.pack_version);
+    if (!shouldApply) return null;
+    const r = this.importPack(SQL, packBytes);
+    this.db.run(
+      `INSERT INTO learner_meta(key,value) VALUES('bundled_pack',?) ON CONFLICT(key) DO UPDATE SET value=excluded.value`,
+      [bundled.pack_version],
+    );
+    return r;
+  }
+
   // ------------------------------------------------------------------ 트랙 숙련도·해금
   trackStatus(): TrackStatus[] {
     const tracks = this.db.all<Track & { total: number; seen: number; mastered: number }>(

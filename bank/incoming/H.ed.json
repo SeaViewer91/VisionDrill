@@ -1,0 +1,1905 @@
+{
+  "format": "visiondrill-bank-exchange",
+  "format_version": 1,
+  "terms": [
+    {
+      "id": "e-cls",
+      "term_en": "Classification Error",
+      "term_ko": "분류 오차",
+      "abbreviation": "E_cls",
+      "definition": "예측 박스가 정답 박스와 전경 IoU 임계값(통상 0.5) 이상으로 겹치지만 클래스를 틀린 예측",
+      "usage_example": "바지선을 어선으로 부르는 E_cls가 늘었어. 두 선종 샘플 수부터 맞춰봐.",
+      "origin": "standard",
+      "track": "H"
+    },
+    {
+      "id": "e-bkg",
+      "term_en": "Background Error",
+      "term_ko": "배경 오인 오차",
+      "abbreviation": "E_bkg",
+      "definition": "모든 정답 박스와의 IoU가 배경 임계값(통상 0.1) 미만인 예측, 즉 배경을 객체로 잡은 허위 경보",
+      "usage_example": "방파제 끝을 선박으로 잡는 E_bkg가 제일 커. 하드 네거티브 패치 좀 모아줘.",
+      "origin": "standard",
+      "track": "H"
+    },
+    {
+      "id": "e-dupe",
+      "term_en": "Duplicate Error",
+      "term_ko": "중복 검출 오차",
+      "abbreviation": "E_dupe",
+      "definition": "클래스와 IoU는 매칭 기준을 넘지만, 그 정답이 이미 더 높은 점수의 다른 예측과 매칭되어 남는 여분의 예측",
+      "usage_example": "정박지 구간에서 E_dupe가 튀어. 같은 배에 박스가 두 개씩 남아.",
+      "origin": "standard",
+      "track": "H"
+    },
+    {
+      "id": "e-miss",
+      "term_en": "Missed Ground Truth Error",
+      "term_ko": "미탐 오차",
+      "abbreviation": "E_miss",
+      "definition": "어떤 예측과도 전경 IoU 임계값 이상으로 매칭되지 않은 정답 객체(거짓 음성, FN)",
+      "usage_example": "Small 구간 E_miss 비율만 따로 뽑아서 보고해줘.",
+      "origin": "standard",
+      "track": "H"
+    },
+    {
+      "id": "boundary-error-ratio",
+      "term_en": "Boundary Error Ratio",
+      "term_ko": "경계 오차 비율",
+      "abbreviation": "BER",
+      "definition": "분할 오차 픽셀 중 정답 마스크의 경계 대역 안에 있는 픽셀의 비율. 1에 가까우면 경계 디테일 손실, 0에 가까우면 내부 오분류가 주 원인",
+      "usage_example": "건물 클래스 BER이 0.9면 경계 문제니까 boundary loss 쪽으로 가자.",
+      "origin": "project",
+      "track": "H"
+    },
+    {
+      "id": "e-nms-leak",
+      "term_en": "NMS Leakage",
+      "term_ko": "NMS 누수 오차",
+      "abbreviation": "E_nms_leak",
+      "definition": "같은 정답 객체에 대한 예측 박스 여러 개가 서로의 IoU가 NMS 임계값보다 약간 낮아 함께 살아남아 중복 오차를 만드는 현상",
+      "usage_example": "E_dupe 중에 E_nms_leak가 대부분이면 NMS보다 박스 회귀 헤드를 봐야 해.",
+      "origin": "project",
+      "track": "H"
+    },
+    {
+      "id": "error-exchange-elasticity",
+      "term_en": "Error Exchange Elasticity",
+      "term_ko": "오차 교환 탄력도",
+      "abbreviation": null,
+      "definition": "NMS IoU 임계값을 바꿀 때 중복 오차의 상대 변화율을 미탐의 상대 변화율로 나누고 부호를 뒤집은 값",
+      "usage_example": "t_nms 스윕하면서 오차 교환 탄력도 곡선도 같이 그려서 보고해.",
+      "origin": "project",
+      "track": "H"
+    },
+    {
+      "id": "cross-class-suppression-rate",
+      "term_en": "Cross-Class Suppression Rate",
+      "term_ko": "교차 클래스 억제율",
+      "abbreviation": "CCSR",
+      "definition": "Class-agnostic NMS에서 다른 클래스의 박스에 억제당한 Pre-NMS 참 양성(TP)의 비율",
+      "usage_example": "class-agnostic NMS 유지할지 정하게 CCSR부터 재봐.",
+      "origin": "project",
+      "track": "H"
+    },
+    {
+      "id": "one-to-one-focus-index",
+      "term_en": "One-to-One Focus Index",
+      "term_ko": "원-투-원 예측 집중도 지수",
+      "abbreviation": "OFI",
+      "definition": "정답 객체 주변 상위 K개 예측 점수의 소프트맥스 엔트로피 평균을 ln K로 나눠 1에서 뺀 값. 1에 가까울수록 GT당 박스 하나에 집중",
+      "usage_example": "NMS-free로 갈지 말지는 OFI 먼저 보고 정하자.",
+      "origin": "project",
+      "track": "H"
+    }
+  ],
+  "questions": [
+    {
+      "id": "H-ED-004",
+      "type": "short",
+      "chapter": "H.ed",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "TIDE 기반 오차 분류에서, 예측 박스가 정답 박스와 IoU 0.5(전경 임계값 t_f) 이상으로 겹치지만 예측 클래스가 정답 클래스와 다른 경우의 오차 유형 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Classification Error (E_cls)",
+          "Cls Error",
+          "Class Error",
+          "Misclassification Error"
+        ],
+        "ko": [
+          "분류 오차 (E_cls)",
+          "클래스 오차",
+          "분류 오류",
+          "오분류"
+        ]
+      },
+      "primary": "Classification Error",
+      "explanation_short": "위치는 매칭 기준(IoU ≥ t_f)을 통과했는데 클래스만 틀린 예측은 분류 오차(E_cls)입니다. 클래스가 틀리면서 IoU가 t_b 이상 t_f 미만이면 E_cls가 아니라 E_both로 따로 분류됩니다.",
+      "explanation_full": "TIDE(Bolya et al., 2020)의 6대 오차 유형 중 하나로, Diagnostics 노트도 같은 조건(IoU ≥ t_f, c_i ≠ c_j*)을 씁니다. 처방 매트릭스는 E_cls 우세의 원인을 클래스 간 의미적 유사성과 특정 클래스 표본 부족으로 보고, 혼동 클래스 샘플 균형화·Label Smoothing·대조 학습(Contrastive Loss) 헤드를 제안합니다. 원격탐사 예: 고해상도 영상에서 바지선을 어선으로, 비닐하우스를 공장 지붕으로 부르는 경우가 전형적인 E_cls입니다.",
+      "tags": [
+        "diagnostics",
+        "error-decomposition",
+        "tide"
+      ],
+      "terms": [
+        "e-cls",
+        "tide"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/01_detection_error.md#2.2",
+      "status": "draft"
+    },
+    {
+      "id": "H-ED-005",
+      "type": "mcq",
+      "chapter": "H.ed",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "TIDE 기반 오차 분류에서 배경 오인 오차(Background Error, E_bkg)가 가리키는 것은?",
+      "choices": [
+        {
+          "text": "어떤 예측과도 매칭되지 못하고 끝까지 남은 정답 객체",
+          "rationale": "이것은 미탐 오차(E_miss)입니다. E_bkg는 정답이 아니라 예측에 붙는 오차입니다."
+        },
+        {
+          "text": "클래스는 맞지만 정답과의 IoU가 t_b 이상 t_f 미만인 예측",
+          "rationale": "이것은 위치 오차(E_loc)입니다. E_bkg는 어떤 정답과도 IoU가 t_b에 못 미치는 경우입니다."
+        },
+        {
+          "text": "모든 정답 박스와의 IoU가 배경 임계값 t_b(통상 0.1) 미만인 예측",
+          "rationale": null
+        },
+        {
+          "text": "IoU는 t_f 이상이지만 이미 다른 예측과 매칭된 정답에 붙은 예측",
+          "rationale": "이것은 중복 검출 오차(E_dupe)입니다."
+        },
+        {
+          "text": "신뢰도 점수가 confidence 임계값보다 낮아서 최종 결과에서 버려진 예측",
+          "rationale": "임계값에서 걸러진 예측은 평가 대상 예측이 아니므로 TIDE 오차 유형이 붙지 않습니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "E_bkg는 모든 정답과의 IoU가 t_b(통상 0.1) 미만인 예측, 즉 순수 배경이나 무관한 텍스처를 객체로 잘못 잡은 허위 경보(FP)입니다.",
+      "explanation_full": "노트의 판정 조건은 '모든 G_j에 대해 IoU(b_i, g_j) < t_b'입니다. 처방 매트릭스는 E_bkg 우세의 원인으로 전경-배경 불균형, 배경 패치 다양성 부족, 텍스처 노이즈 과적합을 들고, Hard Negative 배경 패치 추가·Focal Loss γ 상향·confidence 임계값 상향 등을 제안합니다. 원격탐사에서는 파랑·방파제·구름 그림자를 선박이나 차량으로 잡는 경우가 대표적입니다.",
+      "tags": [
+        "diagnostics",
+        "error-decomposition",
+        "tide"
+      ],
+      "terms": [
+        "e-bkg",
+        "tide"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/01_detection_error.md#2.2",
+      "status": "draft"
+    },
+    {
+      "id": "H-ED-006",
+      "type": "mcq",
+      "chapter": "H.ed",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "Sentinel-1 SAR 선박 탐지 결과에서 한 예측 박스(클래스: 선박, 점수 0.83)가 모든 정답 박스와 이루는 IoU 중 최댓값이 0.07이었다. TIDE 기준(t_f = 0.5, t_b = 0.1)으로 이 예측의 오차 유형은?",
+      "choices": [
+        {
+          "text": "배경 오인 오차 (E_bkg)",
+          "rationale": null
+        },
+        {
+          "text": "위치 오차 (E_loc)",
+          "rationale": "E_loc는 클래스가 맞고 IoU가 t_b(0.1) 이상 t_f(0.5) 미만일 때입니다. 0.07은 t_b에도 못 미칩니다."
+        },
+        {
+          "text": "미탐 오차 (E_miss)",
+          "rationale": "E_miss는 예측이 아니라 매칭되지 못한 정답 객체에 붙는 오차입니다."
+        },
+        {
+          "text": "분류 및 위치 동시 오차 (E_both)",
+          "rationale": "E_both는 클래스가 틀리고 IoU가 t_b 이상 t_f 미만일 때입니다. 여기서는 IoU가 t_b 미만입니다."
+        },
+        {
+          "text": "분류 오차 (E_cls)",
+          "rationale": "E_cls는 IoU가 t_f 이상인데 클래스가 틀린 경우입니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "가장 가까운 정답과의 IoU조차 t_b(0.1) 미만이므로, 이 예측은 어떤 정답과도 관련이 없는 허위 경보인 배경 오인 오차(E_bkg)입니다. 점수가 높아도 유형 판정은 IoU와 클래스 조건으로만 합니다.",
+      "explanation_full": "SAR 영상에서는 스페클 노이즈나 부두·양식 시설 같은 강한 후방산란체가 선박처럼 밝게 보여 E_bkg가 흔합니다. 고신뢰도 E_bkg가 많다면 VDR Step 1(라벨 품질 감사)처럼 실제로는 라벨러가 빠뜨린 선박일 가능성도 함께 확인합니다.",
+      "tags": [
+        "diagnostics",
+        "error-decomposition",
+        "tide",
+        "sar"
+      ],
+      "terms": [
+        "e-bkg",
+        "iou"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/01_detection_error.md#2.2",
+      "status": "draft"
+    },
+    {
+      "id": "H-ED-007",
+      "type": "mcq",
+      "chapter": "H.ed",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "Diagnostics 노트에서 중복 검출 오차(Duplicate Error, E_dupe)가 뜻하는 현상으로 제시한 것은?",
+      "choices": [
+        {
+          "text": "신경망은 객체를 잡았지만 NMS가 인접 객체 박스와 겹친다고 지워 버린 것",
+          "rationale": "이것은 NMS 과잉 억제 오차(E_nms_kill)로, 중복이 아니라 미탐을 만드는 현상입니다."
+        },
+        {
+          "text": "서로 다른 클래스의 박스가 겹쳐 한쪽이 다른 쪽을 억제해 버린 것",
+          "rationale": "이것은 Class-agnostic NMS의 교차 클래스 억제(CCSR로 측정)이며 미탐을 만듭니다."
+        },
+        {
+          "text": "정답 객체 하나의 마스크가 가림 때문에 여러 조각으로 쪼개진 것",
+          "rationale": "이것은 인스턴스 분할의 위상학적 오차인 인스턴스 분할(Splitting)입니다."
+        },
+        {
+          "text": "라벨러가 같은 객체에 정답 박스를 실수로 두 번 그려 놓은 것",
+          "rationale": "이것은 라벨 오류로, 모델 예측에 붙는 TIDE 오차 유형이 아닙니다."
+        },
+        {
+          "text": "NMS 억제 실패나 앵커 중복 반응으로 한 객체에 박스가 여러 개 남은 것",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "E_dupe는 같은 정답 객체에 이미 더 높은 점수의 예측이 매칭되었는데 또 매칭 조건을 만족하는 예측이 남은 경우입니다. 노트는 그 의미를 NMS 억제 실패 또는 앵커 중복 반응으로 설명합니다.",
+      "explanation_full": "처방 매트릭스는 E_dupe 우세 시 밀집 객체 데이터 보강, Soft-NMS·Matrix NMS 또는 NMS-free 구조, NMS IoU 임계값 정밀 튜닝을 제안합니다. 05장의 E_nms_leak는 E_dupe 중에서 '생존 박스끼리의 IoU가 t_nms보다 약간 낮아 억제되지 않은 경우'를 따로 떼어 본 것입니다. 원격탐사 예: 정박지에 붙어 있는 선박에 박스가 두 개씩 남는 경우.",
+      "tags": [
+        "diagnostics",
+        "error-decomposition",
+        "tide",
+        "nms"
+      ],
+      "terms": [
+        "e-dupe",
+        "nms"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/01_detection_error.md#2.2",
+      "status": "draft"
+    },
+    {
+      "id": "H-ED-008",
+      "type": "mcq",
+      "chapter": "H.ed",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "항공 정사영상 차량 탐지에서 정답 차량 G1 하나에 두 예측이 겹쳤다. 예측 A: 클래스 차량, 점수 0.91, IoU(A, G1) = 0.82 / 예측 B: 클래스 차량, 점수 0.64, IoU(B, G1) = 0.71. 주변에 다른 정답은 없다. TIDE 기준(t_f = 0.5)으로 예측 B의 오차 유형은?",
+      "choices": [
+        {
+          "text": "위치 오차 (E_loc)",
+          "rationale": "E_loc는 IoU가 t_f 미만일 때입니다. B의 IoU 0.71은 t_f(0.5) 이상입니다."
+        },
+        {
+          "text": "배경 오인 오차 (E_bkg)",
+          "rationale": "E_bkg는 모든 정답과의 IoU가 t_b(0.1) 미만일 때입니다. B는 G1과 0.71로 겹칩니다."
+        },
+        {
+          "text": "분류 오차 (E_cls)",
+          "rationale": "B의 클래스는 정답과 같은 '차량'이므로 분류 오차가 아닙니다."
+        },
+        {
+          "text": "중복 검출 오차 (E_dupe)",
+          "rationale": null
+        },
+        {
+          "text": "오차 아님 (참 양성, TP)",
+          "rationale": "G1은 이미 점수가 더 높은 A와 매칭되었습니다. 정답 하나에는 예측 하나만 TP가 될 수 있습니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "B는 클래스도 맞고 IoU(0.71)도 t_f 이상이지만, G1이 이미 점수가 더 높은 A(0.91)와 매칭되었으므로 중복 검출 오차(E_dupe)입니다.",
+      "explanation_full": "매칭은 점수 순으로 진행되어 A가 먼저 G1을 차지합니다. B처럼 남는 박스는 NMS가 A와 B를 하나로 억제하지 못했다는 신호입니다. A–B 사이 IoU가 NMS 임계값 t_nms보다 약간 낮아 살아남은 것이라면 05장의 E_nms_leak에 해당하며, 노트는 이때 박스 회귀 헤드의 분산을 원인으로 봅니다.",
+      "tags": [
+        "diagnostics",
+        "error-decomposition",
+        "tide"
+      ],
+      "terms": [
+        "e-dupe",
+        "tide",
+        "iou"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/01_detection_error.md#2.2",
+      "status": "draft"
+    },
+    {
+      "id": "H-ED-009",
+      "type": "short",
+      "chapter": "H.ed",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "TIDE 기반 오차 분류에서, 어떤 예측과도 매칭 기준(IoU ≥ t_f)을 만족하지 못해 끝내 검출되지 못한 정답 객체에 붙는 오차 유형 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Missed Ground Truth Error (E_miss)",
+          "Missed GT",
+          "Missed Error",
+          "Miss Error",
+          "Missed Detection"
+        ],
+        "ko": [
+          "미탐 오차 (미탐)",
+          "미검출 오차",
+          "누락 오차",
+          "미탐지",
+          "미검출"
+        ]
+      },
+      "primary": "Missed Ground Truth Error",
+      "explanation_short": "어떤 예측과도 IoU ≥ t_f로 매칭되지 않은 정답 객체는 미탐 오차(E_miss)입니다. 모델이 객체의 존재를 감지하지 못한 거짓 음성(FN)에 해당합니다.",
+      "explanation_full": "E_miss는 6대 오차 중 유일하게 예측이 아니라 정답(GT)에 붙는 유형입니다. 스케일 조건부 분해에서 Small 구간의 E_miss가 유독 높으면 얕은 레이어 특징 소실로 진단하고, 05장에서는 E_miss 가운데 NMS가 지운 것(E_nms_kill)을 따로 떼어 봅니다. 원격탐사 예: 10m 해상도 영상에서 몇 픽셀짜리 소형 어선을 놓치는 경우.",
+      "tags": [
+        "diagnostics",
+        "error-decomposition",
+        "tide"
+      ],
+      "terms": [
+        "e-miss",
+        "tide"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/01_detection_error.md#2.2",
+      "status": "draft"
+    },
+    {
+      "id": "H-ED-010",
+      "type": "mcq",
+      "chapter": "H.ed",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "Diagnostics 노트(TIDE 기반)에서 미탐 오차 E_miss가 붙는 대상과 조건으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "모든 정답과의 IoU가 t_b 미만인 예측 박스",
+          "rationale": "이것은 배경 오인 오차(E_bkg)의 조건입니다. E_miss는 예측이 아니라 정답에 붙습니다."
+        },
+        {
+          "text": "모든 예측과의 IoU가 t_f 미만인 정답 객체",
+          "rationale": null
+        },
+        {
+          "text": "IoU가 t_f 이상인 예측이 두 개 이상 남은 정답 객체",
+          "rationale": "이 경우 정답은 검출된 것이고, 여분의 예측이 E_dupe(또는 E_nms_leak)가 됩니다."
+        },
+        {
+          "text": "NMS 전에는 후보가 있었으나 NMS 후에 사라진 정답 객체만",
+          "rationale": "그것은 E_miss 중 일부인 E_nms_kill입니다. E_miss 자체는 NMS 전 후보 유무와 관계없이 판정합니다."
+        },
+        {
+          "text": "신뢰도 임계값보다 점수가 낮아 버려진 예측 박스",
+          "rationale": "버려진 예측은 TIDE 오차 유형의 대상이 아닙니다. E_miss는 정답 객체 기준입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "노트의 E_miss 조건은 '모든 예측 B̂_i에 대해 IoU(b_i, g_j) < t_f인 정답 G_j'입니다. 즉 매칭 기준을 통과한 예측이 하나도 없는 정답 객체입니다.",
+      "explanation_full": "다른 다섯 유형(E_cls, E_loc, E_both, E_dupe, E_bkg)은 모두 예측(FP)에 붙고 E_miss만 정답(FN)에 붙습니다. 05장은 이 E_miss를 다시 'NMS 전에도 후보가 없던 미탐'과 'NMS가 지운 미탐(E_nms_kill)'으로 나눠, 신경망 결함과 후처리 결함을 분리합니다. 참고로 원래 TIDE는 분류·위치 오차로 이미 설명된 정답을 Missed에서 빼는 등 세부 규칙이 조금 다르므로, 이 문항은 노트의 정의를 기준으로 합니다. E_nms_kill은 Diagnostics 정의 지표이므로 외부와 소통할 때는 'NMS 단계에서 지워진 정탐 때문에 생긴 미탐'처럼 풀어서 말한다.",
+      "tags": [
+        "diagnostics",
+        "error-decomposition",
+        "tide"
+      ],
+      "terms": [
+        "e-miss",
+        "e-nms-kill"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/01_detection_error.md#2.2",
+      "status": "draft"
+    },
+    {
+      "id": "H-ED-011",
+      "type": "mcq",
+      "chapter": "H.ed",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "TIDE 기반 분류에서 '분류 및 위치 동시 오차(E_both)'의 판정 조건은? (t_f: 전경 IoU 임계값, t_b: 배경 IoU 임계값)",
+      "choices": [
+        {
+          "text": "클래스가 틀리고, 정답과의 IoU가 t_f 이상",
+          "rationale": "이것은 분류 오차(E_cls)입니다. 위치는 매칭 기준을 통과했습니다."
+        },
+        {
+          "text": "클래스가 맞고, 정답과의 IoU가 t_b 이상 t_f 미만",
+          "rationale": "이것은 위치 오차(E_loc)입니다."
+        },
+        {
+          "text": "클래스가 틀리고, 정답과의 IoU가 t_b 이상 t_f 미만",
+          "rationale": null
+        },
+        {
+          "text": "클래스와 무관하게, 모든 정답과의 IoU가 t_b 미만",
+          "rationale": "이것은 배경 오인 오차(E_bkg)입니다. 객체의 대략적 존재조차 잡지 못한 경우입니다."
+        },
+        {
+          "text": "클래스가 맞고 IoU도 t_f 이상이지만, 그 정답이 이미 매칭됨",
+          "rationale": "이것은 중복 검출 오차(E_dupe)입니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "E_both는 클래스도 틀리고 박스도 기준(t_f)에 못 미치지만 t_b 이상은 겹쳐, 객체의 대략적 존재는 인지한 경우입니다.",
+      "explanation_full": "노트 조건: c_i ≠ c_j* 이고 t_b ≤ IoU(b_i, g_j) < t_f. E_cls(위치 통과·클래스 실패), E_loc(클래스 통과·위치 실패)와 한 칸씩 다른 조합이라 표로 외워 두면 헷갈리지 않습니다. 예: 컨테이너선을 유조선으로 부르면서 박스도 절반쯤 어긋난 경우.",
+      "tags": [
+        "diagnostics",
+        "error-decomposition",
+        "tide"
+      ],
+      "terms": [
+        "tide",
+        "e-cls",
+        "e-loc"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/01_detection_error.md#2.2",
+      "status": "draft"
+    },
+    {
+      "id": "H-ED-012",
+      "type": "mcq",
+      "chapter": "H.ed",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "Diagnostics 노트에서 위치 오차(E_loc)를 세분할 때 쓰는 스케일/종횡비 편차 Δscale의 정의는? (w, h: 예측 박스 폭·높이, w*, h*: 정답 박스 폭·높이)",
+      "choices": [
+        {
+          "text": "|ln(w / w*)| + |ln(h / h*)|",
+          "rationale": null
+        },
+        {
+          "text": "|w − w*| + |h − h*|",
+          "rationale": "픽셀 차이를 그대로 더하면 큰 객체일수록 값이 커져 스케일 간 비교가 안 됩니다. 노트는 로그 비율을 씁니다."
+        },
+        {
+          "text": "ln((w · h) / (w* · h*))",
+          "rationale": "면적 비만 보면 폭은 크고 높이는 작은 식의 종횡비 오차가 서로 상쇄되고, 부호도 남습니다."
+        },
+        {
+          "text": "‖(x_c, y_c) − (x_c*, y_c*)‖₂ / √(w* · h*)",
+          "rationale": "이것은 중심점 편향 오차 Δcenter의 정의입니다."
+        },
+        {
+          "text": "1 − IoU(b, g)",
+          "rationale": "IoU 기반 값은 위치 오차 전체의 크기일 뿐, 중심 이동과 크기 불일치를 나누지 못합니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "Δscale은 폭과 높이의 로그 비율 절댓값을 더해, 박스 크기와 종횡비가 정답과 얼마나 어긋났는지를 스케일에 무관하게 잽니다.",
+      "explanation_full": "짝을 이루는 Δcenter는 중심점 거리를 정답 박스 크기의 기하평균 √(w*·h*)로 나눈 값입니다. 두 값 중 어느 쪽이 지배적인지에 따라 처방이 갈립니다(Δcenter → 수용영역·stride 정렬, Δscale → 앵커·FPN 레벨 할당). 이 두 가지로 나누는 방식은 Diagnostics에서 정의한 것이므로, 외부와 소통할 때는 '위치 오차를 박스 중심 이동과 크기·비율 불일치로 나눠 봤다'처럼 풀어서 말한다.",
+      "tags": [
+        "diagnostics",
+        "error-decomposition",
+        "localization"
+      ],
+      "terms": [
+        "e-loc"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/01_detection_error.md#3.1",
+      "status": "draft"
+    },
+    {
+      "id": "H-ED-013",
+      "type": "mcq",
+      "chapter": "H.ed",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "위치 오차 분해 결과 스케일/종횡비 편차(Δscale)가 중심점 편향(Δcenter)보다 지배적일 때, 노트가 제시하는 원인 해석은?",
+      "choices": [
+        {
+          "text": "피처 맵 수용영역(Receptive Field) 오정렬이나 stride 불일치",
+          "rationale": "이것은 Δcenter가 지배적일 때의 원인 해석입니다."
+        },
+        {
+          "text": "전경-배경 불균형과 배경 패치 다양성 부족",
+          "rationale": "이것은 배경 오인 오차(E_bkg)가 우세할 때의 원인입니다."
+        },
+        {
+          "text": "클래스 간 의미적 유사성과 특정 클래스 표본 부족",
+          "rationale": "이것은 분류 오차(E_cls)가 우세할 때의 원인입니다."
+        },
+        {
+          "text": "앵커 박스 프리셋이 맞지 않거나 FPN 레벨 할당이 어긋남",
+          "rationale": null
+        },
+        {
+          "text": "밀집 객체 환경에서 NMS가 중복 박스를 억제하지 못함",
+          "rationale": "이것은 중복 검출 오차(E_dupe)가 우세할 때의 원인입니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "박스 크기·비율이 틀리는 것은 객체 크기를 담당하는 앵커 프리셋이나 FPN 레벨 배정이 실제 객체 분포와 맞지 않기 때문으로 해석합니다.",
+      "explanation_full": "처방 매트릭스의 'E_loc – Scale 편차 우세' 행은 원인으로 앵커/피처 레벨별 스케일 매핑 실패와 극단적 종횡비를 들고, Multi-scale Training, BiFPN 등 멀티스케일 융합, 앵커 프리셋 k-means 재클러스터링, Multi-scale Inference를 처방합니다. 원격탐사에서는 길쭉한 선박·교량처럼 종횡비가 극단적인 객체에서 자주 나타납니다. Δcenter/Δscale 분해는 Diagnostics 정의이므로 외부와 소통할 때는 '박스 크기·비율이 주로 틀린다'처럼 풀어서 말한다.",
+      "tags": [
+        "diagnostics",
+        "error-decomposition",
+        "localization"
+      ],
+      "terms": [
+        "e-loc"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/01_detection_error.md#3.1",
+      "status": "draft"
+    },
+    {
+      "id": "H-ED-014",
+      "type": "scenario",
+      "chapter": "H.ed",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"KOMPSAT-3A 0.55m 영상 건물 탐지인데 E_loc를 분해해 보니 Δcenter가 Δscale보다 확실히 커. 박스 크기는 대체로 맞는데 한쪽으로 밀려 있어. 처방 후보 뽑아줘.\"\n\n노트의 처방 매트릭스에 따른 가장 적절한 처방 조합은?",
+      "choices": [
+        {
+          "text": "앵커 프리셋을 k-means로 재클러스터링하고 Multi-scale 학습(스케일 지터링)을 적용한다",
+          "rationale": "이것은 Δscale(크기·비율 편차)이 지배적일 때의 처방입니다. 지금은 크기는 맞고 중심이 밀린 상황입니다."
+        },
+        {
+          "text": "Random Affine/Shift 증강을 추가하고, 박스 손실을 EIoU·WIoU 계열로 바꾸거나 DFL을 도입한다",
+          "rationale": null
+        },
+        {
+          "text": "Hard Negative 배경 패치를 추가하고 Focal Loss의 γ를 올려 배경 오탐을 줄인다",
+          "rationale": "이것은 배경 오인 오차(E_bkg) 우세 시의 처방으로, 박스 위치 편향과는 관계가 없습니다."
+        },
+        {
+          "text": "Greedy NMS를 Soft-NMS로 바꾸고 NMS IoU 임계값을 클래스별로 다시 튜닝한다",
+          "rationale": "이것은 중복 검출(E_dupe) 우세 시의 처방입니다. 박스 중심 오차는 NMS로 고쳐지지 않습니다."
+        },
+        {
+          "text": "Label Smoothing을 적용하고 클래스 간 대조 학습(Contrastive) 헤드를 추가한다",
+          "rationale": "이것은 분류 오차(E_cls) 우세 시의 처방입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "Δcenter가 지배적이면 좌표 예측이 한쪽으로 치우친 것이므로, 위치 이동에 강해지는 증강(Random Affine/Shift)과 좌표 회귀 손실 개선(CIoU→EIoU/WIoU, DFL)이 처방입니다.",
+      "explanation_full": "노트는 Δcenter 우세의 원인을 피처 stride 대비 수용영역 오정렬과 좌표 예측 헤드의 민감도 결함으로 보고, 추론 단계 처방으로 TTA도 제시합니다. 영상 자체의 기하 오차(정사보정 불량)로 정답과 영상이 어긋난 경우에도 같은 징후가 나올 수 있으니, 라벨 레이어와 영상의 정합을 먼저 눈으로 확인해 두는 것이 실무 팁입니다. Δcenter/Δscale 분해는 Diagnostics 정의이므로 외부와 소통할 때는 '박스 크기보다 중심 위치가 주로 틀린다'처럼 풀어서 말한다.",
+      "tags": [
+        "diagnostics",
+        "error-decomposition",
+        "localization",
+        "prescription"
+      ],
+      "terms": [
+        "e-loc"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/03_prescription_matrix.md#2",
+      "status": "draft"
+    },
+    {
+      "id": "H-ED-015",
+      "type": "short",
+      "chapter": "H.ed",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "Diagnostics의 스케일 조건부 오차 분해는 COCO 표준 스케일 기준을 따른다. 이 기준에서 Small 객체는 면적이 몇 px² 미만인 객체인가? (숫자로)",
+      "accepted_answers": {
+        "en": [
+          "1024 (32x32)",
+          "32^2",
+          "32²"
+        ],
+        "ko": [
+          "1024 (32×32)"
+        ]
+      },
+      "primary": "1024",
+      "explanation_short": "COCO 기준 Small은 면적 32² = 1,024 px² 미만, Medium은 32²~96², Large는 96²(9,216 px²) 초과입니다.",
+      "explanation_full": "노트는 이 구간별로 P(오차 유형 | 스케일)을 따로 계산해, Small 구간에서 E_miss·E_bkg 비율이 비정상적으로 높으면 얕은 레이어 특징 소실(Feature Degradation)로 진단합니다. 위성 영상은 GSD에 따라 같은 물체도 픽셀 면적이 크게 달라지므로(예: 30m 길이 선박이 10m 영상에선 약 3픽셀), 픽셀 기준 스케일 구간과 실제 크기를 함께 적어 두면 좋습니다.",
+      "tags": [
+        "diagnostics",
+        "error-decomposition",
+        "scale"
+      ],
+      "terms": [
+        "tide",
+        "e-miss"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/01_detection_error.md#3.2",
+      "status": "draft"
+    },
+    {
+      "id": "H-ED-016",
+      "type": "scenario",
+      "chapter": "H.ed",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"Sentinel-2 10m 타일(512×512)에서 소형 어선 탐지 결과를 COCO 스케일별로 나눠 봤더니, Small 구간에서만 E_miss와 E_bkg 비율이 비정상적으로 높아. 원인하고 방향 잡아줘.\"\n\n노트에 따른 진단과 처방으로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "클래스 간 의미적 유사성 문제로 보고, Label Smoothing과 혼동 클래스 샘플 균형화를 적용한다",
+          "rationale": "E_miss·E_bkg가 늘어난 것은 클래스 혼동(E_cls)의 징후가 아닙니다."
+        },
+        {
+          "text": "NMS 과잉 억제로 보고, Pre/Post-NMS 대조 없이 곧바로 Soft-NMS로 바꾼다",
+          "rationale": "Small 구간의 E_miss와 E_bkg가 함께 높은 패턴은 노트에서 특징 소실로 진단합니다. NMS 원인은 Pre-NMS 대조로 확인해야 합니다."
+        },
+        {
+          "text": "앵커 종횡비가 맞지 않는 문제로 보고, 앵커 프리셋을 k-means로 다시 산출한다",
+          "rationale": "앵커 재산출은 E_loc의 Δscale이 지배적일 때의 처방입니다."
+        },
+        {
+          "text": "전체 mAP가 목표를 넘었다면 스케일별 편차는 표본 수가 적은 탓이므로 무시한다",
+          "rationale": "스케일 조건부 분해의 목적 자체가 전체 mAP에 가려진 스케일별 취약성을 찾는 것입니다."
+        },
+        {
+          "text": "다운샘플링 중 얕은 계층 특징이 소실된 것으로 보고, P2 헤드 추가나 SAHI 분할 추론을 검토한다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "노트는 Small 영역에서 E_miss와 E_bkg 비율이 비정상적으로 높으면 얕은 레이어 특징 소실로 진단합니다. 처방 매트릭스의 '소형 객체 E_miss 우세' 행은 P2(1/4 스케일) 헤드, 조기 다운샘플링 억제, SAHI 패치 기반 학습·추론을 제시합니다.",
+      "explanation_full": "SAHI(Slicing Aided Hyper Inference)는 큰 영상을 겹치는 작은 조각으로 잘라 추론한 뒤 합치는 방식으로, 위성 타일링(예: overlap 64)과 궁합이 좋습니다. 처방 자동화 의사코드에서는 small_miss_rate > 0.40이면 우선순위 CRITICAL로 P2 헤드/SAHI를 제안하는데, 이 0.40은 실데이터 캘리브레이션 전의 잠정치입니다.",
+      "tags": [
+        "diagnostics",
+        "error-decomposition",
+        "scale",
+        "prescription"
+      ],
+      "terms": [
+        "e-miss",
+        "e-bkg"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/01_detection_error.md#3.2",
+      "status": "draft"
+    },
+    {
+      "id": "H-ED-017",
+      "type": "mcq",
+      "chapter": "H.ed",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "Diagnostics(TIDE 기반)에서 오차 유형 k의 영향도 ΔAP_k의 정의는?",
+      "choices": [
+        {
+          "text": "유형 k 오차의 건수를 전체 오차 건수로 나눈 비율",
+          "rationale": "이것은 빈도입니다. 노트는 빈도가 아니라 AP에 미치는 실제 타격을 보려고 ΔAP_k를 씁니다."
+        },
+        {
+          "text": "현재 AP에서 유형 k 오차를 가상 교정한 AP를 뺀 값",
+          "rationale": "부호가 반대입니다. 교정하면 AP가 오르므로 이 값은 음수가 됩니다."
+        },
+        {
+          "text": "유형 k 오차를 가상으로 모두 교정했을 때의 AP − 현재 AP",
+          "rationale": null
+        },
+        {
+          "text": "유형 k 오차를 제거했을 때 Precision이 늘어난 양",
+          "rationale": "노트의 영향도는 Precision 하나가 아니라 AP(Precision-Recall 곡선 전체)의 변화로 정의합니다."
+        },
+        {
+          "text": "IoU 0.5 기준 AP에서 IoU 0.75 기준 AP를 뺀 값",
+          "rationale": "AP50 − AP75는 위치 정밀도에 대한 민감도를 보는 값이지, 오차 유형별 영향도가 아닙니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "ΔAP_k = AP_oracle(k) − AP_baseline입니다. 해당 유형 오차가 없었다면 AP가 얼마나 올랐을지를 계산해, 개선 우선순위를 건수가 아니라 실제 타격으로 정합니다.",
+      "explanation_full": "TIDE 논문이 제안한 oracle 방식을 그대로 쓰는 표준 개념입니다. 건수는 많아도 점수가 낮은 예측이라 AP에 영향이 작은 오차가 있고, 건수는 적어도 AP를 크게 깎는 오차가 있기 때문에 둘을 반드시 구분합니다.",
+      "tags": [
+        "diagnostics",
+        "error-decomposition",
+        "tide",
+        "metric"
+      ],
+      "terms": [
+        "tide",
+        "map"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/01_detection_error.md#3.3",
+      "status": "draft"
+    },
+    {
+      "id": "H-ED-018",
+      "type": "scenario",
+      "chapter": "H.ed",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"위성 영상 양식장 시설 탐지 TIDE 결과 정리했어. E_bkg는 1,150건으로 제일 많은데 ΔAP_bkg는 0.9야. E_miss는 280건인데 ΔAP_miss는 4.3이고. 다음 스프린트에 하나만 고르면?\"\n\n노트의 기준에 따른 판단으로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "AP에 미치는 타격(ΔAP)이 가장 큰 미탐(E_miss) 개선을 우선한다",
+          "rationale": null
+        },
+        {
+          "text": "건수가 가장 많은 배경 오인(E_bkg) 개선을 우선한다",
+          "rationale": "노트는 빈도가 아니라 ΔAP로 우선순위를 정합니다. E_bkg는 많지만 AP 영향은 0.9에 그칩니다."
+        },
+        {
+          "text": "두 유형의 건수 비율(1,150 : 280)대로 작업 인력을 나눠 동시에 진행한다",
+          "rationale": "건수 비율로 나누면 영향이 작은 E_bkg에 자원을 더 쓰게 됩니다."
+        },
+        {
+          "text": "ΔAP가 작을수록 교정 효과가 확실하다는 뜻이므로 E_bkg부터 한다",
+          "rationale": "ΔAP는 교정 시 AP가 오르는 양이므로 클수록 개선 효과가 큽니다."
+        },
+        {
+          "text": "Confidence 임계값을 올려 E_bkg 건수부터 줄인 뒤 TIDE를 다시 돌린다",
+          "rationale": "건수를 줄이는 데 초점을 둔 조치이고, 임계값 상향은 오히려 미탐을 늘릴 수 있습니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "ΔAP_k는 해당 오차를 없앴을 때 AP가 오르는 양입니다. 건수는 E_bkg가 많아도 AP 개선 여지는 E_miss(4.3)가 훨씬 크므로 E_miss부터 잡는 것이 노트의 취지입니다.",
+      "explanation_full": "낮은 점수의 배경 오탐은 PR 곡선 끝부분에만 영향을 줘 건수에 비해 AP 타격이 작은 경우가 많습니다. 보고할 때는 'E_bkg가 가장 많지만 AP 기여는 작다'처럼 건수와 ΔAP를 나란히 적어 오해를 막습니다.",
+      "tags": [
+        "diagnostics",
+        "error-decomposition",
+        "tide",
+        "prescription"
+      ],
+      "terms": [
+        "tide",
+        "e-miss",
+        "e-bkg"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/01_detection_error.md#3.3",
+      "status": "draft"
+    },
+    {
+      "id": "H-ED-019",
+      "type": "short",
+      "chapter": "H.ed",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "분할(segmentation) 오차 픽셀 전체 중 정답 마스크의 경계 대역 B_ε 안에 있는 오차 픽셀의 비율로, 오차가 경계에 몰렸는지 내부에 퍼졌는지를 보는 Diagnostics 지표의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Boundary Error Ratio (BER)"
+        ],
+        "ko": [
+          "경계 오차 비율 (BER)",
+          "경계 오차 민감도 비율"
+        ]
+      },
+      "primary": "Boundary Error Ratio",
+      "explanation_short": "BER_c = |경계 대역 안 오차 픽셀| / |전체 오차 픽셀|입니다. 1에 가까우면 경계 디테일 손실, 0에 가까우면 객체 내부까지 잘못 칠한 문맥 실패가 주 원인입니다.",
+      "explanation_full": "mIoU·Dice는 모든 오차 픽셀을 똑같이 취급해 경계 1~2픽셀 번짐과 내부 오분류를 구별하지 못하는데, BER은 이 둘을 나눠 디코더 해상도 복원(경계)과 수용영역·전역 문맥(내부) 중 어디를 고칠지 알려 줍니다. BER은 Diagnostics에서 정의한 지표이므로, 외부와 소통할 때는 '오차 픽셀 중 경계 근처에 있는 비율'처럼 풀어서 말한다. (경계 품질 자체를 재는 표준 지표로는 Boundary IoU가 있습니다.)",
+      "tags": [
+        "diagnostics",
+        "error-decomposition",
+        "segmentation"
+      ],
+      "terms": [
+        "boundary-error-ratio"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/02_segmentation_error.md#2.1.2",
+      "status": "draft"
+    },
+    {
+      "id": "H-ED-020",
+      "type": "mcq",
+      "chapter": "H.ed",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "토지피복 분할 결과에서 특정 클래스의 BER(Boundary Error Ratio)이 1에 가깝게 나왔다. 올바른 해석은?",
+      "choices": [
+        {
+          "text": "객체 중심부까지 다른 클래스로 오인하는 문맥 파악 실패가 주 원인이다",
+          "rationale": "그것은 BER이 0에 가까울 때의 해석입니다."
+        },
+        {
+          "text": "작은 객체가 통째로 사라지는 소형 객체 소실이 주 원인이다",
+          "rationale": "소형 객체 소실은 IoU = 0인 소형 연결 요소의 비율로 따로 재며, BER로는 알 수 없습니다."
+        },
+        {
+          "text": "붙어 있는 두 객체가 하나로 합쳐지는 인스턴스 병합이 주 원인이다",
+          "rationale": "병합은 인스턴스 분할의 위상학적 오차로 Merging Rate로 봅니다. BER은 픽셀 위치 비율입니다."
+        },
+        {
+          "text": "내부는 대체로 맞고, 오차가 경계 대역의 디테일 손실에 몰려 있다",
+          "rationale": null
+        },
+        {
+          "text": "해당 클래스의 IoU가 1에 가까워 사실상 완벽하게 분할되었다",
+          "rationale": "BER은 오차 픽셀 중 경계 비율일 뿐 정확도가 아닙니다. IoU가 낮아도 BER은 1일 수 있습니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "BER → 1이면 오차 픽셀 대부분이 정답 경계 대역 안에 있다는 뜻, 즉 내부는 정확하고 경계만 무너진 상태입니다. 노트는 디코더 해상도 복원(Skip-connection, 고해상도 분기)이나 Boundary Loss를 처방합니다.",
+      "explanation_full": "처방 매트릭스의 'BER 과다' 행은 고해상도 Random Scale & Crop 학습, 정밀 어노테이션 검수, Boundary-aware Loss(Boundary IoU Loss, Lovász-Softmax), DenseCRF·Guided Filter 후처리를 제시합니다. 원격탐사 예: 건물 윤곽이 1~2픽셀 뭉개지는 경우. BER은 Diagnostics 정의 지표이므로 외부와 소통할 때는 '오차가 대부분 경계 근처에 몰려 있다'처럼 풀어서 말한다.",
+      "tags": [
+        "diagnostics",
+        "error-decomposition",
+        "segmentation"
+      ],
+      "terms": [
+        "boundary-error-ratio"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/02_segmentation_error.md#2.1.2",
+      "status": "draft"
+    },
+    {
+      "id": "H-ED-021",
+      "type": "mcq",
+      "chapter": "H.ed",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "Diagnostics에서 BER 계산에 쓰는 정답 경계 대역 B_ε(Y)의 정의는? (Y: 정답 마스크, Ŷ: 예측 마스크, ⊕: 팽창, ⊖: 침식, D_ε: 반경 ε 구조요소)",
+      "choices": [
+        {
+          "text": "(Ŷ ⊕ D_ε) \\ (Ŷ ⊖ D_ε)",
+          "rationale": "예측 마스크 기준 대역입니다. 노트는 정답 마스크 Y의 경계를 기준으로 오차를 나눕니다."
+        },
+        {
+          "text": "Y \\ (Y ⊖ D_ε)",
+          "rationale": "경계 안쪽 띠만 남아, 정답 바깥으로 넘친 경계 오차를 놓칩니다."
+        },
+        {
+          "text": "(Y ⊕ D_ε) \\ Y",
+          "rationale": "경계 바깥쪽 띠만 남아, 경계 안쪽이 덜 칠해진 오차를 놓칩니다."
+        },
+        {
+          "text": "Y ⊕ D_ε",
+          "rationale": "팽창한 마스크 전체라 객체 내부까지 포함하므로 경계와 내부를 나눌 수 없습니다."
+        },
+        {
+          "text": "(Y ⊕ D_ε) \\ (Y ⊖ D_ε)",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "경계 대역은 정답 마스크를 반경 ε만큼 팽창한 영역에서 침식한 영역을 뺀, 경계 안팎 양쪽의 띠입니다. 오차 픽셀 중 이 띠 안에 있는 것이 경계 오차, 밖에 있는 것이 내부 오차입니다.",
+      "explanation_full": "E_bnd = E_c ∩ B_ε(Y_c), E_int = E_c \\ B_ε(Y_c)로 나눕니다. ε는 영상 해상도에 맞춰 정합니다. 예를 들어 0.5m 영상의 건물이라면 1~3픽셀(0.5~1.5m) 정도가 라벨 경계 불확실성과 비슷한 크기입니다. BER과 경계 대역 분해는 Diagnostics 정의이므로 외부와 소통할 때는 '정답 경계 주변 몇 픽셀 띠 안의 오차와 그 밖의 오차를 나눠 봤다'처럼 풀어서 말한다.",
+      "tags": [
+        "diagnostics",
+        "error-decomposition",
+        "segmentation",
+        "morphology"
+      ],
+      "terms": [
+        "boundary-error-ratio"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/02_segmentation_error.md#2.1.1",
+      "status": "draft"
+    },
+    {
+      "id": "H-ED-022",
+      "type": "scenario",
+      "chapter": "H.ed",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"U-Net 토지피복 결과에서 수계 클래스 BER이 0.12밖에 안 나와. 오차 대부분이 저수지 한가운데가 통째로 습지로 칠해진 거야. 어디를 손봐야 할지 정해줘.\"\n\n노트의 처방 매트릭스에 따른 가장 적절한 처방은?",
+      "choices": [
+        {
+          "text": "Boundary IoU Loss나 Lovász-Softmax 같은 경계 인식 손실을 추가해 윤곽을 날카롭게 만든다",
+          "rationale": "이것은 BER이 높을 때(경계 오차 과다)의 처방입니다. BER 0.12는 오차가 내부에 몰렸다는 뜻입니다."
+        },
+        {
+          "text": "DenseCRF나 Guided Filter로 예측 마스크의 경계를 영상 에지에 맞춰 후보정한다",
+          "rationale": "DenseCRF·Guided Filter는 예측 경계를 영상 에지에 맞추는 경계 보정 후처리입니다. 저수지 한가운데처럼 넓은 영역이 통째로 틀린 내부 오차는 바로잡지 못합니다."
+        },
+        {
+          "text": "SegFormer 계열 Self-Attention 구조로 바꾸거나 ASPP·PPM 문맥 모듈을 넣어 전역 문맥을 보강한다",
+          "rationale": null
+        },
+        {
+          "text": "면적 기준 Morphological Opening으로 배경 속 작은 독립 조각들을 지운다",
+          "rationale": "이것은 허위 탐지 섬(Spurious Islands) 처방입니다. 저수지 중심부 전체 오분류는 작은 조각이 아닙니다."
+        },
+        {
+          "text": "Watershed 후처리로 서로 붙어 있는 수체 인스턴스를 경계선 기준으로 분리한다",
+          "rationale": "이것은 인스턴스 병합(Merging) 처방으로, 의미 분할의 내부 오분류와는 관계없습니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "BER이 0에 가깝고 오차가 객체 중심부에 있으면 수용영역 부족·전역 문맥 파악 실패로 진단합니다. 처방 매트릭스의 '내부 오차 과다' 행은 Transformer Self-Attention(SegFormer 계열) 교체나 ASPP·PPM 같은 문맥 모듈 추가를 제시합니다.",
+      "explanation_full": "넓은 수면은 질감이 균일해 국소 패치만 보면 습지·그림자와 구별이 어렵습니다. 넓은 범위를 보는 문맥 정보가 필요한 전형적인 사례입니다. 노트는 데이터 측면에서 전역 문맥을 해치는 증강(과도한 Random Erasing)을 줄이고, 후처리로 다중 스케일 TTA를 제안합니다. NDWI 같은 분광 지수를 입력 채널로 추가하는 것도 실무에서 함께 검토할 만합니다. BER은 Diagnostics 정의 지표이므로 외부와 소통할 때는 '오차가 경계가 아니라 객체 안쪽에 몰려 있다'처럼 풀어서 말한다.",
+      "tags": [
+        "diagnostics",
+        "error-decomposition",
+        "segmentation",
+        "prescription"
+      ],
+      "terms": [
+        "boundary-error-ratio"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/03_prescription_matrix.md#3",
+      "status": "draft"
+    },
+    {
+      "id": "H-ED-023",
+      "type": "short",
+      "chapter": "H.ed",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "의미 분할(semantic segmentation)에서 배경이나 다른 클래스 영역 한가운데에 독립된 연결 요소(connected component)로 잘못 생성된 예측 마스크 조각을 노트에서 부르는 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Spurious Islands",
+          "Spurious Island"
+        ],
+        "ko": [
+          "허위 탐지 섬",
+          "허위 섬",
+          "가짜 섬"
+        ]
+      },
+      "primary": "Spurious Islands",
+      "explanation_short": "배경 속에 따로 떨어진 연결 요소로 생긴 잘못된 예측 조각을 허위 탐지 섬(Spurious Islands)이라 하며, FP 성격의 형태학적 오차입니다.",
+      "explanation_full": "반대로 정답 객체 내부가 구멍처럼 비는 FN 오차는 내부 결손 구멍(Holes)입니다. 처방 매트릭스는 섬 오차에 배경 라벨 노이즈 정제, Focal Loss, Total Variation Loss 같은 공간 일관성 규제, 후처리로 Morphological Opening과 소형 컴포넌트 면적 필터링을 제시합니다. 원격탐사 예: 토지피복도에서 논 한가운데 점점이 찍힌 '건물' 픽셀 덩어리.",
+      "tags": [
+        "diagnostics",
+        "error-decomposition",
+        "segmentation",
+        "morphology"
+      ],
+      "terms": [
+        "connected-component",
+        "semantic-segmentation"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/02_segmentation_error.md#2.2",
+      "status": "draft"
+    },
+    {
+      "id": "H-ED-024",
+      "type": "mcq",
+      "chapter": "H.ed",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "위성 영상 인스턴스 분할에서, 서로 맞붙은 가두리 양식장 두 칸(정답 인스턴스 2개)이 예측에서는 마스크 하나로 합쳐져 나왔다. 노트의 오차 분류로 이 현상은?",
+      "choices": [
+        {
+          "text": "인스턴스 분할 (Instance Splitting)",
+          "rationale": "반대 현상입니다. Splitting은 정답 하나가 여러 예측 마스크로 쪼개지는 것입니다."
+        },
+        {
+          "text": "인스턴스 병합 (Instance Merging)",
+          "rationale": null
+        },
+        {
+          "text": "허위 탐지 섬 (Spurious Islands)",
+          "rationale": "배경 속에 생긴 가짜 조각입니다. 여기서는 실제 객체 두 개가 하나로 합쳐졌습니다."
+        },
+        {
+          "text": "내부 결손 구멍 (Holes)",
+          "rationale": "정답 내부가 비는 미탐 영역입니다. 합쳐짐과는 다른 현상입니다."
+        },
+        {
+          "text": "중복 검출 오차 (E_dupe)",
+          "rationale": "E_dupe는 한 객체에 예측이 여러 개 남는 것으로, 병합과 방향이 반대입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "인접하거나 겹친 같은 클래스의 두 정답 객체가 하나의 예측 마스크로 융합되는 것을 인스턴스 병합(Merging, under-segmentation)이라고 합니다.",
+      "explanation_full": "노트는 Merging Rate = 병합된 GT 수 / 겹침이 있는 전체 GT 수로 정량화합니다. 처방 매트릭스는 겹침 샘플 집중 수집, PointRend·Mask Scoring R-CNN, 후처리로 Watershed 세분화를 제시합니다. Merging Rate는 Diagnostics 정의 지표이므로 외부와 소통할 때는 '겹친 객체 중 하나로 붙어서 나온 비율'처럼 풀어서 말한다. 노트는 의미 분할의 내부 결손 구멍(Holes)에도 'Under-segmentation'이라는 영문 별칭을 붙이므로, 헷갈리지 않게 Merging과 Holes라는 이름으로 구분해 부르는 것이 안전합니다.",
+      "tags": [
+        "diagnostics",
+        "error-decomposition",
+        "segmentation",
+        "instance"
+      ],
+      "terms": [
+        "instance-segmentation"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/02_segmentation_error.md#3.1",
+      "status": "draft"
+    },
+    {
+      "id": "H-ED-025",
+      "type": "scenario",
+      "chapter": "H.ed",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"드론 정사영상(GSD 3cm) 차량 인스턴스 분할인데, 가로수에 가운데가 가려진 차량이 마스크 두세 조각으로 쪼개져 나와. 모델 재학습 전에 후처리로 먼저 해볼 수 있는 건?\"\n\n노트의 처방 매트릭스에 따른 가장 적절한 후처리는?",
+      "choices": [
+        {
+          "text": "Watershed 알고리즘으로 마스크를 경계선 기준으로 더 세분한다",
+          "rationale": "Watershed는 병합(Merging) 처방입니다. 이미 쪼개진 마스크를 더 쪼개면 악화됩니다."
+        },
+        {
+          "text": "면적 기준 Morphological Opening으로 작은 조각을 지운다",
+          "rationale": "Opening과 면적 필터는 허위 섬 처방이라, 차량 조각 자체를 지워 미탐을 만들 수 있습니다."
+        },
+        {
+          "text": "DenseCRF로 경계 픽셀을 영상 에지에 맞춰 다시 정렬한다",
+          "rationale": "DenseCRF는 경계 오차(BER 과다) 처방으로, 조각 사이의 끊김을 잇지는 못합니다."
+        },
+        {
+          "text": "형태학적 Closing 연산으로 끊어진 조각 사이를 메운다",
+          "rationale": null
+        },
+        {
+          "text": "Soft-NMS로 바꿔 서로 겹친 인스턴스 박스를 더 많이 살린다",
+          "rationale": "Soft-NMS는 중복·밀집 억제 문제용입니다. 조각을 더 살리면 쪼개짐이 오히려 늘 수 있습니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "정답 하나가 가림 때문에 여러 마스크로 쪼개지는 것은 인스턴스 분할(Splitting)이며, 처방 매트릭스의 후처리 처방은 형태학적 Closing입니다.",
+      "explanation_full": "모델 측면에서는 Non-local Block 등으로 장거리 의존성을 강화하고, 데이터 측면에서는 CutMix 같은 전경 가림 증강을 씁니다. 노트는 Splitting Rate = 조각난 GT 수 / 가림이 있는 전체 GT 수로 정량화합니다(Diagnostics 정의 지표이므로 외부와 소통할 때는 '가려진 객체 중 여러 조각으로 나온 비율'처럼 풀어서 말한다). Closing 구조요소 크기는 GSD 기준으로 정해야 이웃 차량끼리 붙지 않습니다.",
+      "tags": [
+        "diagnostics",
+        "error-decomposition",
+        "segmentation",
+        "instance",
+        "prescription"
+      ],
+      "terms": [
+        "instance-segmentation"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/03_prescription_matrix.md#3",
+      "status": "draft"
+    },
+    {
+      "id": "H-ED-026",
+      "type": "short",
+      "chapter": "H.ed",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "인스턴스 분할에서 예측 마스크가 객체 경계를 넘어 인접한 다른 물체나 배경 텍스처로 흘러넘치는 위상학적 오차를 노트에서 부르는 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Mask Bleeding",
+          "Bleeding"
+        ],
+        "ko": [
+          "마스크 누수",
+          "마스크 번짐"
+        ]
+      },
+      "primary": "Mask Bleeding",
+      "explanation_short": "마스크가 객체 경계를 넘어 옆 물체나 배경으로 번지는 오차를 마스크 누수(Mask Bleeding)라고 합니다. 병합(Merging)·분할(Splitting)과 함께 노트의 3대 위상학적 오차입니다.",
+      "explanation_full": "Merging은 같은 클래스 정답 두 개가 한 마스크로 합쳐지는 것, Splitting은 정답 하나가 여러 마스크로 쪼개지는 것, Bleeding은 경계 밖으로 넘치는 것입니다. 원격탐사 예: 건물 마스크가 같은 색 주차장 포장면까지 번지는 경우. 05장의 'NMS 누수(E_nms_leak)'는 이름만 비슷할 뿐 전혀 다른 개념이니 주의합니다.",
+      "tags": [
+        "diagnostics",
+        "error-decomposition",
+        "segmentation",
+        "instance"
+      ],
+      "terms": [
+        "instance-segmentation"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/02_segmentation_error.md#3.1",
+      "status": "draft"
+    },
+    {
+      "id": "H-ED-027",
+      "type": "scenario",
+      "chapter": "H.ed",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"고해상도 광학 영상 선박 탐지 TIDE 돌려보니 E_bkg가 압도적이야. 방파제 끝이나 부서지는 파랑 텍스처를 배로 잡더라. 데이터 쪽 처방부터 해보자.\"\n\n노트의 처방 매트릭스에 따른 데이터 레벨 처방으로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "Copy-Paste 증강으로 소형 선박을 복제해 여러 위치에 붙인다",
+          "rationale": "이것은 소형 객체 미탐(E_miss) 우세 시의 데이터 처방입니다."
+        },
+        {
+          "text": "Multi-scale 학습(스케일 지터링)과 Random Crop을 추가한다",
+          "rationale": "이것은 E_loc의 스케일 편차 우세 시의 데이터 처방입니다."
+        },
+        {
+          "text": "방파제·파랑처럼 헷갈리는 Hard Negative 배경 패치를 학습에 추가한다",
+          "rationale": null
+        },
+        {
+          "text": "밀집 정박 구역 영상을 보강해 서로 겹친 선박 샘플을 늘린다",
+          "rationale": "이것은 중복 검출(E_dupe) 우세 시의 데이터 처방입니다."
+        },
+        {
+          "text": "서로 헷갈리는 선종(어선·예인선) 사이의 샘플 수를 균형화한다",
+          "rationale": "이것은 분류 오차(E_cls) 우세 시의 데이터 처방입니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "E_bkg 우세의 원인은 전경-배경 불균형, 배경 패치 다양성 부족, 텍스처 노이즈 과적합이며, 데이터 레벨 처방은 Hard Negative 배경 패치 추가와 Mosaic/Mixup 시 배경 비율 조정입니다.",
+      "explanation_full": "모델 레벨에서는 Focal Loss γ 상향과 분류 손실 가중치 상향, 추론 레벨에서는 confidence 임계값 상향과 클래스별 임계값을 함께 제시합니다. 처방 자동화 의사코드도 dAP_bkg가 기준을 넘으면 'Hard Negative Mining & Focal Loss γ +0.5'를 우선순위 HIGH로 냅니다. 고신뢰도 오탐이 많다면 먼저 VDR Step 1로 라벨 누락 여부를 확인합니다.",
+      "tags": [
+        "diagnostics",
+        "error-decomposition",
+        "prescription"
+      ],
+      "terms": [
+        "e-bkg"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/03_prescription_matrix.md#2",
+      "status": "draft"
+    },
+    {
+      "id": "H-ED-028",
+      "type": "scenario",
+      "chapter": "H.ed",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"항공 영상 태양광 패널 탐지 결과에 자동 처방 스크립트를 돌렸더니 dAP_loc가 기준(THRESH_LOC_DOMINANT)을 넘었고 center_shift_ratio는 0.45로 나왔어. 스크립트가 뭘 내놨을지 먼저 말해봐.\"\n\n노트의 처방 자동화 의사코드 기준으로 나오는 처방은?",
+      "choices": [
+        {
+          "text": "Localization (Center): CIoU/EIoU Loss 및 Random Affine 증강, 우선순위 MEDIUM",
+          "rationale": "Center 처방은 center_shift_ratio가 0.60을 넘을 때만 나옵니다. 0.45는 else 분기로 갑니다."
+        },
+        {
+          "text": "Localization (Scale): Multi-scale 학습 및 앵커 프리셋 재산출, 우선순위 HIGH",
+          "rationale": null
+        },
+        {
+          "text": "Small Object Miss: P2 헤드 추가 또는 SAHI 적용, 우선순위 CRITICAL",
+          "rationale": "이 처방은 small_miss_rate > 0.40일 때 나오며, dAP_loc와는 별개의 조건입니다."
+        },
+        {
+          "text": "Background FP: Hard Negative Mining과 Focal γ 상향, 우선순위 HIGH",
+          "rationale": "이 처방은 dAP_bkg가 기준을 넘을 때 나옵니다."
+        },
+        {
+          "text": "처방 없음: center_shift_ratio가 0.60 미만이면 위치 처방을 건너뜀",
+          "rationale": "의사코드는 0.60 이하일 때 건너뛰지 않고 else 분기에서 Scale 처방을 냅니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "의사코드는 dAP_loc가 기준을 넘으면 center_shift_ratio > 0.60일 때 Center 처방(MEDIUM), 그렇지 않으면 Scale 처방(Multi-scale 학습·앵커 프리셋 재산출, HIGH)을 냅니다. 0.45이므로 Scale 처방입니다.",
+      "explanation_full": "center_shift_ratio 0.60, small_miss_rate 0.40 같은 분기 기준은 노트의 의사코드에 적힌 잠정치로, 실데이터 캘리브레이션 전 값입니다. 이 자동 처방 로직은 Diagnostics에서 정의한 것이므로 외부와 소통할 때는 '위치 오차가 크고 그중 중심 이동 비중이 60% 이하라 크기·비율 쪽 처방이 나왔다'처럼 풀어서 말한다.",
+      "tags": [
+        "diagnostics",
+        "error-decomposition",
+        "prescription",
+        "localization"
+      ],
+      "terms": [
+        "e-loc"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/03_prescription_matrix.md#4",
+      "status": "draft"
+    },
+    {
+      "id": "H-ED-029",
+      "type": "mcq",
+      "chapter": "H.ed",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "VDR(Vision Diagnostic Routine) 5단계의 순서로 옳은 것은?",
+      "choices": [
+        {
+          "text": "기하/광학 속성 분석 → 라벨 품질 필터링 → 결정 경계·신뢰도 분석 → 상호 간섭·밀집도 분석 → 처방 리포트",
+          "rationale": "라벨 감사가 맨 앞이어야 합니다. 라벨 오류가 섞인 채 속성 회귀를 하면 결론이 오염됩니다."
+        },
+        {
+          "text": "결정 경계·신뢰도 분석 → 상호 간섭·밀집도 분석 → 기하/광학 속성 분석 → 라벨 품질 필터링 → 처방 리포트",
+          "rationale": "라벨 감사를 마지막에 두면 앞선 모든 분석이 라벨 오류에 오염된 상태로 진행됩니다."
+        },
+        {
+          "text": "라벨 품질 필터링 → 결정 경계·신뢰도 분석 → 기하/광학 속성 분석 → 상호 간섭·밀집도 분석 → 처방 리포트",
+          "rationale": "노트는 물리 속성(Step 2)과 밀집 간섭(Step 3)을 먼저 격리한 뒤 결정 경계·신뢰도(Step 4)를 봅니다."
+        },
+        {
+          "text": "상호 간섭·밀집도 분석 → 라벨 품질 필터링 → 기하/광학 속성 분석 → 결정 경계·신뢰도 분석 → 처방 리포트",
+          "rationale": "밀집 간섭은 Step 3입니다. 라벨 감사와 물리 속성 분석 뒤에 옵니다."
+        },
+        {
+          "text": "라벨 품질 필터링 → 기하/광학 속성 분석 → 상호 간섭·밀집도 분석 → 결정 경계·신뢰도 분석 → 처방 리포트",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "VDR은 라벨 감사(Step 1) → 물리 속성 로지스틱 회귀(Step 2) → IoG 기반 밀집 간섭(Step 3) → 로짓 마진·ECE(Step 4) → 처방 리포트(Step 5) 순으로 원인을 하나씩 격리합니다.",
+      "explanation_full": "회귀 진단에서 영향점(Cook's D)부터 확인하듯, 데이터 결함 → 물리적 한계 → 객체 간 상호작용 → 모델의 판단 경계 순으로 좁혀 갑니다. VDR은 Diagnostics에서 정의한 절차이므로 외부와 소통할 때는 '라벨 오류부터 걸러 내고 물리 조건, 밀집, 분류 확신도 순으로 원인을 좁히는 점검 절차'처럼 풀어서 말한다.",
+      "tags": [
+        "diagnostics",
+        "vdr"
+      ],
+      "terms": [
+        "vdr"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/04_diagnostic_routines_and_guidelines.md#3",
+      "status": "draft"
+    },
+    {
+      "id": "H-ED-030",
+      "type": "mcq",
+      "chapter": "H.ed",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "VDR에서 회귀 진단의 Durbin-Watson 자기상관 검정에 대응시킨 객체 검출 진단 통계량은?",
+      "choices": [
+        {
+          "text": "IoG(Intersection over Ground-truth) — 인접 정답과의 겹침 비율",
+          "rationale": null
+        },
+        {
+          "text": "라벨 노이즈 의심 지수 S_label — 고신뢰도 FP의 CLIP 유사도 가중 점수",
+          "rationale": "S_label은 Cook's Distance·Leverage(영향점·이상치 진단)에 대응시킨 통계량입니다."
+        },
+        {
+          "text": "속성 로지스틱 회귀 계수의 Wald 검정 p-value — 물리 속성별 유의성",
+          "rationale": "이것은 Partial Residual Plot·t-검정(개별 변수 유의성)에 대응시킨 진단입니다."
+        },
+        {
+          "text": "Top-1/Top-2 로짓 마진 Δz — 가장 높은 두 클래스 로짓의 차이",
+          "rationale": "이것은 Residual vs Fitted(결정 경계 불확실성) 진단에 대응시킨 통계량입니다."
+        },
+        {
+          "text": "ECE(Expected Calibration Error) — 신뢰도와 실제 정확도의 차이",
+          "rationale": "ECE는 Step 4에서 로짓 마진과 함께 쓰는 신뢰도 보정 지표로, 자기상관 대응이 아닙니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "Durbin-Watson이 잔차가 서로 독립인지 보듯, IoG는 객체들이 독립적으로 예측되지 않고 인접 객체에 간섭받는지를 봅니다. IoG(G_j) = max_{k≠j} Area(G_j ∩ G_k) / Area(G_j)입니다.",
+      "explanation_full": "판정 기준은 E_miss와 E_dupe의 60% 이상이 IoG ≥ 0.35 구간에 몰리면 NMS 등 공간적 억제 실패로 보는 것이며, 두 수치 모두 잠정치입니다. IoG 자체는 밀집 보행자 검출 연구에서도 쓰는 개념이지만 DW에 대응시킨 것은 Diagnostics의 설계이므로 외부와 소통할 때는 '정답끼리 얼마나 겹쳐 있는지로 밀집 간섭 여부를 본다'처럼 풀어서 말한다.",
+      "tags": [
+        "diagnostics",
+        "vdr",
+        "bridge"
+      ],
+      "terms": [
+        "vdr",
+        "durbin-watson"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/04_diagnostic_routines_and_guidelines.md#2.3",
+      "status": "draft"
+    },
+    {
+      "id": "H-ED-031",
+      "type": "scenario",
+      "chapter": "H.ed",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"항만 정박지 컨테이너선 탐지 VDR 결과야. 라벨이나 물리 속성 쪽은 특이점이 없었는데, Step 3에서 E_miss와 E_dupe의 70%가 IoG 0.35 이상 구간에 몰려 있어. 의사결정 트리대로 처방 정리해줘.\"\n\n노트의 의사결정 트리에 따른 처방은?",
+      "choices": [
+        {
+          "text": "P2 고해상도 헤드를 추가하고 SAHI 패치 분할 추론을 적용한다",
+          "rationale": "이것은 Q2에서 면적(Area)이 유의할 때의 처방 2-A입니다. 물리 속성은 특이점이 없었습니다."
+        },
+        {
+          "text": "CLAHE 전처리와 Random Contrast 증강을 파이프라인에 넣는다",
+          "rationale": "이것은 Q2에서 대비(Contrast)가 유의할 때의 처방 2-C입니다."
+        },
+        {
+          "text": "Label Smoothing(ε = 0.1)과 SupCon 대조 손실을 도입한다",
+          "rationale": "이것은 Q4에서 E_cls의 로짓 마진이 1.0 미만일 때의 처방 4-A입니다."
+        },
+        {
+          "text": "Gaussian decay Soft-NMS와 Repulsion Loss를 적용한다",
+          "rationale": null
+        },
+        {
+          "text": "Cleanlab으로 라벨링 가이드라인과 미태깅 객체를 전수 조사한다",
+          "rationale": "이것은 Q1에서 고신뢰도 FP 비율이 15% 이상일 때의 처방 1-A입니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "E_dupe와 E_miss가 IoG ≥ 0.35 구간에 60% 이상 몰리면 밀집 간섭에 따른 NMS 실패로 판정하고(Q3 YES), 처방 3-A인 Gaussian decay Soft-NMS와 Repulsion Loss를 적용합니다.",
+      "explanation_full": "Repulsion Loss는 예측 박스가 이웃 객체 쪽으로 끌려가지 않도록 밀어내는 손실입니다. 60%와 0.35는 잠정치입니다. 더 확실히 하려면 05장의 Pre/Post-NMS 대조로 E_nms_kill 비율을 함께 확인합니다. VDR 의사결정 트리는 Diagnostics에서 정의한 것이므로 외부와 소통할 때는 '겹쳐 있는 객체 구간에 미탐·중복이 몰려 억제 방식부터 바꾸기로 했다'처럼 풀어서 말한다.",
+      "tags": [
+        "diagnostics",
+        "vdr",
+        "nms",
+        "prescription"
+      ],
+      "terms": [
+        "vdr",
+        "soft-nms"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/04_diagnostic_routines_and_guidelines.md#4",
+      "status": "draft"
+    },
+    {
+      "id": "H-ED-032",
+      "type": "mcq",
+      "chapter": "H.ed",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "건물 용도(주택·공장·창고) 탐지 모델의 E_cls 샘플을 VDR Step 4로 보니 Top-1/Top-2 로짓 마진 Δz가 대부분 3.0 이상이었다. 노트의 잠정 기준에 따른 해석은?",
+      "choices": [
+        {
+          "text": "결정 경계 모호(Inter-class Boundary Confusion) — 두 클래스 사이에서 아슬아슬하게 틀림",
+          "rationale": "경계 모호는 Δz < 1.0일 때의 해석입니다. 3.0 이상은 큰 차이로 확신하며 틀린 것입니다."
+        },
+        {
+          "text": "라벨 노이즈 — S_label이 높은 어노테이션 누락 후보",
+          "rationale": "S_label은 E_bkg 예측에 대한 Step 1 통계량으로, 로짓 마진과는 별개입니다."
+        },
+        {
+          "text": "편향 과신(Overconfident Prior Bias) — 확신을 갖고 틀리는 상태",
+          "rationale": null
+        },
+        {
+          "text": "객체 간 간섭 — 인접 객체 때문에 억제된 상태",
+          "rationale": "간섭은 IoG로 보는 Step 3 진단입니다."
+        },
+        {
+          "text": "정상 범위 — 마진이 클수록 모델이 잘 보정되어 있다는 뜻",
+          "rationale": "틀린 샘플의 마진이 크다는 것은 오히려 과신, 즉 보정 불량의 신호입니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "Δz = z(1) − z(2)입니다. 노트의 잠정 기준으로 Δz < 1.0이면 결정 경계 모호, Δz ≥ 2.5면 편향 과신으로 판정하므로 3.0 이상은 편향 과신입니다.",
+      "explanation_full": "경계 모호는 Label Smoothing(ε = 0.1)과 대조 손실(SupCon)을, 그 밖의 경우는 클래스 불균형 완화(Class-balanced Focal Loss)를 의사결정 트리에서 제시합니다. 1.0/2.5는 잠정치입니다. 로짓 마진 대응은 Diagnostics의 설계이므로 외부와 소통할 때는 '틀린 샘플에서 1순위와 2순위 클래스 점수 차이가 커서 확신을 갖고 틀린다'처럼 풀어서 말한다.",
+      "tags": [
+        "diagnostics",
+        "vdr",
+        "calibration"
+      ],
+      "terms": [
+        "vdr",
+        "e-cls"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/04_diagnostic_routines_and_guidelines.md#2.4",
+      "status": "draft"
+    },
+    {
+      "id": "H-ED-033",
+      "type": "short",
+      "chapter": "H.ed",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "VDR Step 1에서 배경 오인(E_bkg) 예측에 대해 라벨 노이즈 의심 지수 S_label = s_i × Sim_zero-shot(Crop, Text)를 계산한다. 이 값이 얼마 이상이면 모델의 FP가 아니라 어노테이션 누락(Missing GT)으로 분류해 감사 대상으로 격리하는가? (숫자로)",
+      "accepted_answers": {
+        "en": [
+          "0.75"
+        ],
+        "ko": [
+          "0.75"
+        ]
+      },
+      "primary": "0.75",
+      "explanation_short": "노트의 판정 기준은 S_label ≥ 0.75입니다. 모델 점수가 높고 CLIP 같은 Vision-Language 모델도 그 클래스라고 보는 예측은 라벨러가 빠뜨린 객체일 가능성이 높아, 학습 세트 감사 대상으로 격리합니다.",
+      "explanation_full": "s_i는 예측 신뢰도, Sim_zero-shot은 예측 박스 crop 이미지와 클래스 이름 텍스트의 코사인 유사도입니다. 0.75는 잠정치이며 실데이터로 캘리브레이션해야 합니다. 회귀 진단의 Cook's D·Leverage처럼 결과를 왜곡하는 이상 관측치를 먼저 걸러 내는 단계입니다. S_label은 Diagnostics 정의 지표이므로 외부와 소통할 때는 '모델도 확신하고 CLIP도 같은 클래스로 보는 오탐을 라벨 누락 후보로 분류했다'처럼 풀어서 말한다.",
+      "tags": [
+        "diagnostics",
+        "vdr",
+        "label-noise"
+      ],
+      "terms": [
+        "vdr",
+        "e-bkg",
+        "cooks-distance"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/04_diagnostic_routines_and_guidelines.md#2.1",
+      "status": "draft"
+    },
+    {
+      "id": "H-ED-034",
+      "type": "scenario",
+      "chapter": "H.ed",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"드론 정사영상 차량 탐지에 VDR 스크립트를 돌렸더니 라벨 노이즈 비율이 13%로 나왔어. 일정이 급하니 P2 헤드부터 붙여 보자는 의견도 있는데, SOP 기준으로 정리해줘.\"\n\nSOP에 따른 판단으로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "P0 조건(라벨 노이즈 > 10%)에 해당하므로 모델 튜닝을 멈추고 라벨 정제부터 한다",
+          "rationale": null
+        },
+        {
+          "text": "P1 액션인 헤드 추가를 먼저 진행하고 라벨 정제는 여유가 생기면 병행한다",
+          "rationale": "SOP는 P0 판정이 나면 P1(손실·아키텍처 튜닝)보다 먼저 처리하도록 순서를 정합니다."
+        },
+        {
+          "text": "10%대 라벨 노이즈는 큰 모델이면 흡수되므로 백본을 키워 재학습한다",
+          "rationale": "SOP에 없는 판단이며, 노이즈가 섞인 라벨로는 어떤 튜닝 효과도 제대로 평가할 수 없습니다."
+        },
+        {
+          "text": "Confidence를 0.01로 낮춰 Raw Detections를 다시 뽑은 뒤 결과를 재확인한다",
+          "rationale": "Raw Detections 확보는 SOP 1단계로 이미 끝난 작업이며, 13%라는 P0 판정을 바꾸지 않습니다."
+        },
+        {
+          "text": "밀집 구간 미탐일 수 있으니 Soft-NMS로 바꿔 E_miss부터 줄여 본다",
+          "rationale": "라벨 노이즈 문제를 후처리 변경으로 가리는 것이며, P0 조치 순서에 맞지 않습니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "노트의 SOP는 라벨 노이즈 비율이 10%를 넘으면 즉시 모델 튜닝을 중단하고 라벨 정제를 하라고 정합니다(P0). 헤드 추가 같은 아키텍처 튜닝은 P1 순서입니다.",
+      "explanation_full": "P0에는 '특정 물리 변수 오즈비 < 0.3이면 전처리/증강 파이프라인 즉시 추가'도 있습니다. 10%와 0.3은 모두 잠정치입니다. 드론 영상에서는 그늘진 차량, 타일 경계에 잘린 차량이 라벨에서 자주 빠집니다. P0/P1 규칙은 Diagnostics의 SOP이므로 외부와 소통할 때는 '라벨 오류가 10%를 넘어 모델 개선보다 라벨 정리가 먼저'처럼 풀어서 말한다.",
+      "tags": [
+        "diagnostics",
+        "vdr",
+        "label-noise",
+        "sop"
+      ],
+      "terms": [
+        "vdr"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/04_diagnostic_routines_and_guidelines.md#5",
+      "status": "draft"
+    },
+    {
+      "id": "H-ED-035",
+      "type": "mcq",
+      "chapter": "H.ed",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "VDR Step 2(기하/광학 속성 진단)의 통계 모형과 판정 기준으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "예측 박스의 IoU를 속성들로 선형 회귀(OLS)하고, R²가 0.5 이상이면 결함 요인으로 확정",
+          "rationale": "노트의 종속변수는 IoU가 아니라 정답 객체의 검출 성공 여부(0/1)이고, 판정은 R²가 아니라 계수별 p-value입니다."
+        },
+        {
+          "text": "검출 성공 여부(0/1)를 속성들로 로지스틱 회귀하고, 계수의 Wald 검정 p < 0.01이면 결함 요인으로 확정",
+          "rationale": null
+        },
+        {
+          "text": "속성 구간별로 검출 성공/실패 표를 만들어 카이제곱 검정 p < 0.05이면 결함 요인으로 확정",
+          "rationale": "노트는 여러 속성을 한 모형에 넣는 다변량 로지스틱 회귀를 쓰며, 기준도 p < 0.01입니다."
+        },
+        {
+          "text": "객체별 Cook's distance를 계산해 4/n을 넘는 객체의 속성을 결함 요인으로 확정",
+          "rationale": "Cook's D 대응은 Step 1(라벨 이상치) 쪽 개념이며, 속성 유의성 검정이 아닙니다."
+        },
+        {
+          "text": "속성들 사이의 VIF를 계산해 10 이상인 속성을 결함 요인으로 확정",
+          "rationale": "VIF는 설명변수 간 다중공선성을 보는 값이지, 속성이 검출 실패에 미치는 영향을 검정하지 않습니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "Step 2는 logit P(Y_j = 1) = β0 + β1 ln(Area) + β2 AR + β3 Contrast + β4 Brightness + β5 Entropy를 적합하고, 계수의 Wald 검정 p < 0.01인 속성을 주요 결함 요인으로 확정합니다.",
+      "explanation_full": "회귀 진단의 Partial Residual Plot·t-검정에 대응시킨 단계입니다. AR = max(w/h, h/w), Contrast = σ/(μ+ε), Entropy는 주변 배경의 샤논 엔트로피입니다. p < 0.01은 잠정 기준입니다. 의사결정 트리에서는 Area가 유의하고 오즈비 < 0.5면 P2 헤드·SAHI, Contrast가 유의하면 CLAHE·Random Contrast 증강으로 이어집니다. 속성 로지스틱 진단 회귀는 Diagnostics의 설계이므로 외부와 소통할 때는 '객체 크기·대비 같은 물리 조건이 검출 성공에 유의한 영향을 주는지 로지스틱 회귀로 검정했다'처럼 풀어서 말한다.",
+      "tags": [
+        "diagnostics",
+        "vdr",
+        "logistic-regression"
+      ],
+      "terms": [
+        "vdr"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/04_diagnostic_routines_and_guidelines.md#2.2",
+      "status": "draft"
+    },
+    {
+      "id": "H-ED-036",
+      "type": "short",
+      "chapter": "H.ed",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "같은 정답 객체에 대한 예측 박스 여러 개가 서로의 IoU가 NMS 임계값 t_nms보다 약간 낮아 억제되지 않고 함께 살아남아 중복 오차를 만드는 현상을 Diagnostics에서 부르는 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "NMS Leakage (E_nms_leak)",
+          "NMS Leak"
+        ],
+        "ko": [
+          "NMS 누수 오차 (E_nms_leak)",
+          "NMS 누수"
+        ]
+      },
+      "primary": "NMS Leakage",
+      "explanation_short": "NMS 누수 오차(E_nms_leak)는 한 정답에 IoU ≥ t_f인 예측이 2개 이상 최종 생존하고, 그 박스들끼리의 IoU가 t_nms보다 미세하게 낮은 경우입니다.",
+      "explanation_full": "E_nms_kill(NMS가 정답을 지워 생기는 미탐)의 반대편 결함으로, 억제가 부족해 생기는 중복입니다. 둘 다 Pre/Post-NMS를 대조해 판정합니다. E_nms_leak는 Diagnostics에서 정의한 지표이므로 외부와 소통할 때는 'NMS를 통과해 버린 같은 객체의 중복 박스'처럼 풀어서 말한다.",
+      "tags": [
+        "diagnostics",
+        "nms"
+      ],
+      "terms": [
+        "e-nms-leak",
+        "e-dupe"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/05_nms_diagnostics.md#2.2",
+      "status": "draft"
+    },
+    {
+      "id": "H-ED-037",
+      "type": "mcq",
+      "chapter": "H.ed",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "Pre/Post-NMS 대조에서 E_nms_leak(NMS 누수) 비중이 높게 나왔다. 노트가 제시한 근본 원인과 처방은?",
+      "choices": [
+        {
+          "text": "NMS가 인접 객체의 정답 박스를 과도하게 지움 → Gaussian Soft-NMS로 전환",
+          "rationale": "이것은 E_nms_kill(과잉 억제)의 원인과 처방입니다. 누수는 억제가 부족한 쪽입니다."
+        },
+        {
+          "text": "클래스를 무시한 NMS가 다른 클래스 박스를 억제함 → Class-specific NMS로 전환",
+          "rationale": "이것은 CCSR로 진단하는 교차 클래스 억제의 처방입니다."
+        },
+        {
+          "text": "라벨러가 객체를 빠뜨려 정답 자체가 없음 → 학습 세트 라벨 전수 재검수",
+          "rationale": "라벨 누락은 VDR Step 1(S_label)로 보는 문제로, 한 정답에 박스가 여럿 남는 현상과 다릅니다."
+        },
+        {
+          "text": "얕은 계층 특징이 다운샘플링 중 소실됨 → P2 고해상도 검출 헤드 추가",
+          "rationale": "이것은 소형 객체 미탐(E_miss) 우세 시의 처방입니다."
+        },
+        {
+          "text": "박스 회귀 헤드의 분산이 큼 → CIoU·EIoU 계열 손실 강화, DFL 가중치 상향",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "노트는 E_nms_leak의 원인을 바운딩 박스 회귀 헤드의 분산이 커서 예측 좌표가 한곳으로 모이지 않는 것으로 보고, IoU Loss 계열(CIoU, EIoU) 강화와 DFL 가중치 상향을 처방합니다.",
+      "explanation_full": "좌표가 흩어진 박스들은 서로 IoU가 t_nms 바로 아래에 걸려 억제되지 않습니다. 임계값만 만지면 밀집 구간 E_nms_kill이 늘 수 있어, 박스가 한곳에 모이도록 회귀 헤드를 고치는 것이 근본 처방입니다. E_nms_leak는 Diagnostics 정의 지표이므로 외부와 소통할 때는 '박스 좌표가 흩어져서 NMS를 통과한 중복'처럼 풀어서 말한다.",
+      "tags": [
+        "diagnostics",
+        "nms",
+        "prescription"
+      ],
+      "terms": [
+        "e-nms-leak"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/05_nms_diagnostics.md#2.2",
+      "status": "draft"
+    },
+    {
+      "id": "H-ED-038",
+      "type": "mcq",
+      "chapter": "H.ed",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "Diagnostics가 NMS 이전(Pre-NMS)과 이후(Post-NMS) 예측을 나눠 진단하는 가장 큰 이유는?",
+      "choices": [
+        {
+          "text": "NMS 이전 예측은 수가 적어 진단 계산이 훨씬 빠르기 때문",
+          "rationale": "NMS 이전 원시 예측은 수천 개 후보라 오히려 계산량이 많습니다."
+        },
+        {
+          "text": "mAP는 원래 NMS 이전 원시 예측으로만 계산하는 지표이기 때문",
+          "rationale": "반대입니다. mAP와 TIDE는 대부분 NMS가 끝난 예측으로 계산합니다."
+        },
+        {
+          "text": "분류 오차(E_cls)는 NMS가 박스를 지울 때만 생기는 오차이기 때문",
+          "rationale": "E_cls는 클래스 판별 실패로 NMS와 직접 관계가 없습니다."
+        },
+        {
+          "text": "NMS 이후만 보면 미탐이 신경망의 실패인지 NMS의 억제 오류인지 가를 수 없기 때문",
+          "rationale": null
+        },
+        {
+          "text": "NMS 이후에는 예측 박스와 정답 사이의 IoU를 계산할 수 없기 때문",
+          "rationale": "NMS 이후 예측으로도 IoU는 얼마든지 계산할 수 있습니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "기존 지표는 NMS 이후 결과로 계산되어, 신경망의 특징 추출·분류·회귀 한계와 NMS 휴리스틱의 억제 오류가 뒤섞이는 원인 교란(Confounding)이 생깁니다. 두 단계를 대조해야 E_nms_kill과 E_nms_leak을 떼어 낼 수 있습니다.",
+      "explanation_full": "예: 밀집 정박지 선박 미탐이 '신경망이 못 찾은 것'이면 백본·헤드를 고쳐야 하고, '찾았는데 Greedy NMS가 지운 것'이면 NMS 방식을 바꿔야 합니다. 처방이 정반대이므로 먼저 이 둘을 분리합니다. E_nms_kill·E_nms_leak는 Diagnostics 정의 지표이므로 외부와 소통할 때는 'NMS 전후 결과를 비교해 모델 탓과 후처리 탓을 나눴다'처럼 풀어서 말한다.",
+      "tags": [
+        "diagnostics",
+        "nms"
+      ],
+      "terms": [
+        "e-nms-kill",
+        "e-nms-leak",
+        "nms"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/05_nms_diagnostics.md#1",
+      "status": "draft"
+    },
+    {
+      "id": "H-ED-039",
+      "type": "short",
+      "chapter": "H.ed",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "Class-agnostic NMS를 쓸 때, 다른 클래스의 더 높은 점수 박스에 억제당한 Pre-NMS 참 양성(TP)의 비율을 나타내는 Diagnostics 지표는? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Cross-Class Suppression Rate (CCSR)"
+        ],
+        "ko": [
+          "교차 클래스 억제율 (CCSR)",
+          "클래스 간 억제율"
+        ]
+      },
+      "primary": "Cross-Class Suppression Rate",
+      "explanation_short": "교차 클래스 억제율(CCSR)은 클래스를 가리지 않는 NMS에서 다른 클래스 박스에 먹혀 사라진 참 양성의 비율입니다. 노트의 잠정 기준으로 3.0%를 넘으면 Class-specific NMS로 전환합니다.",
+      "explanation_full": "CCSR = Σ Count(B̂_i가 B̂_j를 억제 | c_i ≠ c_j, B̂_j는 TP) / Pre-NMS 전체 TP 수. Class-agnostic NMS는 추론 지연을 줄이려고 쓰지만, 한 박스가 다른 클래스 박스를 감싸거나 크게 겹치는 장면에서 미탐을 만듭니다. CCSR은 Diagnostics에서 정의한 지표이므로 외부와 소통할 때는 '클래스를 구분하지 않는 NMS 때문에 다른 클래스 박스에 지워진 정탐 비율'처럼 풀어서 말한다.",
+      "tags": [
+        "diagnostics",
+        "nms"
+      ],
+      "terms": [
+        "cross-class-suppression-rate",
+        "nms"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/05_nms_diagnostics.md#4",
+      "status": "draft"
+    },
+    {
+      "id": "H-ED-040",
+      "type": "mcq",
+      "chapter": "H.ed",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "교차 클래스 억제율(CCSR)의 분모로 옳은 것은?",
+      "choices": [
+        {
+          "text": "NMS 이후(Post-NMS) 단계의 전체 참 양성(TP) 수",
+          "rationale": "억제된 TP는 Post-NMS에 남지 않으므로, Post-NMS TP를 분모로 쓰면 비율이 부풀고 의미가 달라집니다."
+        },
+        {
+          "text": "평가 세트의 전체 정답(GT) 객체 수",
+          "rationale": "노트는 GT 수가 아니라 Pre-NMS 단계에서 TP였던 예측 수를 분모로 씁니다."
+        },
+        {
+          "text": "NMS 이전(Pre-NMS) 단계의 전체 참 양성(TP) 수",
+          "rationale": null
+        },
+        {
+          "text": "NMS가 억제한 전체 박스 수",
+          "rationale": "NMS가 지운 박스 대부분은 정당한 중복 제거이므로, 이를 분모로 쓰면 교차 클래스 피해를 제대로 재지 못합니다."
+        },
+        {
+          "text": "NMS 이후(Post-NMS) 단계의 전체 거짓 양성(FP) 수",
+          "rationale": "CCSR은 억제된 TP의 비율이며, FP는 분자·분모 어디에도 들어가지 않습니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "CCSR = (다른 클래스 박스에 억제된 Pre-NMS TP 수) / (Pre-NMS 전체 TP 수)입니다. 신경망이 맞게 잡았던 박스 중 몇 %가 교차 클래스 억제로 사라졌는지를 봅니다.",
+      "explanation_full": "분자·분모 모두 Pre-NMS 기준이라 '신경망은 맞혔는데 후처리가 지운 비율'이라는 해석이 성립합니다. 같은 이유로 E_nms_kill도 Pre-NMS 후보를 기준으로 판정합니다. CCSR은 Diagnostics 정의 지표이므로 외부와 소통할 때는 'NMS 전에 맞게 잡혔던 박스 중 다른 클래스 박스에 지워진 비율'처럼 풀어서 말한다.",
+      "tags": [
+        "diagnostics",
+        "nms",
+        "metric"
+      ],
+      "terms": [
+        "cross-class-suppression-rate"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/05_nms_diagnostics.md#4",
+      "status": "draft"
+    },
+    {
+      "id": "H-ED-041",
+      "type": "scenario",
+      "chapter": "H.ed",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"추론 지연 때문에 class-agnostic NMS를 쓰고 있는데, 건물 지붕을 거의 다 덮은 태양광 패널 박스가 건물 박스에 먹히는 것 같아. CCSR을 재 보니 4.6%야. 어떻게 할지 정해.\"\n\n노트의 판정 기준에 따른 조치는?",
+      "choices": [
+        {
+          "text": "지연이 우선이므로 class-agnostic NMS는 유지하고 태양광 패널의 confidence 임계값만 낮춘다",
+          "rationale": "억제는 점수 순으로 일어나므로 임계값을 낮춰도 더 높은 점수의 건물 박스에 계속 지워집니다."
+        },
+        {
+          "text": "추론 지연이 늘더라도 Class-specific NMS(또는 Batched Independent NMS)로 전환한다",
+          "rationale": null
+        },
+        {
+          "text": "OFI를 측정해 보고 곧바로 NMS-Free 구조로 전환해 NMS 자체를 없앤다",
+          "rationale": "OFI는 NMS-Free 적합성 판단 지표이며, CCSR 초과 시 노트의 처방은 Class-specific NMS 전환입니다."
+        },
+        {
+          "text": "건물과 태양광 패널의 클래스 혼동으로 보고 Label Smoothing과 대조 손실을 적용한다",
+          "rationale": "두 박스 모두 클래스는 맞게 예측됐고, 문제는 서로 다른 클래스끼리 억제한 후처리입니다."
+        },
+        {
+          "text": "CCSR이 노트의 잠정 기준인 5%에 못 미치므로 현재 설정을 그대로 유지한다",
+          "rationale": "노트의 기준은 5%가 아니라 3.0%입니다. 4.6%는 기준을 넘습니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "노트는 CCSR > 3.0%이면 추론 지연이 생기더라도 Class-specific NMS나 Batched Independent NMS로 즉시 전환하라고 판정합니다. 4.6%는 기준을 넘습니다.",
+      "explanation_full": "Class-specific(배치) NMS는 클래스별로 따로 억제하므로 건물 박스가 태양광 패널 박스를 지우지 못합니다. 3.0%는 잠정치이며, 과제의 핵심 클래스가 주로 피해를 본다면 더 낮은 기준을 둘 수도 있습니다. CCSR은 Diagnostics 정의 지표이므로 외부와 소통할 때는 '클래스를 구분하지 않는 NMS 때문에 정탐의 4.6%가 다른 클래스 박스에 지워졌다'처럼 풀어서 말한다.",
+      "tags": [
+        "diagnostics",
+        "nms",
+        "prescription"
+      ],
+      "terms": [
+        "cross-class-suppression-rate",
+        "nms"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/05_nms_diagnostics.md#4",
+      "status": "draft"
+    },
+    {
+      "id": "H-ED-042",
+      "type": "short",
+      "chapter": "H.ed",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "NMS IoU 임계값 t_nms를 바꿀 때 중복 오차(E_dupe)의 상대 변화율과 미탐(E_miss)의 상대 변화율 사이의 교환 비율을 나타내는 Diagnostics 지표는? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Error Exchange Elasticity",
+          "NMS Error Exchange Elasticity"
+        ],
+        "ko": [
+          "오차 교환 탄력도",
+          "오차 교환 탄력성"
+        ]
+      },
+      "primary": "Error Exchange Elasticity",
+      "explanation_short": "오차 교환 탄력도 ℰ_nms(t)는 t_nms를 움직일 때 E_dupe와 E_miss가 서로 얼마의 비율로 맞바뀌는지를 상대 변화율(탄력도)로 나타냅니다.",
+      "explanation_full": "경제학의 가격 탄력성처럼 절대 건수가 아니라 상대 변화율(%)끼리 비교하므로, 오차 규모가 다른 모델·데이터셋끼리도 비교할 수 있습니다. 운영점은 이 곡선과 함께 가중 비용 w_dupe·E_dupe + w_miss·E_miss가 최소인 t로 정합니다. 오차 교환 탄력도는 Diagnostics에서 정의한 지표이므로 외부와 소통할 때는 'NMS 임계값을 바꿀 때 중복과 미탐이 몇 대 몇으로 맞바뀌는지'처럼 풀어서 말한다.",
+      "tags": [
+        "diagnostics",
+        "nms"
+      ],
+      "terms": [
+        "error-exchange-elasticity",
+        "nms"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/05_nms_diagnostics.md#3.1",
+      "status": "draft"
+    },
+    {
+      "id": "H-ED-043",
+      "type": "mcq",
+      "chapter": "H.ed",
+      "cognitive_level": 2,
+      "difficulty": 4,
+      "stem": "Diagnostics의 오차 교환 탄력도 ℰ_nms(t)의 정의는?",
+      "choices": [
+        {
+          "text": "−(dE_dupe / E_dupe) / (dE_miss / E_miss)",
+          "rationale": null
+        },
+        {
+          "text": "dE_dupe / dE_miss",
+          "rationale": "절대 변화량의 비입니다. 노트는 각 오차를 자기 크기로 나눈 상대 변화율의 비를 씁니다."
+        },
+        {
+          "text": "−(dE_miss / E_miss) / (dE_dupe / E_dupe)",
+          "rationale": "분자와 분모가 뒤바뀌었습니다. 노트의 분자는 E_dupe의 상대 변화율입니다."
+        },
+        {
+          "text": "E_dupe(t) / E_miss(t)",
+          "rationale": "특정 임계값에서의 두 오차 건수 비일 뿐, 임계값 변화에 따른 교환 비율이 아닙니다."
+        },
+        {
+          "text": "d(E_dupe + E_miss) / dt",
+          "rationale": "두 오차 합의 기울기로, 두 오차가 서로 어떤 비율로 맞바뀌는지는 보여 주지 못합니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "ℰ_nms(t) = −(dE_dupe/E_dupe) / (dE_miss/E_miss)입니다. t_nms를 바꿀 때 E_dupe와 E_miss는 반대 방향으로 움직이므로 음수 부호를 붙여 양수로 읽습니다.",
+      "explanation_full": "t_nms를 올리면 억제가 약해져 E_dupe는 늘고 E_miss는 줄며, 내리면 반대가 됩니다. 노트는 이 교환 비율을 t_nms ∈ [0.1, 0.9] 범위에서 연속적으로 보고, 최적 운영점은 argmin_t (w_dupe·E_dupe(t) + w_miss·E_miss(t))로 정합니다. Diagnostics 정의 지표이므로 외부와 소통할 때는 '임계값을 바꿀 때 중복이 몇 % 늘면 미탐이 몇 % 주는지의 비율'처럼 풀어서 말한다.",
+      "tags": [
+        "diagnostics",
+        "nms",
+        "formula"
+      ],
+      "terms": [
+        "error-exchange-elasticity"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/05_nms_diagnostics.md#3.1",
+      "status": "draft"
+    },
+    {
+      "id": "H-ED-044",
+      "type": "scenario",
+      "chapter": "H.ed",
+      "cognitive_level": 3,
+      "difficulty": 5,
+      "stem": "지시: \"주차장 차량 탐지 모델로 t_nms를 스윕했어. t = 0.5: E_dupe 40·E_miss 90, t = 0.6: 70·70, t = 0.7: 130·55. 미탐 한 건 비용을 중복 한 건의 3배로 잡기로 했으니 운영점 골라.\"\n\n노트의 최적 운영점 기준으로 고를 t_nms는?",
+      "choices": [
+        {
+          "text": "t_nms = 0.5 — 두 오차 건수의 단순 합이 130으로 가장 작다",
+          "rationale": "비용 가중치를 무시했습니다. 가중 비용은 0.5에서 40 + 3×90 = 310으로 0.6(280)보다 큽니다."
+        },
+        {
+          "text": "t_nms = 0.7 — 미탐 비용이 3배이므로 미탐이 가장 적은(55) 쪽이 최선이다",
+          "rationale": "미탐만 보고 중복 증가를 무시했습니다. 가중 비용은 130 + 3×55 = 295로 0.6(280)보다 큽니다."
+        },
+        {
+          "text": "t_nms = 0.6 — 가중 비용 E_dupe + 3·E_miss가 280으로 가장 작다",
+          "rationale": null
+        },
+        {
+          "text": "표만으로는 정할 수 없다 — 탄력도 ℰ_nms가 정확히 1이 되는 t를 찾아야 한다",
+          "rationale": "노트의 최적 운영점은 가중 비용 최소 지점으로 정의되며, 표의 값만으로 계산할 수 있습니다."
+        },
+        {
+          "text": "t_nms = 0.9 — 임계값을 끝까지 올리면 미탐이 계속 줄므로 스윕 최댓값을 쓴다",
+          "rationale": "임계값을 올릴수록 E_dupe가 급증합니다(0.6 → 0.7에서 70 → 130). 가중 비용을 봐야 합니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "최적 운영점은 argmin_t (w_dupe·E_dupe + w_miss·E_miss)입니다. w_miss = 3·w_dupe로 계산하면 0.5: 40 + 270 = 310, 0.6: 70 + 210 = 280, 0.7: 130 + 165 = 295이므로 0.6이 최소입니다.",
+      "explanation_full": "비용 가중치는 업무 요구에서 옵니다. 예컨대 주차 점유율 집계처럼 차량 한 대를 놓치는 것이 더 치명적이면 w_miss를 키웁니다. 실제로는 더 촘촘한 간격(0.05)으로 스윕하고 클래스별 최적 임계값도 따로 구해, 클래스 간 분산이 크면 클래스별 적응 임계값(Class-wise Adaptive Threshold)을 검토합니다. 가중 비용 최소화로 운영점을 정하는 방식과 오차 교환 탄력도는 Diagnostics에서 정의한 것이므로 외부와 소통할 때는 '미탐 비용을 중복의 3배로 두고 총비용이 가장 작은 NMS 임계값을 골랐다'처럼 풀어서 말한다.",
+      "tags": [
+        "diagnostics",
+        "nms",
+        "calculation"
+      ],
+      "terms": [
+        "error-exchange-elasticity",
+        "nms"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/05_nms_diagnostics.md#3.1",
+      "status": "draft"
+    },
+    {
+      "id": "H-ED-045",
+      "type": "short",
+      "chapter": "H.ed",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "정답 객체 주변 상위 K개 예측 점수의 소프트맥스 엔트로피를 이용해, 신경망 헤드가 GT마다 박스 하나에만 집중해 발화하는 정도를 0~1로 나타낸 Diagnostics 지표는? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "One-to-One Focus Index (OFI)"
+        ],
+        "ko": [
+          "원-투-원 예측 집중도 지수 (OFI)",
+          "원투원 집중도 지수",
+          "일대일 예측 집중도 지수"
+        ]
+      },
+      "primary": "One-to-One Focus Index",
+      "explanation_short": "원-투-원 예측 집중도 지수(OFI) = 1 − E[H(G_j)] / ln K입니다. 1에 가까우면 GT마다 박스 하나만 강하게 발화하고, 0에 가까우면 여러 박스가 비슷한 점수로 퍼져 NMS에 의존합니다.",
+      "explanation_full": "YOLOv10, RT-DETR처럼 헝가리안(One-to-One) 매칭으로 NMS를 없앤 구조로 바꿀 수 있는지 판단하는 데 씁니다. OFI는 Diagnostics에서 정의한 지표이므로 외부와 소통할 때는 '모델이 객체 하나에 박스 하나만 내는 정도(NMS 없이도 되는지)'처럼 풀어서 말한다.",
+      "tags": [
+        "diagnostics",
+        "nms",
+        "nms-free"
+      ],
+      "terms": [
+        "one-to-one-focus-index"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/05_nms_diagnostics.md#5.1",
+      "status": "draft"
+    },
+    {
+      "id": "H-ED-046",
+      "type": "mcq",
+      "chapter": "H.ed",
+      "cognitive_level": 2,
+      "difficulty": 4,
+      "stem": "OFI 계산에서 K = 4로 두었다. 평가한 모든 정답 객체에서 주변 상위 4개 예측의 점수가 서로 같았다면 OFI는? (p_k = softmax(s_k), H = −Σ p_k ln p_k, OFI = 1 − E[H] / ln K)",
+      "choices": [
+        {
+          "text": "1",
+          "rationale": "OFI = 1은 한 박스가 확률을 모두 가져 엔트로피가 0일 때입니다. 점수가 같으면 반대 극단입니다."
+        },
+        {
+          "text": "0.25",
+          "rationale": "0.25는 각 박스의 확률 p_k = 1/4이며, OFI 값이 아닙니다."
+        },
+        {
+          "text": "0.75",
+          "rationale": "1 − 1/4로 계산한 값으로, 엔트로피를 ln K로 정규화하는 정의를 따르지 않았습니다."
+        },
+        {
+          "text": "0",
+          "rationale": null
+        },
+        {
+          "text": "약 1.39 (= ln 4)",
+          "rationale": "이것은 엔트로피 H 자체입니다. OFI는 ln K로 나눠 1에서 빼므로 0~1 범위입니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "점수가 같으면 p_k = 1/4이고 H = −4 × (1/4) ln(1/4) = ln 4로 최대가 됩니다. 모든 GT에서 그렇다면 E[H] = ln 4이므로 OFI = 1 − ln 4 / ln 4 = 0입니다.",
+      "explanation_full": "OFI = 0은 헤드가 한 객체에 여러 박스를 똑같이 퍼붓는(diffuse activation) 극단으로, NMS를 끄면 중복 오탐이 폭증합니다. 반대로 한 박스의 p가 1에 가까우면 H ≈ 0, OFI ≈ 1입니다. OFI는 Diagnostics 정의 지표이므로 외부와 소통할 때는 '객체 하나에 대한 상위 박스 점수가 얼마나 한 박스에 쏠려 있는지'처럼 풀어서 말한다. 단, s_k에 0~1 범위의 신뢰도 점수를 그대로 넣으면 소프트맥스가 충분히 뾰족해지지 못해 OFI 상한이 낮게 묶입니다(K = 4에서 한 박스만 1, 나머지가 0이어도 약 0.085). 노트는 s_k의 척도를 명시하지 않으므로, 실무에서는 헤드 로짓 기준으로 계산하는 것이 자연스럽습니다.",
+      "tags": [
+        "diagnostics",
+        "nms",
+        "calculation"
+      ],
+      "terms": [
+        "one-to-one-focus-index"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/05_nms_diagnostics.md#5.1",
+      "status": "draft"
+    },
+    {
+      "id": "H-ED-047",
+      "type": "scenario",
+      "chapter": "H.ed",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"YOLOv10처럼 NMS-free로 갈아타면 추론이 빨라질 텐데, 우리 선박 탐지 모델 OFI를 NMS 전 헤드 로짓으로 계산해 보니 0.08이야. 전환해도 될지 판단해줘.\"\n\n노트에 따른 판단으로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "OFI가 0에 가까우면 GT마다 박스 하나만 발화한다는 뜻이므로 성능 손실 없이 바로 전환한다",
+          "rationale": "해석이 반대입니다. GT당 박스 하나에 집중하는 상태는 OFI가 1에 가까울 때입니다."
+        },
+        {
+          "text": "OFI는 클래스 간 혼동 정도를 재는 지표라서 NMS-free 전환 판단과는 관계가 없다",
+          "rationale": "OFI는 NMS 의존도와 NMS-Free 적합성을 판단하려고 정의한 지표입니다."
+        },
+        {
+          "text": "OFI가 낮다는 것은 NMS 과잉 억제가 심하다는 뜻이므로 Soft-NMS로 바꾼 뒤 곧바로 전환한다",
+          "rationale": "과잉 억제는 E_nms_kill로 봅니다. OFI는 헤드의 예측 집중도를 재는 값입니다."
+        },
+        {
+          "text": "OFI는 NMS가 끝난 최종 예측으로 계산하므로 NMS를 끈 상태로 다시 재야 판단할 수 있다",
+          "rationale": "NMS 의존도를 보려는 지표이므로 NMS 이전 헤드 출력(GT 주변 상위 K개 후보)으로 계산하는 것이 취지입니다. NMS 이후에는 GT당 박스가 대개 하나만 남아 의미 있는 값이 나오지 않으며, 지시문의 0.08도 이미 NMS 전 로짓으로 잰 값입니다."
+        },
+        {
+          "text": "헤드가 한 객체에 박스를 여럿 퍼붓고 NMS에 기대는 상태이므로 전환을 보류한다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "노트에서 OFI → 0은 신경망 헤드가 한 객체에 수많은 중복 박스를 퍼붓고(diffuse activation) 후처리 NMS에 전적으로 기대는 상태이며, NMS를 끄면 치명적인 오탐 폭증이 일어난다고 봅니다. 0.08이면 전환을 보류하는 것이 맞습니다.",
+      "explanation_full": "노트는 OFI에 대해 숫자 기준 대신 양 끝(→1, →0)의 해석만 제시하므로, 실제 전환 기준값은 팀에서 캘리브레이션해야 합니다. 또 0~1 신뢰도 점수로 계산하면 OFI 상한이 낮게 묶이므로(K = 4에서 약 0.085), 어떤 점수로 계산했는지를 함께 확인해야 합니다. NMS-free로 가려면 One-to-One 매칭 헤드로 다시 학습해야 합니다. OFI는 Diagnostics 정의 지표이므로 외부와 소통할 때는 '현재 모델은 객체 하나에 박스를 여러 개 내서 NMS 없이는 중복이 쏟아진다'처럼 풀어서 말한다.",
+      "tags": [
+        "diagnostics",
+        "nms",
+        "nms-free"
+      ],
+      "terms": [
+        "one-to-one-focus-index",
+        "nms"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/05_nms_diagnostics.md#5.1",
+      "status": "draft"
+    }
+  ]
+}

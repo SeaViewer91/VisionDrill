@@ -1,0 +1,958 @@
+{
+  "format": "visiondrill-bank-exchange",
+  "format_version": 1,
+  "terms": [
+    {
+      "id": "backbone",
+      "term_en": "Backbone",
+      "term_ko": "백본",
+      "abbreviation": null,
+      "definition": "입력 영상에서 여러 단계(해상도)의 특징 맵을 뽑아내는 모델 앞단의 특징 추출 네트워크. 보통 ImageNet 분류로 사전학습된 CNN·트랜스포머를 가져와 쓰고, 뒤에 넥(neck)과 헤드(head)를 붙인다",
+      "usage_example": "건물 추출 모델 백본만 ResNet-50에서 ConvNeXt-T로 바꿔서 같은 검증 타일로 mIoU 비교해봐.",
+      "origin": "standard",
+      "track": "E"
+    },
+    {
+      "id": "vgg",
+      "term_en": "VGGNet",
+      "term_ko": "VGG 네트워크",
+      "abbreviation": "VGG",
+      "definition": "3×3 합성곱과 2×2 최대 풀링만 반복해 16~19층으로 쌓은 2014년의 단순·균일한 CNN. 파라미터 대부분이 끝단 완전연결층에 몰려 있어 무겁다",
+      "usage_example": "VGG16은 구조 공부용으로만 보고, 양식장 탐지 백본으로는 너무 무거우니 후보에서 빼.",
+      "origin": "standard",
+      "track": "E"
+    },
+    {
+      "id": "residual-connection",
+      "term_en": "Residual Connection",
+      "term_ko": "잔차 연결",
+      "abbreviation": null,
+      "definition": "블록의 입력 x를 블록 출력 F(x)에 더해 y = F(x) + x로 만드는 지름길(shortcut) 연결. 블록은 입력 대비 변화량(잔차)만 학습하면 되어 매우 깊은 망도 최적화할 수 있다. ResNet의 핵심 요소",
+      "usage_example": "커스텀 블록에 잔차 연결이 빠져 있네. 층을 더 쌓을 거면 shortcut부터 넣어.",
+      "origin": "standard",
+      "track": "E"
+    },
+    {
+      "id": "densenet",
+      "term_en": "Densely Connected Convolutional Network",
+      "term_ko": "밀집 연결 합성곱 신경망",
+      "abbreviation": "DenseNet",
+      "definition": "밀집 블록(dense block) 안에서 각 층이 앞선 모든 층의 특징 맵을 채널 방향으로 이어 붙여(concatenation) 입력받는 CNN. 층마다 성장률(growth rate) k개 채널씩 특징이 누적된다",
+      "usage_example": "DenseNet은 파라미터는 적은데 concat 때문에 GPU 메모리를 많이 먹어. 1024 타일이면 배치부터 줄여.",
+      "origin": "standard",
+      "track": "E"
+    },
+    {
+      "id": "compound-scaling",
+      "term_en": "Compound Scaling",
+      "term_ko": "복합 스케일링",
+      "abbreviation": null,
+      "definition": "네트워크의 깊이(depth)·너비(width)·입력 해상도(resolution)를 하나의 계수 φ로 정해진 비율에 맞춰 함께 키우는 모델 확장 방법. EfficientNet B0→B7 계열이 이 방식으로 만들어졌다",
+      "usage_example": "EfficientNet B0에서 B3로 올리면 입력 해상도도 같이 커지니까 타일 크기 설정도 함께 바꿔.",
+      "origin": "standard",
+      "track": "E"
+    },
+    {
+      "id": "mobilenet",
+      "term_en": "MobileNet",
+      "term_ko": "모바일넷",
+      "abbreviation": null,
+      "definition": "표준 합성곱을 depthwise 합성곱(채널별 k×k)과 1×1 pointwise 합성곱으로 쪼갠 depthwise separable convolution으로 연산량·파라미터를 크게 줄인 Google의 경량 CNN 계열. V2는 inverted residual, V3는 NAS·SE·h-swish를 도입했다",
+      "usage_example": "드론 온보드 추론이라 백본은 MobileNetV3로 가고, 떨어지는 정확도는 입력 해상도로 조금 메워보자.",
+      "origin": "standard",
+      "track": "E"
+    },
+    {
+      "id": "convnext",
+      "term_en": "ConvNeXt",
+      "term_ko": "컨브넥스트",
+      "abbreviation": null,
+      "definition": "ResNet을 출발점으로 Swin Transformer의 설계 요소(패치화 stem, 7×7 depthwise 합성곱, inverted bottleneck, LayerNorm, GELU 등)를 단계적으로 들여와, 어텐션 없이 순수 CNN만으로 트랜스포머급 성능을 낸 2022년 백본",
+      "usage_example": "Swin 대신 ConvNeXt-T 붙여봐. 합성곱이라 기존 분할 파이프라인에 그대로 꽂힌다.",
+      "origin": "standard",
+      "track": "E"
+    },
+    {
+      "id": "pretrained-weights",
+      "term_en": "Pretrained Weights",
+      "term_ko": "사전학습 가중치",
+      "abbreviation": null,
+      "definition": "대규모 데이터셋(주로 ImageNet)으로 미리 학습해 둔 모델 가중치. 새 과제의 초기값으로 불러와 적은 데이터로도 빠르고 안정적으로 수렴하게 한다",
+      "usage_example": "라벨이 800장뿐이니까 scratch로 돌리지 말고 ImageNet 사전학습 가중치로 시작해.",
+      "origin": "standard",
+      "track": "E"
+    }
+  ],
+  "questions": [
+    {
+      "id": "E-BB-001",
+      "type": "short",
+      "chapter": "E.bb",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "탐지·분할 모델에서 입력 영상으로부터 여러 단계의 특징 맵을 추출하는 앞단 네트워크로, 보통 ImageNet 분류로 사전학습된 ResNet·ConvNeXt 등을 가져다 쓰는 부분을 무엇이라 부르나? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Backbone",
+          "Backbone network",
+          "Feature extractor"
+        ],
+        "ko": [
+          "백본",
+          "백본 네트워크",
+          "특징 추출기",
+          "특징 추출 네트워크"
+        ]
+      },
+      "primary": "Backbone",
+      "explanation_short": "백본(backbone)은 영상을 특징 맵으로 바꾸는 특징 추출기입니다. 그 뒤에 여러 스케일 특징을 섞는 넥(neck)과 최종 예측을 내는 헤드(head)가 붙습니다.",
+      "explanation_full": "백본은 분류 과제에서 검증된 구조를 가져와 마지막 분류층(FC)을 떼고 중간 단계 특징 맵을 꺼내 씁니다. ResNet 계열은 stride 4·8·16·32 단계(C2~C5)의 특징 맵을 내며, 탐지기는 이를 FPN 같은 넥에 넘깁니다. 실무에서 '백본을 바꾼다'는 말은 보통 특징 추출기만 교체하고 넥·헤드 구성은 유지한다는 뜻입니다.",
+      "tags": [
+        "backbone",
+        "architecture"
+      ],
+      "terms": [
+        "backbone"
+      ],
+      "source_ref": "객체 탐지·분할 구조 일반; He et al., Deep Residual Learning for Image Recognition (CVPR 2016)",
+      "status": "draft"
+    },
+    {
+      "id": "E-BB-002",
+      "type": "mcq",
+      "chapter": "E.bb",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "ResNet-50 백본의 마지막 단계(C5) 특징 맵은 입력 대비 stride 32로 줄어든다. 512×512 픽셀 타일을 넣으면 C5 특징 맵의 공간 크기는?",
+      "choices": [
+        {
+          "text": "128×128",
+          "rationale": "stride 4에 해당하는 크기로, ResNet 첫 단계(C2) 특징 맵의 크기입니다."
+        },
+        {
+          "text": "64×64",
+          "rationale": "stride 8(C3) 단계의 크기입니다. C5는 여기서 두 번 더 절반이 됩니다."
+        },
+        {
+          "text": "32×32",
+          "rationale": "stride 16(C4) 단계의 크기입니다. C5는 여기서 한 번 더 절반이 됩니다."
+        },
+        {
+          "text": "16×16",
+          "rationale": null
+        },
+        {
+          "text": "8×8",
+          "rationale": "stride 64로 나눈 값입니다. 표준 ResNet-50의 마지막 단계는 stride 32입니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "512 ÷ 32 = 16이므로 C5는 16×16입니다. C5의 한 칸이 원본 32×32픽셀 영역을 대표합니다.",
+      "explanation_full": "ResNet은 stem(7×7 합성곱 stride 2 + 최대 풀링 stride 2)에서 1/4로 줄고, 이후 단계마다 1/2씩 줄어 C2~C5가 각각 stride 4·8·16·32가 됩니다. GSD 0.5m 영상이라면 C5 한 칸이 지면 16m×16m(32픽셀 × 0.5m)에 해당하므로, 길이 10m 안팎의 소형 객체는 C5 한 칸보다 작습니다. 그래서 소형 객체 탐지에는 FPN 등으로 고해상도 단계(C2·C3) 특징을 함께 씁니다.",
+      "tags": [
+        "backbone",
+        "calculation",
+        "feature-map"
+      ],
+      "terms": [
+        "backbone"
+      ],
+      "source_ref": "He et al., Deep Residual Learning for Image Recognition (CVPR 2016)",
+      "status": "draft"
+    },
+    {
+      "id": "E-BB-003",
+      "type": "short",
+      "chapter": "E.bb",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "3×3 합성곱과 2×2 최대 풀링만 반복해 16~19층 깊이로 쌓은 단순·균일한 구조로, ILSVRC 2014에서 주목받은 옥스퍼드 대학 연구팀의 CNN 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "VGGNet",
+          "VGG",
+          "VGG16",
+          "VGG19"
+        ],
+        "ko": [
+          "브이지지넷",
+          "브이지지"
+        ]
+      },
+      "primary": "VGGNet",
+      "explanation_short": "VGGNet(옥스퍼드 Visual Geometry Group)은 3×3 합성곱을 일관되게 깊이 쌓는 것만으로 성능을 크게 올릴 수 있음을 보였습니다. ILSVRC 2014 분류 부문에서 2위를 했습니다.",
+      "explanation_full": "VGG16은 파라미터가 약 1억 3,800만 개이고 그 대부분이 마지막 완전연결층(FC)에 몰려 있습니다. 구조가 단순해 특징 시각화나 지각 손실(perceptual loss) 계산에는 여전히 쓰이지만, 연산량 대비 정확도가 낮아 요즘 원격탐사 탐지·분할 백본으로는 ResNet·EfficientNet·ConvNeXt 계열을 주로 씁니다.",
+      "tags": [
+        "backbone",
+        "history"
+      ],
+      "terms": [
+        "vgg"
+      ],
+      "source_ref": "Simonyan & Zisserman, Very Deep Convolutional Networks for Large-Scale Image Recognition (ICLR 2015)",
+      "status": "draft"
+    },
+    {
+      "id": "E-BB-004",
+      "type": "mcq",
+      "chapter": "E.bb",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "VGG는 5×5·7×7 같은 큰 커널 대신 3×3 합성곱을 여러 번 쌓았다. stride 1인 3×3 합성곱 3개를 쌓은 경우에 대한 설명으로 옳은 것은? (입력·출력 채널은 모두 C, 편향 제외)",
+      "choices": [
+        {
+          "text": "수용 영역은 7×7 한 층과 같고, 가중치는 27C²로 7×7 한 층(49C²)보다 적다",
+          "rationale": null
+        },
+        {
+          "text": "수용 영역은 9×9가 되어 7×7 한 층보다 넓고, 가중치도 27C²로 7×7 한 층보다 적다",
+          "rationale": "수용 영역은 층마다 (커널−1)=2씩 늘어 3→5→7이 됩니다. 3×3=9처럼 곱하면 안 됩니다."
+        },
+        {
+          "text": "수용 영역은 3×3 그대로이고, 층 사이 활성화 함수만 두 번 더 늘어난다",
+          "rationale": "층을 쌓으면 뒤 층의 한 칸이 앞 층의 더 넓은 영역을 보므로 수용 영역이 커집니다."
+        },
+        {
+          "text": "수용 영역은 7×7 한 층과 같지만, 가중치는 27C²로 7×7 한 층보다 많다",
+          "rationale": "27C²는 49C²보다 작습니다. 같은 수용 영역을 더 적은 가중치로 얻는 것이 VGG 설계의 요점입니다."
+        },
+        {
+          "text": "수용 영역도 7×7로 같고 가중치도 49C²로 같아, 연산 순서만 다를 뿐이다",
+          "rationale": "가중치는 3×(3·3·C·C) = 27C²로 49C²보다 적고, 층 사이 비선형 활성화도 추가됩니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "3×3 층 하나마다 수용 영역이 2씩 늘어 3→5→7이 됩니다. 가중치는 3×(3·3·C·C) = 27C²로 7×7 한 층의 49C²보다 약 45% 적고, 층 사이마다 ReLU가 들어가 표현력도 커집니다.",
+      "explanation_full": "같은 논리로 3×3 두 층은 5×5 한 층과 수용 영역이 같고 가중치는 18C² 대 25C²입니다. 이 '작은 커널을 깊게' 원칙은 이후 ResNet 등 대부분의 CNN에 이어졌고, 반대로 ConvNeXt는 depthwise 합성곱에서 7×7 큰 커널을 다시 도입했습니다.",
+      "tags": [
+        "backbone",
+        "receptive-field",
+        "calculation"
+      ],
+      "terms": [
+        "vgg"
+      ],
+      "source_ref": "Simonyan & Zisserman, Very Deep Convolutional Networks (ICLR 2015)",
+      "status": "draft"
+    },
+    {
+      "id": "E-BB-005",
+      "type": "short",
+      "chapter": "E.bb",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "블록 입력 x를 블록 출력 F(x)에 그대로 더해 y = F(x) + x를 만드는 연결로, ResNet이 100층이 넘는 깊은 망을 학습할 수 있게 한 핵심 요소의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Residual connection",
+          "Skip connection",
+          "Shortcut connection",
+          "Identity shortcut"
+        ],
+        "ko": [
+          "잔차 연결",
+          "스킵 연결",
+          "지름길 연결",
+          "숏컷 연결"
+        ]
+      },
+      "primary": "Residual connection",
+      "explanation_short": "잔차 연결(residual connection)이 있으면 블록은 입력 대비 변화량 F(x) = y − x만 학습하면 되고, 기울기도 덧셈 경로를 따라 앞 층까지 곧바로 전달됩니다.",
+      "explanation_full": "ResNet(He et al., 2015년 발표, ILSVRC 2015 분류 우승)은 이 구조로 152층 망을 학습했습니다. 입력과 출력의 채널 수나 해상도가 다를 때는 지름길에 1×1 합성곱(해상도가 줄 때는 stride 2)을 넣어 모양을 맞춥니다(projection shortcut). 'skip connection'은 U-Net처럼 인코더 특징을 디코더에 이어 붙이는 연결에도 쓰는 말이므로, 더하기(ResNet)인지 이어 붙이기(U-Net·DenseNet)인지 문맥으로 구분합니다.",
+      "tags": [
+        "backbone",
+        "resnet"
+      ],
+      "terms": [
+        "residual-connection"
+      ],
+      "source_ref": "He et al., Deep Residual Learning for Image Recognition (CVPR 2016)",
+      "status": "draft"
+    },
+    {
+      "id": "E-BB-006",
+      "type": "mcq",
+      "chapter": "E.bb",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "ResNet 논문은 잔차 연결이 없는 일반 CNN(plain network)을 20층에서 56층으로 늘리자 학습 오차(training error)까지 오히려 높아지는 현상을 보고했다. 이 현상과 잔차 연결의 관계를 옳게 설명한 것은?",
+      "choices": [
+        {
+          "text": "깊은 망이 훈련 데이터를 외워 버린 과적합 문제이며, 잔차 연결은 드롭아웃처럼 일부 경로를 끊어 규제 효과를 주어 이를 막는다",
+          "rationale": "과적합이라면 학습 오차는 낮고 검증 오차만 높아야 합니다. 학습 오차부터 높다는 것은 최적화 문제입니다."
+        },
+        {
+          "text": "층이 늘며 파라미터가 부족해진 과소적합 문제이며, 잔차 연결은 지름길마다 파라미터를 추가해 모델 용량을 키워 이를 해결한다",
+          "rationale": "층을 늘리면 파라미터는 오히려 늘어납니다. 항등 지름길은 파라미터가 전혀 없는 덧셈입니다."
+        },
+        {
+          "text": "최적화가 어려워지는 성능 저하(degradation) 문제이며, 잔차 연결은 블록이 변화량만 학습하게 해 최적화를 쉽게 한다",
+          "rationale": null
+        },
+        {
+          "text": "배치 정규화가 없어 활성값 분포가 흔들려서 생긴 문제이며, 잔차 연결은 배치 정규화를 대체해 분포를 안정시킨다",
+          "rationale": "논문의 plain network도 배치 정규화를 썼는데 이 현상이 나타났습니다. ResNet도 배치 정규화를 함께 씁니다."
+        },
+        {
+          "text": "층이 깊어지며 특징 맵 해상도가 너무 작아져 생긴 문제이며, 잔차 연결은 특징 맵 해상도를 유지해 이를 해결한다",
+          "rationale": "잔차 연결은 해상도와 무관한 덧셈 경로입니다. 해상도 축소는 stride와 풀링이 결정합니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "학습 오차까지 높아졌다는 것은 과적합이 아니라 최적화가 어려워졌다는 뜻입니다. 잔차 연결이 있으면 추가된 층이 F(x) = 0만 배워도 항등 함수가 되므로, 층을 늘려도 얕은 망보다 나빠지기 어렵습니다.",
+      "explanation_full": "논문은 이를 degradation problem이라 불렀고, 같은 깊이에서 ResNet-34가 plain-34보다 학습·검증 오차가 모두 낮음을 보였습니다. 실무에서 '층을 늘렸더니 train loss부터 나빠졌다'면 규제(드롭아웃·증강)가 아니라 구조·최적화(잔차 연결, 정규화, 학습률) 쪽을 봐야 합니다.",
+      "tags": [
+        "backbone",
+        "resnet",
+        "optimization"
+      ],
+      "terms": [
+        "residual-connection"
+      ],
+      "source_ref": "He et al., Deep Residual Learning for Image Recognition (CVPR 2016)",
+      "status": "draft"
+    },
+    {
+      "id": "E-BB-007",
+      "type": "short",
+      "chapter": "E.bb",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "밀집 블록(dense block) 안에서 각 층이 앞선 모든 층의 특징 맵을 채널 방향으로 이어 붙여(concatenate) 입력으로 받는 CNN 구조의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "DenseNet",
+          "Densely Connected Convolutional Network"
+        ],
+        "ko": [
+          "덴스넷",
+          "밀집 연결 합성곱 신경망",
+          "밀집 연결 네트워크"
+        ]
+      },
+      "primary": "DenseNet",
+      "explanation_short": "DenseNet은 블록 안의 L개 층을 L(L+1)/2개의 직접 연결로 잇습니다. 특징을 재사용해 파라미터 대비 성능이 좋은 대신, 이어 붙인 특징 맵을 모두 보관해야 해서 메모리를 많이 씁니다.",
+      "explanation_full": "밀집 블록 사이에는 1×1 합성곱과 2×2 평균 풀링으로 이뤄진 전이층(transition layer)이 채널 수와 해상도를 줄입니다(Huang et al., CVPR 2017). 분할용 변형으로는 인코더-디코더에 밀집 블록을 쓴 FC-DenseNet이 있습니다. 큰 타일로 학습할 때는 연결된 특징 맵 때문에 메모리가 빨리 차므로 배치 크기를 먼저 점검합니다.",
+      "tags": [
+        "backbone",
+        "densenet"
+      ],
+      "terms": [
+        "densenet"
+      ],
+      "source_ref": "Huang et al., Densely Connected Convolutional Networks (CVPR 2017)",
+      "status": "draft"
+    },
+    {
+      "id": "E-BB-008",
+      "type": "mcq",
+      "chapter": "E.bb",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "DenseNet의 한 밀집 블록에 64채널 특징 맵이 들어온다. 블록 안에 층이 6개 있고 성장률(growth rate) k = 32라면(각 층이 새 채널 32개를 만들어 기존 특징에 이어 붙임), 블록 출력의 채널 수는?",
+      "choices": [
+        {
+          "text": "192",
+          "rationale": "새로 만든 채널(6 × 32)만 센 값입니다. 블록에 들어온 64채널도 그대로 이어 붙어 출력에 포함됩니다."
+        },
+        {
+          "text": "256",
+          "rationale": null
+        },
+        {
+          "text": "224",
+          "rationale": "층을 5개만 센 값(64 + 5 × 32)입니다. 6번째 층의 출력도 이어 붙습니다."
+        },
+        {
+          "text": "2,048",
+          "rationale": "채널 수를 곱한 값(64 × 32)입니다. 이어 붙이기(concatenation)는 채널 수를 더합니다."
+        },
+        {
+          "text": "96",
+          "rationale": "마지막 층 출력만 입력에 붙인 값(64 + 32)입니다. 모든 층의 출력이 차례로 누적됩니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "출력 채널 = 입력 채널 + 층 수 × 성장률 = 64 + 6 × 32 = 256입니다.",
+      "explanation_full": "DenseNet-121의 첫 밀집 블록이 바로 이 설정(64채널 입력, 6층, k = 32)이라 출력이 256채널이 되고, 이어지는 전이층에서 1×1 합성곱으로 채널을 절반(128)으로 줄입니다(DenseNet-BC의 압축 계수 0.5). 채널이 선형으로 늘어나기 때문에 성장률을 작게(12~32) 잡는 것이 일반적입니다.",
+      "tags": [
+        "backbone",
+        "densenet",
+        "calculation"
+      ],
+      "terms": [
+        "densenet"
+      ],
+      "source_ref": "Huang et al., Densely Connected Convolutional Networks (CVPR 2017)",
+      "status": "draft"
+    },
+    {
+      "id": "E-BB-009",
+      "type": "mcq",
+      "chapter": "E.bb",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "ResNet과 DenseNet의 지름길 연결 방식을 옳게 비교한 것은?",
+      "choices": [
+        {
+          "text": "ResNet은 앞선 모든 층의 특징 맵을 채널 방향으로 이어 붙이고, DenseNet은 바로 앞 블록의 입력만 출력에 원소별로 더한다",
+          "rationale": "두 구조의 설명이 뒤바뀌었습니다."
+        },
+        {
+          "text": "두 구조 모두 채널 방향 이어 붙이기를 쓰며, 차이는 블록 안에 들어가는 층 수뿐이다",
+          "rationale": "ResNet은 이어 붙이지 않고 더하므로 블록을 지나도 채널 수가 그대로입니다."
+        },
+        {
+          "text": "ResNet은 지름길에 어텐션 가중치를 곱해 더하고, DenseNet은 지름길 없이 층을 순차 연결한다",
+          "rationale": "ResNet의 기본 지름길은 가중치 없는 항등 덧셈이고, DenseNet은 지름길이 가장 많은 구조입니다."
+        },
+        {
+          "text": "두 구조 모두 원소별 덧셈을 쓰며, DenseNet은 그 덧셈을 층마다 더 자주 할 뿐이다",
+          "rationale": "DenseNet은 더하지 않고 이어 붙이므로 층을 지날수록 채널이 늘어납니다."
+        },
+        {
+          "text": "ResNet은 블록 입력을 출력에 원소별로 더하고, DenseNet은 앞선 모든 층의 특징 맵을 채널 방향으로 이어 붙인다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "ResNet은 y = F(x) + x처럼 더하므로 채널 수가 유지되고, DenseNet은 [x₀, x₁, …, x_{l−1}]처럼 이어 붙이므로 층을 지날수록 채널이 늘어납니다.",
+      "explanation_full": "덧셈은 정보를 섞어 버리지만 메모리 부담이 적고, 이어 붙이기는 앞 층 특징을 원형 그대로 보존해 재사용하지만 메모리를 많이 씁니다. U-Net의 스킵 연결도 이어 붙이기 방식이라, 코드 리뷰에서 add인지 concat인지 확인하는 습관을 들이면 좋습니다.",
+      "tags": [
+        "backbone",
+        "resnet",
+        "densenet"
+      ],
+      "terms": [
+        "residual-connection",
+        "densenet"
+      ],
+      "source_ref": "He et al., Deep Residual Learning for Image Recognition (CVPR 2016); Huang et al., DenseNet (CVPR 2017)",
+      "status": "draft"
+    },
+    {
+      "id": "E-BB-010",
+      "type": "short",
+      "chapter": "E.bb",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "EfficientNet에서 제안한, 네트워크의 깊이·너비·입력 해상도를 하나의 계수 φ로 정해진 비율에 맞춰 함께 키우는 모델 확장 방법의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Compound scaling",
+          "Compound model scaling"
+        ],
+        "ko": [
+          "복합 스케일링",
+          "컴파운드 스케일링",
+          "복합 확장",
+          "복합 모델 스케일링"
+        ]
+      },
+      "primary": "Compound scaling",
+      "explanation_short": "Compound scaling은 깊이 d = α^φ, 너비 w = β^φ, 해상도 r = γ^φ로 세 축을 함께 키웁니다. 한 축만 키우면 정확도 향상이 금방 포화된다는 관찰에서 나왔습니다.",
+      "explanation_full": "EfficientNet(Tan & Le, ICML 2019)은 NAS로 찾은 기본 모델 B0에 φ를 키워 B1~B7을 만들었습니다. 논문의 계수는 α = 1.2, β = 1.1, γ = 1.15로, α·β²·γ² ≈ 2가 되도록 정해 φ가 1 늘 때 연산량이 약 2배가 됩니다. 모델을 키우면 권장 입력 해상도도 함께 커지므로(B0 224 → B7 600), 원격탐사 타일 크기와 GSD 설정도 같이 검토해야 합니다.",
+      "tags": [
+        "backbone",
+        "efficientnet",
+        "scaling"
+      ],
+      "terms": [
+        "compound-scaling"
+      ],
+      "source_ref": "Tan & Le, EfficientNet: Rethinking Model Scaling for CNNs (ICML 2019)",
+      "status": "draft"
+    },
+    {
+      "id": "E-BB-011",
+      "type": "mcq",
+      "chapter": "E.bb",
+      "cognitive_level": 2,
+      "difficulty": 4,
+      "stem": "EfficientNet은 깊이·너비·해상도 배율을 α^φ, β^φ, γ^φ로 두고 α·β²·γ² ≈ 2라는 제약을 건다. β와 γ에만 제곱이 붙는 이유로 옳은 것은?",
+      "choices": [
+        {
+          "text": "너비와 해상도가 정확도에 주는 효과가 깊이보다 두 배 크다고 보고, 정확도 기여도에 맞춰 가중치를 두 배로 준 것이다",
+          "rationale": "제곱은 정확도 기여도가 아니라 연산량(FLOPs)이 늘어나는 차수를 반영한 것입니다."
+        },
+        {
+          "text": "파라미터 수가 너비와 해상도의 제곱에 비례하므로, φ가 1 늘 때 전체 파라미터 수가 약 2배가 되도록 맞춘 것이다",
+          "rationale": "입력 해상도는 파라미터 수와 무관합니다(합성곱 가중치 크기는 입력 크기와 상관없음). 제약의 기준은 연산량입니다."
+        },
+        {
+          "text": "연산량이 깊이에는 1차로, 너비·해상도에는 제곱으로 비례하므로 φ가 1 늘면 연산량이 약 2배가 되게 맞춘 것이다",
+          "rationale": null
+        },
+        {
+          "text": "너비와 해상도는 가로·세로 두 방향을 가진 값이라 관례상 제곱으로 표기했을 뿐, 실제 계산상 의미는 없다",
+          "rationale": "너비(채널 수)는 가로·세로 값이 아닙니다. 채널 수가 늘면 입력·출력 채널이 함께 늘어 연산량이 제곱으로 늘어나는 실제 의미가 있습니다."
+        },
+        {
+          "text": "깊이를 늘리면 기울기 소실이 생기므로, 깊이 증가를 억제하려고 α에서만 일부러 제곱을 뺀 것이다",
+          "rationale": "깊이 억제가 목적이 아닙니다. 깊이는 연산량을 1차로 늘리기 때문에 제곱이 붙지 않을 뿐입니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "합성곱 FLOPs는 층 수(d)에 비례하고, 채널 수(w)가 늘면 입력·출력 채널이 함께 늘어 w²에, 해상도(r)가 늘면 가로·세로가 함께 늘어 r²에 비례합니다. 따라서 FLOPs 배율은 α·β²·γ²이고, 이를 약 2로 두면 φ가 1 늘 때마다 연산량이 약 2배가 됩니다.",
+      "explanation_full": "같은 원리로, 다른 조건은 그대로 두고 타일을 512에서 1024로 키우면 합성곱 연산량은 약 4배(2²), 채널 수를 2배로 늘려도 약 4배가 됩니다. 논문 계수(1.2 × 1.1² × 1.15² ≈ 1.92)로 검산하면 약 2가 나옵니다. 모델 크기를 키울 때 GPU 예산을 추정하는 데 바로 쓰는 계산입니다.",
+      "tags": [
+        "backbone",
+        "efficientnet",
+        "scaling",
+        "calculation"
+      ],
+      "terms": [
+        "compound-scaling"
+      ],
+      "source_ref": "Tan & Le, EfficientNet (ICML 2019)",
+      "status": "draft"
+    },
+    {
+      "id": "E-BB-012",
+      "type": "short",
+      "chapter": "E.bb",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "표준 합성곱을 depthwise 합성곱(채널별 k×k)과 1×1 pointwise 합성곱으로 쪼갠 depthwise separable convolution을 기본 블록으로 써서, 모바일·임베디드 기기용으로 연산량을 크게 줄인 Google의 경량 CNN 계열 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "MobileNet",
+          "MobileNetV1",
+          "MobileNetV2",
+          "MobileNetV3"
+        ],
+        "ko": [
+          "모바일넷"
+        ]
+      },
+      "primary": "MobileNet",
+      "explanation_short": "MobileNet(Howard et al., 2017)은 depthwise separable 합성곱으로 3×3 합성곱의 연산량을 약 8~9배 줄였습니다. 너비 배수(width multiplier)와 해상도 배수로 속도·정확도를 조절할 수 있습니다.",
+      "explanation_full": "MobileNetV2(2018)는 채널을 넓혔다가 다시 좁히는 inverted residual 블록과 선형 병목(linear bottleneck)을, MobileNetV3(2019)는 NAS로 찾은 구조에 SE 모듈과 h-swish 활성화를 더했습니다. 드론·위성 온보드처럼 전력과 메모리가 제한된 환경에서 탐지·분할 백본으로 자주 쓰입니다.",
+      "tags": [
+        "backbone",
+        "lightweight"
+      ],
+      "terms": [
+        "mobilenet"
+      ],
+      "source_ref": "Howard et al., MobileNets (arXiv 2017); Sandler et al., MobileNetV2 (CVPR 2018)",
+      "status": "draft"
+    },
+    {
+      "id": "E-BB-013",
+      "type": "mcq",
+      "chapter": "E.bb",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "입력 64채널, 출력 128채널인 3×3 합성곱(편향 제외)을 depthwise separable convolution(3×3 depthwise + 1×1 pointwise)으로 바꾸면 가중치 수는?",
+      "choices": [
+        {
+          "text": "8,768개",
+          "rationale": null
+        },
+        {
+          "text": "73,728개",
+          "rationale": "표준 3×3 합성곱의 가중치 수(3·3·64·128)입니다. 바꾸기 전 값입니다."
+        },
+        {
+          "text": "8,192개",
+          "rationale": "1×1 pointwise 부분(64·128)만 센 값입니다. depthwise 부분 576개가 빠졌습니다."
+        },
+        {
+          "text": "576개",
+          "rationale": "3×3 depthwise 부분(3·3·64)만 센 값입니다. 채널을 섞는 pointwise 부분이 빠졌습니다."
+        },
+        {
+          "text": "45,056개",
+          "rationale": "depthwise를 채널을 섞는 일반 합성곱(3·3·64·64)처럼 센 값입니다. depthwise는 채널마다 필터 하나만 씁니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "depthwise는 채널마다 3×3 필터 하나이므로 3·3·64 = 576개, pointwise는 1·1·64·128 = 8,192개로 합계 8,768개입니다. 표준 합성곱 73,728개보다 약 8.4배 적습니다.",
+      "explanation_full": "연산량 비율도 같은 꼴로 1/N + 1/k²(N: 출력 채널, k: 커널 크기)이며, 여기서는 1/128 + 1/9 ≈ 0.119입니다. 공간 방향 필터링(depthwise)과 채널 섞기(pointwise)를 분리한 것이 핵심이고, 이 덕분에 MobileNet은 엣지 기기에서 실시간 추론이 가능합니다.",
+      "tags": [
+        "backbone",
+        "lightweight",
+        "calculation"
+      ],
+      "terms": [
+        "mobilenet"
+      ],
+      "source_ref": "Howard et al., MobileNets (arXiv 2017)",
+      "status": "draft"
+    },
+    {
+      "id": "E-BB-014",
+      "type": "short",
+      "chapter": "E.bb",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "ResNet을 출발점으로 Swin Transformer의 설계 요소(4×4 패치화 stem, 7×7 depthwise 합성곱, inverted bottleneck, LayerNorm, GELU 등)를 하나씩 들여와, 어텐션 없이 순수 CNN만으로 트랜스포머급 성능을 낸 2022년 백본의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "ConvNeXt"
+        ],
+        "ko": [
+          "컨브넥스트",
+          "콘브넥스트"
+        ]
+      },
+      "primary": "ConvNeXt",
+      "explanation_short": "ConvNeXt(Liu et al., CVPR 2022, 'A ConvNet for the 2020s')는 트랜스포머의 성능이 어텐션만이 아니라 설계 선택과 학습 기법에서도 온다는 것을 보였습니다. 합성곱 구조라 기존 탐지·분할 프레임워크에 백본으로 넣기 쉽습니다.",
+      "explanation_full": "단계별 블록 수를 Swin과 같은 3:3:9:3 비율로 조정하고, 학습 레시피(AdamW, 긴 학습, 강한 증강)도 트랜스포머식으로 바꿨습니다. 후속 ConvNeXt V2(2023)는 마스크 오토인코더 방식 사전학습을 결합했습니다. 원격탐사 분할에서는 Swin과 ConvNeXt를 같은 조건으로 비교해 보는 경우가 많습니다.",
+      "tags": [
+        "backbone",
+        "convnext"
+      ],
+      "terms": [
+        "convnext"
+      ],
+      "source_ref": "Liu et al., A ConvNet for the 2020s (CVPR 2022)",
+      "status": "draft"
+    },
+    {
+      "id": "E-BB-015",
+      "type": "mcq",
+      "chapter": "E.bb",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "ConvNeXt가 ResNet-50을 '현대화'하면서 바꾼 설계로 옳은 것은?",
+      "choices": [
+        {
+          "text": "Swin처럼 각 블록에 윈도우 self-attention을 추가해 합성곱과 어텐션을 함께 쓰는 혼합 구조로 바꿨다",
+          "rationale": "ConvNeXt는 어텐션을 전혀 쓰지 않는 순수 CNN입니다. 합성곱·어텐션 혼합은 CoAtNet 같은 다른 계열입니다."
+        },
+        {
+          "text": "잔차 연결을 없애고 DenseNet처럼 앞선 모든 층의 출력을 채널 방향으로 이어 붙이도록 바꿨다",
+          "rationale": "ConvNeXt는 ResNet의 잔차 연결을 그대로 유지합니다."
+        },
+        {
+          "text": "큰 커널을 없애고 VGG처럼 3×3 합성곱을 여러 개 쌓는 방식으로 모든 블록을 통일해 바꿨다",
+          "rationale": "방향이 반대입니다. ConvNeXt는 Swin의 7×7 윈도우를 흉내 내 7×7 depthwise 큰 커널을 도입했습니다."
+        },
+        {
+          "text": "3×3 합성곱을 7×7 depthwise 합성곱으로, BatchNorm을 LayerNorm으로, ReLU를 GELU로 바꿨다",
+          "rationale": null
+        },
+        {
+          "text": "stem을 없애고 원본 해상도 그대로 첫 단계부터 모든 블록을 처리하도록 바꿨다",
+          "rationale": "stem을 없앤 것이 아니라 4×4, stride 4 '패치화' 합성곱으로 바꿔 첫 단계에서 해상도를 1/4로 줄입니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "ConvNeXt는 큰 커널 depthwise 합성곱(7×7), inverted bottleneck, LayerNorm, GELU, 패치화 stem 등 Swin의 설계 요소를 합성곱으로 옮겨 왔습니다. 잔차 연결은 유지하고 어텐션은 쓰지 않습니다.",
+      "explanation_full": "논문은 ResNet-50에서 출발해 변경을 하나씩 적용하며 ImageNet 정확도가 어떻게 오르는지 보여 주는 방식으로 쓰였습니다. 정규화·활성화 층 수를 줄이고 다운샘플링 층을 분리한 것도 포함됩니다. 백본 교체 실험을 설계할 때 '한 번에 한 요소만 바꾸는' 좋은 예시이기도 합니다.",
+      "tags": [
+        "backbone",
+        "convnext"
+      ],
+      "terms": [
+        "convnext"
+      ],
+      "source_ref": "Liu et al., A ConvNet for the 2020s (CVPR 2022)",
+      "status": "draft"
+    },
+    {
+      "id": "E-BB-016",
+      "type": "mcq",
+      "chapter": "E.bb",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "'ImageNet 사전학습 가중치(pretrained weights)로 시작하자'는 말의 뜻으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "가중치를 무작위로 초기화하되, 그 분포의 평균·분산만 ImageNet 모델 가중치 통계에 맞춰 둔다",
+          "rationale": "초기화 분포를 정하는 방법(초기화 기법)에 대한 설명입니다. 사전학습은 이미 학습된 가중치 값 자체를 가져옵니다."
+        },
+        {
+          "text": "ImageNet 분류로 미리 학습된 가중치를 초기값으로 불러온 뒤, 우리 데이터로 이어서 학습한다",
+          "rationale": null
+        },
+        {
+          "text": "ImageNet 영상을 우리 학습 데이터에 섞어 두 데이터를 처음부터 함께 학습한다",
+          "rationale": "데이터를 섞는 것은 공동 학습입니다. 사전학습 가중치는 데이터가 아니라 가중치만 가져옵니다."
+        },
+        {
+          "text": "ImageNet으로 학습된 모델을 그대로 두고, 우리 데이터로는 추론·평가만 한다",
+          "rationale": "ImageNet 클래스와 우리 클래스가 다르므로 보통 헤드를 새로 붙이고 우리 데이터로 이어서 학습합니다."
+        },
+        {
+          "text": "우리 데이터로 먼저 학습한 가중치를 ImageNet으로 한 번 더 미세조정한다",
+          "rationale": "순서가 반대입니다. 대규모 데이터로 먼저 학습하고 목표 데이터로 미세조정합니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "사전학습 가중치는 대규모 데이터(ImageNet-1k 약 128만 장, 1,000 클래스)에서 이미 배운 가장자리·질감·형태 특징을 초기값으로 주는 것입니다. 라벨이 적은 원격탐사 과제에서도 수렴이 빠르고 성능이 안정적입니다.",
+      "explanation_full": "보통 분류 헤드는 버리고 백본 가중치만 불러온 뒤 새 헤드를 붙여 전체 또는 일부 층을 미세조정(fine-tuning)합니다. 위성 영상은 자연 사진과 분포가 달라도 초기 층의 저수준 특징은 잘 전이되는 편이며, 최근에는 위성 영상으로 사전학습한 가중치도 공개되어 비교 후보로 씁니다.",
+      "tags": [
+        "backbone",
+        "transfer-learning"
+      ],
+      "terms": [
+        "pretrained-weights"
+      ],
+      "source_ref": "PyTorch torchvision.models 문서; 전이학습 일반",
+      "status": "draft"
+    },
+    {
+      "id": "E-BB-017",
+      "type": "mcq",
+      "chapter": "E.bb",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "ImageNet 사전학습 ResNet을 파인튜닝할 때, 입력을 사전학습 때와 같은 방식(RGB 순서, 0~1 스케일 후 ImageNet 평균·표준편차로 정규화)으로 맞추라고 하는 가장 직접적인 이유는?",
+      "choices": [
+        {
+          "text": "정규화하지 않은 입력으로는 합성곱 연산 자체가 실행되지 않아 학습이 시작되지 않기 때문이다",
+          "rationale": "합성곱은 어떤 값 범위에서도 실행됩니다. 문제는 실행 여부가 아니라 사전학습 특징의 효과입니다."
+        },
+        {
+          "text": "ImageNet 평균·표준편차가 위성 영상 반사율을 보정하는 물리적 기준값으로 정해져 있기 때문이다",
+          "rationale": "ImageNet 평균·표준편차는 자연 사진 RGB 값의 통계일 뿐, 반사율 보정 기준이 아닙니다."
+        },
+        {
+          "text": "입력을 정규화해야 모델 파라미터 수가 줄어들어 GPU 메모리와 학습 시간이 절약되기 때문이다",
+          "rationale": "입력 전처리는 파라미터 수와 무관합니다."
+        },
+        {
+          "text": "RGB 순서를 사전학습과 맞추면 배치 정규화 층이 필요 없어져 구조를 단순하게 할 수 있기 때문이다",
+          "rationale": "입력 채널 순서와 배치 정규화 층의 필요성은 관계가 없습니다."
+        },
+        {
+          "text": "초기 층 가중치가 그 입력 분포에 맞춰 학습되어 있어, 분포가 다르면 사전학습된 특징이 제대로 작동하지 않기 때문이다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "첫 합성곱 필터는 'R·G·B 순서, 정규화된 값'을 전제로 학습된 값입니다. 채널 순서가 뒤바뀌거나(BGR) 값 범위가 다르면 사전학습 특징이 엉뚱하게 반응해 전이 효과가 크게 떨어집니다.",
+      "explanation_full": "흔한 실수는 OpenCV로 읽은 BGR 영상을 그대로 넣는 것, 12~16비트 위성 영상을 스케일 조정 없이 넣는 것입니다. 위성 영상은 백분위 클리핑 등으로 0~1 범위를 만든 뒤 정규화하는 규칙을 정하고, 학습과 추론에 똑같이 적용해야 합니다. 자체 데이터 통계로 정규화하는 방법도 쓰이지만, 이때도 학습·추론 일관성이 핵심입니다.",
+      "tags": [
+        "backbone",
+        "transfer-learning",
+        "preprocessing"
+      ],
+      "terms": [
+        "pretrained-weights"
+      ],
+      "source_ref": "PyTorch torchvision.models 문서(ImageNet 정규화); 전이학습 일반",
+      "status": "draft"
+    },
+    {
+      "id": "E-BB-018",
+      "type": "scenario",
+      "chapter": "E.bb",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"드론에 Jetson 보드를 달아서 촬영하면서 바로 차량을 세야 해. 지금 ResNet-152 백본으로는 5fps밖에 안 나오니까 25fps 이상 나오게 백본부터 바꿔봐.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "ConvNeXt-L로 바꿔 정확도를 높이고, 느려진 속도는 배치 크기를 키워 보완한다",
+          "rationale": "ConvNeXt-L은 ResNet-152보다도 무겁습니다. 실시간 스트림에서 배치를 키우면 프레임당 지연이 오히려 늘어납니다."
+        },
+        {
+          "text": "MobileNetV3나 EfficientNet-B0 같은 경량 백본으로 바꾸고, 줄어든 정확도는 검증셋으로 확인한다",
+          "rationale": null
+        },
+        {
+          "text": "VGG16으로 바꾼다. 층 수가 16개뿐이라 152층 ResNet보다 훨씬 빠르다",
+          "rationale": "층 수가 적어도 VGG16은 연산량(약 15 GFLOPs)이 ResNet-152(약 11 GFLOPs)보다 크고 파라미터도 훨씬 많아 훨씬 빨라지지 않습니다. 속도는 층 수가 아니라 연산량·메모리 접근량과 대상 기기 실측으로 판단합니다."
+        },
+        {
+          "text": "백본은 그대로 두고 입력 해상도를 2배로 올려 작은 차량을 더 잘 잡게 한다",
+          "rationale": "해상도를 2배로 올리면 연산량이 약 4배가 되어 더 느려집니다."
+        },
+        {
+          "text": "백본은 그대로 두고 NMS의 IoU 임계값을 낮춰 후처리 박스 수를 줄인다",
+          "rationale": "후처리는 전체 시간의 작은 부분입니다. 병목은 백본 연산량입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "실시간 엣지 추론에서는 연산량과 지연 시간이 작은 경량 백본이 우선입니다. MobileNetV3·EfficientNet-B0의 연산량은 수백 MFLOPs 수준으로 ResNet-152(약 11 GFLOPs)의 수십 분의 일입니다.",
+      "explanation_full": "백본 선택은 '정확도 대 속도' 곡선 위에서 요구 조건(여기서는 25fps)을 만족하는 가장 정확한 점을 고르는 일입니다. 실제 속도는 기기·정밀도(FP16/INT8)·입력 크기에 따라 달라지므로 대상 보드에서 직접 측정하고, 정확도 손실은 드론 GSD에 맞춘 검증셋으로 확인합니다.",
+      "tags": [
+        "backbone",
+        "deployment",
+        "speed"
+      ],
+      "terms": [
+        "mobilenet",
+        "backbone"
+      ],
+      "source_ref": "Howard et al., Searching for MobileNetV3 (ICCV 2019); He et al., Deep Residual Learning for Image Recognition (CVPR 2016)",
+      "status": "draft"
+    },
+    {
+      "id": "E-BB-019",
+      "type": "scenario",
+      "chapter": "E.bb",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"Sentinel-2 B2·B3·B4·B8 네 밴드를 다 쓰고 싶은데, ImageNet 사전학습 ResNet-50 가중치는 최대한 살려. 입력층만 손봐.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "첫 합성곱을 포함한 모든 층을 무작위로 초기화하고, 4밴드 입력으로 처음부터 학습한다",
+          "rationale": "사전학습 가중치를 모두 버리는 방법이라 '최대한 살려'라는 지시에 어긋납니다."
+        },
+        {
+          "text": "B8을 버리고 B2·B3·B4를 그 순서대로 사전학습 모델의 R·G·B 입력 자리에 넣는다",
+          "rationale": "NIR을 버려 지시에 어긋나고, B2(Blue)가 R 자리에 들어가 채널 순서도 뒤바뀝니다. Sentinel-2에서 Red는 B4입니다."
+        },
+        {
+          "text": "네 밴드를 평균 내 흑백 1채널로 만든 뒤 3채널로 복제해 기존 첫 합성곱에 넣는다",
+          "rationale": "밴드 간 분광 차이가 모두 사라져 NIR을 쓰는 의미가 없어집니다."
+        },
+        {
+          "text": "첫 합성곱을 4채널로 바꿔 B4·B3·B2에 사전학습 R·G·B 가중치를 옮기고, B8은 RGB 가중치 평균 등으로 초기화한다",
+          "rationale": null
+        },
+        {
+          "text": "첫 합성곱은 그대로 두고 B8을 B2 자리에 대신 넣어, B4·B3·B8 3채널 조합으로 사전학습 모델의 RGB 입력 형식에 그대로 맞춘다",
+          "rationale": "B2를 버리므로 네 밴드를 모두 쓰라는 지시에 어긋나고, Blue용으로 학습된 필터가 NIR 값을 받게 됩니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "사전학습 가중치를 살리려면 첫 층의 입력 채널 수만 바꾸고 나머지 층은 그대로 불러옵니다. Sentinel-2에서 B4가 Red, B3가 Green, B2가 Blue이므로 사전학습 R·G·B 필터를 이 순서로 대응시키고, 새 NIR 채널은 기존 필터 평균 등으로 초기화하는 방법이 흔히 쓰입니다.",
+      "explanation_full": "채널이 늘어 첫 층 출력 크기가 커지는 것을 막으려고 가중치 전체에 3/4 같은 배율을 곱하기도 합니다. 입력 정규화도 밴드별 통계로 따로 정해야 합니다. 밴드가 많을 때(예: 10~13밴드)도 같은 방식으로 첫 층만 확장하거나, 다중분광 영상으로 사전학습된 가중치를 대안으로 검토합니다.",
+      "tags": [
+        "backbone",
+        "transfer-learning",
+        "multispectral"
+      ],
+      "terms": [
+        "pretrained-weights",
+        "backbone"
+      ],
+      "source_ref": "전이학습 일반; ESA Sentinel-2 MSI 밴드 정의",
+      "status": "draft"
+    },
+    {
+      "id": "E-BB-020",
+      "type": "scenario",
+      "chapter": "E.bb",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"자체 설계한 plain CNN을 18층에서 34층으로 늘렸더니 train loss부터 18층보다 높게 수렴해. 과적합 얘기가 아니니까 구조를 고쳐봐.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "블록마다 입력을 출력에 더하는 잔차 연결(shortcut)을 넣어 ResNet 형태로 바꾼다",
+          "rationale": null
+        },
+        {
+          "text": "드롭아웃 비율을 0.5로 올려 깊은 층의 공동 적응을 줄인다",
+          "rationale": "드롭아웃은 과적합 처방입니다. train loss가 높은 상황에서는 학습을 더 어렵게 만듭니다."
+        },
+        {
+          "text": "회전·색상 변환 같은 데이터 증강을 강하게 걸어 학습 데이터 다양성을 늘린다",
+          "rationale": "증강도 과적합 처방입니다. 학습 오차 자체가 높은 최적화 문제는 해결하지 못합니다."
+        },
+        {
+          "text": "weight decay를 10배로 올려 가중치 크기를 강하게 억제한다",
+          "rationale": "규제를 세게 하면 train loss는 더 올라갑니다."
+        },
+        {
+          "text": "조기 종료(early stopping) 기준을 앞당겨 학습을 더 일찍 멈춘다",
+          "rationale": "조기 종료는 검증 손실이 나빠지기 전에 멈추는 과적합 처방입니다. 학습이 덜 될 뿐입니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "층을 늘렸는데 학습 손실까지 나빠지는 것은 ResNet 논문이 말한 성능 저하(degradation) 문제, 즉 최적화의 어려움입니다. 잔차 연결을 넣으면 추가된 층이 항등 함수에 가깝게 시작해 깊은 망도 안정적으로 학습됩니다.",
+      "explanation_full": "지시문의 '과적합 얘기가 아니다'가 핵심 단서입니다. 드롭아웃·증강·weight decay·조기 종료는 모두 '학습은 잘 되는데 검증이 나쁜' 상황의 처방입니다. 실제 ResNet 논문도 18층과 34층 plain/residual 망을 비교해 이 현상을 보였습니다.",
+      "tags": [
+        "backbone",
+        "resnet",
+        "troubleshooting"
+      ],
+      "terms": [
+        "residual-connection"
+      ],
+      "source_ref": "He et al., Deep Residual Learning for Image Recognition (CVPR 2016)",
+      "status": "draft"
+    },
+    {
+      "id": "E-BB-021",
+      "type": "scenario",
+      "chapter": "E.bb",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"EfficientNet-B0 기반 차량 탐지가 0.3m 항공영상에서 작은 차를 자꾸 놓쳐. GPU 여유는 있으니까 모델을 키워봐. 해상도 하나만 올리지 말고 논문 방식대로.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "B0 구조를 그대로 두고 블록 반복 횟수만 두 배로 늘려 깊이만 키운다",
+          "rationale": "깊이 한 축만 키우는 방법입니다. 논문은 한 축만 키우면 성능이 금방 포화된다고 보고 세 축을 함께 키웁니다."
+        },
+        {
+          "text": "B0 구조를 그대로 두고 모든 층의 채널 수만 두 배로 늘려 너비만 키운다",
+          "rationale": "너비 한 축만 키우는 방법이고, 연산량도 약 4배로 크게 늘어납니다."
+        },
+        {
+          "text": "B0 구조를 그대로 두고 입력 해상도만 1024로 올려서 작은 차가 더 많은 픽셀로 보이게 한다",
+          "rationale": "지시에서 명시적으로 배제한 방법입니다. 해상도만 키우면 수용 영역·채널이 받쳐 주지 못해 효과가 제한됩니다."
+        },
+        {
+          "text": "B0 대신 MobileNetV3-Small로 바꿔 학습을 빠르게 여러 번 반복한다",
+          "rationale": "모델을 키우라는 지시와 반대로 더 작은 모델입니다."
+        },
+        {
+          "text": "깊이·너비·해상도가 함께 커지도록 설계된 B2·B3 같은 상위 모델로 바꾸고 타일 크기도 맞춘다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "지시의 '논문 방식'은 compound scaling, 즉 깊이·너비·해상도를 하나의 계수 φ로 함께 키우는 것입니다. 이미 그렇게 설계된 B1~B7 중 GPU 예산에 맞는 모델을 고르는 것이 가장 직접적입니다.",
+      "explanation_full": "상위 모델일수록 권장 입력 해상도도 커지므로(B0 224, B3 300 등, 분류 기준) 타일 크기나 리사이즈 설정이 모델과 맞는지 함께 확인합니다. 0.3m 영상에서 소형 차량은 수~수십 픽셀이므로, 영상을 억지로 축소하지 말고 원래 GSD를 유지한 타일을 쓰는 것이 좋습니다.",
+      "tags": [
+        "backbone",
+        "efficientnet",
+        "scaling"
+      ],
+      "terms": [
+        "compound-scaling"
+      ],
+      "source_ref": "Tan & Le, EfficientNet (ICML 2019)",
+      "status": "draft"
+    },
+    {
+      "id": "E-BB-022",
+      "type": "scenario",
+      "chapter": "E.bb",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"전국 0.5m 정사영상 건물 분할을 야간 배치로 돌릴 거라 속도는 크게 상관없어. 정확도가 최우선이니까 백본 후보를 다시 골라봐. 라벨은 2만 장 정도 있어.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "MobileNetV3-Small로 바꿔 같은 시간에 더 많은 타일을 처리하도록 한다",
+          "rationale": "속도 우선 선택입니다. 지시는 속도보다 정확도가 최우선이라고 했습니다."
+        },
+        {
+          "text": "파라미터가 가장 많은 VGG16을 고른다. 파라미터가 많을수록 정확도가 높다",
+          "rationale": "VGG16은 파라미터 대부분이 FC층에 몰려 있고 ImageNet 정확도도 ResNet-50보다 낮습니다. 파라미터 수가 정확도를 보장하지 않습니다."
+        },
+        {
+          "text": "ConvNeXt-B·ResNet-101 등 큰 사전학습 백본을 후보로 두고 같은 검증셋 mIoU로 비교한다",
+          "rationale": null
+        },
+        {
+          "text": "ImageNet 편향을 없애려고 사전학습 가중치 없이 무작위 초기화 상태에서 처음부터 끝까지 학습한다",
+          "rationale": "정확도가 최우선인 상황에서 사전학습 초기화를 버릴 근거가 없습니다. 보통 사전학습 초기화가 수렴과 최종 성능 모두 유리합니다."
+        },
+        {
+          "text": "FLOPs가 가장 작은 백본을 골라 과적합 위험과 추론 시간을 먼저 함께 줄여 둔다",
+          "rationale": "연산량을 줄이는 것은 속도 기준 선택입니다. 2만 장이면 큰 백본의 과적합을 걱정해 최소 모델을 고를 상황도 아닙니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "속도 제약이 없고 데이터가 충분하면 용량이 큰 최신 백본이 유리할 가능성이 큽니다. 다만 백본 순위는 과제·데이터마다 달라질 수 있으므로 같은 조건의 검증 지표(mIoU)로 직접 비교해 고릅니다.",
+      "explanation_full": "백본 선택 기준은 ① 속도·메모리 제약 ② 데이터 양 ③ 사전학습 가중치 유무 ④ 넥·헤드와의 호환(다중 스케일 출력)입니다. 전국 단위 배치 추론이라도 전체 처리 시간 추정은 해 두는 것이 좋습니다. 비교할 때는 백본만 바꾸고 넥·헤드·학습 설정은 고정합니다.",
+      "tags": [
+        "backbone",
+        "model-selection"
+      ],
+      "terms": [
+        "backbone",
+        "convnext"
+      ],
+      "source_ref": "백본 선택 일반; Liu et al., ConvNeXt (CVPR 2022)",
+      "status": "draft"
+    }
+  ]
+}

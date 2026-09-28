@@ -1,0 +1,922 @@
+{
+  "format": "visiondrill-bank-exchange",
+  "format_version": 1,
+  "terms": [
+    {
+      "id": "oriented-bounding-box",
+      "term_en": "Oriented Bounding Box",
+      "term_ko": "회전 박스",
+      "abbreviation": "OBB",
+      "definition": "중심·너비·높이에 회전각을 더해, 객체의 방향에 맞춰 기울어진 직사각형(표현에 따라 사변형)으로 객체를 감싸는 경계 상자",
+      "usage_example": "항구 영상 선박은 비스듬히 붙어 있어서 HBB로는 서로 겹쳐. 이번 라벨은 OBB로 가자.",
+      "origin": "standard",
+      "track": "F"
+    },
+    {
+      "id": "horizontal-bounding-box",
+      "term_en": "Horizontal Bounding Box",
+      "term_ko": "수평 박스",
+      "abbreviation": "HBB",
+      "definition": "변이 영상의 가로·세로 축에 평행한 직사각형 경계 상자. (x_min, y_min, x_max, y_max) 네 값으로 표현한다",
+      "usage_example": "저장탱크는 위에서 보면 원형이라 방향이 의미 없으니 HBB로 라벨해도 돼.",
+      "origin": "standard",
+      "track": "F"
+    },
+    {
+      "id": "five-parameter-representation",
+      "term_en": "Five-Parameter Representation",
+      "term_ko": "5파라미터 표현",
+      "abbreviation": null,
+      "definition": "회전 박스를 중심 좌표(cx, cy), 너비 w, 높이 h, 회전각 θ의 다섯 값으로 나타내는 방식. 항상 직사각형을 표현한다",
+      "usage_example": "모델 출력은 5파라미터라 GeoJSON으로 내보낼 때 꼭짓점 네 개로 다시 풀어 줘야 해.",
+      "origin": "standard",
+      "track": "F"
+    },
+    {
+      "id": "eight-parameter-representation",
+      "term_en": "Eight-Parameter Representation",
+      "term_ko": "8파라미터 표현",
+      "abbreviation": null,
+      "definition": "박스의 네 꼭짓점 좌표 (x1, y1, …, x4, y4) 여덟 값으로 나타내는 방식. 직사각형이 아닌 임의 사변형도 표현할 수 있지만 꼭짓점 순서에 따라 같은 박스가 다른 값이 된다",
+      "usage_example": "원본 라벨은 8파라미터니까 학습 전에 꼭짓점 순서부터 통일하고 5파라미터로 바꿔.",
+      "origin": "standard",
+      "track": "F"
+    },
+    {
+      "id": "angle-convention",
+      "term_en": "Angle Convention",
+      "term_ko": "각도 정의 규약",
+      "abbreviation": null,
+      "definition": "회전 박스의 θ를 어느 변 기준으로, 어떤 범위에서 재는지 정한 약속. 예: 긴 변을 w로 두고 θ를 [−90°, 90°)로 제한하는 le90, [−45°, 135°)로 두는 le135",
+      "usage_example": "라벨 변환 스크립트랑 모델 설정의 각도 규약이 둘 다 le90인지 먼저 맞춰 봐.",
+      "origin": "standard",
+      "track": "F"
+    },
+    {
+      "id": "boundary-discontinuity",
+      "term_en": "Boundary Discontinuity Problem",
+      "term_ko": "경계 불연속 문제",
+      "abbreviation": null,
+      "definition": "각도의 주기성(PoA)과 너비·높이의 교환성(EoE) 때문에, 각도 범위 양 끝에서 실제로는 거의 같은 회전 박스가 파라미터 값으로는 크게 달라져 회귀 손실이 급증하는 문제",
+      "usage_example": "±90° 근처 선박에서만 각도 손실이 튀는 건 경계 불연속이야. CSL이나 GWD 계열 손실로 바꿔 보자.",
+      "origin": "standard",
+      "track": "F"
+    },
+    {
+      "id": "rotated-iou",
+      "term_en": "Rotated IoU",
+      "term_ko": "회전 IoU",
+      "abbreviation": null,
+      "definition": "두 회전 박스가 겹치는 볼록 다각형의 넓이를 두 박스의 합집합 넓이로 나눈 값. 회전 박스 탐지의 TP 판정과 회전 NMS에 쓴다(Skew IoU라고도 함)",
+      "usage_example": "선박 평가는 HBB IoU 말고 회전 IoU 0.5 기준으로 AP 다시 뽑아.",
+      "origin": "standard",
+      "track": "F"
+    },
+    {
+      "id": "dota",
+      "term_en": "Dataset for Object deTection in Aerial images",
+      "term_ko": "DOTA 데이터셋",
+      "abbreviation": "DOTA",
+      "definition": "항공·위성 영상 속 객체에 네 꼭짓점(8좌표) 사변형 주석을 단 대규모 회전 객체 탐지 벤치마크. v1.0은 선박·항공기·차량 등 15개 클래스로 구성된다",
+      "usage_example": "새 모델 구조는 DOTA로 사전학습된 가중치부터 받아서 우리 선박 데이터로 미세조정하자.",
+      "origin": "standard",
+      "track": "F"
+    }
+  ],
+  "questions": [
+    {
+      "id": "F-OBB-001",
+      "type": "short",
+      "chapter": "F.obb",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "선박·차량처럼 비스듬히 놓인 객체를, 중심·너비·높이에 회전각을 더해 객체 방향에 맞춰 기울어진 사각형으로 감싸는 경계 상자의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Oriented Bounding Box (OBB)",
+          "Rotated Bounding Box",
+          "Rotated Box",
+          "RBox"
+        ],
+        "ko": [
+          "회전 박스",
+          "회전 경계 상자",
+          "회전 바운딩 박스",
+          "방향성 경계 상자",
+          "기울어진 박스"
+        ]
+      },
+      "primary": "Oriented Bounding Box",
+      "explanation_short": "회전 박스(OBB)는 수평 박스에 방향(각도) 정보를 더해 객체 윤곽에 딱 맞게 감쌉니다. 원격탐사처럼 위에서 내려다본 영상에서는 객체가 임의 방향으로 놓이므로 특히 유용합니다.",
+      "explanation_full": "OBB는 흔히 (cx, cy, w, h, θ)의 5파라미터나 네 꼭짓점의 8파라미터로 표현합니다. 수평 박스(HBB)보다 배경을 덜 포함하고 이웃 객체와의 겹침이 작아, 부두에 밀집한 선박·주기장의 항공기·주차장 차량처럼 방향이 제각각이고 빽빽한 객체를 분리하기 좋습니다. 대신 각도 라벨링 비용과 각도 표현 문제(경계 불연속)가 따라옵니다.",
+      "tags": [
+        "obb",
+        "basics"
+      ],
+      "terms": [
+        "oriented-bounding-box"
+      ],
+      "source_ref": "Xia et al., DOTA: A Large-scale Dataset for Object Detection in Aerial Images (CVPR 2018)",
+      "status": "draft"
+    },
+    {
+      "id": "F-OBB-002",
+      "type": "short",
+      "chapter": "F.obb",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "변이 영상의 가로·세로 축에 평행하고 (x_min, y_min, x_max, y_max) 네 값으로 표현되는 일반적인 경계 상자를, 회전 박스와 구분해 부르는 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Horizontal Bounding Box (HBB)",
+          "Axis-Aligned Bounding Box (AABB)",
+          "Horizontal Box"
+        ],
+        "ko": [
+          "수평 박스",
+          "수평 경계 상자",
+          "축 정렬 경계 상자",
+          "수평 바운딩 박스"
+        ]
+      },
+      "primary": "Horizontal Bounding Box",
+      "explanation_short": "수평 박스(HBB)는 각도 없이 축에 평행한 직사각형입니다. COCO·VOC 같은 일반 탐지 데이터셋과 대부분의 탐지기가 기본으로 쓰는 박스입니다.",
+      "explanation_full": "HBB는 라벨링이 빠르고 IoU·NMS 계산이 간단하며 각도 표현 문제가 없습니다. 그러나 비스듬히 놓인 길쭉한 객체(선박, 교량)에서는 박스 안에 배경이 많이 들어가고, 이웃 객체의 박스끼리 크게 겹칩니다. 원격탐사 회전 객체 탐지 문헌에서는 OBB와 대비해 HBB라고 부릅니다.",
+      "tags": [
+        "obb",
+        "hbb",
+        "basics"
+      ],
+      "terms": [
+        "horizontal-bounding-box"
+      ],
+      "source_ref": "Xia et al., DOTA: A Large-scale Dataset for Object Detection in Aerial Images (CVPR 2018)",
+      "status": "draft"
+    },
+    {
+      "id": "F-OBB-003",
+      "type": "mcq",
+      "chapter": "F.obb",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "회전 박스의 5파라미터 표현(five-parameter representation)을 구성하는 값으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "(x_min, y_min, x_max, y_max, θ): 좌상단·우하단 모서리와 회전각",
+          "rationale": "모서리 두 점은 수평 박스(HBB)를 나타내는 값입니다. 5파라미터 표현은 모서리가 아니라 중심과 크기를 씁니다."
+        },
+        {
+          "text": "(cx, cy, w, h, θ): 중심 좌표, 너비, 높이, 회전각",
+          "rationale": null
+        },
+        {
+          "text": "(class, cx, cy, w, h): 클래스 번호, 중심 좌표, 너비, 높이",
+          "rationale": "YOLO 형식 수평 박스 라벨의 한 줄입니다. 각도가 없어 회전 박스를 나타낼 수 없습니다."
+        },
+        {
+          "text": "(cx, cy, w, h, score): 중심 좌표, 너비, 높이, 신뢰도",
+          "rationale": "신뢰도는 예측에 붙는 부가 정보일 뿐 박스 모양을 정하는 값이 아닙니다. 방향 정보가 없습니다."
+        },
+        {
+          "text": "(cx, cy, w, h, d): 중심 좌표, 너비, 높이, 대각선 길이",
+          "rationale": "대각선 길이는 w와 h로 이미 정해지므로 새 정보가 아니며, 방향 정보도 없습니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "5파라미터 표현은 (cx, cy, w, h, θ)로, 수평 박스의 중심·크기 표현에 회전각 θ 하나를 더한 것입니다. 이 다섯 값으로 임의 방향의 직사각형이 하나로 정해집니다.",
+      "explanation_full": "θ를 어느 변 기준으로, 어떤 범위에서 재는지는 각도 정의 규약(예: le90, le135)에 따라 다르므로 라벨 변환과 모델 설정의 규약을 반드시 맞춰야 합니다. 5파라미터는 항상 직사각형만 표현하므로, 사변형 주석(8파라미터)을 쓰려면 최소 외접 회전 사각형으로 바꿔야 합니다.",
+      "tags": [
+        "obb",
+        "representation"
+      ],
+      "terms": [
+        "five-parameter-representation"
+      ],
+      "source_ref": "MMRotate 문서 — 회전 박스 각도 정의(oc, le135, le90)",
+      "status": "draft"
+    },
+    {
+      "id": "F-OBB-004",
+      "type": "mcq",
+      "chapter": "F.obb",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "라벨 파일에 박스 하나가 'x1 y1 x2 y2 x3 y3 x4 y4'처럼 네 꼭짓점 좌표로 적혀 있다. 이 박스 표현 방식은?",
+      "choices": [
+        {
+          "text": "5파라미터 표현",
+          "rationale": "5파라미터 표현은 (cx, cy, w, h, θ) 다섯 값입니다. 꼭짓점 좌표를 직접 적지 않습니다."
+        },
+        {
+          "text": "수평 박스(HBB) 표현",
+          "rationale": "HBB는 (x_min, y_min, x_max, y_max) 네 값이면 충분합니다. 꼭짓점 네 개를 모두 적을 필요가 없습니다."
+        },
+        {
+          "text": "가우시안 분포 표현",
+          "rationale": "회전 박스를 2차원 가우시안(평균·공분산)으로 바꾸는 것은 GWD·KLD 같은 손실을 계산하기 위한 내부 표현입니다. 라벨 파일 형식이 아닙니다."
+        },
+        {
+          "text": "RLE 마스크 표현",
+          "rationale": "RLE(run-length encoding)는 픽셀 단위 분할 마스크를 압축한 형식입니다. 꼭짓점 좌표 목록이 아닙니다."
+        },
+        {
+          "text": "8파라미터 표현",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "네 꼭짓점의 (x, y) 좌표 여덟 값으로 박스를 적는 방식이 8파라미터 표현(꼭짓점 표현)입니다. DOTA 같은 원격탐사 데이터셋의 원본 주석이 이 형식입니다.",
+      "explanation_full": "8파라미터는 직사각형이 아닌 임의 사변형까지 담을 수 있어 라벨러가 객체 윤곽을 자유롭게 찍을 수 있습니다. 대신 같은 박스라도 시작 꼭짓점과 순서(시계·반시계)에 따라 값이 달라지므로, 학습 전에 순서를 통일하거나 5파라미터로 변환하는 전처리가 필요합니다.",
+      "tags": [
+        "obb",
+        "representation",
+        "annotation"
+      ],
+      "terms": [
+        "eight-parameter-representation"
+      ],
+      "source_ref": "Xia et al., DOTA: A Large-scale Dataset for Object Detection in Aerial Images (CVPR 2018)",
+      "status": "draft"
+    },
+    {
+      "id": "F-OBB-005",
+      "type": "mcq",
+      "chapter": "F.obb",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "회전 박스 각도 정의 규약 중 'le90'의 뜻으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "긴 변(long edge)을 w로 두고, 그 방향각 θ를 [−90°, 90°) 범위로 나타낸다",
+          "rationale": null
+        },
+        {
+          "text": "긴 변을 w로 두고, 그 방향각 θ를 [−45°, 135°) 범위로 나타낸다",
+          "rationale": "이것은 le135 규약입니다. 긴 변 기준인 점은 같지만 각도 범위가 다릅니다."
+        },
+        {
+          "text": "짧은 변을 w로 두고, 선수 방향까지 구분하도록 θ를 [0°, 360°)로 나타낸다",
+          "rationale": "직사각형은 180° 돌려도 같은 모양이므로 박스 모양만으로는 360° 방향을 정할 수 없습니다. le90은 긴 변 기준 180° 범위입니다."
+        },
+        {
+          "text": "각도를 90개 구간으로 나눠 회귀 대신 분류로 예측한다",
+          "rationale": "각도를 구간으로 나눠 분류하는 것은 CSL 같은 각도 분류 기법의 아이디어입니다. 각도 정의 규약의 이름이 아닙니다."
+        },
+        {
+          "text": "θ를 90° 폭 범위로만 제한하고, w·h는 그 각도에 맞춰 어느 변이든 될 수 있게 그대로 둔다",
+          "rationale": "90° 범위만 쓰고 w·h를 고정하지 않는 것은 OpenCV 계열 정의에 가깝습니다. 이 경우 w와 h가 서로 바뀌는 문제가 생기며, le90은 긴 변을 w로 고정합니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "le90은 'long edge, 90'의 뜻으로, 긴 변을 w로 고정하고 θ를 [−90°, 90°)의 180° 범위로 나타냅니다. 직사각형은 180°마다 같은 모양이 되므로 180° 범위면 모든 방향을 한 번씩 표현할 수 있습니다.",
+      "explanation_full": "MMRotate 같은 회전 탐지 라이브러리는 le90, le135, oc 등 여러 규약을 지원하고 모델·데이터 변환 설정에 규약 이름을 명시합니다. 라벨 변환 스크립트와 모델의 규약이 다르면 각도가 통째로 어긋나 학습이 망가지므로, 새 데이터를 붙일 때 가장 먼저 확인할 항목입니다.",
+      "tags": [
+        "obb",
+        "angle",
+        "convention"
+      ],
+      "terms": [
+        "angle-convention"
+      ],
+      "source_ref": "MMRotate 문서 — 회전 박스 각도 정의(oc, le135, le90)",
+      "status": "draft"
+    },
+    {
+      "id": "F-OBB-006",
+      "type": "short",
+      "chapter": "F.obb",
+      "cognitive_level": 1,
+      "difficulty": 3,
+      "stem": "각도 범위의 양 끝(예: −90° 부근과 +90° 부근)에서 실제로는 거의 같은 회전 박스가 파라미터 값으로는 멀리 떨어져, 각도를 그대로 회귀하면 손실이 갑자기 커지는 문제를 무엇이라 하나? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Boundary Discontinuity Problem",
+          "Boundary Discontinuity",
+          "Angle Boundary Problem",
+          "Boundary Problem"
+        ],
+        "ko": [
+          "경계 불연속 문제",
+          "경계 불연속",
+          "각도 경계 문제",
+          "경계 문제",
+          "경계 불연속성"
+        ]
+      },
+      "primary": "Boundary Discontinuity Problem",
+      "explanation_short": "경계 불연속 문제는 각도의 주기성 때문에 생깁니다. 모양은 거의 같은데 θ 값이 범위 양 끝에 있어 수치 차이가 크게 나므로, 회귀 손실이 실제 박스 차이와 어긋나게 커집니다.",
+      "explanation_full": "원인은 각도 주기성(PoA, Periodicity of Angle)과, 규약에 따라 w·h가 뒤바뀌는 변 교환성(EoE, Exchangeability of Edges)입니다. 대책으로 각도를 구간 분류로 바꾸고 이웃 구간에 부드러운 라벨을 주는 CSL(Circular Smooth Label), 회전 박스를 2차원 가우시안으로 바꿔 분포 거리로 학습하는 GWD·KLD 손실 등이 제안되었습니다. 원격탐사에서는 남북 방향 부두의 선박처럼 특정 방향에 몰린 객체가 이 경계 근처에 걸리기 쉽습니다.",
+      "tags": [
+        "obb",
+        "angle",
+        "loss"
+      ],
+      "terms": [
+        "boundary-discontinuity"
+      ],
+      "source_ref": "Yang & Yan, Arbitrary-Oriented Object Detection with Circular Smooth Label (ECCV 2020); Yang et al., Rethinking Rotated Object Detection with Gaussian Wasserstein Distance Loss (ICML 2021)",
+      "status": "draft"
+    },
+    {
+      "id": "F-OBB-007",
+      "type": "short",
+      "chapter": "F.obb",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "두 회전 박스가 겹치는 영역(볼록 다각형)의 넓이를 두 박스의 합집합 넓이로 나눈 값으로, 회전 박스 탐지의 TP 판정과 회전 NMS에 쓰이는 지표의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Rotated IoU",
+          "Skew IoU",
+          "Rotated Intersection over Union",
+          "Oriented IoU"
+        ],
+        "ko": [
+          "회전 IoU",
+          "회전 교집합 대 합집합 비율",
+          "기울어진 IoU"
+        ]
+      },
+      "primary": "Rotated IoU",
+      "explanation_short": "회전 IoU는 IoU의 정의(교집합/합집합)는 그대로 두고, 교집합을 두 회전 사각형이 겹치는 다각형으로 계산한 것입니다. 수평 박스 IoU 공식(좌표 min·max)으로는 구할 수 없습니다.",
+      "explanation_full": "교집합은 한 사각형을 다른 사각형의 변으로 잘라 내는 다각형 클리핑으로 구하고, 신발끈 공식으로 넓이를 계산합니다. 연산이 복잡하고 미분이 까다로워, 학습 손실로는 GWD·KLD처럼 가우시안 근사를 쓰는 경우가 많습니다. 평가(TP 판정)와 회전 NMS에는 정확한 회전 IoU를 씁니다.",
+      "tags": [
+        "obb",
+        "iou",
+        "metric"
+      ],
+      "terms": [
+        "rotated-iou",
+        "iou"
+      ],
+      "source_ref": "Xia et al., DOTA: A Large-scale Dataset for Object Detection in Aerial Images (CVPR 2018)",
+      "status": "draft"
+    },
+    {
+      "id": "F-OBB-008",
+      "type": "short",
+      "chapter": "F.obb",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "항공·위성 영상 속 선박·항공기·차량 등에 네 꼭짓점(8좌표) 사변형 주석을 단 대규모 벤치마크로, v1.0 기준 15개 클래스로 구성된 대표적인 원격탐사 회전 객체 탐지 데이터셋의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "DOTA",
+          "Dataset for Object deTection in Aerial images"
+        ],
+        "ko": [
+          "도타",
+          "DOTA 데이터셋",
+          "도타 데이터셋"
+        ]
+      },
+      "primary": "DOTA",
+      "explanation_short": "DOTA는 원격탐사 회전 객체 탐지의 대표 벤치마크입니다. 객체마다 네 꼭짓점 좌표와 클래스, 난이도 표시가 달려 있습니다.",
+      "explanation_full": "v1.0 이후 클래스를 늘린 v1.5, v2.0이 나왔습니다. 원본 영상이 수천 픽셀 크기이므로 보통 겹침을 두고 패치로 잘라 학습·추론한 뒤 결과를 합칩니다. 평가 과제는 회전 박스 탐지(Task1)와 수평 박스 탐지(Task2)로 나뉩니다. 선박만 다루는 HRSC2016, 20개 클래스의 DIOR-R 등도 함께 쓰입니다.",
+      "tags": [
+        "obb",
+        "dataset",
+        "benchmark"
+      ],
+      "terms": [
+        "dota"
+      ],
+      "source_ref": "Xia et al., DOTA: A Large-scale Dataset for Object Detection in Aerial Images (CVPR 2018)",
+      "status": "draft"
+    },
+    {
+      "id": "F-OBB-009",
+      "type": "mcq",
+      "chapter": "F.obb",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "항구 영상에서 대각선 방향으로 나란히 빽빽하게 접안한 선박들을 수평 박스(HBB)로 탐지할 때 생기는 대표적인 문제는?",
+      "choices": [
+        {
+          "text": "HBB 탐지기에는 선박을 다른 클래스와 구분하는 분류 헤드를 붙일 수 없다",
+          "rationale": "분류 헤드는 박스 형태와 관계없이 붙일 수 있습니다. HBB 탐지기도 다중 클래스를 분류합니다."
+        },
+        {
+          "text": "HBB 픽셀 좌표는 GeoTIFF 지오트랜스폼으로 지도 좌표로 바꿀 수 없다",
+          "rationale": "박스 형태와 무관하게 픽셀 좌표는 지오트랜스폼으로 지도 좌표로 바꿀 수 있습니다."
+        },
+        {
+          "text": "이웃 선박의 HBB끼리 IoU가 커져, NMS가 서로 다른 선박의 박스를 중복으로 보고 지운다",
+          "rationale": null
+        },
+        {
+          "text": "HBB가 선박 윤곽보다 작게 그려지는 경향이 있어 선수와 선미 부분이 박스 밖으로 잘려 나간다",
+          "rationale": "반대입니다. 비스듬한 선박을 감싸는 HBB는 선박보다 훨씬 커서 배경과 이웃 선박까지 포함합니다."
+        },
+        {
+          "text": "HBB 탐지기는 앵커를 쓸 수 없어 소형 선박을 놓친다",
+          "rationale": "앵커 사용 여부는 박스 형태와 별개의 설계 선택입니다. HBB 탐지기도 앵커 기반·앵커 프리가 모두 있습니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "대각선으로 놓인 길쭉한 선박의 HBB는 배경을 많이 포함해, 옆 선박의 HBB와 크게 겹칩니다. 그러면 NMS가 두 박스를 같은 선박의 중복으로 보고 하나를 지워 실제 선박이 누락됩니다.",
+      "explanation_full": "회전 박스(OBB)는 선박 윤곽에 맞게 기울어져 이웃 선박과의 회전 IoU가 작으므로 이런 오삭제가 크게 줄어듭니다. 원격탐사에서 OBB가 필요한 대표 사례가 부두의 밀집 선박, 주기장의 항공기, 주차장 차량처럼 '방향이 제각각이고 빽빽한 객체'입니다.",
+      "tags": [
+        "obb",
+        "hbb",
+        "nms"
+      ],
+      "terms": [
+        "horizontal-bounding-box",
+        "oriented-bounding-box",
+        "nms"
+      ],
+      "source_ref": "Xia et al., DOTA: A Large-scale Dataset for Object Detection in Aerial Images (CVPR 2018)",
+      "status": "draft"
+    },
+    {
+      "id": "F-OBB-010",
+      "type": "mcq",
+      "chapter": "F.obb",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "다음 원격탐사 객체 중 회전 박스(OBB)를 써도 이득이 거의 없고, 오히려 각도 라벨이 임의로 정해져 학습에 잡음이 되기 쉬운 것은?",
+      "choices": [
+        {
+          "text": "부두에 비스듬히 밀집 접안한 소형 어선",
+          "rationale": "방향이 제각각이고 빽빽한 길쭉한 객체라 OBB의 이점(배경 감소, 이웃과 겹침 감소)이 가장 큰 경우입니다."
+        },
+        {
+          "text": "대각선 방향으로 줄지어 주차된 차량",
+          "rationale": "빽빽한 대각선 배열은 HBB끼리 크게 겹쳐 NMS 오삭제가 생기기 쉬우므로 OBB가 유리합니다."
+        },
+        {
+          "text": "영상을 비스듬히 가로지르는 좁고 긴 교량",
+          "rationale": "비스듬한 교량의 HBB는 대부분이 수면 배경이라 위치 정보가 부정확합니다. OBB가 훨씬 정확하게 감쌉니다."
+        },
+        {
+          "text": "위에서 보면 원형인 유류 저장탱크",
+          "rationale": null
+        },
+        {
+          "text": "주기장에 여러 방향으로 서 있는 항공기",
+          "rationale": "항공기는 방향이 뚜렷하고 밀집 주기되는 경우가 많아 OBB로 개체를 분리하는 이점이 큽니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "원형 저장탱크는 어느 방향으로 돌려도 모양이 같아 회전각이 정의되지 않습니다. OBB로 라벨하면 라벨러마다 각도가 제각각이 되어 잡음이 되므로, HBB로도 충분합니다.",
+      "explanation_full": "OBB의 이점은 '길쭉하고 방향이 있고 빽빽한' 객체에서 커집니다. 정사각형·원형에 가까운 객체는 HBB와 OBB의 차이가 작고, 각도 라벨이 불안정해질 뿐입니다. 한 모델에서 두 종류를 함께 다룰 때는 원형 객체의 각도를 0°로 고정하는 규칙을 라벨 가이드에 명시하면 잡음을 줄일 수 있습니다.",
+      "tags": [
+        "obb",
+        "hbb",
+        "tradeoff"
+      ],
+      "terms": [
+        "horizontal-bounding-box",
+        "oriented-bounding-box"
+      ],
+      "source_ref": "회전 객체 탐지 일반 (DOTA 논문, MMRotate 문서)",
+      "status": "draft"
+    },
+    {
+      "id": "F-OBB-011",
+      "type": "mcq",
+      "chapter": "F.obb",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "5파라미터 표현과 비교한 8파라미터 표현의 특징으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "각도를 직접 쓰지 않으므로, 같은 박스가 서로 다른 여러 값으로 표현되는 모호성이 전혀 생기지 않는다",
+          "rationale": "각도 주기성 문제는 없지만, 꼭짓점을 어디서 시작해 어느 방향으로 적느냐에 따라 같은 박스가 여러 벡터가 되는 순서 모호성이 있습니다."
+        },
+        {
+          "text": "임의 사변형까지 표현할 수 있지만, 같은 박스도 꼭짓점 시작점·순서에 따라 값이 달라지는 모호성이 있다",
+          "rationale": null
+        },
+        {
+          "text": "항상 직사각형만 표현하므로 5파라미터보다 표현할 수 있는 모양이 적다",
+          "rationale": "반대입니다. 5파라미터가 항상 직사각형이고, 8파라미터는 직사각형이 아닌 사변형도 표현합니다."
+        },
+        {
+          "text": "값이 여덟 개라 두 박스의 회전 IoU를 계산할 수 없다",
+          "rationale": "꼭짓점이 있으면 다각형 교집합으로 오히려 바로 회전 IoU를 계산할 수 있습니다."
+        },
+        {
+          "text": "5파라미터로 바꿀 방법이 없어 전용 탐지기에서만 쓸 수 있다",
+          "rationale": "네 꼭짓점을 감싸는 최소 외접 회전 사각형을 구하면 5파라미터로 바꿀 수 있습니다. 실무에서 흔히 하는 전처리입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "8파라미터는 네 꼭짓점을 직접 적으므로 사변형까지 표현할 수 있지만, 시작 꼭짓점과 순서가 바뀌면 같은 박스가 다른 값이 됩니다. 5파라미터는 직사각형만 표현하는 대신 각도 주기성 문제를 안고 있습니다.",
+      "explanation_full": "8파라미터를 그대로 회귀하면 꼭짓점 순서 모호성 때문에 손실이 불필요하게 커질 수 있어, 꼭짓점을 일정한 규칙으로 정렬하거나 5파라미터로 변환해 학습하는 경우가 많습니다. 반대로 GIS 산출물(GeoJSON 폴리곤)로 내보낼 때는 5파라미터 예측을 네 꼭짓점으로 다시 풀어야 합니다.",
+      "tags": [
+        "obb",
+        "representation"
+      ],
+      "terms": [
+        "eight-parameter-representation",
+        "five-parameter-representation"
+      ],
+      "source_ref": "회전 객체 탐지 일반 (DOTA 논문, MMRotate 문서)",
+      "status": "draft"
+    },
+    {
+      "id": "F-OBB-012",
+      "type": "mcq",
+      "chapter": "F.obb",
+      "cognitive_level": 2,
+      "difficulty": 4,
+      "stem": "le90 규약([−90°, 90°), 긴 변 = w)에서 GT 선박 박스는 θ = 89°, 예측 박스는 θ = −88°이고 중심·w·h는 같다. '두 박스의 실제 방향 차이'와 'θ를 L1 손실로 그대로 회귀할 때 손실이 보는 각도 차이'를 순서대로 짝지은 것은?",
+      "choices": [
+        {
+          "text": "177°, 177°",
+          "rationale": "직사각형은 180° 돌리면 같은 모양이므로 실제 방향 차이는 180° − 177° = 3°입니다."
+        },
+        {
+          "text": "3°, 3°",
+          "rationale": "L1 손실은 각도의 주기성을 모르므로 |89 − (−88)| = 177°를 그대로 봅니다."
+        },
+        {
+          "text": "1°, 177°",
+          "rationale": "|89| − |−88| = 1°는 부호를 무시한 계산입니다. 두 방향은 ±90° 경계를 사이에 두고 1°와 2°씩 떨어져 있어 실제 차이는 3°입니다."
+        },
+        {
+          "text": "177°, 3°",
+          "rationale": "순서가 반대입니다. 실제 차이가 작고(3°), 손실이 보는 차이가 큽니다(177°)."
+        },
+        {
+          "text": "3°, 177°",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "89°에서 경계(90°)까지 1°, 경계 너머 −90°에서 −88°까지 2°이므로 실제 방향 차이는 3°입니다. 그러나 θ를 그대로 빼면 |89 − (−88)| = 177°가 되어, 거의 맞힌 예측에 매우 큰 손실이 걸립니다.",
+      "explanation_full": "이것이 경계 불연속 문제의 전형입니다. 180° 주기를 고려한 차이는 min(|Δ|, 180° − |Δ|) = min(177°, 3°) = 3°입니다. 이런 샘플이 많으면 각도 손실이 튀고 학습이 흔들리므로, 주기성을 반영한 손실(CSL, GWD·KLD 등)을 쓰거나 각도 차이를 주기적으로 계산하도록 손실을 설계합니다.",
+      "tags": [
+        "obb",
+        "angle",
+        "calculation"
+      ],
+      "terms": [
+        "boundary-discontinuity",
+        "angle-convention"
+      ],
+      "source_ref": "Yang & Yan, Arbitrary-Oriented Object Detection with Circular Smooth Label (ECCV 2020); Yang et al., Rethinking Rotated Object Detection with Gaussian Wasserstein Distance Loss (ICML 2021)",
+      "status": "draft"
+    },
+    {
+      "id": "F-OBB-013",
+      "type": "mcq",
+      "chapter": "F.obb",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "중심이 같고 크기가 100×20픽셀(w×h)인 회전 박스 A가 있다. 박스 B는 A를 중심 기준으로 90° 돌린 박스다. A와 B의 회전 IoU는 약 얼마인가?",
+      "choices": [
+        {
+          "text": "0.11",
+          "rationale": null
+        },
+        {
+          "text": "1.00",
+          "rationale": "중심·w·h가 같다고 각도를 무시하면 1이 나옵니다. 실제로는 가운데 20×20 영역만 겹칩니다."
+        },
+        {
+          "text": "0.20",
+          "rationale": "교집합 400을 한 박스 넓이 2000으로 나눈 값입니다. IoU의 분모는 합집합(3600)입니다."
+        },
+        {
+          "text": "0.10",
+          "rationale": "교집합 400을 두 박스 넓이의 단순 합 4000으로 나눈 값입니다. 합집합은 겹친 부분을 한 번 빼야 합니다."
+        },
+        {
+          "text": "0.50",
+          "rationale": "각도 차이 90°를 180° 주기로 나눠 1 − 90/180으로 어림한 값입니다. IoU는 넓이로 계산해야 합니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "교집합은 가운데 20×20 = 400, 합집합은 2000 + 2000 − 400 = 3600이므로 회전 IoU = 400 / 3600 ≈ 0.11입니다.",
+      "explanation_full": "가로세로비가 5:1인 길쭉한 객체는 90° 어긋나면 IoU가 0.11까지 떨어집니다. 길쭉할수록 작은 각도 오차에도 회전 IoU가 크게 떨어지므로, 선박·교량처럼 가늘고 긴 객체는 각도 정확도가 AP에 큰 영향을 줍니다. 반대로 정사각형에 가까운 객체는 각도 오차에 둔감합니다.",
+      "tags": [
+        "obb",
+        "iou",
+        "calculation"
+      ],
+      "terms": [
+        "rotated-iou"
+      ],
+      "source_ref": "회전 객체 탐지 일반 (DOTA 논문, MMRotate 문서)",
+      "status": "draft"
+    },
+    {
+      "id": "F-OBB-014",
+      "type": "mcq",
+      "chapter": "F.obb",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "DOTA 라벨의 한 객체가 네 꼭짓점 (x1, y1), (x2, y2), (x3, y3), (x4, y4)로 주어졌다. 이를 수평 박스(HBB) 탐지기 학습용 (x_min, y_min, x_max, y_max)로 바꾸는 올바른 방법은?",
+      "choices": [
+        {
+          "text": "첫 번째 꼭짓점을 (x_min, y_min), 세 번째 꼭짓점을 (x_max, y_max)로 그대로 쓴다",
+          "rationale": "박스가 기울어져 있으면 대각 꼭짓점이 HBB의 모서리와 일치하지 않아 객체 일부가 박스 밖으로 나갑니다."
+        },
+        {
+          "text": "꼭짓점 평균을 중심으로, 첫 변 길이를 w, 둘째 변 길이를 h로 해 축에 평행한 박스를 만든다",
+          "rationale": "회전된 사각형의 변 길이를 축 방향 박스에 그대로 쓰면 기울어진 객체를 다 감싸지 못합니다."
+        },
+        {
+          "text": "네 꼭짓점 x 좌표의 최솟값·최댓값과 y 좌표의 최솟값·최댓값을 취한다",
+          "rationale": null
+        },
+        {
+          "text": "최소 외접 회전 사각형을 구해 (cx, cy, w, h, θ)로 저장한다",
+          "rationale": "이것은 5파라미터 회전 박스로 바꾸는 방법입니다. HBB 탐지기 입력 형식이 아닙니다."
+        },
+        {
+          "text": "네 꼭짓점 좌표를 영상 너비·높이로 나눠 0~1로 정규화한다",
+          "rationale": "정규화는 좌표 스케일만 바꿀 뿐 여전히 여덟 값의 꼭짓점 표현입니다. HBB로 바뀌지 않습니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "사변형을 감싸는 수평 박스는 꼭짓점들의 x·y 최솟값과 최댓값으로 정해집니다. DOTA의 수평 박스 과제(Task2) 정답도 이렇게 사변형을 감싸는 HBB로 만듭니다.",
+      "explanation_full": "같은 원리로 모델이 낸 OBB를 HBB 기반 후처리나 지표와 비교할 때도 꼭짓점을 구한 뒤 min·max를 취합니다. 다만 비스듬한 길쭉한 객체는 이렇게 만든 HBB에 배경이 많이 들어가므로, HBB로 학습하면 밀집 구간에서 NMS 오삭제가 늘 수 있다는 점을 함께 기억해 둡니다.",
+      "tags": [
+        "obb",
+        "hbb",
+        "dataset",
+        "conversion"
+      ],
+      "terms": [
+        "dota",
+        "horizontal-bounding-box",
+        "eight-parameter-representation"
+      ],
+      "source_ref": "Xia et al., DOTA: A Large-scale Dataset for Object Detection in Aerial Images (CVPR 2018)",
+      "status": "draft"
+    },
+    {
+      "id": "F-OBB-015",
+      "type": "scenario",
+      "chapter": "F.obb",
+      "cognitive_level": 3,
+      "difficulty": 2,
+      "stem": "지시: \"KOMPSAT-3A 항구 영상에서 선박이 부두에 45° 방향으로 다닥다닥 붙어 있어서, HBB 모델은 NMS 후에 선박 절반이 사라져. 다음 차수부터 OBB로 가자.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "HBB 라벨은 그대로 두고 NMS IoU 임계값을 0.7에서 0.3으로 낮춘다",
+          "rationale": "NMS IoU 임계값을 낮추면 더 조금만 겹쳐도 지우므로 인접 선박이 더 많이 사라집니다."
+        },
+        {
+          "text": "HBB 라벨을 유지하되 학습 때 영상을 무작위 회전하는 증강만 추가한다",
+          "rationale": "회전 증강 뒤 HBB는 더 헐거워지고, 추론 시 비스듬한 선박의 HBB끼리 겹치는 문제도 그대로입니다."
+        },
+        {
+          "text": "신뢰도 임계값을 0.25에서 0.6으로 올려 NMS에 들어가는 겹친 박스 수 자체를 줄인다",
+          "rationale": "신뢰도 임계값은 낮은 점수 박스를 거를 뿐, NMS가 겹침 때문에 실제 선박을 지우는 문제를 해결하지 못하고 재현율만 떨어뜨립니다."
+        },
+        {
+          "text": "선박을 회전 박스로 다시 라벨링하고, 회전 IoU로 NMS하는 OBB 탐지기로 학습한다",
+          "rationale": null
+        },
+        {
+          "text": "선박 HBB를 10% 작게 그려 이웃 선박 박스와의 겹침을 줄인다",
+          "rationale": "박스가 객체를 다 덮지 못해 라벨 정의가 깨지고, 45° 방향 선박은 줄여도 HBB끼리의 겹침이 크게 남습니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "지시의 핵심은 OBB 전환입니다. 선박을 방향에 맞는 회전 박스로 라벨하고, 회전 IoU로 NMS를 하면 45°로 붙어 있는 이웃 선박끼리 겹침이 작아져 오삭제가 크게 줄어듭니다.",
+      "explanation_full": "라벨은 네 꼭짓점(8파라미터)으로 찍고 학습 시 모델의 각도 규약(예: le90)에 맞게 5파라미터로 변환하는 흐름이 일반적입니다. 기존 HBB 라벨은 각도 정보가 없어 OBB로 자동 변환할 수 없으므로 재라벨링 비용을 일정에 반영해야 합니다. 평가도 회전 IoU 기준 AP로 바꿔야 개선 효과가 제대로 드러납니다.",
+      "tags": [
+        "obb",
+        "hbb",
+        "labeling",
+        "nms"
+      ],
+      "terms": [
+        "oriented-bounding-box",
+        "horizontal-bounding-box"
+      ],
+      "source_ref": "Xia et al., DOTA: A Large-scale Dataset for Object Detection in Aerial Images (CVPR 2018)",
+      "status": "draft"
+    },
+    {
+      "id": "F-OBB-016",
+      "type": "scenario",
+      "chapter": "F.obb",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"OBB 모델 학습 로그를 보니 각도 손실이 가끔 확 튀는데, 튀는 배치를 보면 거의 다 선박이 영상에서 수직(le90 기준 ±90° 근처)으로 놓인 샘플이야. 원인 파악하고 대책 세워.\"\n\n이 지시에 대한 판단으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "수직 선박 샘플은 라벨 오류일 가능성이 높으므로 학습 데이터에서 제거한다",
+          "rationale": "라벨이 틀린 것이 아니라 각도 표현의 문제입니다. 제거하면 수직 방향 선박을 탐지하지 못하게 됩니다."
+        },
+        {
+          "text": "±90° 경계에서 거의 같은 박스가 θ 값으로는 크게 달라지는 경계 불연속을 의심하고, CSL이나 GWD·KLD처럼 주기성을 반영하는 방식으로 바꾼다",
+          "rationale": null
+        },
+        {
+          "text": "학습률이 너무 커서 생긴 발산이므로 학습률만 1/10로 낮춘다",
+          "rationale": "특정 각도 샘플에서만 튄다는 것은 표현 문제의 신호입니다. 학습률을 낮춰도 경계 샘플의 과대 손실은 그대로입니다."
+        },
+        {
+          "text": "수직 선박이 부족한 클래스 불균형이므로 해당 샘플을 오버샘플링한다",
+          "rationale": "경계 불연속이 원인이라면 경계 샘플을 더 넣을수록 튀는 손실이 더 자주 발생합니다."
+        },
+        {
+          "text": "각도 손실 가중치를 0으로 두고 중심·크기만 학습한다",
+          "rationale": "각도를 배우지 못하면 회전 박스를 쓰는 의미가 없어집니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "le90에서 수직에 가까운 선박은 θ가 +89°와 −89°처럼 범위 양 끝으로 갈려, 모양은 거의 같아도 각도 값 차이가 180°에 가깝게 계산됩니다. 이 경계 불연속이 손실 급증의 원인이므로 주기성을 반영하는 손실·표현으로 바꾸는 것이 맞습니다.",
+      "explanation_full": "CSL은 각도를 구간 분류로 바꾸고 원형으로 이어진 부드러운 라벨을 줘 경계 양쪽을 가깝게 만들고, GWD·KLD는 회전 박스를 2차원 가우시안으로 바꿔 각도 주기성 자체를 없앱니다. 먼저 경계 근처 샘플의 손실과 실제 회전 IoU를 나란히 찍어 '손실은 큰데 IoU는 높은' 패턴인지 확인하면 원인을 확정할 수 있습니다.",
+      "tags": [
+        "obb",
+        "angle",
+        "loss",
+        "debugging"
+      ],
+      "terms": [
+        "boundary-discontinuity",
+        "angle-convention"
+      ],
+      "source_ref": "Yang & Yan, Arbitrary-Oriented Object Detection with Circular Smooth Label (ECCV 2020); Yang et al., Rethinking Rotated Object Detection with Gaussian Wasserstein Distance Loss (ICML 2021)",
+      "status": "draft"
+    },
+    {
+      "id": "F-OBB-017",
+      "type": "scenario",
+      "chapter": "F.obb",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"선박 OBB 모델 평가 스크립트가 예측과 GT를 각각 HBB로 바꿔서 IoU를 재고 있더라. 회전 IoU 0.5 기준으로 AP 다시 뽑아.\"\n\n평가 스크립트에서 바꿔야 할 것은?",
+      "choices": [
+        {
+          "text": "예측과 GT의 HBB IoU에 두 박스 각도 차의 코사인을 곱해 보정한다",
+          "rationale": "임의로 만든 보정식이라 실제 겹침 넓이와 다릅니다. 회전 IoU는 다각형 교집합으로 직접 계산합니다."
+        },
+        {
+          "text": "IoU 대신 두 박스의 중심점 거리가 선박 길이의 50% 이내이면 TP로 판정한다",
+          "rationale": "중심 거리 기준은 IoU가 아니며 각도·크기 오차를 반영하지 못합니다. 지시한 '회전 IoU 0.5' 기준과 다릅니다."
+        },
+        {
+          "text": "HBB IoU 계산은 그대로 두고 TP 판정 임계값만 0.5에서 0.7로 올린다",
+          "rationale": "HBB IoU는 비스듬한 객체에서 각도 오차에 둔감합니다. 임계값만 올려서는 회전 박스의 겹침을 평가할 수 없습니다."
+        },
+        {
+          "text": "GT는 HBB로 두고 예측만 회전 박스 그대로 써서 IoU를 계산한다",
+          "rationale": "서로 다른 형태의 박스를 비교하면 정답 예측도 IoU가 낮게 나옵니다. 둘 다 회전 박스로 비교해야 합니다."
+        },
+        {
+          "text": "예측·GT 회전 박스의 겹침 다각형 넓이를 합집합 넓이로 나눈 값이 0.5 이상일 때 TP로 판정한다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "회전 IoU 기준 평가란 예측과 GT를 둘 다 회전 박스 그대로 두고, 겹치는 다각형의 넓이를 합집합으로 나눈 값으로 TP를 판정하는 것입니다. 그 뒤 정밀도-재현율 곡선으로 AP를 계산하는 절차는 HBB 때와 같습니다.",
+      "explanation_full": "HBB로 바꿔 재면 비스듬한 선박의 HBB가 헐거워 각도가 틀린 예측도 TP가 되기 쉬워 성능이 부풀려집니다. DOTA의 회전 박스 과제(Task1)도 회전 박스 IoU로 평가합니다. 모델 비교 보고서에는 IoU 종류(회전/수평)와 임계값을 반드시 명시합니다.",
+      "tags": [
+        "obb",
+        "evaluation",
+        "iou"
+      ],
+      "terms": [
+        "rotated-iou",
+        "map"
+      ],
+      "source_ref": "Xia et al., DOTA: A Large-scale Dataset for Object Detection in Aerial Images (CVPR 2018)",
+      "status": "draft"
+    },
+    {
+      "id": "F-OBB-018",
+      "type": "scenario",
+      "chapter": "F.obb",
+      "cognitive_level": 3,
+      "difficulty": 5,
+      "stem": "지시: \"라벨러가 준 선박 GeoJSON은 EPSG:5186 좌표의 4점 폴리곤이야. 학습 파이프라인은 픽셀 단위 le90 (cx, cy, w, h, θ)을 받으니까 거기에 맞게 변환해.\"\n\n가장 적절한 변환 순서는?",
+      "choices": [
+        {
+          "text": "지오트랜스폼으로 꼭짓점을 픽셀 좌표로 바꾼 뒤, 최소 외접 회전 사각형을 구하고 긴 변을 w로 두어 θ를 [−90°, 90°)로 맞춘다",
+          "rationale": null
+        },
+        {
+          "text": "EPSG:5186 미터 좌표 그대로 최소 외접 회전 사각형을 구해 (cx, cy, w, h, θ)로 저장한다",
+          "rationale": "모델은 픽셀 단위 좌표를 받습니다. 미터 좌표를 그대로 쓰면 위치·크기 단위가 맞지 않고, 지도 y축(북쪽 위)과 영상 행 방향(아래)이 반대라 각도 부호도 어긋납니다."
+        },
+        {
+          "text": "폴리곤을 EPSG:4326 경위도로 재투영한 뒤 최소 외접 회전 사각형을 구한다",
+          "rationale": "경위도는 픽셀도 아니고 도(°) 단위라 가로·세로 축척이 달라 w·h·θ가 왜곡됩니다."
+        },
+        {
+          "text": "픽셀 좌표로 바꾼 뒤 x·y의 최솟값·최댓값으로 박스를 만들고 θ = 0°로 둔다",
+          "rationale": "이것은 수평 박스(HBB)를 만드는 방법입니다. 선박의 방향 정보가 사라집니다."
+        },
+        {
+          "text": "픽셀 좌표로 바꾼 뒤 첫 번째 변의 방향각을 θ로 쓰고 범위 정규화는 하지 않는다",
+          "rationale": "라벨러마다 시작 꼭짓점이 달라 w·h가 뒤바뀌고 θ가 규약 범위를 벗어납니다. le90은 긴 변을 w로 고정해야 합니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "먼저 GeoTIFF의 지오트랜스폼(역변환)으로 지도 좌표를 픽셀 좌표로 바꾸고, 4점 폴리곤을 최소 외접 회전 사각형으로 만든 뒤, 긴 변을 w로 두고 θ를 [−90°, 90°)로 정규화해야 le90 형식이 됩니다.",
+      "explanation_full": "EPSG:5186은 미터 단위 평면 좌표계라 픽셀 변환 자체는 지오트랜스폼(원점·픽셀 크기, 회전 항)으로 바로 됩니다. 주의할 점은 지도 좌표의 y축이 북쪽으로 증가하고 영상 행은 아래로 증가해 각도 부호가 뒤집힌다는 것입니다. 변환 뒤에는 몇 개 샘플을 영상 위에 다시 그려 박스가 선박에 맞는지 눈으로 확인하는 습관이 좋습니다. 예측을 GIS 산출물로 낼 때는 이 과정을 거꾸로 밟습니다.",
+      "tags": [
+        "obb",
+        "gis",
+        "conversion",
+        "labeling"
+      ],
+      "terms": [
+        "five-parameter-representation",
+        "angle-convention"
+      ],
+      "source_ref": "MMRotate 문서 — 회전 박스 각도 정의(oc, le135, le90)",
+      "status": "draft"
+    },
+    {
+      "id": "F-OBB-019",
+      "type": "scenario",
+      "chapter": "F.obb",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"대형 영상을 1024×1024, overlap 200으로 잘라 OBB 추론했더니 타일 경계에 걸친 선박이 두 번씩 잡혀. 결과 합칠 때 처리해.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "타일마다 NMS 임계값을 낮춰 한 번 더 돌린 뒤 결과를 그대로 이어 붙인다",
+          "rationale": "중복은 서로 다른 두 타일 사이에서 생깁니다. 각 타일 안에서만 NMS를 하면 타일 간 중복은 남습니다."
+        },
+        {
+          "text": "원본 좌표로 옮긴 뒤 각 OBB를 감싸는 HBB로 IoU를 계산해 NMS를 적용한다",
+          "rationale": "비스듬히 붙은 이웃 선박의 HBB끼리 크게 겹쳐 실제 다른 선박까지 지울 수 있습니다. OBB에는 회전 IoU를 써야 합니다."
+        },
+        {
+          "text": "타일별 예측에 타일 오프셋을 더해 원본 좌표로 옮긴 뒤, 전체 예측에 회전 IoU 기반 NMS를 한 번 더 적용한다",
+          "rationale": null
+        },
+        {
+          "text": "overlap을 0으로 바꿔 타일이 겹치지 않게 다시 추론한다",
+          "rationale": "중복은 사라지지만 경계에 걸친 선박이 두 조각으로 잘려 미탐이나 부분 검출이 늘어납니다."
+        },
+        {
+          "text": "원본 좌표로 옮기지 않고 타일 좌표 그대로 모든 예측을 모아 NMS를 적용한다",
+          "rationale": "타일마다 좌표 원점이 달라, 같은 선박의 두 박스는 겹치지 않는 것으로 계산되고 다른 타일의 무관한 박스끼리 겹친다고 판단됩니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "타일 예측을 원본 영상 좌표로 되돌려야 서로 다른 타일에서 나온 같은 선박의 박스가 겹쳐 보입니다. 그다음 회전 IoU로 전역 NMS를 하면 중복만 지우고 이웃 선박은 살릴 수 있습니다.",
+      "explanation_full": "OBB는 중심 좌표에만 오프셋을 더하면 되고 w·h·θ는 그대로입니다(8파라미터라면 모든 꼭짓점에 더함). 타일 경계에 잘린 부분 박스가 남는 경우에는 NMS 대신 박스 중 넓은 쪽을 남기거나, 박스 넓이 대비 교집합 비율(IoS)로 거르는 규칙을 추가하기도 합니다. GeoTIFF라면 최종 좌표를 지오트랜스폼으로 지도 좌표로 바꿔 내보냅니다.",
+      "tags": [
+        "obb",
+        "tiling",
+        "nms",
+        "inference"
+      ],
+      "terms": [
+        "rotated-iou",
+        "nms"
+      ],
+      "source_ref": "회전 객체 탐지 일반 (DOTA 논문, MMRotate 문서)",
+      "status": "draft"
+    },
+    {
+      "id": "F-OBB-020",
+      "type": "scenario",
+      "chapter": "F.obb",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"선박 OBB 탐지 결과(le90)에서 θ로 각 선박의 진행 방향(0~360° 방위)을 뽑아 항적 분석 자료로 넘겨줘.\"\n\n가장 적절한 대응은?",
+      "choices": [
+        {
+          "text": "θ에 2를 곱해 [−180°, 180°) 범위로 늘린 뒤 360° 방위로 변환한다",
+          "rationale": "두 배로 늘리면 180° 주기 값이 360° 범위로 펼쳐질 뿐 선수·선미 정보는 생기지 않습니다. 예를 들어 축 방향이 45°인 선박은 실제로 45°로 가든 225°로 가든 90°가 되어 진행 방향과 무관한 값이 됩니다."
+        },
+        {
+          "text": "θ에 180°를 더해 [90°, 270°) 범위로 옮기면 그대로 방위가 된다",
+          "rationale": "범위를 옮겼을 뿐 180° 모호성은 그대로입니다. 선수가 반대쪽인 선박도 같은 값을 받습니다."
+        },
+        {
+          "text": "영상 픽셀 기준 θ를 별도 변환 없이 진북 기준 방위로 쓴다",
+          "rationale": "영상 각도와 지도 방위는 기준축과 회전 방향이 달라 변환이 필요하고, 변환하더라도 선수·선미 모호성은 남습니다."
+        },
+        {
+          "text": "le90 θ는 180° 범위라 선수·선미를 구분하지 못함을 알리고, 선수 키포인트·방향 분류나 연속 영상의 이동 방향을 추가로 확보한다",
+          "rationale": null
+        },
+        {
+          "text": "θ의 절댓값이 45°보다 크면 남북, 작으면 동서로 보고 네 방위로만 나눠 넘긴다",
+          "rationale": "방위 해상도가 크게 떨어지고, 남과 북·동과 서를 여전히 구분하지 못합니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "직사각형 박스는 180° 돌려도 같은 모양이라 le90의 θ는 선박의 '축 방향'만 알려 줄 뿐 선수가 어느 쪽인지는 알려 주지 않습니다. 0~360° 진행 방향이 필요하면 선수 위치나 이동 방향 같은 추가 정보가 있어야 합니다.",
+      "explanation_full": "실무에서는 선수 키포인트를 함께 예측하거나, 방향을 앞/뒤로 분류하는 헤드를 붙이거나, 추적 결과의 프레임 간 이동 벡터로 앞뒤를 정합니다. 정지 선박은 이동 벡터가 없으므로 선수 탐지가 필요합니다. 방위로 바꿀 때는 영상 좌표 각도를 지도 좌표계 기준(진북, 시계 방향)으로 변환하는 단계도 잊지 말아야 합니다.",
+      "tags": [
+        "obb",
+        "angle",
+        "heading",
+        "gis"
+      ],
+      "terms": [
+        "oriented-bounding-box",
+        "angle-convention"
+      ],
+      "source_ref": "MMRotate 문서 — 회전 박스 각도 정의(oc, le135, le90)",
+      "status": "draft"
+    }
+  ]
+}

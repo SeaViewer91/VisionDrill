@@ -1,0 +1,648 @@
+{
+  "format": "visiondrill-bank-exchange",
+  "format_version": 1,
+  "terms": [
+    {
+      "id": "covariance",
+      "term_en": "Covariance",
+      "term_ko": "공분산",
+      "abbreviation": "Cov",
+      "definition": "두 변수가 각자의 평균에서 벗어난 정도(편차)를 곱해 평균 낸 값으로, 함께 변하는 방향을 나타내지만 크기가 변수의 단위에 따라 달라진다",
+      "usage_example": "밴드 간 공분산 행렬 뽑아서 PCA 돌려 봐. 밴드 단위가 서로 다르면 상관행렬로 하고.",
+      "origin": "standard",
+      "track": "A"
+    },
+    {
+      "id": "pearson-correlation-coefficient",
+      "term_en": "Pearson Correlation Coefficient",
+      "term_ko": "피어슨 상관계수",
+      "abbreviation": "r",
+      "definition": "공분산을 두 변수의 표준편차 곱으로 나눈 −1~1 사이 값으로, 두 변수의 선형 관계의 방향과 강도를 나타낸다",
+      "usage_example": "NDVI랑 엽면적지수 산점도부터 그려 보고, 직선 관계면 피어슨 r 붙여.",
+      "origin": "standard",
+      "track": "A"
+    },
+    {
+      "id": "spearman-rank-correlation",
+      "term_en": "Spearman's Rank Correlation",
+      "term_ko": "스피어만 순위상관계수",
+      "abbreviation": "ρ",
+      "definition": "두 변수를 각각 순위로 바꾼 뒤 계산한 피어슨 상관으로, 직선이 아니어도 단조(monotonic) 관계의 강도를 나타내며 이상치에 덜 민감하다",
+      "usage_example": "관계가 휘어 있고 튀는 값도 있으니 피어슨 말고 스피어만으로 봐.",
+      "origin": "standard",
+      "track": "A"
+    },
+    {
+      "id": "confounding-variable",
+      "term_en": "Confounding Variable",
+      "term_ko": "교란변수",
+      "abbreviation": null,
+      "definition": "원인으로 의심하는 변수와 결과 변수 모두에 영향을 주어, 둘 사이에 인과가 없어도 상관을 만들거나 실제 관계를 왜곡하는 제3의 변수",
+      "usage_example": "구름 비율이랑 오탐이 같이 움직이는 거, 계절이 교란변수일 수 있어. 계절별로 나눠서 다시 봐.",
+      "origin": "standard",
+      "track": "A"
+    },
+    {
+      "id": "spurious-correlation",
+      "term_en": "Spurious Correlation",
+      "term_ko": "허위 상관",
+      "abbreviation": null,
+      "definition": "두 변수 사이에 직접적인 관계가 없는데도 교란변수, 공통 추세, 우연 등 때문에 나타나는 상관",
+      "usage_example": "둘 다 해마다 늘어나는 시계열이라 상관 0.9는 허위 상관일 가능성이 커. 추세 빼고 다시 봐.",
+      "origin": "standard",
+      "track": "A"
+    },
+    {
+      "id": "spatial-autocorrelation",
+      "term_en": "Spatial Autocorrelation",
+      "term_ko": "공간 자기상관",
+      "abbreviation": null,
+      "definition": "가까운 위치의 관측값끼리 멀리 떨어진 것보다 서로 비슷하거나(양) 반대되는(음) 경향으로, 관측값이 서로 독립이라는 가정을 깨뜨린다",
+      "usage_example": "인접 타일끼리 공간 자기상관이 커서 랜덤 분할하면 검증 점수가 부풀려져.",
+      "origin": "standard",
+      "track": "A"
+    },
+    {
+      "id": "morans-i",
+      "term_en": "Moran's I",
+      "term_ko": "모란 지수",
+      "abbreviation": "I",
+      "definition": "공간가중행렬로 정의한 이웃끼리 값이 얼마나 비슷한지를 하나의 수로 요약하는 전역(global) 공간 자기상관 지표. 양수면 비슷한 값끼리 모임, 0 근처면 무작위, 음수면 이웃끼리 엇갈림",
+      "usage_example": "잔차 지도에 Moran's I 찍어 봐. 유의하게 양수면 공간 구조를 아직 못 잡은 거야.",
+      "origin": "standard",
+      "track": "A"
+    },
+    {
+      "id": "local-indicators-of-spatial-association",
+      "term_en": "Local Indicators of Spatial Association",
+      "term_ko": "국지적 공간연관 지표",
+      "abbreviation": "LISA",
+      "definition": "전역 공간 자기상관 지표를 위치별로 분해해, 각 위치와 이웃의 연관으로 핫스팟(High-High)·콜드스팟(Low-Low)·공간 이상치(High-Low, Low-High)를 찾는 국지 지표(대표: Local Moran's I)",
+      "usage_example": "쓰레기 밀도 격자에 LISA 돌려서 High-High 클러스터만 폴리곤으로 뽑아 줘.",
+      "origin": "standard",
+      "track": "A"
+    }
+  ],
+  "questions": [
+    {
+      "id": "A-CORR-001",
+      "type": "short",
+      "chapter": "A.corr",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "두 변수 각각의 편차(값 − 평균)를 곱해 평균 낸 값으로, 두 변수가 함께 변하는 방향은 알려 주지만 크기가 변수의 단위에 따라 달라지는 통계량의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Covariance (Cov)"
+        ],
+        "ko": [
+          "공분산"
+        ]
+      },
+      "primary": "Covariance (Cov)",
+      "explanation_short": "공분산(covariance)은 Cov(X,Y) = E[(X−μₓ)(Y−μᵧ)]로, 양수면 같은 방향, 음수면 반대 방향으로 함께 변합니다. 단위에 따라 크기가 바뀌어 관계의 강도를 비교하기는 어렵습니다.",
+      "explanation_full": "표본 공분산은 편차 곱의 합을 n−1로 나눠 계산합니다. 반사도(0~1)와 DN(0~10000)처럼 척도가 다른 변수는 공분산 크기만으로 비교할 수 없어서, 표준편차로 나눈 상관계수를 씁니다. 다중분광 밴드의 공분산 행렬은 주성분분석(PCA), 마할라노비스 거리, 최대우도 분류 등에 쓰입니다.",
+      "tags": [
+        "correlation",
+        "basics"
+      ],
+      "terms": [
+        "covariance"
+      ],
+      "source_ref": "통계학 일반: 상관분석",
+      "status": "draft"
+    },
+    {
+      "id": "A-CORR-002",
+      "type": "short",
+      "chapter": "A.corr",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "공분산을 두 변수의 표준편차 곱으로 나누어 −1에서 1 사이 값으로 만든, 두 변수의 선형 관계 강도를 나타내는 지표의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Pearson correlation coefficient",
+          "Pearson's r",
+          "Pearson correlation",
+          "Pearson product-moment correlation coefficient"
+        ],
+        "ko": [
+          "피어슨 상관계수",
+          "피어슨 상관",
+          "피어슨 적률상관계수",
+          "적률상관계수"
+        ]
+      },
+      "primary": "Pearson correlation coefficient",
+      "explanation_short": "피어슨 상관계수 r = Cov(X,Y)/(σₓσᵧ)는 단위와 무관하게 선형 관계의 방향과 강도를 −1~1로 나타냅니다. r=0은 선형 관계가 없다는 뜻이지, 관계가 전혀 없다는 뜻은 아닙니다.",
+      "explanation_full": "r은 곡선 관계(예: U자형)를 잘 잡지 못하고, 이상치 하나에도 크게 흔들립니다. 그래서 r을 보고하기 전에 항상 산점도를 먼저 그립니다(앤스컴 콰르텟: 모양이 전혀 다른 네 데이터가 거의 같은 r을 가짐). 단순선형회귀에서는 r²이 결정계수 R²와 같습니다.",
+      "tags": [
+        "correlation",
+        "basics"
+      ],
+      "terms": [
+        "pearson-correlation-coefficient"
+      ],
+      "source_ref": "통계학 일반: 상관분석",
+      "status": "draft"
+    },
+    {
+      "id": "A-CORR-003",
+      "type": "short",
+      "chapter": "A.corr",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "공간가중행렬로 이웃을 정의해, 이웃한 위치끼리 값이 비슷한 정도를 지도 전체에 대해 하나의 수로 요약하는 전역(global) 공간 자기상관 지표다. 공간적으로 무작위일 때 기댓값이 −1/(n−1)로 0에 가깝고, 양수면 비슷한 값끼리 모여 있음을 뜻한다. 이 지표의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Moran's I",
+          "Global Moran's I"
+        ],
+        "ko": [
+          "모란 지수",
+          "모란의 I",
+          "모란 I",
+          "전역 모란 지수"
+        ]
+      },
+      "primary": "Moran's I",
+      "explanation_short": "Moran's I는 대표적인 전역 공간 자기상관 지표로, 양수면 비슷한 값끼리 뭉침(양의 자기상관), 0 근처면 공간적 무작위, 음수면 이웃끼리 서로 엇갈림(음의 자기상관)을 뜻합니다.",
+      "explanation_full": "I = (n/W)·ΣᵢΣⱼ wᵢⱼ(xᵢ−x̄)(xⱼ−x̄) / Σᵢ(xᵢ−x̄)² 이며, wᵢⱼ는 공간가중행렬(인접·거리 기반)의 원소, W는 그 합입니다. 공분산처럼 편차 곱을 쓰되 '이웃끼리'만 곱한다는 점에서 공간판 상관계수로 볼 수 있습니다. 유의성은 정규 근사나 순열검정으로 봅니다. 비슷한 목적의 Geary's C는 이웃 간 차이의 제곱을 쓰며 무작위일 때 1, 양의 자기상관일 때 1보다 작습니다. 이웃 정의를 바꾸면 값이 달라지므로 사용한 가중행렬을 함께 기록합니다.",
+      "tags": [
+        "spatial-statistics",
+        "autocorrelation"
+      ],
+      "terms": [
+        "morans-i",
+        "spatial-autocorrelation"
+      ],
+      "source_ref": "공간통계 일반: 공간 자기상관 (Moran 1950; Anselin 1995)",
+      "status": "draft"
+    },
+    {
+      "id": "A-CORR-004",
+      "type": "short",
+      "chapter": "A.corr",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "두 변수 X와 Y 모두에 영향을 주어, X가 Y의 원인이 아닌데도 둘 사이에 상관을 만들어 내거나 실제 관계를 왜곡하는 제3의 변수를 무엇이라 하는가? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Confounding variable",
+          "Confounder",
+          "Lurking variable"
+        ],
+        "ko": [
+          "교란변수",
+          "혼란변수",
+          "혼동변수",
+          "혼재변수",
+          "교락변수"
+        ]
+      },
+      "primary": "Confounding variable",
+      "explanation_short": "교란변수(confounding variable)는 원인 후보와 결과 모두에 영향을 주는 공통 원인입니다. 교란변수가 있으면 상관이 인과를 뜻하지 않으며, 이를 통제(층화, 회귀 조정, 무작위화)해야 관계를 제대로 볼 수 있습니다.",
+      "explanation_full": "고전적인 예로 아이스크림 판매량과 물놀이 사고는 양의 상관을 보이지만, 둘 다 기온(여름)이 늘리는 것이지 서로 원인이 아닙니다. 원격탐사 모델 진단에서는 센서·촬영 시기·지역이 입력 특성과 성능 모두에 영향을 주는 대표적 교란변수입니다. 같은 센서·계절끼리 나눠(층화) 다시 보거나 회귀모형에 함께 넣어 효과를 분리합니다.",
+      "tags": [
+        "correlation",
+        "causality"
+      ],
+      "terms": [
+        "confounding-variable"
+      ],
+      "source_ref": "통계학 일반: 상관분석",
+      "status": "draft"
+    },
+    {
+      "id": "A-CORR-005",
+      "type": "mcq",
+      "chapter": "A.corr",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "두 변수를 각각 순위(rank)로 바꾼 뒤 피어슨 상관을 계산한 것으로, 관계가 직선이 아니어도 단조(monotonic) 관계의 강도를 나타내는 지표는?",
+      "choices": [
+        {
+          "text": "켄달의 타우(Kendall's τ)",
+          "rationale": "켄달 τ도 순위 기반 상관이지만, 순위를 피어슨 식에 넣는 것이 아니라 일치쌍·불일치쌍의 수로 계산합니다."
+        },
+        {
+          "text": "스피어만 순위상관계수(Spearman's ρ)",
+          "rationale": null
+        },
+        {
+          "text": "피어슨 상관계수(Pearson's r)",
+          "rationale": "피어슨 r은 원래 값으로 계산하며 선형 관계만 잡습니다. 순위로 바꾸는 단계가 없습니다."
+        },
+        {
+          "text": "결정계수(Coefficient of determination, R²)",
+          "rationale": "결정계수는 회귀모형이 종속변수 변동을 설명하는 비율입니다. 순위 변환과는 무관합니다."
+        },
+        {
+          "text": "모란 지수(Moran's I)",
+          "rationale": "Moran's I는 한 변수가 공간적으로 이웃끼리 얼마나 비슷한지를 보는 공간 자기상관 지표입니다. 두 변수 간 순위 상관이 아닙니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "스피어만 순위상관(Spearman's ρ)은 값을 순위로 바꿔 피어슨 상관을 계산합니다. 한 변수가 커질 때 다른 변수가 (직선이 아니더라도) 꾸준히 커지거나 작아지면 |ρ|가 1에 가깝습니다.",
+      "explanation_full": "순위만 쓰므로 극단값 하나의 영향이 작고, 로그처럼 증가하는 변환을 해도 값이 변하지 않습니다. 대신 U자처럼 방향이 바뀌는 비단조 관계는 스피어만도 잡지 못합니다. 예: 수심에 따라 지수적으로 감쇠하는 반사도, 순위 척도(피해 등급 1~5) 사이의 관계에 적합합니다.",
+      "tags": [
+        "correlation",
+        "rank"
+      ],
+      "terms": [
+        "spearman-rank-correlation"
+      ],
+      "source_ref": "통계학 일반: 상관분석",
+      "status": "draft"
+    },
+    {
+      "id": "A-CORR-006",
+      "type": "mcq",
+      "chapter": "A.corr",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "LISA(Local Indicators of Spatial Association)에 대한 설명으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "지도 전체의 공간 자기상관 정도를 하나의 수로 요약해 보여 주는 전역 지표다",
+          "rationale": "이는 전역 Moran's I 같은 global 지표의 설명입니다. LISA는 이를 위치별로 분해한 국지(local) 지표입니다."
+        },
+        {
+          "text": "두 변수의 관계가 위치에 따라 다른지 보려고 위치마다 회귀계수를 따로 추정하는 방법이다",
+          "rationale": "이는 지리가중회귀(GWR)입니다. LISA는 회귀계수가 아니라 한 변수의 국지적 공간 연관을 봅니다."
+        },
+        {
+          "text": "관측 지점 사이의 값을 공간 자기상관 구조를 이용해 추정(보간)하는 방법이다",
+          "rationale": "이는 크리깅(kriging) 같은 공간 보간 기법입니다. LISA는 보간이 아니라 군집·이상치 탐지용입니다."
+        },
+        {
+          "text": "위치마다 자신과 이웃의 연관을 계산해 핫스팟·콜드스팟·공간 이상치를 찾는다",
+          "rationale": null
+        },
+        {
+          "text": "두 지점 사이 거리에 따라 값의 차이가 얼마나 커지는지 나타낸 그래프다",
+          "rationale": "이는 (반)변동도(semivariogram)입니다. 거리별 공간 의존 구조를 보지만 위치별 군집을 표시하지는 않습니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "LISA는 전역 지표를 위치별로 분해한 국지 지표(대표: Local Moran's I)입니다. 각 위치가 유의한 High-High(핫스팟), Low-Low(콜드스팟), High-Low·Low-High(공간 이상치) 중 어디에 속하는지 보여 줍니다.",
+      "explanation_full": "Anselin(1995)이 제안한 개념으로, 모든 위치의 국지 지표를 합하면 전역 지표에 비례합니다. 위치마다 검정하므로 수천 개 격자에서는 다중검정 문제가 생기며, 순열검정 p값에 FDR 보정 등을 함께 씁니다. 원격탐사에서는 탐지 결과 밀도 격자(예: 1km 격자별 부표 수)의 집중 구역 파악, 모델 잔차의 국지적 편향 구역 찾기에 씁니다.",
+      "tags": [
+        "spatial-statistics",
+        "lisa"
+      ],
+      "terms": [
+        "local-indicators-of-spatial-association"
+      ],
+      "source_ref": "Anselin (1995), Local Indicators of Spatial Association—LISA, Geographical Analysis 27(2)",
+      "status": "draft"
+    },
+    {
+      "id": "A-CORR-007",
+      "type": "mcq",
+      "chapter": "A.corr",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "허위 상관(spurious correlation)의 뜻으로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "직접 관계가 없는데 공통 원인·공통 추세·우연 등으로 나타나는 상관",
+          "rationale": null
+        },
+        {
+          "text": "측정 오차 때문에 실제보다 0 쪽으로 약하게 추정된 두 변수 사이의 상관",
+          "rationale": "측정 오차로 상관이 0 쪽으로 줄어드는 것은 희석(attenuation) 편향입니다. 없던 관계가 생긴 것이 아닙니다."
+        },
+        {
+          "text": "표본 수가 너무 적어서 통계적으로 유의하게 나오지 않은 상관",
+          "rationale": "유의하지 않음은 불확실성의 문제이지 상관이 가짜라는 뜻이 아닙니다."
+        },
+        {
+          "text": "원인 변수가 결과 변수에 실제로 영향을 주어서 나타나는 상관",
+          "rationale": "이는 인과 관계에서 비롯한 '진짜' 상관입니다. 허위 상관은 직접 관계가 없는데 생긴 상관입니다."
+        },
+        {
+          "text": "두 변수를 각각 순위로 바꾼 뒤 계산한 상관",
+          "rationale": "순위로 계산한 상관은 스피어만 순위상관입니다. 계산 방식이지 허위 여부와는 무관합니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "허위 상관은 X와 Y가 서로 직접 영향을 주지 않는데 교란변수(공통 원인), 함께 증가하는 시간 추세, 우연 등 때문에 생기는 상관입니다. 상관이 인과를 뜻하지 않는 대표적인 이유입니다.",
+      "explanation_full": "시계열 두 개가 모두 해마다 증가하면 서로 무관해도 r이 0.9 이상 나오기 쉽습니다. 이럴 땐 추세를 제거하거나(차분) 증가율끼리 비교합니다. 또 검정할 변수 쌍이 많으면 우연히 강한 상관이 나오는 쌍도 생기므로(다중비교) 탐색으로 찾은 상관은 새 데이터로 재확인합니다. 두 비율 변수가 같은 분모(예: 타일 면적)를 공유할 때도 허위 상관이 생길 수 있습니다.",
+      "tags": [
+        "correlation",
+        "causality"
+      ],
+      "terms": [
+        "spurious-correlation"
+      ],
+      "source_ref": "통계학 일반: 상관분석",
+      "status": "draft"
+    },
+    {
+      "id": "A-CORR-008",
+      "type": "mcq",
+      "chapter": "A.corr",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "해안 구역별 '해안선 길이(m)'와 '탐지된 부표 수'의 공분산과 피어슨 상관계수를 구했다. 해안선 길이의 단위만 m에서 km로 바꾸면 어떻게 되는가?",
+      "choices": [
+        {
+          "text": "공분산과 상관계수가 모두 1/1000로 작아진다",
+          "rationale": "상관계수는 공분산을 두 표준편차의 곱으로 나눈 값이라 척도 변화가 분자·분모에서 상쇄됩니다."
+        },
+        {
+          "text": "공분산은 변하지 않고, 상관계수는 1/1000로 작아진다",
+          "rationale": "반대입니다. 공분산은 단위에 따라 크기가 바뀌고, 상관계수는 단위와 무관합니다."
+        },
+        {
+          "text": "공분산은 1/1000로 작아지고, 상관계수는 변하지 않는다",
+          "rationale": null
+        },
+        {
+          "text": "공분산은 1/1,000,000로, 상관계수는 1/1000로 작아진다",
+          "rationale": "한 변수만 1/1000배 했으므로 공분산은 1/1000배입니다(1/1,000,000배는 두 변수를 모두 1/1000배 했을 때). 상관계수는 단위와 무관합니다."
+        },
+        {
+          "text": "공분산과 상관계수가 모두 변하지 않는다",
+          "rationale": "공분산은 각 변수의 편차를 그대로 곱하므로 한 변수를 1/1000배 하면 공분산도 1/1000배가 됩니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "Cov(aX, Y) = a·Cov(X, Y)이므로 X를 1/1000배 하면 공분산도 1/1000배가 됩니다. 반면 상관계수는 공분산을 σₓσᵧ로 나누어 a가 분자·분모에서 상쇄되므로 그대로입니다.",
+      "explanation_full": "상관계수는 양의 상수배와 상수 더하기(양의 기울기 선형 변환)에 대해 불변이고, 음의 상수를 곱하면 부호만 바뀝니다. 그래서 단위가 다른 여러 변수(반사도, 고도 m, 온도 °C)의 관계 강도를 비교할 때는 공분산 행렬 대신 상관행렬을 씁니다. PCA도 척도가 다른 변수를 섞을 때는 상관행렬(표준화 후 PCA)로 하는 것이 일반적입니다.",
+      "tags": [
+        "correlation",
+        "covariance",
+        "scale"
+      ],
+      "terms": [
+        "covariance",
+        "pearson-correlation-coefficient"
+      ],
+      "source_ref": "통계학 일반: 상관분석",
+      "status": "draft"
+    },
+    {
+      "id": "A-CORR-009",
+      "type": "mcq",
+      "chapter": "A.corr",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "얕은 해역 50개 지점에서 수심과 청색 밴드 반사도를 비교했더니, 수심이 깊어질수록 반사도가 꾸준히 줄지만 곡선(지수 감쇠) 형태였다. 스피어만 ρ = −0.97, 피어슨 r = −0.81이다. 가장 적절한 해석은?",
+      "choices": [
+        {
+          "text": "두 지표 값이 크게 다르므로 둘 중 하나의 계산이 잘못되었을 가능성이 크다",
+          "rationale": "관계가 곡선이면 두 지표가 다르게 나오는 것이 정상입니다. 순위 기반 ρ는 단조성을, r은 선형성을 잽니다."
+        },
+        {
+          "text": "피어슨 |r|이 더 작으므로 실제 관계는 약하며, 스피어만 결과는 과대 추정이다",
+          "rationale": "스피어만은 과대 추정이 아니라 다른 성질(단조 관계)을 잽니다. 관계가 곡선이면 선형 지표가 관계의 강도를 과소평가합니다."
+        },
+        {
+          "text": "|ρ|가 0.97이므로 수심이 반사도를 결정하는 유일한 원인이라고 결론 낼 수 있다",
+          "rationale": "상관은 인과나 '유일한 원인'을 증명하지 못합니다. 저질(바닥 재질), 탁도 등도 반사도에 영향을 줍니다."
+        },
+        {
+          "text": "피어슨 r이 −0.81로 충분히 크므로, 수심에 대한 반사도의 직선 회귀면 충분하다",
+          "rationale": "r이 크더라도 관계가 곡선이면 직선 모형은 체계적인 잔차 패턴을 남깁니다. 로그 변환 뒤 선형 모형을 쓰는 편이 적절합니다."
+        },
+        {
+          "text": "강한 단조 감소 관계이지만 직선이 아니어서, 선형 관계만 재는 피어슨 |r|이 더 작게 나왔다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "스피어만 ρ는 순위만 보므로 곡선이라도 꾸준히 한 방향으로 변하면 |ρ|가 1에 가깝습니다. 피어슨 r은 직선에서 벗어난 만큼 작아지므로, |ρ|가 |r|보다 뚜렷이 크면 '단조이지만 비선형' 관계를 의심합니다.",
+      "explanation_full": "이런 경우 반사도에 로그를 취하면(수심에 따른 지수 감쇠를 선형화) 피어슨 r도 커지는 경우가 많습니다. 경험적 수심 추정 모형(예: Lyzenga 선형 모형, Stumpf 로그비 모형)이 로그 변환한 반사도를 쓰는 이유이기도 합니다. 반대로 이상치 한두 개 때문에 r만 크게 흔들리는 경우도 있으니, 두 지표와 산점도를 함께 봅니다.",
+      "tags": [
+        "correlation",
+        "rank",
+        "bathymetry"
+      ],
+      "terms": [
+        "spearman-rank-correlation",
+        "pearson-correlation-coefficient"
+      ],
+      "source_ref": "통계학 일반: 상관분석",
+      "status": "draft"
+    },
+    {
+      "id": "A-CORR-010",
+      "type": "mcq",
+      "chapter": "A.corr",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "토지피복 분류 모델의 격자별 오차(잔차) 지도에 전역 Moran's I를 계산했더니 I = 0.58 (순열검정 p < 0.001)이었다. 가장 적절한 해석은?",
+      "choices": [
+        {
+          "text": "오차가 격자마다 무작위로 흩어져 있어, 모델이 공간 구조를 충분히 반영했다",
+          "rationale": "무작위 분포라면 I가 기댓값 −1/(n−1) ≈ 0 근처여야 합니다. 0.58은 뚜렷한 양의 자기상관입니다."
+        },
+        {
+          "text": "오차가 큰 격자끼리, 작은 격자끼리 뭉쳐 있어 공간 구조가 남아 있다",
+          "rationale": null
+        },
+        {
+          "text": "이웃한 격자끼리 오차가 서로 엇갈려 체스판 같은 패턴을 보인다",
+          "rationale": "체스판처럼 이웃끼리 반대 값이 나오는 것은 음의 공간 자기상관(I < 0)입니다."
+        },
+        {
+          "text": "전체 격자 중 58%에서 오차가 통계적으로 유의하게 크다",
+          "rationale": "Moran's I는 비율이 아니라 이웃 간 유사성의 정도를 나타내는 지수입니다. 어느 격자가 유의한지는 LISA 같은 국지 지표로 봅니다."
+        },
+        {
+          "text": "격자별 오차와 입력 변수 사이의 피어슨 상관계수가 0.58이다",
+          "rationale": "Moran's I는 한 변수(여기서는 오차)의 공간적 자기 유사성을 재며, 두 변수 간 상관이 아닙니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "Moran's I가 유의한 양수이면 비슷한 값끼리 공간적으로 뭉쳐 있다는 뜻입니다. 잔차에 양의 공간 자기상관이 남아 있으면 모델이 지역적 요인(지형, 센서·촬영 조건 등)을 놓치고 있다는 신호입니다.",
+      "explanation_full": "잔차가 공간 자기상관을 가지면 관측이 독립이라는 가정이 깨져, 무작위 교차검증 점수가 부풀려지고 회귀계수의 표준오차가 과소추정됩니다. 대응: 공간 블록 교차검증으로 다시 평가, 좌표·지역 특성 변수 추가, 공간 회귀(공간 시차·공간 오차 모형)나 GWR 검토. 문제가 어디에 몰려 있는지는 LISA로 국지 군집을 찾아 확인합니다.",
+      "tags": [
+        "spatial-statistics",
+        "autocorrelation",
+        "residual"
+      ],
+      "terms": [
+        "morans-i",
+        "spatial-autocorrelation"
+      ],
+      "source_ref": "공간통계 일반: 공간 자기상관 (Moran 1950; Anselin 1995)",
+      "status": "draft"
+    },
+    {
+      "id": "A-CORR-011",
+      "type": "mcq",
+      "chapter": "A.corr",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "1km 격자별 해안 쓰레기 탐지 면적에 LISA(Local Moran's I)를 적용했다. 어떤 격자가 'High-Low'로 유의하게 분류되었다면 그 의미는?",
+      "choices": [
+        {
+          "text": "이 격자와 주변 격자가 모두 값이 높은 핫스팟이다",
+          "rationale": "자신과 이웃이 모두 높은 경우는 High-High(핫스팟)입니다."
+        },
+        {
+          "text": "이 격자와 주변 격자가 모두 값이 낮은 콜드스팟이다",
+          "rationale": "자신과 이웃이 모두 낮은 경우는 Low-Low(콜드스팟)입니다."
+        },
+        {
+          "text": "주변 격자들은 값이 높은데 이 격자만 값이 낮은 공간 이상치다",
+          "rationale": "이 경우는 Low-High입니다. 첫 번째가 자신, 두 번째가 이웃의 수준을 뜻합니다."
+        },
+        {
+          "text": "주변 격자들은 값이 낮은데 이 격자만 값이 높은 공간 이상치다",
+          "rationale": null
+        },
+        {
+          "text": "시간이 지나면서 값이 높았다가 낮아진 격자다",
+          "rationale": "LISA 분류는 한 시점 안에서 자신과 이웃의 값을 비교한 공간적 분류이며, 시간 변화를 뜻하지 않습니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "LISA 분류에서 첫 번째는 해당 위치의 값, 두 번째는 이웃 값의 가중평균(공간 시차)의 수준입니다. High-Low는 낮은 이웃에 둘러싸인 높은 값으로, 주변과 동떨어진 공간 이상치입니다.",
+      "explanation_full": "High-Low 격자는 실제 국지적 쓰레기 집적지일 수도 있지만 오탐, 영상 경계, 구름 가장자리 같은 처리 문제일 수도 있어 원본 영상 확인 우선순위가 높습니다. Moran 산점도의 네 사분면(HH, LH, LL, HL)이 이 분류에 대응합니다. 격자 수가 많으면 우연히 유의한 격자가 생기므로 p값 보정(FDR 등)을 함께 고려합니다.",
+      "tags": [
+        "spatial-statistics",
+        "lisa"
+      ],
+      "terms": [
+        "local-indicators-of-spatial-association"
+      ],
+      "source_ref": "Anselin (1995), Local Indicators of Spatial Association—LISA, Geographical Analysis 27(2)",
+      "status": "draft"
+    },
+    {
+      "id": "A-CORR-012",
+      "type": "mcq",
+      "chapter": "A.corr",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "여러 지역 타일에서 '건물 밀도'와 '건물 탐지 재현율'이 음의 상관(r = −0.62)을 보였다. 그런데 건물 밀도가 높은 도심 타일은 대부분 GSD가 거친 구형 영상에서 왔다. 가장 적절한 해석과 조치는?",
+      "choices": [
+        {
+          "text": "GSD가 교란변수일 수 있으니 GSD별로 나눠 상관을 다시 확인한다",
+          "rationale": null
+        },
+        {
+          "text": "밀집이 재현율 저하의 원인임이 확실하므로, 밀집 지역 전용 모델을 바로 개발한다",
+          "rationale": "관측 상관만으로는 원인을 확정할 수 없습니다. GSD 차이가 재현율 저하를 만들었을 수 있습니다."
+        },
+        {
+          "text": "r = −0.62는 충분히 강한 상관이므로 교란변수의 가능성은 무시해도 된다",
+          "rationale": "상관이 강하다고 교란이 배제되지 않습니다. 교란변수는 오히려 강한 겉보기 상관을 만들 수 있습니다."
+        },
+        {
+          "text": "피어슨 대신 스피어만 상관으로 다시 계산하면 교란변수의 영향이 제거된다",
+          "rationale": "스피어만은 비선형·이상치 문제를 다룰 뿐 교란을 제거하지 못합니다. 교란은 층화나 회귀 조정 등으로 통제합니다."
+        },
+        {
+          "text": "분석하는 타일 수를 충분히 늘리면 교란변수의 영향은 저절로 사라진다",
+          "rationale": "표본을 늘리면 추정이 정밀해질 뿐 편향(교란)은 그대로 남습니다. 오히려 편향된 상관이 더 '유의'하게 나옵니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "GSD가 거친 영상일수록 작은 건물을 놓치기 쉬우므로, GSD가 밀도 및 재현율과 동시에 얽혀 허위 상관을 만들었을 수 있습니다. 같은 GSD 안에서도 음의 상관이 남는지 층화해 확인해야 합니다.",
+      "explanation_full": "엄밀히 말해 GSD가 건물 밀도를 '만들어 내지는' 않지만, 데이터 수집 과정에서 밀도와 얽혀 있고(도심 타일이 구형 영상에 몰림) 재현율에는 직접 영향을 주므로 교란변수 역할을 합니다. 층화(GSD·센서별로 나눠 분석), 회귀에 GSD를 함께 넣는 조정, 같은 지역을 고해상도 영상으로 다시 확보해 비교하는 방법이 있습니다. 층화 후 상관이 사라지면 원래 상관은 교란에 의한 허위 상관이었을 가능성이 크고, 남는다면 밀집 자체의 영향도 있다고 봅니다. 층을 나눴을 때 관계의 방향이 뒤집히는 경우는 심슨의 역설(Simpson's paradox)이라고 부릅니다.",
+      "tags": [
+        "correlation",
+        "causality",
+        "confounding"
+      ],
+      "terms": [
+        "confounding-variable",
+        "spurious-correlation"
+      ],
+      "source_ref": "통계학 일반: 상관분석",
+      "status": "draft"
+    },
+    {
+      "id": "A-CORR-013",
+      "type": "scenario",
+      "chapter": "A.corr",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"잔차 Moran's I가 0.45로 유의하게 나왔어. 랜덤 5-fold 점수는 믿기 어려우니까 공간 블록 교차검증으로 다시 평가해서 가져와.\"\n\n이 지시의 이유로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "Moran's I가 양수면 모델이 과소적합이므로, 블록 CV로 학습 데이터 양을 늘려야 하기 때문이다",
+          "rationale": "블록 CV는 학습량을 늘리는 방법이 아니라 검증 세트를 공간적으로 떼어 놓는 평가 방법입니다."
+        },
+        {
+          "text": "공간 자기상관이 있으면 클래스 불균형이 생기므로, 블록 단위로 층화해야 하기 때문이다",
+          "rationale": "공간 자기상관과 클래스 불균형은 다른 문제입니다. 층화 분할은 클래스 비율 유지를 위한 것입니다."
+        },
+        {
+          "text": "가까운 샘플끼리 비슷해서, 랜덤 분할 시 학습 샘플의 이웃이 검증에 섞여 점수가 부풀기 때문이다",
+          "rationale": null
+        },
+        {
+          "text": "블록 교차검증을 쓰면 모델 잔차의 공간 자기상관 자체가 사라지기 때문이다",
+          "rationale": "평가 방식을 바꿔도 모델 잔차의 공간 구조는 그대로입니다. 블록 CV는 그 구조가 있을 때 성능을 정직하게 추정할 뿐입니다."
+        },
+        {
+          "text": "랜덤 5-fold는 fold 수가 적어 점수의 분산이 크므로, fold 수를 늘려야 하기 때문이다",
+          "rationale": "지시의 핵심은 fold 수가 아니라 분할 방식(공간적 분리)입니다. 랜덤 분할이면 fold를 늘려도 누수는 그대로입니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "공간 자기상관이 있으면 인접 샘플이 거의 같은 정보를 담고 있어, 랜덤 분할 시 검증 샘플의 '이웃'이 학습에 들어가 누수가 생깁니다. 공간 블록 CV는 검증 블록을 학습 지역과 떼어 놓아 새 지역에서의 성능을 정직하게 추정합니다.",
+      "explanation_full": "블록 크기는 자기상관이 사라지는 거리(변동도의 range나 거리 구간별 Moran's I인 correlogram으로 확인)보다 크게 잡는 것이 원칙이며, 블록 사이에 완충 구역(buffer)을 두기도 합니다. 블록 CV 점수는 랜덤 CV보다 낮게 나오는 것이 보통이며, 그 값이 새 지역에 배포했을 때의 성능에 더 가깝습니다.",
+      "tags": [
+        "spatial-statistics",
+        "cross-validation",
+        "leakage"
+      ],
+      "terms": [
+        "spatial-autocorrelation",
+        "morans-i"
+      ],
+      "source_ref": "공간통계 일반: 공간 자기상관 (Moran 1950; Anselin 1995)",
+      "status": "draft"
+    },
+    {
+      "id": "A-CORR-014",
+      "type": "scenario",
+      "chapter": "A.corr",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"양식장 부표 탐지 결과를 500m 격자 밀도로 만들었어. LISA 돌려서 유의한 High-High 클러스터만 폴리곤으로 뽑아 줘.\"\n\n가장 적절한 처리 순서는?",
+      "choices": [
+        {
+          "text": "밀도 값이 상위 10%인 격자를 골라서, 인접한 격자끼리 합쳐 폴리곤으로 만든다",
+          "rationale": "값이 높은 격자만 고르면 이웃 값을 고려하지 않아 고립된 이상치(High-Low)도 섞입니다. HH는 자신과 이웃이 모두 높은 곳입니다."
+        },
+        {
+          "text": "전역 Moran's I를 계산해 유의하게 나오면 전체 격자 범위를 하나의 폴리곤으로 만든다",
+          "rationale": "전역 Moran's I는 지도 전체에 군집 경향이 있는지만 알려 줄 뿐, 군집이 어디인지는 알려 주지 않습니다."
+        },
+        {
+          "text": "격자 밀도에 커널 스무딩을 적용해 등치선을 그리고, 가장 바깥 등치선을 폴리곤으로 쓴다",
+          "rationale": "커널 밀도 등치선은 시각화에 유용하지만 LISA의 유의성 판단이나 HH 분류가 아닙니다."
+        },
+        {
+          "text": "격자별로 부표 수와 수심의 피어슨 상관을 계산하고, 상관이 높은 격자만 골라낸다",
+          "rationale": "LISA는 한 변수의 국지 공간 연관을 봅니다. 격자 하나로는 두 변수 상관을 계산할 수도 없으며 지시와 무관합니다."
+        },
+        {
+          "text": "이웃(공간가중행렬)을 정의해 격자별 Local Moran's I·p값을 구하고, 유의한 HH 격자를 병합해 폴리곤화한다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "LISA는 이웃 정의(공간가중행렬)를 먼저 정한 뒤 위치별 Local Moran's I와 유의성을 계산합니다. 자신과 이웃이 모두 높고 유의한 HH 격자를 추려 인접 격자끼리 합치면 클러스터 폴리곤이 됩니다.",
+      "explanation_full": "실무 체크리스트: ① 미터 단위 투영 좌표계(예: EPSG:5186)로 맞추기 ② 이웃 정의(Queen/Rook 인접 또는 거리 기반)와 행 표준화 ③ 순열검정으로 p값 계산(예: 999회) ④ 수천 개 격자를 동시에 검정하므로 FDR 보정 여부 결정 ⑤ HH만 추출해 dissolve하고, 사용한 가중행렬과 유의수준을 결과에 기록. 파이썬에서는 PySAL(esda)의 Local Moran 기능으로 계산할 수 있습니다.",
+      "tags": [
+        "spatial-statistics",
+        "lisa",
+        "gis"
+      ],
+      "terms": [
+        "local-indicators-of-spatial-association"
+      ],
+      "source_ref": "Anselin (1995), Local Indicators of Spatial Association—LISA, Geographical Analysis 27(2)",
+      "status": "draft"
+    }
+  ]
+}

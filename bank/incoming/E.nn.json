@@ -1,0 +1,977 @@
+{
+  "format": "visiondrill-bank-exchange",
+  "format_version": 1,
+  "terms": [
+    {
+      "id": "perceptron",
+      "term_en": "Perceptron",
+      "term_ko": "퍼셉트론",
+      "abbreviation": null,
+      "definition": "입력의 가중합에 편향을 더한 뒤 계단 함수로 0 또는 1을 출력하는 가장 단순한 인공 뉴런 모델",
+      "usage_example": "물/비물을 밴드값 두세 개로만 가르는 거면 단층 퍼셉트론 수준에서 선형 분리가 되는지부터 봐.",
+      "origin": "standard",
+      "track": "E"
+    },
+    {
+      "id": "hidden-layer",
+      "term_en": "Hidden Layer",
+      "term_ko": "은닉층",
+      "abbreviation": null,
+      "definition": "입력층과 출력층 사이에서 중간 표현을 계산하는 층으로, 그 값이 데이터로 직접 주어지거나 관측되지 않는다",
+      "usage_example": "픽셀 분류 MLP는 뉴런 128개짜리 은닉층 두 개로 시작하고, 부족하면 그때 늘려봐.",
+      "origin": "standard",
+      "track": "E"
+    },
+    {
+      "id": "activation-function",
+      "term_en": "Activation Function",
+      "term_ko": "활성화 함수",
+      "abbreviation": null,
+      "definition": "뉴런의 선형 결합 출력에 적용해 신경망에 비선형성을 부여하는 함수(ReLU, Sigmoid, Tanh, GELU 등)",
+      "usage_example": "은닉층 활성화 빠지면 층을 아무리 쌓아도 선형 모델이야. config에 activation 들어갔는지 확인해.",
+      "origin": "standard",
+      "track": "E"
+    },
+    {
+      "id": "relu",
+      "term_en": "Rectified Linear Unit",
+      "term_ko": "정류 선형 유닛",
+      "abbreviation": "ReLU",
+      "definition": "f(x) = max(0, x). 양수 입력은 그대로 통과시키고 음수 입력은 0으로 만드는 활성화 함수",
+      "usage_example": "은닉층은 일단 ReLU로 두고, 죽은 뉴런 비율이 높게 나오면 그때 바꾸자.",
+      "origin": "standard",
+      "track": "E"
+    },
+    {
+      "id": "leaky-relu",
+      "term_en": "Leaky ReLU",
+      "term_ko": "리키 ReLU",
+      "abbreviation": null,
+      "definition": "음수 입력에 0 대신 작은 기울기 α(예: 0.01)를 곱한 αx를 출력해 음수 구간 기울기가 0이 되지 않게 한 ReLU 변형",
+      "usage_example": "SAR 선박 분류기에서 죽은 뉴런이 많으니 Leaky ReLU(0.1)로 바꿔서 비교해봐.",
+      "origin": "standard",
+      "track": "E"
+    },
+    {
+      "id": "gelu",
+      "term_en": "Gaussian Error Linear Unit",
+      "term_ko": "가우시안 오차 선형 유닛",
+      "abbreviation": "GELU",
+      "definition": "입력 x에 표준정규분포 누적분포함수 Φ(x)를 곱한 x·Φ(x) 활성화 함수로, 0 근처에서 매끄럽고 트랜스포머 계열에서 널리 쓰인다",
+      "usage_example": "ViT 백본 MLP 블록이 GELU니까 커스텀 헤드도 GELU로 맞춰.",
+      "origin": "standard",
+      "track": "E"
+    },
+    {
+      "id": "logit",
+      "term_en": "Logit",
+      "term_ko": "로짓",
+      "abbreviation": null,
+      "definition": "딥러닝에서 softmax나 sigmoid를 적용하기 전 출력층이 내놓는 정규화되지 않은 클래스별 점수. 이진 sigmoid 출력에서는 통계의 로그 오즈 log(p/(1−p))와 같다",
+      "usage_example": "확률 말고 로짓을 저장해 둬. 나중에 온도 보정할 때 필요해.",
+      "origin": "standard",
+      "track": "E"
+    },
+    {
+      "id": "softmax",
+      "term_en": "Softmax",
+      "term_ko": "소프트맥스",
+      "abbreviation": null,
+      "definition": "K개의 실수 점수 z를 exp(z_i)/Σ_j exp(z_j)로 변환해 합이 1인 확률분포로 만드는 함수",
+      "usage_example": "토지피복 10클래스는 서로 배타적이니까 출력단은 softmax에 교차 엔트로피로 가면 돼.",
+      "origin": "standard",
+      "track": "E"
+    },
+    {
+      "id": "universal-approximation-theorem",
+      "term_en": "Universal Approximation Theorem",
+      "term_ko": "보편 근사 정리",
+      "abbreviation": null,
+      "definition": "다항식이 아닌 비선형 활성화를 가진 은닉층 하나짜리 신경망이 뉴런 수만 충분하면 콤팩트 집합 위의 연속함수를 원하는 정밀도로 근사할 수 있다는 정리",
+      "usage_example": "보편 근사 정리는 '근사하는 망이 존재한다'는 얘기지, 그걸 학습으로 찾을 수 있다는 보장은 아니야.",
+      "origin": "standard",
+      "track": "E"
+    }
+  ],
+  "questions": [
+    {
+      "id": "E-NN-001",
+      "type": "short",
+      "chapter": "E.nn",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "입력값에 가중치를 곱해 더하고 편향을 더한 뒤 그 합이 0보다 크면 1, 아니면 0을 출력하며, 틀린 샘플이 나올 때마다 가중치를 고쳐 가며 학습하는 1958년 로젠블랫의 인공 뉴런 모델은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Perceptron",
+          "Single-layer perceptron"
+        ],
+        "ko": [
+          "퍼셉트론",
+          "단층 퍼셉트론"
+        ]
+      },
+      "primary": "Perceptron",
+      "explanation_short": "퍼셉트론(Perceptron)은 가중합 + 편향에 계단 함수(step function)를 적용해 0/1을 내는 인공 뉴런으로, 1958년 로젠블랫(Rosenblatt)이 제안했습니다. 결정 경계는 하나의 직선(초평면)입니다.",
+      "explanation_full": "퍼셉트론의 출력은 y = step(w·x + b)입니다. 오늘날 신경망의 뉴런은 계단 함수 대신 ReLU·Sigmoid 같은 (거의 모든 곳에서) 미분 가능한 활성화 함수를 써서 경사하강으로 학습한다는 점이 다릅니다. 이런 뉴런을 여러 층으로 쌓은 것이 다층 퍼셉트론(MLP, Multi-Layer Perceptron)입니다. 원격탐사에서는 픽셀 하나의 밴드값 벡터를 입력받는 픽셀 단위 분류기가 가장 단순한 MLP 활용 예입니다.",
+      "tags": [
+        "neural-network",
+        "basics"
+      ],
+      "terms": [
+        "perceptron"
+      ],
+      "source_ref": "Rosenblatt (1958); Goodfellow et al., Deep Learning 6장",
+      "status": "draft"
+    },
+    {
+      "id": "E-NN-002",
+      "type": "short",
+      "chapter": "E.nn",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "신경망에서 입력층과 출력층 사이에 위치해 중간 표현(특징)을 계산하며, 그 값이 데이터로 직접 주어지거나 관측되지 않는 층을 무엇이라 하는가? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Hidden layer"
+        ],
+        "ko": [
+          "은닉층",
+          "숨은층",
+          "히든 레이어"
+        ]
+      },
+      "primary": "Hidden layer",
+      "explanation_short": "은닉층(hidden layer)은 입력층과 출력층 사이의 층입니다. 학습 데이터에는 이 층의 '정답 값'이 없고, 모델이 스스로 유용한 중간 표현을 만들어 냅니다.",
+      "explanation_full": "은닉층의 개수를 깊이(depth), 한 층의 뉴런 수를 너비(width)라고 부릅니다. 은닉층이 있고 비선형 활성화가 있어야 XOR 같은 선형 분리 불가능한 문제를 풀 수 있습니다. 예를 들어 Sentinel-2 픽셀의 밴드값 13개 → 64 → 32 → 토지피복 10클래스 MLP라면 64·32짜리 두 층이 은닉층입니다.",
+      "tags": [
+        "neural-network",
+        "basics"
+      ],
+      "terms": [
+        "hidden-layer"
+      ],
+      "source_ref": "Goodfellow et al., Deep Learning 6장",
+      "status": "draft"
+    },
+    {
+      "id": "E-NN-003",
+      "type": "short",
+      "chapter": "E.nn",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "K개 클래스의 실수 점수 z₁…z_K를 exp(z_i) / Σ_j exp(z_j)로 변환해, 모두 0~1 사이이고 합이 1인 확률분포로 만드는 함수의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Softmax",
+          "Softmax function"
+        ],
+        "ko": [
+          "소프트맥스",
+          "소프트맥스 함수"
+        ]
+      },
+      "primary": "Softmax",
+      "explanation_short": "소프트맥스(softmax)는 지수함수로 모든 점수를 양수로 만든 뒤 전체 합으로 나눠 확률분포를 만듭니다. 클래스가 서로 배타적인 다중 클래스 분류의 출력에 씁니다.",
+      "explanation_full": "지수함수를 쓰기 때문에 점수 차이가 확률 차이로 크게 벌어지며, 가장 큰 점수에 확률이 몰리는 '부드러운 argmax' 역할을 합니다. 모든 점수에 같은 상수를 더해도 결과가 같으므로 실제 구현은 max(z)를 빼고 계산해 exp 오버플로를 막습니다. 토지피복처럼 픽셀 하나가 정확히 한 클래스에 속하는 문제에 적합하고, 구름과 수계가 동시에 참일 수 있는 다중 레이블 문제에는 클래스별 sigmoid를 씁니다.",
+      "tags": [
+        "neural-network",
+        "output-layer"
+      ],
+      "terms": [
+        "softmax"
+      ],
+      "source_ref": "Goodfellow et al., Deep Learning 6장",
+      "status": "draft"
+    },
+    {
+      "id": "E-NN-004",
+      "type": "short",
+      "chapter": "E.nn",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "분류 신경망의 마지막 선형층이 내놓는 값으로, softmax(또는 sigmoid)를 적용하기 전의 정규화되지 않은 클래스별 점수를 무엇이라 부르는가? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Logit",
+          "Logits"
+        ],
+        "ko": [
+          "로짓",
+          "로짓 점수"
+        ]
+      },
+      "primary": "Logit",
+      "explanation_short": "로짓(logit)은 활성화 전 출력층의 원시 점수로, 음수·양수 어떤 실수든 될 수 있습니다. softmax나 sigmoid를 거쳐야 확률이 됩니다.",
+      "explanation_full": "원래 로짓은 확률 p의 로그 오즈 log(p/(1−p))를 뜻하며 sigmoid의 역함수입니다. 딥러닝에서는 의미를 넓혀 softmax 입력 점수 전체를 logits라고 부릅니다. PyTorch의 CrossEntropyLoss, BCEWithLogitsLoss처럼 로짓을 직접 받는 손실함수가 많으므로, 출력층 뒤에 softmax·sigmoid를 미리 붙였는지 확인하는 습관이 중요합니다.",
+      "tags": [
+        "neural-network",
+        "output-layer"
+      ],
+      "terms": [
+        "logit",
+        "softmax"
+      ],
+      "source_ref": "Goodfellow et al., Deep Learning 6장",
+      "status": "draft"
+    },
+    {
+      "id": "E-NN-005",
+      "type": "mcq",
+      "chapter": "E.nn",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "활성화 함수 ReLU(Rectified Linear Unit)의 식으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "f(x) = 1 / (1 + e^(−x))",
+          "rationale": "시그모이드(Sigmoid) 함수입니다. 출력이 0~1로 제한되고 입력이 크거나 작으면 포화됩니다."
+        },
+        {
+          "text": "f(x) = x · Φ(x)  (Φ는 표준정규 누적분포함수)",
+          "rationale": "GELU입니다. 0 근처에서 매끄럽게 휘며 트랜스포머 계열에서 주로 씁니다."
+        },
+        {
+          "text": "f(x) = max(0, x)",
+          "rationale": null
+        },
+        {
+          "text": "f(x) = max(αx, x)  (α = 0.01)",
+          "rationale": "Leaky ReLU입니다. 음수 입력에도 작은 기울기 α를 남겨 둡니다."
+        },
+        {
+          "text": "f(x) = (e^x − e^(−x)) / (e^x + e^(−x))",
+          "rationale": "Tanh(쌍곡탄젠트) 함수입니다. 출력이 −1~1이고 0을 중심으로 대칭입니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "ReLU는 max(0, x)로, 양수 입력은 그대로 통과시키고 음수 입력은 0으로 만듭니다. 계산이 간단하고 양수 구간 기울기가 1이라 깊은 망에서도 기울기가 잘 전달됩니다.",
+      "explanation_full": "ReLU의 도함수는 x > 0에서 1, x < 0에서 0이며, x = 0에서는 미분 불가능하지만 구현에서는 보통 0으로 정합니다. 2012년 AlexNet 이후 CNN 은닉층의 기본 활성화가 되었습니다. 단점은 음수 구간 기울기가 0이라 어떤 뉴런이 항상 음수 입력만 받으면 학습이 멈추는 '죽은 ReLU(dying ReLU)'이며, 이를 완화한 변형이 Leaky ReLU·GELU 등입니다.",
+      "tags": [
+        "neural-network",
+        "activation"
+      ],
+      "terms": [
+        "relu",
+        "activation-function"
+      ],
+      "source_ref": "Goodfellow et al., Deep Learning 6장",
+      "status": "draft"
+    },
+    {
+      "id": "E-NN-006",
+      "type": "short",
+      "chapter": "E.nn",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "입력 x에 표준정규분포의 누적분포함수 Φ(x)를 곱한 x·Φ(x) 형태로, BERT·ViT 같은 트랜스포머 모델의 MLP 블록에서 널리 쓰이는 활성화 함수의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Gaussian Error Linear Unit (GELU)"
+        ],
+        "ko": [
+          "가우시안 오차 선형 유닛",
+          "가우스 오차 선형 유닛",
+          "겔루"
+        ]
+      },
+      "primary": "Gaussian Error Linear Unit (GELU)",
+      "explanation_short": "GELU(Gaussian Error Linear Unit)는 x·Φ(x)로, 큰 양수 입력은 거의 그대로 통과하고 큰 음수 입력은 0에 가깝게 눌리지만 ReLU처럼 0에서 꺾이지 않고 매끄럽습니다.",
+      "explanation_full": "Hendrycks & Gimpel(2016)이 제안했으며, 계산을 빠르게 하려고 tanh 근사식 0.5x(1 + tanh(√(2/π)(x + 0.044715x³)))를 쓰기도 합니다. 음수 구간에서 약간의 음수 출력(최솟값 약 −0.17)을 허용한다는 점이 ReLU와 다릅니다. ViT·Swin 기반 위성영상 분할 모델에 헤드를 새로 붙일 때는 백본과 같은 GELU를 쓰는 경우가 많습니다.",
+      "tags": [
+        "neural-network",
+        "activation"
+      ],
+      "terms": [
+        "gelu"
+      ],
+      "source_ref": "Hendrycks & Gimpel (2016) Gaussian Error Linear Units",
+      "status": "draft"
+    },
+    {
+      "id": "E-NN-007",
+      "type": "short",
+      "chapter": "E.nn",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "다항식이 아닌 비선형 활성화 함수(예: Sigmoid, ReLU)를 가진 은닉층 하나짜리 신경망이라도 뉴런 수만 충분하면, 콤팩트 집합(유계 닫힌 집합) 위의 임의의 연속함수를 원하는 정밀도로 근사할 수 있다는 정리의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Universal Approximation Theorem"
+        ],
+        "ko": [
+          "보편 근사 정리",
+          "범용 근사 정리",
+          "만능 근사 정리"
+        ]
+      },
+      "primary": "Universal Approximation Theorem",
+      "explanation_short": "보편 근사 정리(Universal Approximation Theorem)는 은닉층 하나짜리 신경망의 표현력이 충분히 넓다는 것을 보장합니다. 다만 '근사하는 망이 존재한다'는 뜻일 뿐, 학습으로 그 가중치를 찾을 수 있다는 보장은 아닙니다.",
+      "explanation_full": "Cybenko(1989)가 시그모이드 활성화에 대해, Hornik(1991)이 더 일반적인 활성화에 대해 보였고, Leshno 등(1993)은 국소 유계·구간별 연속 같은 완만한 조건 아래에서 '활성화 함수가 다항식이 아닐 것'이 필요충분조건임을 보였습니다. 필요한 뉴런 수가 매우 커질 수 있기 때문에, 실무에서는 얕고 넓은 망보다 깊은 망이 같은 파라미터로 더 효율적인 경우가 많습니다.",
+      "tags": [
+        "neural-network",
+        "theory"
+      ],
+      "terms": [
+        "universal-approximation-theorem"
+      ],
+      "source_ref": "Cybenko (1989); Hornik (1991); Goodfellow et al., Deep Learning 6장",
+      "status": "draft"
+    },
+    {
+      "id": "E-NN-008",
+      "type": "mcq",
+      "chapter": "E.nn",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "양수 입력은 그대로 출력하고, 음수 입력은 0 대신 αx(예: α = 0.01)를 출력해 음수 구간에서도 작은 기울기가 남도록 한 활성화 함수는?",
+      "choices": [
+        {
+          "text": "Leaky ReLU",
+          "rationale": null
+        },
+        {
+          "text": "ReLU6",
+          "rationale": "ReLU6는 min(max(0, x), 6)으로 출력 상한을 6으로 자른 ReLU입니다. 음수 구간의 출력과 기울기는 ReLU처럼 0입니다."
+        },
+        {
+          "text": "GELU",
+          "rationale": "GELU는 x·Φ(x)로 음수 구간이 곡선이며, 입력이 매우 작아지면 출력이 0으로 수렴합니다. αx 같은 직선이 아닙니다."
+        },
+        {
+          "text": "Sigmoid",
+          "rationale": "Sigmoid는 1/(1+e^(−x))로 음수 입력에 0~0.5 사이 양수를 출력합니다. 양수 입력도 그대로 통과시키지 않습니다."
+        },
+        {
+          "text": "Tanh",
+          "rationale": "Tanh는 출력이 −1~1 사이에서 포화되는 S자 곡선입니다. 양수 입력을 그대로 통과시키지 않습니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "Leaky ReLU는 x ≥ 0이면 x, x < 0이면 αx를 출력합니다. 음수 구간 기울기를 0이 아닌 α로 둬서 뉴런이 완전히 학습을 멈추는 일을 줄입니다.",
+      "explanation_full": "α는 보통 0.01이며, YOLOv3처럼 0.1을 쓰는 모델도 있습니다. α까지 학습 파라미터로 둔 것은 PReLU(Parametric ReLU), 음수 구간이 직선이 아니라 α(e^x − 1) 같은 지수 곡선인 것은 ELU라고 합니다.",
+      "tags": [
+        "neural-network",
+        "activation"
+      ],
+      "terms": [
+        "leaky-relu",
+        "relu"
+      ],
+      "source_ref": "Maas et al. (2013) Rectifier Nonlinearities; Goodfellow et al., Deep Learning 6장",
+      "status": "draft"
+    },
+    {
+      "id": "E-NN-009",
+      "type": "mcq",
+      "chapter": "E.nn",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "단층 퍼셉트론이 XOR 문제(입력 (0,0)·(1,1) → 0, (0,1)·(1,0) → 1)를 학습하지 못하는 근본 이유는?",
+      "choices": [
+        {
+          "text": "학습률이 너무 작아 가중치가 충분히 움직이지 못하기 때문",
+          "rationale": "학습률을 얼마로 바꿔도 풀 수 없습니다. 문제는 학습 속도가 아니라 모델이 만들 수 있는 경계의 모양입니다."
+        },
+        {
+          "text": "편향(bias) 항이 없어서 결정 경계가 반드시 원점을 지나야 하므로 표현이 제한되기 때문",
+          "rationale": "편향을 넣어도 경계는 여전히 직선 하나라 XOR의 네 점을 가를 수 없습니다."
+        },
+        {
+          "text": "계단 함수가 미분 불가능해 역전파를 쓸 수 없기 때문",
+          "rationale": "퍼셉트론은 역전파가 아니라 퍼셉트론 학습 규칙으로 학습합니다. 미분 가능한 활성화로 바꿔도 단층이면 경계가 직선이라 XOR을 풀 수 없습니다."
+        },
+        {
+          "text": "결정 경계가 직선(초평면) 하나라 선형 분리가 안 되는 데이터를 가를 수 없기 때문",
+          "rationale": null
+        },
+        {
+          "text": "입력이 2개뿐이라 정답을 결정할 정보가 부족하기 때문",
+          "rationale": "두 입력만으로 XOR의 답은 완전히 결정됩니다. 정보량이 아니라 경계의 형태가 문제입니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "단층 퍼셉트론의 결정 경계는 w·x + b = 0인 직선(초평면) 하나입니다. XOR은 어떤 직선 하나로도 두 클래스를 나눌 수 없는 선형 분리 불가능 문제라서 풀 수 없습니다.",
+      "explanation_full": "Minsky & Papert(1969)가 이 한계를 지적하면서 신경망 연구가 한동안 침체되었습니다. 은닉층을 하나 추가하고 비선형 활성화를 넣으면 입력 공간을 휘어 XOR을 풀 수 있고, 이 다층 퍼셉트론을 학습시키는 방법이 역전파입니다. 원격탐사로 비유하면, 두 밴드 산점도에서 한 클래스가 대각선 양 끝 두 덩어리로 나뉘어 있을 때 직선 하나로는 분류할 수 없는 것과 같습니다.",
+      "tags": [
+        "neural-network",
+        "basics"
+      ],
+      "terms": [
+        "perceptron",
+        "hidden-layer"
+      ],
+      "source_ref": "Minsky & Papert (1969) Perceptrons; Goodfellow et al., Deep Learning 6장",
+      "status": "draft"
+    },
+    {
+      "id": "E-NN-010",
+      "type": "mcq",
+      "chapter": "E.nn",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "은닉층 10개를 쌓았지만 어느 층에도 활성화 함수를 넣지 않은(선형층만 연결한) 신경망의 표현력은?",
+      "choices": [
+        {
+          "text": "층 수에 비례해 표현력이 커져 은닉층 1개짜리 비선형 망보다 강하다",
+          "rationale": "선형 변환을 여러 번 합성해도 결과는 하나의 선형 변환입니다. 층 수와 무관하게 비선형 경계를 만들 수 없습니다."
+        },
+        {
+          "text": "은닉층 없는 선형(아핀) 모델 이상의 표현력을 갖지 못한다",
+          "rationale": null
+        },
+        {
+          "text": "각 층이 차수를 하나씩 올려 10차 다항식까지 근사할 수 있다",
+          "rationale": "x², x³ 같은 다항식 항은 곱셈 같은 비선형 연산에서 생깁니다. 선형층만 쌓으면 1차식을 벗어나지 못합니다."
+        },
+        {
+          "text": "보편 근사 정리에 따라 임의의 연속함수를 근사할 수 있다",
+          "rationale": "보편 근사 정리는 비선형(비다항) 활성화가 있어야 성립합니다. 선형층만으로는 적용되지 않습니다."
+        },
+        {
+          "text": "가중치 행렬들이 서로 상쇄되어 출력이 항상 0이 된다",
+          "rationale": "출력이 0이 되지는 않습니다. 행렬 곱이 하나의 행렬로 합쳐질 뿐이고 선형 모델처럼 정상 동작합니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "선형층 두 개 W₂(W₁x + b₁) + b₂는 (W₂W₁)x + (W₂b₁ + b₂)로 정리되어 하나의 선형(아핀) 변환이 됩니다. 몇 층을 쌓아도 같으므로 표현력은 선형 모델을 넘지 못하며(은닉층 폭이 좁으면 오히려 더 제한됨), 층 사이에 비선형 활성화 함수가 반드시 필요합니다.",
+      "explanation_full": "그래서 활성화 함수를 '신경망에 비선형성을 주는 장치'라고 설명합니다. 커스텀 헤드를 nn.Sequential로 짤 때 Linear만 연달아 넣고 활성화를 빠뜨리는 실수가 종종 있는데, 이 경우 파라미터는 많아도 선형 분류기(로지스틱 회귀) 이상의 표현력을 갖지 못합니다.",
+      "tags": [
+        "neural-network",
+        "activation"
+      ],
+      "terms": [
+        "hidden-layer",
+        "activation-function"
+      ],
+      "source_ref": "Goodfellow et al., Deep Learning 6장",
+      "status": "draft"
+    },
+    {
+      "id": "E-NN-011",
+      "type": "mcq",
+      "chapter": "E.nn",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "Sentinel-2 픽셀의 13개 밴드값을 입력받아 은닉층 64 → 은닉층 32 → 출력 10(토지피복 10클래스)으로 이어지는 완전연결 신경망(MLP)이 있다. 모든 층에 편향이 있을 때 학습 가능한 파라미터 총수는?",
+      "choices": [
+        {
+          "text": "3,200개",
+          "rationale": "가중치(13×64 + 64×32 + 32×10 = 832 + 2,048 + 320)만 센 값입니다. 출력 뉴런마다 붙는 편향 106개(64 + 32 + 10)가 빠졌습니다."
+        },
+        {
+          "text": "2,976개",
+          "rationale": "첫 두 층(896 + 2,080)만 센 값입니다. 출력층의 32×10 + 10 = 330개가 빠졌습니다."
+        },
+        {
+          "text": "3,309개",
+          "rationale": "편향을 입력 쪽에 붙여 센 값입니다(13×65 + 64×33 + 32×11). 편향은 출력 뉴런마다 하나씩 붙습니다."
+        },
+        {
+          "text": "106개",
+          "rationale": "편향(64 + 32 + 10)만 센 값입니다. 파라미터 대부분은 가중치입니다."
+        },
+        {
+          "text": "3,306개",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "완전연결층 하나의 파라미터 수는 (입력 수 × 출력 수) + 출력 수(편향)입니다. (13×64 + 64) + (64×32 + 32) + (32×10 + 10) = 896 + 2,080 + 330 = 3,306개입니다.",
+      "explanation_full": "공식: 층마다 (n_in + 1) × n_out. 가중치 행렬 W가 n_out × n_in이고 편향 b가 n_out개이기 때문입니다. PyTorch에서는 sum(p.numel() for p in model.parameters() if p.requires_grad)로 확인할 수 있습니다. float32 기준 파라미터 1개는 4바이트이므로 3,306개는 약 13KB로, 엣지 장비 탑재 가능 여부를 빠르게 가늠할 때 이런 계산을 씁니다.",
+      "tags": [
+        "neural-network",
+        "calculation",
+        "parameters"
+      ],
+      "terms": [
+        "hidden-layer",
+        "model-capacity"
+      ],
+      "source_ref": "Goodfellow et al., Deep Learning 6장",
+      "status": "draft"
+    },
+    {
+      "id": "E-NN-012",
+      "type": "mcq",
+      "chapter": "E.nn",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "로짓 [2.0, 1.0, 0.1]을 softmax에 넣은 결과와, 모든 값에 10을 더한 [12.0, 11.0, 10.1]을 softmax에 넣은 결과를 비교하면?",
+      "choices": [
+        {
+          "text": "가장 큰 클래스의 확률이 1에 더 가까워진다",
+          "rationale": "분포가 더 뾰족해지는 것은 로짓에 1보다 큰 수를 곱했을 때(온도 T < 1)입니다. 덧셈은 분포를 바꾸지 않습니다."
+        },
+        {
+          "text": "세 클래스의 확률이 모두 그대로다",
+          "rationale": null
+        },
+        {
+          "text": "세 확률이 균등분포(각 1/3)에 가까워진다",
+          "rationale": "분포가 평평해지는 것은 로짓을 1보다 큰 수로 나눴을 때(온도 T > 1)입니다."
+        },
+        {
+          "text": "확률의 합이 1보다 커진다",
+          "rationale": "softmax 출력의 합은 입력이 무엇이든 항상 1입니다."
+        },
+        {
+          "text": "가장 작은 클래스의 확률만 커진다",
+          "rationale": "모든 로짓에 같은 값을 더하면 분자·분모에 똑같이 e^10이 곱해져 상쇄됩니다. 어느 클래스의 확률도 변하지 않습니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "softmax(z + c)의 i번째 값은 e^c·e^(z_i) / (e^c·Σe^(z_j)) = softmax(z)의 i번째 값이므로, 모든 로짓에 같은 상수를 더해도 결과가 바뀌지 않습니다. softmax는 로짓의 절댓값이 아니라 차이만 봅니다.",
+      "explanation_full": "이 성질 덕분에 구현에서는 z − max(z)로 계산해 exp 오버플로를 막습니다(수치 안정화). 반대로 로짓에 상수를 곱하면 분포 모양이 바뀝니다. z/T에서 T > 1이면 평평해지고 T < 1이면 뾰족해지며, 이것이 온도 스케일링(temperature scaling)입니다. 참고로 [2.0, 1.0, 0.1]의 softmax는 약 [0.66, 0.24, 0.10]입니다.",
+      "tags": [
+        "neural-network",
+        "output-layer"
+      ],
+      "terms": [
+        "softmax",
+        "logit"
+      ],
+      "source_ref": "Goodfellow et al., Deep Learning 6장",
+      "status": "draft"
+    },
+    {
+      "id": "E-NN-013",
+      "type": "mcq",
+      "chapter": "E.nn",
+      "cognitive_level": 2,
+      "difficulty": 4,
+      "stem": "PyTorch의 nn.CrossEntropyLoss는 입력을 로짓으로 보고 내부에서 log-softmax를 계산한다. 10클래스 분류 모델의 출력층 뒤에 softmax를 붙여 그 확률을 이 손실에 넣으면 어떤 일이 생기는가?",
+      "choices": [
+        {
+          "text": "softmax가 두 번 걸려 클래스 간 차이가 눌리므로, 손실이 충분히 내려가지 않고 기울기도 약해진다",
+          "rationale": null
+        },
+        {
+          "text": "손실함수가 입력이 확률임을 감지해 내부 softmax를 건너뛰므로 결과는 같다",
+          "rationale": "그런 자동 감지는 없습니다. 입력이 무엇이든 log-softmax를 다시 적용합니다."
+        },
+        {
+          "text": "0~1 사이 확률에 로그를 취하므로 손실값이 음수로 나온다",
+          "rationale": "교차 엔트로피는 −log(softmax 값)이라 입력이 무엇이든 0 이상입니다. 음수가 되지는 않습니다."
+        },
+        {
+          "text": "softmax를 미리 적용하면 값의 범위가 줄어 수치적으로 더 안정해지고 학습이 빨라진다",
+          "rationale": "반대입니다. 로짓 대신 확률을 넣으면 학습 신호가 약해집니다. 수치 안정성은 로짓을 손실에 직접 넣을 때 더 좋습니다."
+        },
+        {
+          "text": "softmax가 두 번 적용되면 점수 순서가 뒤바뀌어 argmax 예측이 달라진다",
+          "rationale": "softmax는 단조증가 변환이라 몇 번 적용해도 점수 순서는 그대로입니다. 문제는 예측이 아니라 손실·기울기 쪽입니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "nn.CrossEntropyLoss는 받은 값에 log-softmax를 다시 적용하므로 softmax가 두 번 걸립니다. 0~1 범위의 확률이 다시 softmax되면 클래스 간 차이가 크게 눌려, 10클래스에서는 완벽하게 맞혀도 손실이 약 1.46 아래로 내려가지 않고 기울기도 약해집니다.",
+      "explanation_full": "완벽한 확률 [1, 0, …, 0]을 넣어도 두 번째 softmax의 최댓값은 e/(e + 9) ≈ 0.232라서 손실 하한이 −ln 0.232 ≈ 1.46입니다. 원칙은 '모델은 로짓을 출력하고, 손실에는 로짓을 넣고, 확률은 추론·후처리 때만 softmax로 계산한다'입니다. 여기서 로짓은 통계의 로그 오즈를 넓힌 딥러닝 용법으로, softmax에 들어가기 전의 클래스별 원시 점수를 가리킵니다.",
+      "tags": [
+        "neural-network",
+        "output-layer",
+        "troubleshooting"
+      ],
+      "terms": [
+        "logit",
+        "softmax"
+      ],
+      "source_ref": "PyTorch 문서 torch.nn.CrossEntropyLoss",
+      "status": "draft"
+    },
+    {
+      "id": "E-NN-014",
+      "type": "mcq",
+      "chapter": "E.nn",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "ReLU와 비교한 GELU의 특징으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "출력이 0~1 사이로 제한되어 확률처럼 해석할 수 있다",
+          "rationale": "출력이 0~1로 제한되는 것은 Sigmoid입니다. GELU는 큰 양수 입력을 거의 그대로 통과시키므로 상한이 없습니다."
+        },
+        {
+          "text": "음수 구간에서 αx 형태의 직선이라 기울기가 일정하다",
+          "rationale": "음수 구간이 직선인 것은 Leaky ReLU입니다. GELU의 음수 구간은 곡선이며 입력이 매우 작아지면 0에 수렴합니다."
+        },
+        {
+          "text": "ReLU보다 계산이 단순해 추론 속도가 더 빠르다",
+          "rationale": "GELU는 Φ(x)(또는 tanh 근사)를 계산해야 하므로 max(0, x)인 ReLU보다 계산량이 많습니다."
+        },
+        {
+          "text": "0에서 꺾이지 않고 매끄러우며, 음수 입력에 작은 음수를 출력할 수 있다",
+          "rationale": null
+        },
+        {
+          "text": "출력 벡터 원소의 합이 1이 되도록 정규화한다",
+          "rationale": "합을 1로 만드는 것은 softmax입니다. GELU는 원소별(element-wise)로 적용되는 활성화입니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "GELU(x) = x·Φ(x)는 모든 점에서 미분 가능한 매끄러운 곡선이고, 음수 구간에서 약간의 음수 값(최솟값 약 −0.17, x ≈ −0.75 부근)을 냅니다. ReLU는 x = 0에서 꺾이고 음수 입력을 모두 0으로 만듭니다.",
+      "explanation_full": "GELU는 입력 x를 Φ(x)라는 비율로 '얼마나 통과시킬지' 가중하는 활성화로 해석할 수 있습니다. 트랜스포머(BERT, GPT, ViT)에서 표준처럼 쓰이며, CNN에서는 여전히 ReLU나 SiLU(Swish)가 흔합니다. 사전학습된 백본의 활성화를 바꾸면 가중치와 맞지 않으므로 파인튜닝 때는 원래 활성화를 유지하는 것이 원칙입니다.",
+      "tags": [
+        "neural-network",
+        "activation"
+      ],
+      "terms": [
+        "gelu",
+        "relu"
+      ],
+      "source_ref": "Hendrycks & Gimpel (2016) Gaussian Error Linear Units",
+      "status": "draft"
+    },
+    {
+      "id": "E-NN-015",
+      "type": "mcq",
+      "chapter": "E.nn",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "ReLU를 쓰는 분류기를 학습하는데, 일부 은닉 뉴런이 모든 입력에 대해 계속 0만 출력하고 해당 가중치가 더 이상 갱신되지 않는다. 원인과 완화책으로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "양수 구간 출력이 포화되어 기울기가 사라졌다 → 활성화를 Sigmoid로 교체한다",
+          "rationale": "ReLU는 양수 구간에서 기울기가 1이라 포화되지 않습니다. 오히려 Sigmoid는 양 끝에서 포화되어 기울기 소실을 키웁니다."
+        },
+        {
+          "text": "기울기가 폭주했다 → gradient clipping을 적용해 기울기 크기를 제한한다",
+          "rationale": "기울기 폭주는 손실이 발산하거나 NaN이 되는 현상입니다. 출력이 0에 고정되고 갱신이 멈추는 현상과 반대 방향입니다."
+        },
+        {
+          "text": "가중합이 늘 음수라 기울기가 0이 됐다 → Leaky ReLU로 교체한다",
+          "rationale": null
+        },
+        {
+          "text": "출력 합이 1로 강제되어 일부 뉴런이 억제됐다 → 은닉층의 softmax를 제거한다",
+          "rationale": "은닉층 ReLU는 합을 1로 강제하지 않습니다. 합 정규화는 출력층 softmax의 성질입니다."
+        },
+        {
+          "text": "과적합으로 뉴런이 불필요해졌다 → 드롭아웃 비율을 높여 규제를 강화한다",
+          "rationale": "드롭아웃은 뉴런을 무작위로 0으로 만드는 규제로, 영구히 죽은 뉴런을 살리지 못하고 오히려 0 출력을 늘립니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "ReLU는 음수 입력에서 출력과 기울기가 모두 0이라, 어떤 뉴런의 가중합이 모든 입력에서 음수가 되면 다시는 갱신되지 않습니다. 이것이 죽은 ReLU(dying ReLU)이며, 음수 구간에 작은 기울기를 두는 Leaky ReLU로 완화할 수 있습니다.",
+      "explanation_full": "원인은 여러 가지지만, 큰 학습률로 한 번 크게 갱신되면서 가중치·편향이 밀려 가중합이 모든 입력에서 음수가 되는 경우가 대표적으로 꼽힙니다. 진단은 배치 전체에서 출력이 항상 0인 은닉 뉴런의 비율을 세 보면 됩니다. 완화책으로는 Leaky ReLU(α = 0.01~0.1)·PReLU·ELU·GELU로 교체, 학습률 낮추기, He 초기화 사용 등이 있습니다.",
+      "tags": [
+        "neural-network",
+        "activation",
+        "troubleshooting"
+      ],
+      "terms": [
+        "relu",
+        "leaky-relu"
+      ],
+      "source_ref": "Maas et al. (2013) Rectifier Nonlinearities; Goodfellow et al., Deep Learning 6장",
+      "status": "draft"
+    },
+    {
+      "id": "E-NN-016",
+      "type": "mcq",
+      "chapter": "E.nn",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "Tanh를 Sigmoid와 비교한 설명으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "입력이 매우 크거나 작아져도 포화되지 않는다",
+          "rationale": "Tanh도 Sigmoid처럼 양 끝에서 포화(기울기 → 0)됩니다. 포화되지 않는 것은 ReLU의 양수 구간입니다."
+        },
+        {
+          "text": "음수 입력에 대해 출력이 정확히 0이다",
+          "rationale": "음수 입력을 0으로 만드는 것은 ReLU입니다. Tanh는 음수 입력에 −1~0 사이 값을 냅니다."
+        },
+        {
+          "text": "도함수의 최댓값이 0.25로 Sigmoid보다 작다",
+          "rationale": "도함수 최댓값 0.25는 Sigmoid(x = 0에서)입니다. Tanh의 도함수 최댓값은 1로 더 큽니다."
+        },
+        {
+          "text": "출력 벡터 원소의 합이 항상 1이다",
+          "rationale": "합이 1인 것은 softmax입니다. Tanh는 원소별로 적용됩니다."
+        },
+        {
+          "text": "출력 범위가 −1~1이고 0을 중심으로 대칭이다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "Tanh는 출력이 (−1, 1)이고 tanh(0) = 0인 0 중심 함수입니다. Sigmoid는 출력이 (0, 1)이라 평균이 양수로 치우칩니다. 두 함수는 tanh(x) = 2σ(2x) − 1 관계입니다.",
+      "explanation_full": "출력이 0 중심이면 다음 층 가중치의 기울기 부호가 한쪽으로 쏠리지 않아 학습이 조금 더 안정적입니다. 그러나 둘 다 양 끝에서 포화되므로 깊은 망의 은닉층에는 ReLU 계열을 주로 씁니다. 현재 Sigmoid는 이진·다중 레이블 출력층에, Tanh는 LSTM 내부나 출력 범위를 −1~1로 맞춰야 하는 곳에 주로 남아 있습니다.",
+      "tags": [
+        "neural-network",
+        "activation"
+      ],
+      "terms": [
+        "activation-function",
+        "sigmoid-function"
+      ],
+      "source_ref": "Goodfellow et al., Deep Learning 6장",
+      "status": "draft"
+    },
+    {
+      "id": "E-NN-017",
+      "type": "mcq",
+      "chapter": "E.nn",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "보편 근사 정리(Universal Approximation Theorem)가 성립하기 위해 신경망에 필요한 조건은?",
+      "choices": [
+        {
+          "text": "은닉층이 최소 2개 이상 있어야 한다",
+          "rationale": "은닉층 하나로도 충분하다는 것이 이 정리의 핵심입니다. 층 수가 아니라 은닉층의 너비(뉴런 수)가 충분해야 합니다."
+        },
+        {
+          "text": "은닉층에 다항식이 아닌 비선형 활성화(예: Sigmoid, ReLU)가 있어야 한다",
+          "rationale": null
+        },
+        {
+          "text": "은닉층 뉴런 수가 입력 차원보다 작아야 한다",
+          "rationale": "정리는 오히려 뉴런 수가 충분히 많을 것을 요구합니다. 필요한 뉴런 수는 목표 함수와 정밀도에 따라 매우 커질 수 있습니다."
+        },
+        {
+          "text": "출력층에 softmax가 있어 출력이 확률이어야 한다",
+          "rationale": "출력층은 선형이어도 됩니다. 정리의 조건은 은닉층의 비선형성입니다."
+        },
+        {
+          "text": "모든 가중치가 양수로 제한되어 있어야 한다",
+          "rationale": "가중치 부호에 대한 조건은 없습니다. 가중치는 임의의 실수입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "보편 근사 정리는 은닉층 하나에 다항식이 아닌 비선형 활성화가 있고 뉴런 수가 충분하면 연속함수를 임의 정밀도로 근사할 수 있다는 정리입니다. 활성화가 선형(또는 다항식)이면 성립하지 않습니다.",
+      "explanation_full": "선형 활성화면 전체가 하나의 선형 모델이 되고, 다항식 활성화면 전체도 일정 차수 이하의 다항식이 되어 임의의 함수를 근사할 수 없습니다. Leshno 등(1993)은 활성화 함수가 국소 유계이고 구간별 연속이라는 완만한 조건 아래에서 '다항식이 아닐 것'이 필요충분조건임을 보였습니다. 이 정리는 표현 가능성만 말할 뿐, 학습 알고리즘이 그 가중치를 찾는지나 일반화 성능에 대해서는 말하지 않습니다.",
+      "tags": [
+        "neural-network",
+        "theory"
+      ],
+      "terms": [
+        "universal-approximation-theorem",
+        "activation-function"
+      ],
+      "source_ref": "Leshno et al. (1993); Hornik (1991); Goodfellow et al., Deep Learning 6장",
+      "status": "draft"
+    },
+    {
+      "id": "E-NN-018",
+      "type": "scenario",
+      "chapter": "E.nn",
+      "cognitive_level": 3,
+      "difficulty": 2,
+      "stem": "지시: \"토지피복 분류 헤드 보니까 마지막 Linear 뒤에 ReLU가 붙어 있네. 그러면 로짓이 음수로 못 내려가서 클래스 점수가 이상해져. 헤드 고쳐서 다시 학습 돌려.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "ReLU를 Sigmoid로 바꿔 출력을 0~1로 만든 뒤 softmax에 넣는다",
+          "rationale": "Sigmoid를 거치면 로짓이 0~1로 묶여 softmax 확률 차이가 거의 나지 않습니다(10클래스면 최대 확률이 약 0.23). 출력층 뒤에는 활성화가 없어야 합니다."
+        },
+        {
+          "text": "ReLU는 그대로 두고 그 뒤에 softmax를 한 번 더 적용한다",
+          "rationale": "원인인 ReLU가 남아 음수 로짓 문제가 해결되지 않습니다. 손실함수가 softmax를 내장했다면 softmax가 중복 적용되기도 합니다."
+        },
+        {
+          "text": "출력층 뉴런 수를 클래스 수의 두 배인 20개로 늘린다",
+          "rationale": "출력 뉴런 수는 클래스 수와 같아야 합니다. 로짓 범위가 잘리는 문제와 무관합니다."
+        },
+        {
+          "text": "마지막 Linear 뒤의 ReLU를 없애 로짓을 그대로 손실에 넘긴다",
+          "rationale": null
+        },
+        {
+          "text": "학습률을 낮춰 로짓이 음수 쪽으로 가지 않도록 한다",
+          "rationale": "로짓이 음수가 되는 것은 정상입니다. 막을 대상이 아니라 허용해야 할 값입니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "로짓은 음수를 포함한 모든 실수 값을 가질 수 있어야 합니다. 출력층 뒤에 ReLU가 있으면 음수 점수가 모두 0으로 잘려 '이 클래스가 아니다'를 표현하지 못하고, 잘린 클래스로는 기울기도 흐르지 않습니다.",
+      "explanation_full": "분류 헤드의 정석은 '… → 은닉층 + 활성화 → Linear(클래스 수) → (손실함수 내부 softmax)'입니다. 은닉층에는 활성화가 필요하지만 마지막 Linear 뒤에는 넣지 않습니다. PyTorch의 nn.CrossEntropyLoss는 로짓을 받아 내부에서 log-softmax를 계산하므로 softmax도 따로 붙이지 않습니다. 수정 후에는 로짓의 최솟값·최댓값을 찍어 음수가 나오는지 확인하면 됩니다.",
+      "tags": [
+        "neural-network",
+        "output-layer",
+        "troubleshooting"
+      ],
+      "terms": [
+        "logit",
+        "relu",
+        "softmax"
+      ],
+      "source_ref": "Goodfellow et al., Deep Learning 6장; PyTorch 문서 torch.nn.CrossEntropyLoss",
+      "status": "draft"
+    },
+    {
+      "id": "E-NN-019",
+      "type": "scenario",
+      "chapter": "E.nn",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"얇은 구름 아래 수계 픽셀은 구름이랑 물 라벨이 둘 다 켜져야 해. 지금 헤드는 softmax라 둘 중 하나만 고르게 돼 있으니까 출력단 구조를 바꿔.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "클래스마다 독립 sigmoid 출력을 두고 손실을 BCE로 바꾼다",
+          "rationale": null
+        },
+        {
+          "text": "softmax의 온도를 높여 구름과 물의 확률이 비슷하게 나오도록 조정한다",
+          "rationale": "온도를 높여도 softmax 확률의 합은 1이라 두 클래스가 경쟁하는 구조는 그대로입니다. 두 라벨을 각각 '있음'으로 판정할 수 없습니다."
+        },
+        {
+          "text": "softmax 출력에서 확률 상위 2개 클래스를 항상 함께 켠다",
+          "rationale": "구름만 있거나 물만 있는 픽셀에도 두 번째 라벨이 억지로 켜집니다. 라벨 개수를 고정하는 것은 다중 레이블 문제의 해법이 아닙니다."
+        },
+        {
+          "text": "softmax 출력에 임계값 0.5를 걸어 넘는 클래스를 모두 켠다",
+          "rationale": "softmax 확률은 합이 1이라 0.5를 넘는 클래스는 많아야 하나입니다. 결국 여전히 하나만 켜집니다."
+        },
+        {
+          "text": "출력층 활성화를 ReLU로 바꿔 클래스 점수가 각자 커지게 한다",
+          "rationale": "ReLU 출력은 상한이 없는 점수라 확률로 해석할 수 없고, 알맞은 손실과 임계값을 정하기 어렵습니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "한 픽셀에 여러 라벨이 동시에 참일 수 있는 다중 레이블(multi-label) 문제는 클래스마다 '있다/없다'를 독립적으로 판단해야 합니다. 로짓마다 sigmoid를 적용하고 클래스별 이진 교차 엔트로피(BCE)로 학습하는 것이 표준입니다.",
+      "explanation_full": "softmax는 클래스들이 서로 배타적이라는 가정(확률 합 = 1)을 모델에 넣습니다. 토지피복처럼 픽셀당 한 클래스면 softmax + 교차 엔트로피가 맞고, 구름·그림자·수계·설빙처럼 겹칠 수 있으면 sigmoid + BCE가 맞습니다. PyTorch에서는 sigmoid를 따로 붙이지 않고 로짓을 BCEWithLogitsLoss에 넣는 것이 수치적으로 안정적이며, 추론 때 클래스별 임계값을 따로 조정할 수 있습니다.",
+      "tags": [
+        "neural-network",
+        "output-layer",
+        "multi-label"
+      ],
+      "terms": [
+        "softmax",
+        "logit",
+        "cross-entropy-loss"
+      ],
+      "source_ref": "Goodfellow et al., Deep Learning 6장; PyTorch 문서 torch.nn.BCEWithLogitsLoss",
+      "status": "draft"
+    },
+    {
+      "id": "E-NN-020",
+      "type": "scenario",
+      "chapter": "E.nn",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"4밴드 64×64 패치를 Flatten해서 FC(1024) → FC(10)으로 분류하는 모델인데 파라미터가 1,600만 개가 넘어. 어디서 그렇게 늘어나는지 보고 줄여봐.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "마지막 FC층의 출력 클래스 수를 10개에서 5개로 줄여서 출력층의 파라미터를 가볍게 만든다",
+          "rationale": "마지막 층은 1,024×10 + 10 = 10,250개로 전체의 0.1%도 안 됩니다. 거의 줄지 않고 과업 정의만 바뀝니다."
+        },
+        {
+          "text": "모든 층의 편향을 제거해 층마다 붙어 있는 추가 파라미터를 없앤다",
+          "rationale": "편향은 1,024 + 10 = 1,034개뿐입니다. 파라미터 수에 거의 영향이 없습니다."
+        },
+        {
+          "text": "첫 FC층이 원인이니 Flatten 전에 풀링으로 입력 차원을 줄이거나 은닉 뉴런을 줄인다",
+          "rationale": null
+        },
+        {
+          "text": "활성화 함수를 ReLU에서 GELU로 바꿔 같은 크기로 표현력을 높인다",
+          "rationale": "활성화 함수에는 학습 파라미터가 없어 교체해도 파라미터 수가 변하지 않습니다."
+        },
+        {
+          "text": "FC(1024) 뒤에 FC(1024) 은닉층을 하나 더 넣어 부담을 나눈다",
+          "rationale": "층을 추가하면 1,024×1,024 + 1,024 ≈ 105만 개가 더 늘어납니다. 첫 층의 파라미터는 그대로입니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "완전연결층의 파라미터는 입력 수 × 출력 수에 비례합니다. 64×64×4 = 16,384차원을 1,024개 뉴런에 연결하면 가중치만 16,384 × 1,024 = 16,777,216개로, 전체(약 1,679만 개)의 99.9% 이상을 차지합니다.",
+      "explanation_full": "계산: 1층 16,384×1,024 + 1,024 = 16,778,240, 2층 1,024×10 + 10 = 10,250, 합계 16,788,490개입니다. 영상을 바로 Flatten하면 픽셀 수만큼 입력 차원이 커지므로, 영상에는 합성곱층으로 특징을 뽑고 풀링·전역 평균 풀링(GAP)으로 공간 크기를 줄인 뒤 작은 FC 헤드를 붙이는 것이 표준입니다. 예를 들어 채널 256개 특징맵에 GAP를 쓰면 FC 입력이 256차원으로 줄어듭니다.",
+      "tags": [
+        "neural-network",
+        "calculation",
+        "parameters"
+      ],
+      "terms": [
+        "hidden-layer",
+        "pooling"
+      ],
+      "source_ref": "Goodfellow et al., Deep Learning 6장",
+      "status": "draft"
+    },
+    {
+      "id": "E-NN-021",
+      "type": "scenario",
+      "chapter": "E.nn",
+      "cognitive_level": 3,
+      "difficulty": 2,
+      "stem": "지시: \"추론 서버는 최종 클래스만 내보내니까 softmax 빼고 로짓에서 바로 argmax 뽑아. 한 단계라도 줄이자.\"\n\n이 지시를 따를 때 결과에 대한 설명으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "softmax가 클래스 간 점수 차이를 키우므로, 빼면 argmax로 뽑히는 클래스가 달라질 수 있다",
+          "rationale": "softmax는 단조증가 변환이라 점수 순서를 바꾸지 않습니다. 차이는 커져도 1등은 그대로입니다."
+        },
+        {
+          "text": "로짓도 클래스 합이 1이므로 그대로 신뢰도로 보고해도 된다",
+          "rationale": "로짓은 합이 1이 아니고 음수도 될 수 있는 원시 점수입니다. 확률로 쓰려면 softmax를 거쳐야 합니다."
+        },
+        {
+          "text": "로짓이 음수인 클래스는 argmax로 선택될 수 없게 된다",
+          "rationale": "모든 로짓이 음수여도 그중 가장 큰 값이 argmax로 선택됩니다. 부호는 상관없습니다."
+        },
+        {
+          "text": "softmax의 반올림 오차가 사라지므로 분류 정확도가 올라간다",
+          "rationale": "argmax 결과가 같으므로 정확도도 똑같습니다. 달라지는 것은 약간의 연산량뿐입니다."
+        },
+        {
+          "text": "argmax 결과는 같지만, 확률 임계값을 쓰는 후처리에는 softmax가 따로 필요하다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "softmax는 로짓의 크기 순서를 그대로 보존하는 단조증가 변환이라 argmax(softmax(z)) = argmax(z)입니다. 다만 '확률 0.7 이상만 채택' 같은 규칙에는 확률값이 필요합니다.",
+      "explanation_full": "분류 결과만 필요하면 softmax 생략은 정확도에 영향이 없는 흔한 최적화입니다(절감되는 연산량은 크지 않은 편입니다). 반면 신뢰도 임계값 필터링, 불확실 샘플 재검토 목록 뽑기, 결과 GeoJSON에 신뢰도 속성 넣기처럼 확률을 쓰는 후처리가 있다면 그 단계에서 softmax를 계산해야 합니다.",
+      "tags": [
+        "neural-network",
+        "output-layer",
+        "inference"
+      ],
+      "terms": [
+        "softmax",
+        "logit"
+      ],
+      "source_ref": "Goodfellow et al., Deep Learning 6장",
+      "status": "draft"
+    },
+    {
+      "id": "E-NN-022",
+      "type": "scenario",
+      "chapter": "E.nn",
+      "cognitive_level": 3,
+      "difficulty": 5,
+      "stem": "지시: \"보편 근사 정리 있잖아. 은닉층 하나짜리 MLP에 뉴런만 충분히 넣으면 NDVI 시계열로 수확량 회귀는 다 된다는 거니까, 깊은 모델 말고 그걸로 가자.\"\n\n이 주장을 검토할 때 가장 적절한 판단은?",
+      "choices": [
+        {
+          "text": "정리에 따라 은닉층 하나짜리 망이 깊은 모델 이상의 검증 성능을 항상 내므로 그대로 따른다",
+          "rationale": "정리는 근사하는 망이 '존재한다'는 것만 말합니다. 학습으로 그 망을 찾는다는 보장도, 검증 성능에 대한 보장도 없습니다."
+        },
+        {
+          "text": "정리가 존재만 보장하고 학습·일반화는 보장하지 않으니 두 구조를 검증 데이터로 비교한다",
+          "rationale": null
+        },
+        {
+          "text": "정리는 선형 활성화를 쓰는 망에 관한 것이라 이 모델에는 적용되지 않는다",
+          "rationale": "정리는 비선형(비다항) 활성화가 있어야 성립합니다. 선형 활성화 망은 선형 모델 이상이 될 수 없습니다."
+        },
+        {
+          "text": "정리는 분류 문제에만 성립하므로 회귀 과제인 이번 작업에는 해당하지 않는다",
+          "rationale": "정리는 연속함수 근사에 관한 것이라 회귀에 그대로 적용됩니다. 분류 전용이 아닙니다."
+        },
+        {
+          "text": "정리는 은닉층이 2개 이상일 때만 성립하므로 층을 하나 더 넣으면 주장이 맞다",
+          "rationale": "은닉층 하나로 충분하다는 것이 정리의 내용입니다. 층 수 조건이 틀렸습니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "보편 근사 정리는 표현력(근사하는 망이 존재함)만 보장합니다. 필요한 뉴런 수가 매우 클 수 있고, 경사하강으로 그 가중치를 찾는다는 보장도, 새 데이터에서 잘 맞는다는 보장도 없으므로 실험으로 비교해야 합니다.",
+      "explanation_full": "이론적으로 가능한 것과 주어진 데이터·학습 절차로 얻을 수 있는 것은 다릅니다. 얕고 넓은 망은 같은 함수를 표현하는 데 깊은 망보다 훨씬 많은 뉴런이 필요할 수 있고, 파라미터가 많으면 표본이 적을 때 과적합 위험도 커집니다. 필지·격자처럼 공간 자료라면 검증 분할도 공간 블록 단위로 나눠 두 구조를 공정하게 비교하는 것이 좋습니다.",
+      "tags": [
+        "neural-network",
+        "theory",
+        "model-selection"
+      ],
+      "terms": [
+        "universal-approximation-theorem",
+        "hidden-layer"
+      ],
+      "source_ref": "Hornik (1991); Goodfellow et al., Deep Learning 6장",
+      "status": "draft"
+    }
+  ]
+}

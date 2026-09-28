@@ -1,0 +1,797 @@
+{
+  "format": "visiondrill-bank-exchange",
+  "format_version": 1,
+  "terms": [
+    {
+      "id": "line-assumptions",
+      "term_en": "LINE Assumptions",
+      "term_ko": "LINE 가정",
+      "abbreviation": "LINE",
+      "definition": "선형회귀 추론의 기본 가정 네 가지 — 선형성(Linearity), 오차의 독립성(Independence), 정규성(Normality), 등분산성(Equal variance) — 의 머리글자",
+      "usage_example": "보고서 부록에 LINE 가정 네 개 각각 어떤 그림·검정으로 확인했는지 표로 정리해줘.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "residual-plot",
+      "term_en": "Residual Plot",
+      "term_ko": "잔차 플롯",
+      "abbreviation": null,
+      "definition": "잔차를 적합값(또는 설명변수·관측 순서)에 대해 찍은 산점도로, 비선형성·이분산·이상치 같은 가정 위반 패턴을 눈으로 확인하는 기본 진단 그림",
+      "usage_example": "잔차 플롯 x축을 적합값 말고 해안선 거리로도 한 번 그려봐. 거리 따라 퍼지는지 보게.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "breusch-pagan-test",
+      "term_en": "Breusch-Pagan Test",
+      "term_ko": "브로이시-페이건 검정",
+      "abbreviation": "BP test",
+      "definition": "잔차 제곱을 설명변수들에 회귀해 그 설명력으로 이분산 여부를 검정하는 방법. 귀무가설은 등분산",
+      "usage_example": "깔때기 모양 같다는 말만 쓰지 말고 Breusch-Pagan p값도 같이 붙여.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "shapiro-wilk-test",
+      "term_en": "Shapiro-Wilk Test",
+      "term_ko": "샤피로-윌크 검정",
+      "abbreviation": "S-W test",
+      "definition": "표본이 정규분포에서 나왔다는 귀무가설을 W 통계량으로 검정하는 정규성 검정",
+      "usage_example": "잔차 수가 수천 개라 Shapiro-Wilk p값은 거의 무조건 작게 나와. Q-Q 플롯이랑 같이 판단해.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "studentized-residual",
+      "term_en": "Studentized Residual",
+      "term_ko": "스튜던트화 잔차",
+      "abbreviation": "rᵢ / tᵢ",
+      "definition": "잔차를 레버리지를 반영한 표준편차 추정치 s√(1−hᵢᵢ)로 나눈 잔차. i번째 관측치를 빼고 s를 추정한 외적(externally) 스튜던트화 잔차는 t분포를 따른다",
+      "usage_example": "스튜던트화 잔차 |3| 넘는 화소만 골라서 원영상에 점 찍어 와.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "weighted-least-squares",
+      "term_en": "Weighted Least Squares",
+      "term_ko": "가중최소제곱법",
+      "abbreviation": "WLS",
+      "definition": "관측치마다 오차 분산의 역수에 비례하는 가중치를 주어 가중 잔차제곱합을 최소화하는 회귀. 이분산 처방으로 쓴다",
+      "usage_example": "관측 정밀도가 구역마다 다르니까 측정 분산 역수로 가중치 줘서 WLS로 돌려.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "heteroscedasticity-consistent-standard-error",
+      "term_en": "Heteroscedasticity-Consistent Standard Error",
+      "term_ko": "이분산-강건 표준오차",
+      "abbreviation": "HC SE",
+      "definition": "OLS 계수는 그대로 두고, 이분산이 있어도 일관되도록 계수 분산을 샌드위치 형태로 다시 추정한 표준오차. White 표준오차, robust SE라고도 한다",
+      "usage_example": "계수는 이미 보고했으니 그대로 두고 표준오차만 HC3로 바꿔서 p값 다시 뽑아.",
+      "origin": "standard",
+      "track": "B"
+    }
+  ],
+  "questions": [
+    {
+      "id": "B-RES-003",
+      "type": "short",
+      "chapter": "B.res",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "선형회귀의 기본 가정을 흔히 LINE으로 외운다. 이 중 마지막 글자 E에 해당하며, 잔차의 분산이 설명변수나 적합값 수준과 상관없이 일정해야 한다는 가정의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Homoscedasticity",
+          "Homoskedasticity",
+          "Equal variance",
+          "Constant variance"
+        ],
+        "ko": [
+          "등분산성",
+          "등분산",
+          "분산 동일성",
+          "동분산성"
+        ]
+      },
+      "primary": "Homoscedasticity",
+      "explanation_short": "LINE의 E는 Equal variance, 즉 등분산성(homoscedasticity)입니다. 이 가정이 깨진 상태가 이분산성(heteroscedasticity)입니다.",
+      "explanation_full": "LINE = Linearity(선형성), Independence(독립성), Normality(정규성), Equal variance(등분산성). 등분산이 깨져도 OLS 계수는 불편이지만 표준오차가 틀려 p값·신뢰구간을 믿기 어렵습니다. 원격탐사 회귀에서는 값이 클수록(깊은 수심, 높은 바이오매스) 오차도 커지는 형태의 이분산이 흔합니다.",
+      "tags": [
+        "regression",
+        "assumption"
+      ],
+      "terms": [
+        "line-assumptions",
+        "heteroscedasticity"
+      ],
+      "source_ref": "Kutner et al., Applied Linear Statistical Models 3장·10장",
+      "status": "draft"
+    },
+    {
+      "id": "B-RES-004",
+      "type": "mcq",
+      "chapter": "B.res",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "다음 중 선형회귀 LINE 가정 가운데 독립성(Independence)이 가장 직접적으로 위반될 가능성이 큰 상황은?",
+      "choices": [
+        {
+          "text": "같은 영상에서 서로 붙어 있는 화소들을 표본으로 뽑았다",
+          "rationale": null
+        },
+        {
+          "text": "반사율과 엽록소 농도의 관계가 직선이 아니라 위로 휘는 곡선 형태다",
+          "rationale": "관계식 모양이 틀린 것은 선형성(Linearity) 위반입니다. 잔차 플롯의 U자 패턴으로 드러납니다."
+        },
+        {
+          "text": "잔차 분포의 꼬리가 정규분포보다 두껍다",
+          "rationale": "분포 모양 문제는 정규성(Normality) 위반으로, Q-Q 플롯이나 Shapiro-Wilk로 확인합니다."
+        },
+        {
+          "text": "수심이 깊을수록 잔차의 퍼짐이 커진다",
+          "rationale": "잔차 분산이 값에 따라 달라지는 것은 등분산성(Equal variance) 위반, 즉 이분산입니다."
+        },
+        {
+          "text": "두 설명변수(B4, B5 반사율) 사이의 상관계수가 0.95로 매우 높다",
+          "rationale": "설명변수 간 상관은 다중공선성 문제로, 오차에 대한 LINE 가정과는 별개입니다. VIF로 진단합니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "붙어 있는 화소들은 대기 상태·지표 특성을 공유해 오차가 서로 닮기 쉽습니다. 이렇게 오차끼리 상관되는 것(공간 자기상관)은 독립성 가정 위반입니다.",
+      "explanation_full": "독립성이 깨지면 실제 정보량보다 표본 수가 부풀려져 표준오차가 과소추정되고, 유의하지 않은 관계가 유의해 보입니다. 원격탐사에서는 표본 화소 사이 간격을 두고 뽑거나, 공간 자기상관을 모형에 반영하거나, 공간 교차검증으로 성능을 평가합니다.",
+      "tags": [
+        "regression",
+        "assumption",
+        "independence"
+      ],
+      "terms": [
+        "line-assumptions",
+        "autocorrelation"
+      ],
+      "source_ref": "Kutner et al., Applied Linear Statistical Models 3장·10장",
+      "status": "draft"
+    },
+    {
+      "id": "B-RES-005",
+      "type": "mcq",
+      "chapter": "B.res",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "잔차 대 적합값(Residual vs Fitted) 플롯에서 회귀 가정이 잘 충족되었을 때 기대하는 모습은?",
+      "choices": [
+        {
+          "text": "적합값이 커질수록 잔차의 퍼짐이 깔때기 모양으로 넓어진다",
+          "rationale": "깔때기 모양은 잔차 분산이 적합값에 따라 커지는 이분산의 전형적 징후입니다."
+        },
+        {
+          "text": "잔차가 적합값을 따라 U자 곡선을 그린다",
+          "rationale": "U자·곡선 패턴은 모형이 비선형 관계를 놓쳤다는 신호입니다."
+        },
+        {
+          "text": "점들이 대각선 직선 위에 거의 일렬로 놓인다",
+          "rationale": "대각선 위에 놓이는 것은 정규성이 좋은 Q-Q 플롯의 모습입니다. 잔차 대 적합값 플롯의 기준선은 수평선(잔차 = 0)입니다."
+        },
+        {
+          "text": "0을 중심으로 일정한 폭의 띠 안에서 무작위로 흩어진다",
+          "rationale": null
+        },
+        {
+          "text": "모든 잔차가 0보다 크다",
+          "rationale": "절편이 있는 OLS에서 잔차의 합은 0이므로 모든 잔차가 양수일 수 없습니다. 그렇게 보인다면 계산이나 그림에 오류가 있는 것입니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "가정이 충족되면 잔차는 0을 중심으로 수평 띠 안에서 무작위로 흩어집니다. 패턴(곡선, 깔때기, 뭉침)이 보이면 모형이 무언가를 놓친 것입니다.",
+      "explanation_full": "잔차 플롯은 가장 먼저 그리는 진단 그림입니다. x축을 적합값 대신 각 설명변수, 관측 시각, 위치(경도·위도, 해안선 거리)로 바꿔 그리면 어떤 변수에서 문제가 생기는지 좁힐 수 있습니다.",
+      "tags": [
+        "regression",
+        "diagnostics",
+        "residual-plot"
+      ],
+      "terms": [
+        "residual-plot",
+        "residual"
+      ],
+      "source_ref": "ISLR 3.3.3 Potential Problems",
+      "status": "draft"
+    },
+    {
+      "id": "B-RES-006",
+      "type": "mcq",
+      "chapter": "B.res",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "잔차 대 적합값 플롯에서 잔차가 적합값 양 끝에서는 양수, 가운데에서는 음수인 U자형 곡선을 그린다. 가장 적절한 해석과 처방은?",
+      "choices": [
+        {
+          "text": "이분산성이므로 가중최소제곱(WLS)을 적용한다",
+          "rationale": "이분산은 잔차의 퍼짐 폭이 변하는 패턴입니다. U자는 잔차의 평균 위치가 휘는 패턴이라 다른 문제입니다."
+        },
+        {
+          "text": "비선형 관계를 놓쳤으므로 제곱항 추가나 변수 변환을 한다",
+          "rationale": null
+        },
+        {
+          "text": "잔차 자기상관이므로 Durbin-Watson 통계량을 확인한다",
+          "rationale": "자기상관은 관측 순서(시간·공간)에 따른 패턴입니다. 적합값 축에서 보이는 U자는 모형식 모양 문제입니다."
+        },
+        {
+          "text": "정규성 위반이므로 Shapiro-Wilk 검정 후 표본을 늘린다",
+          "rationale": "정규성은 잔차 분포 모양 문제로 Q-Q 플롯에서 봅니다. 표본을 늘려도 휜 관계는 펴지지 않습니다."
+        },
+        {
+          "text": "영향점이 있으므로 Cook's D가 큰 점을 제거한다",
+          "rationale": "U자 패턴은 많은 점이 함께 만드는 체계적 구조입니다. 몇 개 점을 지워도 사라지지 않습니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "U자형 잔차는 직선으로 표현하지 못한 곡률이 남아 있다는 뜻으로, 선형성 가정 위반입니다. 제곱항·로그 변환·스플라인 등으로 곡선을 식에 넣은 뒤 다시 확인합니다.",
+      "explanation_full": "어느 설명변수 때문인지 알려면 잔차를 각 설명변수에 대해 그려 봅니다(또는 부분 잔차 플롯). 예를 들어 NDVI가 높은 구간에서 포화가 일어나면 NDVI 축 잔차 플롯에서 곡선이 뚜렷합니다. 비선형 관계를 놓치면 계수 자체가 편향되므로 표준오차 보정만으로는 해결되지 않습니다.",
+      "tags": [
+        "regression",
+        "diagnostics",
+        "residual-plot",
+        "linearity"
+      ],
+      "terms": [
+        "residual-plot",
+        "line-assumptions"
+      ],
+      "source_ref": "ISLR 3.3.3 Potential Problems",
+      "status": "draft"
+    },
+    {
+      "id": "B-RES-007",
+      "type": "mcq",
+      "chapter": "B.res",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "Breusch-Pagan 검정은 선형회귀의 어떤 가정을 확인하는 검정인가?",
+      "choices": [
+        {
+          "text": "잔차의 정규성",
+          "rationale": "정규성 검정으로는 Shapiro-Wilk, Jarque-Bera 등을 씁니다."
+        },
+        {
+          "text": "잔차의 독립성(자기상관 없음)",
+          "rationale": "1차 자기상관은 Durbin-Watson, 고차 자기상관은 Breusch-Godfrey 검정으로 확인합니다. 이름이 비슷해 헷갈리기 쉽습니다."
+        },
+        {
+          "text": "설명변수 간 공선성 없음",
+          "rationale": "다중공선성은 가설검정보다 VIF·조건수 같은 지표로 진단합니다."
+        },
+        {
+          "text": "종속변수와 설명변수 관계의 선형성",
+          "rationale": "선형성은 잔차 플롯이나 Ramsey RESET 검정 등으로 봅니다."
+        },
+        {
+          "text": "잔차의 등분산성",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "Breusch-Pagan 검정은 잔차 제곱이 설명변수로 설명되는지 보아 등분산성(귀무가설)과 이분산성(대립가설)을 가립니다.",
+      "explanation_full": "절차: OLS 잔차를 제곱 → 설명변수들에 회귀 → 그 R²로 LM 통계량(n·R², Koenker 형태)을 만들어 χ² 분포와 비교합니다. 설명변수의 제곱항·교차항까지 넣어 더 일반적인 형태의 이분산을 보는 것은 White 검정입니다.",
+      "tags": [
+        "regression",
+        "diagnostics",
+        "test"
+      ],
+      "terms": [
+        "breusch-pagan-test",
+        "heteroscedasticity"
+      ],
+      "source_ref": "Wooldridge, Introductory Econometrics 8장 Heteroskedasticity",
+      "status": "draft"
+    },
+    {
+      "id": "B-RES-008",
+      "type": "mcq",
+      "chapter": "B.res",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "연안 수심 회귀모형에 Breusch-Pagan 검정을 했더니 p값이 0.001이었다(유의수준 0.05). 옳은 해석은?",
+      "choices": [
+        {
+          "text": "p값이 작으므로 등분산 가정이 잘 충족되었다",
+          "rationale": "반대입니다. Breusch-Pagan의 귀무가설이 등분산이므로 p값이 작으면 등분산을 기각합니다."
+        },
+        {
+          "text": "잔차가 정규분포를 따르지 않는다",
+          "rationale": "정규성은 Shapiro-Wilk 등으로 봅니다. Breusch-Pagan은 분산 구조를 봅니다."
+        },
+        {
+          "text": "등분산 귀무가설을 기각하므로 이분산이 있다고 본다",
+          "rationale": null
+        },
+        {
+          "text": "잔차에 양의 자기상관이 있다",
+          "rationale": "자기상관은 Durbin-Watson 등 순서 기반 검정으로 봅니다."
+        },
+        {
+          "text": "OLS 계수 추정치가 편향되었으므로 계수를 모두 버려야 한다",
+          "rationale": "이분산만으로는 OLS 계수가 편향되지 않습니다. 틀리는 것은 표준오차이므로 강건 표준오차나 WLS로 대응합니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "Breusch-Pagan의 귀무가설은 \"잔차 분산이 일정하다(등분산)\"입니다. p = 0.001 < 0.05이므로 기각하고 이분산이 있다고 판단합니다.",
+      "explanation_full": "이분산이 확인되면 (1) 계수는 유지하고 이분산-강건 표준오차로 추론, (2) 분산 구조를 알면 WLS, (3) 종속변수 로그 변환 등을 검토합니다. 표본이 매우 크면 실무적으로 무시할 만한 이분산도 유의하게 나오므로 잔차 플롯으로 크기를 함께 확인합니다.",
+      "tags": [
+        "regression",
+        "diagnostics",
+        "test"
+      ],
+      "terms": [
+        "breusch-pagan-test",
+        "heteroscedasticity"
+      ],
+      "source_ref": "Wooldridge, Introductory Econometrics 8장 Heteroskedasticity",
+      "status": "draft"
+    },
+    {
+      "id": "B-RES-009",
+      "type": "mcq",
+      "chapter": "B.res",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "잔차에 Shapiro-Wilk 검정을 적용할 때, 이 검정의 귀무가설은?",
+      "choices": [
+        {
+          "text": "잔차가 정규분포를 따른다",
+          "rationale": null
+        },
+        {
+          "text": "잔차가 정규분포를 따르지 않는다",
+          "rationale": "귀무가설과 대립가설이 뒤바뀌었습니다. 그래서 p값이 작을 때 \"정규성이 기각된다\"고 해석합니다."
+        },
+        {
+          "text": "잔차의 분산이 일정하다",
+          "rationale": "등분산 귀무가설은 Breusch-Pagan 같은 이분산 검정의 것입니다."
+        },
+        {
+          "text": "인접 잔차 사이에 자기상관이 없다",
+          "rationale": "자기상관 없음을 귀무가설로 두는 것은 Durbin-Watson 등의 검정입니다."
+        },
+        {
+          "text": "모든 회귀계수가 0이다",
+          "rationale": "이것은 모형 전체의 유의성을 보는 F 검정의 귀무가설입니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "Shapiro-Wilk 검정의 귀무가설은 \"표본이 정규분포에서 나왔다\"입니다. p값이 유의수준보다 작으면 정규성을 기각합니다.",
+      "explanation_full": "W 통계량은 정렬된 표본값이 정규분포에서 기대되는 순서 통계량과 얼마나 잘 맞는지를 나타내며, 1에 가까울수록 정규분포에 가깝습니다. 정규성은 소표본에서 t·F 검정의 타당성에 영향을 주며, 표본이 크면 중심극한정리 덕분에 계수 추론이 정규성 위반에 덜 민감해집니다.",
+      "tags": [
+        "regression",
+        "diagnostics",
+        "test",
+        "normality"
+      ],
+      "terms": [
+        "shapiro-wilk-test"
+      ],
+      "source_ref": "Kutner et al., Applied Linear Statistical Models 3장·10장",
+      "status": "draft"
+    },
+    {
+      "id": "B-RES-010",
+      "type": "mcq",
+      "chapter": "B.res",
+      "cognitive_level": 2,
+      "difficulty": 4,
+      "stem": "해안 화소 회귀모형에서 무작위로 뽑은 잔차 4,000개에 Shapiro-Wilk 검정을 했더니 p < 0.001이었다. 그런데 Q-Q 플롯은 양 끝만 아주 약간 벗어날 뿐 거의 직선이다. 가장 적절한 판단은?",
+      "choices": [
+        {
+          "text": "정규성이 심하게 깨졌으므로 반드시 종속변수를 로그 변환해야 한다",
+          "rationale": "검정이 유의하다는 것과 이탈이 크다는 것은 다릅니다. Q-Q 플롯상 이탈이 작으면 변환이 꼭 필요하지 않고, 불필요한 변환은 해석만 어렵게 만듭니다."
+        },
+        {
+          "text": "p값이 작으므로 정규성 가정이 잘 충족되었다",
+          "rationale": "귀무가설이 \"정규분포를 따른다\"이므로 p값이 작으면 정규성이 기각된 것입니다. 해석이 반대입니다."
+        },
+        {
+          "text": "Shapiro-Wilk는 이분산 검정이므로 WLS로 바꿔야 한다",
+          "rationale": "Shapiro-Wilk는 정규성 검정입니다. 이분산은 Breusch-Pagan 등으로 봅니다."
+        },
+        {
+          "text": "표본이 커서 사소한 이탈도 유의해진 것이므로 Q-Q 플롯으로 이탈 정도를 판단한다",
+          "rationale": null
+        },
+        {
+          "text": "p값은 표본 수와 무관하므로 Q-Q 플롯 쪽이 잘못 그려졌다고 본다",
+          "rationale": "검정력은 표본 수에 따라 커집니다. 표본이 크면 아주 작은 차이도 p값이 작아집니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "표본이 수천 개면 검정력이 매우 커서 실무적으로 무시할 만한 작은 이탈도 유의하게 나옵니다. 이럴 때는 Q-Q 플롯으로 이탈의 크기를 보고 판단합니다.",
+      "explanation_full": "반대로 표본이 10~20개처럼 작으면 검정력이 낮아 정규성 위반을 놓치기 쉽습니다. 그래서 \"검정 p값 하나\"보다 Q-Q 플롯과 함께 판단하는 것이 실무 관행입니다. 또 표본이 크면 중심극한정리로 계수의 표본분포가 정규에 가까워져, 잔차의 약한 비정규성은 계수 추론에 큰 문제가 되지 않습니다.",
+      "tags": [
+        "regression",
+        "diagnostics",
+        "test",
+        "normality"
+      ],
+      "terms": [
+        "shapiro-wilk-test",
+        "qq-plot"
+      ],
+      "source_ref": "Kutner et al., Applied Linear Statistical Models 3장·10장",
+      "status": "draft"
+    },
+    {
+      "id": "B-RES-011",
+      "type": "short",
+      "chapter": "B.res",
+      "cognitive_level": 1,
+      "difficulty": 3,
+      "stem": "잔차 eᵢ를 레버리지를 반영한 표준편차 추정치 s√(1−hᵢᵢ)로 나눈 잔차로, 특히 s를 i번째 관측치를 뺀 모형에서 추정해 t분포를 따르도록 만든 잔차의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Studentized residual",
+          "Externally studentized residual",
+          "Studentized deleted residual",
+          "Deleted studentized residual",
+          "R-student"
+        ],
+        "ko": [
+          "스튜던트화 잔차",
+          "외적 스튜던트화 잔차",
+          "스튜던트 잔차",
+          "삭제 스튜던트화 잔차",
+          "스튜던트화된 잔차"
+        ]
+      },
+      "primary": "Studentized residual",
+      "explanation_short": "외적 스튜던트화 잔차(externally studentized residual)는 tᵢ = eᵢ / (s₍ᵢ₎√(1−hᵢᵢ))로 계산하며, 자유도 n−p−1인 t분포를 따릅니다(p: 절편을 포함한 회귀계수 개수). 흔히 |tᵢ| > 3(느슨하게 2)을 이상치 후보로 보지만 이는 경험 기준입니다.",
+      "explanation_full": "s₍ᵢ₎는 i번째 관측치를 빼고 추정한 잔차 표준편차라서, 이상치 자신이 s를 부풀려 스스로를 가리는 문제를 피합니다. 전체 자료의 s를 쓰는 것은 내적(internally) 스튜던트화 잔차로, 교재에 따라 표준화 잔차(standardized residual)라고도 부릅니다. 통계 패키지마다 명칭이 조금씩 다르니 계산식을 확인하는 습관이 필요합니다.",
+      "tags": [
+        "regression",
+        "diagnostics",
+        "outlier"
+      ],
+      "terms": [
+        "studentized-residual"
+      ],
+      "source_ref": "Montgomery·Peck·Vining, Introduction to Linear Regression Analysis 4장 Model Adequacy Checking",
+      "status": "draft"
+    },
+    {
+      "id": "B-RES-012",
+      "type": "mcq",
+      "chapter": "B.res",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "이상치를 찾을 때 원 잔차 eᵢ를 그대로 보지 않고 스튜던트화 잔차를 쓰는 주된 이유는?",
+      "choices": [
+        {
+          "text": "잔차의 단위를 미터 같은 원래 종속변수 단위로 되돌리기 위해",
+          "rationale": "원 잔차가 이미 종속변수 단위입니다. 스튜던트화 잔차는 표준편차로 나눈 무차원 값입니다."
+        },
+        {
+          "text": "잔차의 합이 0이 되도록 맞추기 위해",
+          "rationale": "절편이 있는 OLS의 원 잔차 합은 이미 0입니다. 스튜던트화와는 무관합니다."
+        },
+        {
+          "text": "이분산을 제거해 등분산 가정을 만족시키기 위해",
+          "rationale": "스튜던트화는 진단용 척도 조정일 뿐 모형의 이분산을 없애지 않습니다. 이분산 처방은 WLS·변환·강건 표준오차입니다."
+        },
+        {
+          "text": "Cook's D 없이도 각 관측치가 계수에 주는 영향력을 알기 위해",
+          "rationale": "스튜던트화 잔차는 y방향으로 얼마나 벗어났는지(이상치 정도)를 봅니다. 적합 결과를 얼마나 바꾸는지(영향력)는 Cook's D·DFFITS로 봅니다."
+        },
+        {
+          "text": "레버리지가 높은 점일수록 원 잔차의 분산 σ²(1−hᵢᵢ)가 작아 그 점의 이상이 원 잔차에서 가려지기 때문",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "원 잔차의 분산은 σ²(1−hᵢᵢ)로 관측치마다 다릅니다. 레버리지가 높은 점은 회귀선을 자기 쪽으로 끌어당겨 원 잔차가 작아 보이므로, 이 차이를 보정한 스튜던트화 잔차로 비교해야 공정합니다.",
+      "explanation_full": "원 잔차는 관측치마다 분산이 달라 같은 잣대로 비교할 수 없습니다. 스튜던트화하면 모두 대략 표준편차 1인 t분포 척도가 되어 \"|t| > 3\"처럼 공통 기준을 쓸 수 있습니다. 원격탐사 회귀에서 극단적인 반사율을 가진 화소(고레버리지)가 섞여 있을 때 특히 차이가 큽니다.",
+      "tags": [
+        "regression",
+        "diagnostics",
+        "outlier"
+      ],
+      "terms": [
+        "studentized-residual",
+        "leverage"
+      ],
+      "source_ref": "Montgomery·Peck·Vining, Introduction to Linear Regression Analysis 4장 Model Adequacy Checking",
+      "status": "draft"
+    },
+    {
+      "id": "B-RES-013",
+      "type": "short",
+      "chapter": "B.res",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "관측치마다 오차 분산의 역수에 비례하는 가중치를 주고, 가중 잔차제곱합을 최소화해 계수를 추정하는 회귀 방법의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Weighted Least Squares (WLS)",
+          "Weighted regression"
+        ],
+        "ko": [
+          "가중최소제곱법",
+          "가중최소제곱",
+          "가중최소자승법",
+          "가중회귀"
+        ]
+      },
+      "primary": "Weighted Least Squares (WLS)",
+      "explanation_short": "가중최소제곱(WLS)은 Σwᵢ(yᵢ−ŷᵢ)²를 최소화하며, wᵢ ∝ 1/Var(εᵢ)로 둡니다. 정밀한(분산이 작은) 관측치의 말을 더 많이 듣는 방식입니다.",
+      "explanation_full": "분산 구조를 정확히 알면 WLS는 이분산 상황에서 OLS보다 효율적인(표준오차가 작은) 추정량입니다. 분산 구조를 모르면 잔차로 추정해 쓰거나(FWLS), 계수는 OLS로 두고 강건 표준오차를 쓰는 편이 안전합니다. 예: 구역마다 현장 측정 장비의 정밀도가 다를 때 측정 분산의 역수를 가중치로 씁니다.",
+      "tags": [
+        "regression",
+        "heteroscedasticity",
+        "prescription"
+      ],
+      "terms": [
+        "weighted-least-squares"
+      ],
+      "source_ref": "Kutner et al., Applied Linear Statistical Models 3장·10장",
+      "status": "draft"
+    },
+    {
+      "id": "B-RES-014",
+      "type": "mcq",
+      "chapter": "B.res",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "가중최소제곱(WLS)에 대한 설명으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "회귀계수 제곱합에 패널티를 더해 계수를 0 쪽으로 줄인다",
+          "rationale": "계수에 L2 패널티를 주는 것은 Ridge 회귀입니다. 다중공선성 처방이지 이분산 처방이 아닙니다."
+        },
+        {
+          "text": "분산이 큰(덜 정밀한) 관측치에 작은 가중치를 주어 계수를 추정한다",
+          "rationale": null
+        },
+        {
+          "text": "계수는 OLS 그대로 두고 표준오차만 다시 계산한다",
+          "rationale": "계수를 그대로 두고 표준오차만 고치는 것은 이분산-강건 표준오차입니다. WLS는 계수 추정치 자체가 바뀝니다."
+        },
+        {
+          "text": "잔차가 큰 관측치의 가중치를 반복적으로 줄여 이상치 영향을 자동으로 낮춘다",
+          "rationale": "그것은 Huber 등 로버스트 회귀(M-추정)의 방식입니다. WLS는 오차 분산 구조로 가중치를 정합니다."
+        },
+        {
+          "text": "시간 순서상 인접한 잔차 사이의 상관을 제거한다",
+          "rationale": "오차 간 상관(자기상관)까지 다루는 것은 일반화최소제곱(GLS)입니다. WLS는 오차 공분산 행렬이 대각(상관 없음)인 GLS의 특수한 경우입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "WLS는 wᵢ ∝ 1/Var(εᵢ)로 두어, 오차 분산이 큰 관측치의 영향을 줄이고 정밀한 관측치의 영향을 키웁니다. 그 결과 계수 추정치와 표준오차가 모두 OLS와 달라집니다.",
+      "explanation_full": "처방 세 가지를 구분해 두면 좋습니다. (1) 강건 표준오차: 계수 그대로, 표준오차만 수정. (2) WLS: 분산 구조를 가중치로 반영해 계수도 새로 추정. (3) 로버스트 회귀: 이상치 영향을 줄이는 것이 목적. 이분산이 목적이면 (1) 또는 (2), 이상치가 목적이면 (3)입니다.",
+      "tags": [
+        "regression",
+        "heteroscedasticity",
+        "prescription"
+      ],
+      "terms": [
+        "weighted-least-squares",
+        "heteroscedasticity"
+      ],
+      "source_ref": "Kutner et al., Applied Linear Statistical Models 3장·10장",
+      "status": "draft"
+    },
+    {
+      "id": "B-RES-015",
+      "type": "scenario",
+      "chapter": "B.res",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"연안 수심 추정 잔차를 보니 해안선에서 멀어질수록 잔차 표준편차가 거리 d에 거의 비례해서 커져. 거리 써서 WLS로 다시 돌려.\"\n\n각 관측치의 가중치 wᵢ로 가장 적절한 것은? (dᵢ > 0)",
+      "choices": [
+        {
+          "text": "wᵢ = dᵢ",
+          "rationale": "먼 관측치(분산이 큰 관측치)에 오히려 큰 가중치를 주어 이분산 문제를 키웁니다."
+        },
+        {
+          "text": "wᵢ = 1/dᵢ",
+          "rationale": "표준편차에 비례한다는 것과 분산에 비례한다는 것을 혼동한 답입니다. 분산이 dᵢ에 비례할 때의 가중치입니다."
+        },
+        {
+          "text": "wᵢ = 1/dᵢ²",
+          "rationale": null
+        },
+        {
+          "text": "wᵢ = dᵢ²",
+          "rationale": "분산에 비례하는 가중치로, 부정확한 관측치를 가장 크게 반영하게 됩니다. 방향이 반대입니다."
+        },
+        {
+          "text": "wᵢ = 1/√dᵢ",
+          "rationale": "분산이 √dᵢ에 비례할 때의 가중치입니다. 지시의 조건(표준편차 ∝ d)과 맞지 않습니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "표준편차 ∝ dᵢ이면 분산 ∝ dᵢ²입니다. WLS 가중치는 분산의 역수에 비례하므로 wᵢ = 1/dᵢ²입니다.",
+      "explanation_full": "계산 흐름: SD(εᵢ) = c·dᵢ → Var(εᵢ) = c²·dᵢ² → wᵢ ∝ 1/dᵢ². 가중치를 준 뒤에는 가중 잔차(√wᵢ·eᵢ)를 적합값에 대해 다시 그려 깔때기 모양이 사라졌는지 확인합니다. 표준편차와 분산을 혼동해 1/dᵢ를 쓰는 실수가 가장 흔합니다.",
+      "tags": [
+        "regression",
+        "heteroscedasticity",
+        "prescription",
+        "calculation"
+      ],
+      "terms": [
+        "weighted-least-squares",
+        "heteroscedasticity"
+      ],
+      "source_ref": "Kutner et al., Applied Linear Statistical Models 3장·10장",
+      "status": "draft"
+    },
+    {
+      "id": "B-RES-016",
+      "type": "short",
+      "chapter": "B.res",
+      "cognitive_level": 1,
+      "difficulty": 3,
+      "stem": "이분산이 있을 때 OLS 계수 추정치는 그대로 두고, 관측치별 잔차 제곱을 이용해 계수의 분산-공분산 행렬만 다시 추정해 구한 표준오차의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Heteroscedasticity-consistent standard error",
+          "Heteroskedasticity-consistent standard error",
+          "Heteroscedasticity-robust standard error",
+          "Robust standard error",
+          "White standard error",
+          "Huber-White standard error",
+          "Sandwich standard error",
+          "HC standard error"
+        ],
+        "ko": [
+          "이분산-강건 표준오차",
+          "이분산 일치 표준오차",
+          "강건 표준오차",
+          "로버스트 표준오차",
+          "화이트 표준오차",
+          "샌드위치 표준오차"
+        ]
+      },
+      "primary": "Heteroscedasticity-consistent standard error",
+      "explanation_short": "이분산-강건 표준오차(heteroscedasticity-consistent SE, White SE)는 계수는 OLS 그대로 두고 표준오차만 이분산에 강건하게 다시 계산합니다.",
+      "explanation_full": "분산 추정식이 (XᵀX)⁻¹ Xᵀ diag(eᵢ²) X (XᵀX)⁻¹처럼 \"빵-속-빵\" 모양이라 샌드위치 추정량이라고 부릅니다. HC0~HC3 등 소표본 보정 변형이 있으며, 표본이 작을 때는 HC3가 흔히 권장됩니다. 시계열 자기상관까지 함께 보정하려면 Newey-West(HAC) 표준오차를 씁니다.",
+      "tags": [
+        "regression",
+        "heteroscedasticity",
+        "prescription"
+      ],
+      "terms": [
+        "heteroscedasticity-consistent-standard-error"
+      ],
+      "source_ref": "Wooldridge, Introductory Econometrics 8장 Heteroskedasticity",
+      "status": "draft"
+    },
+    {
+      "id": "B-RES-017",
+      "type": "mcq",
+      "chapter": "B.res",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "OLS 모형의 표준오차를 이분산-강건 표준오차(HC)로 바꾸면 무엇이 바뀌는가?",
+      "choices": [
+        {
+          "text": "계수는 그대로, 표준오차·t값·p값·신뢰구간만 바뀐다",
+          "rationale": null
+        },
+        {
+          "text": "회귀계수 추정치가 WLS처럼 새로 계산된다",
+          "rationale": "계수를 새로 추정하는 것은 WLS입니다. HC 표준오차는 OLS 계수를 그대로 씁니다."
+        },
+        {
+          "text": "잔차의 이분산이 사라져 잔차 플롯이 고른 수평 띠 모양이 된다",
+          "rationale": "잔차는 OLS 잔차 그대로라 잔차 플롯도 변하지 않습니다. 이분산을 \"없애는\" 것이 아니라 \"감안해서\" 추론하는 방법입니다."
+        },
+        {
+          "text": "결정계수 R²가 보정되어 더 높아진다",
+          "rationale": "R²는 계수와 잔차로 정해지므로 표준오차 계산 방식을 바꿔도 변하지 않습니다."
+        },
+        {
+          "text": "이분산과 함께 시계열 자기상관까지 보정된다",
+          "rationale": "HC 표준오차는 이분산만 다룹니다. 자기상관까지 다루려면 Newey-West 같은 HAC 표준오차가 필요합니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "HC 표준오차는 계수 분산 추정식만 바꿉니다. 따라서 계수·잔차·R²는 그대로이고 표준오차, t값, p값, 신뢰구간만 달라집니다.",
+      "explanation_full": "보통 이분산이 있으면 일반 OLS 표준오차가 실제보다 작거나 커서 p값이 틀립니다. HC로 바꾸면 유의성 판단이 달라질 수 있지만 계수 해석은 그대로 유지되므로, 이미 계수를 보고한 상황에서 추론만 고칠 때 유용합니다.",
+      "tags": [
+        "regression",
+        "heteroscedasticity",
+        "prescription"
+      ],
+      "terms": [
+        "heteroscedasticity-consistent-standard-error"
+      ],
+      "source_ref": "Wooldridge, Introductory Econometrics 8장 Heteroskedasticity",
+      "status": "draft"
+    },
+    {
+      "id": "B-RES-018",
+      "type": "scenario",
+      "chapter": "B.res",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"양식장 면적 회귀 잔차가 깔때기 모양이야. 계수값은 이미 보고한 그대로 두고, p값만 믿을 수 있게 다시 뽑아와.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "잔차 분산 구조에 맞춰 가중치를 준 WLS로 다시 적합해 p값을 구한다",
+          "rationale": "WLS는 계수 추정치가 바뀝니다. \"계수값은 그대로\"라는 조건에 어긋납니다."
+        },
+        {
+          "text": "종속변수를 로그 변환해 다시 적합한다",
+          "rationale": "로그 변환은 계수의 값과 해석(원단위 → 비율)이 모두 바뀝니다."
+        },
+        {
+          "text": "Cook's D가 큰 관측치를 제거하고 같은 설명변수로 다시 적합한다",
+          "rationale": "깔때기 모양은 소수 점의 문제가 아니라 분산 구조 문제입니다. 점을 지우면 계수도 바뀝니다."
+        },
+        {
+          "text": "OLS 계수는 두고 이분산-강건(HC) 표준오차로 p값을 다시 계산한다",
+          "rationale": null
+        },
+        {
+          "text": "Durbin-Watson 통계량을 계산해 보고서에 추가한다",
+          "rationale": "DW는 자기상관 진단입니다. 깔때기 모양(이분산) 문제를 해결하지 않습니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "계수는 유지하면서 추론(p값·신뢰구간)만 바로잡는 방법은 이분산-강건 표준오차입니다. OLS 계수는 이분산이 있어도 불편이므로 그대로 둘 수 있습니다.",
+      "explanation_full": "지시문의 핵심 조건은 \"계수 그대로\"와 \"p값만\"입니다. WLS·변환은 효율이나 해석 면에서 더 나을 수 있지만 계수가 바뀝니다. 실무에서는 보고서에 \"표준오차: HC3\" 처럼 어떤 강건 표준오차를 썼는지 명시합니다.",
+      "tags": [
+        "regression",
+        "heteroscedasticity",
+        "prescription"
+      ],
+      "terms": [
+        "heteroscedasticity-consistent-standard-error",
+        "heteroscedasticity"
+      ],
+      "source_ref": "Wooldridge, Introductory Econometrics 8장 Heteroskedasticity",
+      "status": "draft"
+    },
+    {
+      "id": "B-RES-019",
+      "type": "scenario",
+      "chapter": "B.res",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"Sentinel-2 탁도 회귀에서 스튜던트화 잔차 절댓값이 3 넘는 화소 목록 뽑아서, 구름 가장자리 화소인지 원영상으로 확인해봐.\"\n\n이 지시의 의도로 가장 옳은 것은?",
+      "choices": [
+        {
+          "text": "원 잔차가 가장 큰 화소 3개를 뽑아 확인 없이 바로 학습 자료에서 빼려는 것",
+          "rationale": "지시는 원 잔차 상위 3개가 아니라 스튜던트화 잔차 |3| 기준이며, 빼기 전에 원인 확인을 요구합니다."
+        },
+        {
+          "text": "척도를 맞춘 잔차로 y방향 이상치 후보를 찾고, 구름 오염 같은 자료 오류인지 확인하려는 것",
+          "rationale": null
+        },
+        {
+          "text": "레버리지가 3을 넘는 화소를 찾아 설명변수 입력 오류를 확인하려는 것",
+          "rationale": "레버리지 hᵢᵢ는 0~1 사이 값이라 3을 넘을 수 없습니다. 또 지시의 기준은 스튜던트화 잔차입니다."
+        },
+        {
+          "text": "Cook's D가 3을 넘는 화소만 골라 영향점으로 확정하려는 것",
+          "rationale": "Cook's D는 영향력 지표로, 스튜던트화 잔차와 다른 값입니다. 흔한 기준도 4/n 또는 1이지 3이 아닙니다."
+        },
+        {
+          "text": "화소마다 잔차 정규성 검정을 따로 해서 비정규 화소를 지우려는 것",
+          "rationale": "정규성 검정은 잔차 전체의 분포에 대한 검정이지 화소 하나하나에 하는 것이 아닙니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "스튜던트화 잔차 |t| > 3은 흔히 쓰는 경험적 이상치 후보 기준입니다. 지시는 그런 화소를 찾아 구름 가장자리 오염처럼 자료 자체의 오류가 원인인지 확인하라는 뜻입니다.",
+      "explanation_full": "구름 가장자리·얇은 권운·그림자 화소는 구름 마스크를 통과해도 반사율이 오염되어 회귀선에서 크게 벗어나기 쉽습니다. 원인이 오류면 마스크를 보강해 제거하고, 실제 현상(예: 하천 유입부 고탁도)이면 남겨 두고 모형을 개선합니다. 확인 없이 지우면 실제 극값을 예측하지 못하는 모형이 됩니다.",
+      "tags": [
+        "regression",
+        "diagnostics",
+        "outlier"
+      ],
+      "terms": [
+        "studentized-residual"
+      ],
+      "source_ref": "Montgomery·Peck·Vining, Introduction to Linear Regression Analysis 4장 Model Adequacy Checking",
+      "status": "draft"
+    }
+  ]
+}

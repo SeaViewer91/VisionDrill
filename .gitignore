@@ -4,8 +4,10 @@ target/
 apps/*/src-tauri/gen/
 *.tmp
 .DS_Store
-# 문제은행 원본·백업은 저장소에 넣지 않음 (배포는 Releases의 .vdpack)
-bank/
+# 문제은행 원본 DB·백업·병합 산출물은 저장소에 넣지 않음. 초안 JSON(bank/incoming/*.json)만 올림
+bank/*
+!bank/incoming/
+bank/incoming/_logs/
 backups/
 *.db
 !packages/**/fixtures/*.db

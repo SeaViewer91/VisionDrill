@@ -1,0 +1,731 @@
+{
+  "format": "visiondrill-bank-exchange",
+  "format_version": 1,
+  "terms": [
+    {
+      "id": "median",
+      "term_en": "Median",
+      "term_ko": "중앙값",
+      "abbreviation": null,
+      "definition": "자료를 크기순으로 정렬했을 때 한가운데에 오는 값(짝수 개면 가운데 두 값의 평균). 극단값에 거의 영향을 받지 않는 대푯값",
+      "usage_example": "구름 픽셀이 섞여 평균이 튀니까 타일 대표값은 중앙값으로 뽑아.",
+      "origin": "standard",
+      "track": "A"
+    },
+    {
+      "id": "mode",
+      "term_en": "Mode",
+      "term_ko": "최빈값",
+      "abbreviation": null,
+      "definition": "자료에서 가장 자주 나타나는 값. 범주형 자료에도 쓸 수 있는 대푯값",
+      "usage_example": "분류 결과 잡음 정리할 때 3×3 창의 최빈값으로 덮어쓰는 다수결 필터 한 번 돌려.",
+      "origin": "standard",
+      "track": "A"
+    },
+    {
+      "id": "standard-deviation",
+      "term_en": "Standard Deviation",
+      "term_ko": "표준편차",
+      "abbreviation": "SD",
+      "definition": "값들이 평균으로부터 흩어진 정도. 분산(편차 제곱의 평균)의 양의 제곱근이며 원자료와 같은 단위를 가짐",
+      "usage_example": "밴드별 반사율 표준편차도 같이 적어 줘. 평균만 보면 타일 간 대비 차이를 모르겠어.",
+      "origin": "standard",
+      "track": "A"
+    },
+    {
+      "id": "interquartile-range",
+      "term_en": "Interquartile Range",
+      "term_ko": "사분위범위",
+      "abbreviation": "IQR",
+      "definition": "제3사분위수(Q3)에서 제1사분위수(Q1)를 뺀 값. 가운데 50% 자료가 퍼진 폭으로 극단값에 강함",
+      "usage_example": "포화 픽셀 몇 개 때문에 범위가 의미 없으니 산포는 IQR로 비교하자.",
+      "origin": "standard",
+      "track": "A"
+    },
+    {
+      "id": "skewness",
+      "term_en": "Skewness",
+      "term_ko": "왜도",
+      "abbreviation": null,
+      "definition": "분포가 좌우 대칭에서 벗어난 정도와 방향. 오른쪽 꼬리가 길면 양수, 왼쪽 꼬리가 길면 음수",
+      "usage_example": "SAR 강도값은 왜도가 커서 그대로 쓰지 말고 dB로 바꿔서 봐.",
+      "origin": "standard",
+      "track": "A"
+    },
+    {
+      "id": "kurtosis",
+      "term_en": "Kurtosis",
+      "term_ko": "첨도",
+      "abbreviation": null,
+      "definition": "분포 꼬리의 두께(극단값이 나오는 빈도)를 나타내는 통계량. 정규분포는 3이며, 3을 뺀 값을 초과첨도(excess kurtosis)라 함",
+      "usage_example": "정합 오차 초과첨도가 크네. 평소엔 괜찮은데 가끔 크게 어긋나는 타일이 있다는 뜻이야.",
+      "origin": "standard",
+      "track": "A"
+    },
+    {
+      "id": "outlier",
+      "term_en": "Outlier",
+      "term_ko": "이상치",
+      "abbreviation": null,
+      "definition": "나머지 관측치가 보이는 전반적 패턴에서 크게 벗어난 관측치. 오류일 수도, 실제 드문 현상일 수도 있음",
+      "usage_example": "이상치 타일이라고 바로 지우지 말고 원본 영상 열어서 구름인지 진짜 변화인지 확인해.",
+      "origin": "standard",
+      "track": "A"
+    },
+    {
+      "id": "median-absolute-deviation",
+      "term_en": "Median Absolute Deviation",
+      "term_ko": "중앙값 절대편차",
+      "abbreviation": "MAD",
+      "definition": "각 값과 중앙값의 차이(절댓값)를 구한 뒤 그 값들의 중앙값을 취한 로버스트 산포 지표",
+      "usage_example": "표준편차는 구름 픽셀에 끌려가니까 스케일은 MAD로 잡아.",
+      "origin": "standard",
+      "track": "A"
+    }
+  ],
+  "questions": [
+    {
+      "id": "A-DESC-001",
+      "type": "short",
+      "chapter": "A.desc",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "자료를 크기순으로 늘어놓았을 때 한가운데 위치하는 값(짝수 개면 가운데 두 값의 평균)을 무엇이라 하는가? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Median"
+        ],
+        "ko": [
+          "중앙값",
+          "중위수",
+          "중간값"
+        ]
+      },
+      "primary": "Median",
+      "explanation_short": "중앙값(Median)은 정렬된 자료의 가운데 값입니다. 순서만 쓰기 때문에 양 끝의 극단값이 아무리 커져도 거의 변하지 않습니다.",
+      "explanation_full": "값이 n개일 때 n이 홀수면 (n+1)/2번째 값, 짝수면 n/2번째와 n/2+1번째 값의 평균입니다. 평균은 모든 값의 크기를 반영하므로 구름·포화 픽셀처럼 극단값이 섞이면 크게 끌려가지만, 중앙값은 자료의 절반 가까이가 오염되기 전까지 버팁니다(붕괴점 50%). 원격탐사에서는 여러 날짜 영상을 픽셀별 중앙값으로 합성하는 median composite가 구름 영향을 줄이는 대표적 활용입니다.",
+      "tags": [
+        "descriptive",
+        "central-tendency"
+      ],
+      "terms": [
+        "median"
+      ],
+      "source_ref": "기술통계 일반 (OpenIntro Statistics 2장)",
+      "status": "draft"
+    },
+    {
+      "id": "A-DESC-002",
+      "type": "mcq",
+      "chapter": "A.desc",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "토지피복 분류 결과처럼 값이 클래스 코드(1=수계, 2=산림, 3=농경지, 4=시가지)로 되어 있는 범주형 자료에서, 대푯값으로 의미가 있는 통계량은?",
+      "choices": [
+        {
+          "text": "산술평균",
+          "rationale": "클래스 코드는 이름표일 뿐 크기 의미가 없어서 평균 2.7 같은 값은 해석할 수 없습니다. 평균은 수치형 자료의 대푯값입니다."
+        },
+        {
+          "text": "중앙값",
+          "rationale": "중앙값은 값에 순서가 있어야 정의됩니다. 수계·산림·시가지 코드에는 크고 작음이 없으므로 가운데 값이 의미를 갖지 않습니다."
+        },
+        {
+          "text": "최빈값",
+          "rationale": null
+        },
+        {
+          "text": "표준편차",
+          "rationale": "표준편차는 대푯값이 아니라 흩어진 정도(산포)를 나타내는 지표이며, 역시 수치형 자료에만 의미가 있습니다."
+        },
+        {
+          "text": "기하평균",
+          "rationale": "기하평균은 양수 값들의 곱의 n제곱근으로 성장률처럼 곱으로 쌓이는 수치형 자료에 씁니다. 범주 코드에는 쓸 수 없습니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "최빈값(Mode)은 가장 자주 나타나는 값이라 순서나 크기가 없는 범주형 자료에도 정의됩니다. 토지피복 지도에서 '가장 넓은 클래스'가 곧 최빈값입니다.",
+      "explanation_full": "자료의 측정 척도에 따라 쓸 수 있는 대푯값이 다릅니다. 명목척도(클래스 코드)는 최빈값만, 순서척도(피해 등급 1~5 등)는 중앙값까지, 구간·비율척도(반사율, 면적)는 평균까지 의미가 있습니다. 클래스 코드를 숫자로 저장했다고 평균을 내는 실수가 GIS 집계에서 자주 나오니 주의합니다.",
+      "tags": [
+        "descriptive",
+        "central-tendency"
+      ],
+      "terms": [
+        "mode"
+      ],
+      "source_ref": "기술통계 일반 (OpenIntro Statistics 2장)",
+      "status": "draft"
+    },
+    {
+      "id": "A-DESC-003",
+      "type": "mcq",
+      "chapter": "A.desc",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "픽셀 단위 토지피복 분류 결과에 소금·후추처럼 흩어진 오분류 픽셀이 많다. 각 픽셀을 3×3 이웃 창에서 가장 많이 나온 클래스로 바꾸는 후처리를 하려고 한다. 이 필터가 창마다 계산하는 통계량은?",
+      "choices": [
+        {
+          "text": "최빈값",
+          "rationale": null
+        },
+        {
+          "text": "중앙값",
+          "rationale": "중앙값 필터는 연속값 영상의 점 잡음 제거에 쓰입니다. 클래스 코드에는 순서가 없어서 코드의 중앙값은 이웃에 가장 많은 클래스와 다를 수 있습니다."
+        },
+        {
+          "text": "산술평균",
+          "rationale": "평균 필터는 코드를 섞어 2.4처럼 존재하지 않는 클래스 값을 만듭니다. 연속값 영상의 평활화에 쓰는 필터입니다."
+        },
+        {
+          "text": "최댓값",
+          "rationale": "최댓값 필터는 형태학적 팽창(dilation)에 해당하며, 코드 번호가 큰 클래스가 번져 나가게 만들 뿐 다수결이 아닙니다."
+        },
+        {
+          "text": "가우시안 가중 평균",
+          "rationale": "가우시안 필터는 거리에 따라 가중치를 둔 평균이라 평균 필터와 같은 문제가 있고, 연속값 영상의 잡음 완화에 씁니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "창 안에서 가장 많이 나온 클래스를 고르는 것은 최빈값(Mode)을 구하는 것입니다. GIS 도구에서는 이 후처리를 다수결 필터(majority filter)라고 부릅니다.",
+      "explanation_full": "분류 결과 정리에는 최빈값 필터가 표준입니다. 창 크기를 키울수록 작은 객체(좁은 도로, 소규모 양식장)가 지워지므로 최소 객체 크기(최소 지도화 단위, MMU)를 고려해 3×3 또는 5×5를 고릅니다. 동점이 나오는 경우 원래 값을 유지하는 등 처리 규칙도 도구마다 확인합니다.",
+      "tags": [
+        "descriptive",
+        "central-tendency",
+        "post-processing"
+      ],
+      "terms": [
+        "mode"
+      ],
+      "source_ref": "기술통계 일반 (OpenIntro Statistics 2장)",
+      "status": "draft"
+    },
+    {
+      "id": "A-DESC-004",
+      "type": "short",
+      "chapter": "A.desc",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "분산의 양의 제곱근으로, 값들이 평균에서 얼마나 흩어져 있는지를 원자료와 같은 단위로 나타내는 통계량은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Standard deviation (SD)",
+          "Sigma"
+        ],
+        "ko": [
+          "표준편차"
+        ]
+      },
+      "primary": "Standard deviation (SD)",
+      "explanation_short": "표준편차(Standard Deviation, SD)는 분산의 제곱근입니다. 분산은 단위가 제곱이 되지만 표준편차는 원자료와 단위가 같아 해석이 쉽습니다.",
+      "explanation_full": "분산은 편차(값−평균)를 제곱해 평균한 값이고, 표본에서는 보통 n 대신 n−1로 나눕니다. 반사율 밴드의 표준편차가 0.03이면 '대략 ±0.03 정도로 흩어져 있다'고 읽을 수 있습니다. 편차를 제곱하므로 큰 편차에 민감해, 구름·포화 픽셀이 섞이면 크게 부풀어 오릅니다. 이럴 때는 IQR이나 MAD 같은 로버스트 산포 지표를 함께 봅니다.",
+      "tags": [
+        "descriptive",
+        "dispersion"
+      ],
+      "terms": [
+        "standard-deviation"
+      ],
+      "source_ref": "기술통계 일반 (OpenIntro Statistics 2장)",
+      "status": "draft"
+    },
+    {
+      "id": "A-DESC-005",
+      "type": "mcq",
+      "chapter": "A.desc",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "어떤 위성 제품은 픽셀값(DN)을 반사율 = (DN − 1000) / 10000 으로 변환한다. 한 타일에서 DN의 표준편차가 400이었다면, 변환한 반사율의 (표준편차, 분산)은?",
+      "choices": [
+        {
+          "text": "(400, 160000)",
+          "rationale": "선형 변환을 해도 흩어진 정도가 그대로라고 본 오류입니다. 값에 상수를 곱하면 표준편차도 그 상수의 절댓값만큼 바뀝니다."
+        },
+        {
+          "text": "(−0.06, 0.0036)",
+          "rationale": "오프셋 −1000을 표준편차에도 적용한 오류입니다. 모든 값에 같은 상수를 더하거나 빼면 분포가 평행이동할 뿐 표준편차는 변하지 않고, 표준편차는 음수가 될 수도 없습니다."
+        },
+        {
+          "text": "(0.04, 16)",
+          "rationale": "분산에 1/10000을 한 번만 곱한 오류입니다. 분산은 제곱 단위라 척도 인자의 제곱(1/10000²)이 곱해져 160000 → 0.0016이 됩니다."
+        },
+        {
+          "text": "(0.04, 0.0016)",
+          "rationale": null
+        },
+        {
+          "text": "(0.0016, 0.04)",
+          "rationale": "표준편차와 분산을 뒤바꾼 것입니다. 분산은 표준편차의 제곱이므로 0.04² = 0.0016이 분산입니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "Y = (X − 1000)/10000 이면 SD(Y) = SD(X)/10000 = 400/10000 = 0.04 이고, 분산은 그 제곱인 0.0016입니다. 오프셋(−1000)은 평균만 옮길 뿐 산포에는 영향이 없습니다.",
+      "explanation_full": "일반식: Y = aX + b 이면 SD(Y) = |a|·SD(X), Var(Y) = a²·Var(X) 입니다. 검산: Var(X) = 400² = 160000, × (1/10000)² = 160000 × 10⁻⁸ = 0.0016, √0.0016 = 0.04. 정수 DN으로 저장된 위성 제품을 반사율로 바꿔 통계를 비교할 때, 평균에는 오프셋과 척도가 모두 들어가지만 표준편차에는 척도만 들어간다는 점을 기억하면 실수가 줄어듭니다.",
+      "tags": [
+        "descriptive",
+        "dispersion",
+        "calculation"
+      ],
+      "terms": [
+        "standard-deviation"
+      ],
+      "source_ref": "기술통계 일반 (OpenIntro Statistics 2장)",
+      "status": "draft"
+    },
+    {
+      "id": "A-DESC-006",
+      "type": "short",
+      "chapter": "A.desc",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "제3사분위수(Q3)에서 제1사분위수(Q1)를 뺀 값, 즉 자료의 가운데 50%가 퍼져 있는 폭을 무엇이라 하는가? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Interquartile range (IQR)"
+        ],
+        "ko": [
+          "사분위범위",
+          "사분위수범위",
+          "사분위간범위"
+        ]
+      },
+      "primary": "Interquartile range (IQR)",
+      "explanation_short": "사분위범위(Interquartile Range, IQR)는 Q3 − Q1입니다. 위아래 25%씩을 무시하므로 극단값의 영향을 거의 받지 않는 산포 지표입니다.",
+      "explanation_full": "Q1은 하위 25%, Q2(중앙값)는 50%, Q3는 75% 지점의 값입니다. 박스플롯에서 상자의 길이가 곧 IQR이고, 상자 밖 1.5×IQR 경계(Tukey 울타리)로 이상치를 표시합니다. 사분위수 계산 방식(보간법)은 소프트웨어마다 약간 달라 작은 표본에서는 값이 조금씩 다를 수 있습니다.",
+      "tags": [
+        "descriptive",
+        "dispersion",
+        "quartile"
+      ],
+      "terms": [
+        "interquartile-range"
+      ],
+      "source_ref": "Tukey (1977), Exploratory Data Analysis; OpenIntro Statistics 2장",
+      "status": "draft"
+    },
+    {
+      "id": "A-DESC-007",
+      "type": "mcq",
+      "chapter": "A.desc",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "같은 밴드의 두 타일을 비교하는데, 한 타일에만 센서 포화로 최댓값에 붙은 픽셀이 전체의 0.1% 섞여 있다. 두 타일의 '흩어진 정도'를 비교할 때 이 포화 픽셀의 영향을 가장 적게 받는 지표는?",
+      "choices": [
+        {
+          "text": "범위(최댓값 − 최솟값)",
+          "rationale": "범위는 최댓값 하나로 결정되므로 포화 픽셀 하나만 있어도 바로 최대로 늘어납니다. 가장 민감한 산포 지표입니다."
+        },
+        {
+          "text": "사분위범위(IQR)",
+          "rationale": null
+        },
+        {
+          "text": "분산",
+          "rationale": "분산은 편차를 제곱해 평균하므로 멀리 떨어진 소수 값이 제곱으로 크게 반영됩니다."
+        },
+        {
+          "text": "표준편차",
+          "rationale": "표준편차는 분산의 제곱근이라 분산과 마찬가지로 극단값에 크게 끌려갑니다."
+        },
+        {
+          "text": "평균절대편차(평균으로부터의 편차 절댓값의 평균)",
+          "rationale": "제곱을 하지 않아 분산보다는 덜 민감하지만, 극단값의 편차가 평균에 그대로 더해지고 기준인 평균 자체도 끌려가므로 여전히 영향을 받습니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "IQR은 Q1과 Q3만으로 정해지므로, 포화 픽셀이 위쪽 25% 안에 머무는 한(여기서는 0.1%) 값이 거의 바뀌지 않습니다. 나머지 지표는 모든 값의 크기를 반영해 극단값에 끌려갑니다.",
+      "explanation_full": "로버스트성은 붕괴점(breakdown point)으로 비교합니다. 범위·분산·표준편차는 극단값 하나로 무한히 커질 수 있어 붕괴점이 0%, IQR은 25%, MAD는 50%입니다. 영상 품질 점검에서 포화·결측(NoData) 픽셀을 먼저 마스킹하는 것이 원칙이지만, 마스킹이 불완전할 수 있으니 요약 통계는 로버스트 지표를 함께 적는 편이 안전합니다.",
+      "tags": [
+        "descriptive",
+        "dispersion",
+        "robust"
+      ],
+      "terms": [
+        "interquartile-range",
+        "outlier"
+      ],
+      "source_ref": "기술통계 일반 (OpenIntro Statistics 2장)",
+      "status": "draft"
+    },
+    {
+      "id": "A-DESC-008",
+      "type": "short",
+      "chapter": "A.desc",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "나머지 관측치들이 보이는 전반적 패턴에서 크게 벗어난 관측치를 무엇이라 하는가? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Outlier"
+        ],
+        "ko": [
+          "이상치",
+          "이상값",
+          "특이값",
+          "이상점",
+          "아웃라이어"
+        ]
+      },
+      "primary": "Outlier",
+      "explanation_short": "이상치(Outlier)는 다른 관측치들과 동떨어진 값입니다. 측정·처리 오류일 수도 있지만 실제로 드문 현상일 수도 있어, 원인을 확인하기 전에 무조건 지우면 안 됩니다.",
+      "explanation_full": "원격탐사에서 이상치의 흔한 원인은 구름·그림자, 센서 포화, NoData 값(예: 0이나 −9999)이 마스킹되지 않은 경우, 정합 실패 등입니다. 반대로 산불·홍수 같은 실제 변화도 통계적으로는 이상치로 보입니다. 박스플롯의 1.5×IQR 기준, 중앙값·MAD 기반 로버스트 z-점수 등으로 후보를 찾고, 원본 영상을 확인해 처리 방침을 정합니다.",
+      "tags": [
+        "descriptive",
+        "outlier"
+      ],
+      "terms": [
+        "outlier"
+      ],
+      "source_ref": "기술통계 일반 (OpenIntro Statistics 2장)",
+      "status": "draft"
+    },
+    {
+      "id": "A-DESC-009",
+      "type": "mcq",
+      "chapter": "A.desc",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "분포가 좌우 대칭에서 얼마나, 어느 방향으로 벗어났는지를 나타내며, 오른쪽 꼬리가 길면 양수가 되는 통계량은?",
+      "choices": [
+        {
+          "text": "첨도",
+          "rationale": "첨도(kurtosis)는 꼬리의 두께, 즉 극단값이 얼마나 자주 나오는지를 봅니다. 대칭인 분포도 첨도는 클 수 있어 비대칭의 방향을 알려 주지 않습니다."
+        },
+        {
+          "text": "변동계수",
+          "rationale": "변동계수(CV)는 표준편차를 평균으로 나눈 상대적 산포 지표로, 대칭 여부와는 관계가 없습니다."
+        },
+        {
+          "text": "사분위범위",
+          "rationale": "사분위범위(IQR)는 가운데 50% 자료의 폭을 나타내는 산포 지표이며 부호가 없습니다."
+        },
+        {
+          "text": "분산",
+          "rationale": "분산은 평균 주변으로 흩어진 정도를 나타내며 항상 0 이상이라 비대칭의 방향을 표현할 수 없습니다."
+        },
+        {
+          "text": "왜도",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "왜도(Skewness)는 분포의 비대칭을 나타내며, 오른쪽 꼬리가 길면 양(+), 왼쪽 꼬리가 길면 음(−), 대칭이면 0 근처입니다.",
+      "explanation_full": "표본 왜도는 표준화한 편차의 세제곱 평균, 즉 E[((X−μ)/σ)³]으로 계산합니다. 세제곱이라 부호가 살아남아 방향을 알려 줍니다. SAR 후방산란 강도(선형 스케일), 객체 면적, 강수량처럼 0 아래로 내려갈 수 없고 가끔 아주 큰 값이 나오는 자료는 양의 왜도를 흔히 보이며, 로그 변환(SAR의 dB 변환 등)으로 대칭에 가깝게 만들기도 합니다.",
+      "tags": [
+        "descriptive",
+        "shape"
+      ],
+      "terms": [
+        "skewness"
+      ],
+      "source_ref": "기술통계 일반 (OpenIntro Statistics 2장)",
+      "status": "draft"
+    },
+    {
+      "id": "A-DESC-010",
+      "type": "mcq",
+      "chapter": "A.desc",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "어느 해안 타일에서 근적외선(NIR) 밴드 반사율의 평균이 0.12, 중앙값이 0.08로 나왔다. 이 분포에 대한 해석으로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "어두운 픽셀(그림자·수면 등)이 만든 긴 왼쪽 꼬리가 평균을 끌어내린 음의 왜도 분포일 가능성이 크다",
+          "rationale": "왼쪽 꼬리가 길면 작은 극단값이 평균을 끌어내려 일반적으로 평균이 중앙값보다 작아집니다. 여기서는 평균(0.12)이 중앙값(0.08)보다 크므로 방향이 반대입니다."
+        },
+        {
+          "text": "평균과 중앙값의 차이는 표본 잡음일 뿐이므로 좌우 대칭 분포로 보는 것이 타당하다",
+          "rationale": "타일 전체 픽셀처럼 표본이 매우 크면 0.04(중앙값의 50%)나 되는 차이는 잡음으로 보기 어렵고, 분포 모양이 비대칭이라는 신호입니다."
+        },
+        {
+          "text": "밝은 픽셀(구름·백화 등)이 만든 긴 오른쪽 꼬리가 평균을 끌어올린 양의 왜도 분포일 가능성이 크다",
+          "rationale": null
+        },
+        {
+          "text": "평균이 중앙값보다 크므로 극단값에 덜 민감한 평균을 타일 대푯값으로 쓰는 것이 적절하다",
+          "rationale": "민감도가 거꾸로입니다. 극단값에 끌려간 쪽이 평균이며, 극단값에 강한 대푯값은 중앙값입니다."
+        },
+        {
+          "text": "평균이 중앙값보다 크므로 초과첨도가 음수인 평평한 분포일 가능성이 크다",
+          "rationale": "평균과 중앙값의 차이는 비대칭(왜도)을 시사할 뿐, 꼬리 두께를 나타내는 첨도의 부호를 알려 주지 않습니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "평균은 극단값에 끌려가고 중앙값은 버티므로, 평균 > 중앙값이면 일반적으로 큰 값 쪽(오른쪽) 꼬리가 긴 양의 왜도 분포입니다. 이럴 때 타일 대푯값은 중앙값이 더 적절합니다.",
+      "explanation_full": "'평균 > 중앙값 ⇒ 양의 왜도'는 대부분의 단봉 분포에서 맞는 경험칙이지만 예외가 있는 규칙이므로, 확정하려면 히스토그램과 왜도 값을 직접 확인합니다. 해안 타일의 NIR에서는 구름, 백사장, 파랑의 백화(whitecap) 같은 밝은 픽셀이 긴 오른쪽 꼬리를 만드는 전형적 원인입니다. 원인이 오염(구름)이라면 마스킹을, 실제 피복이라면 층별(클래스별) 요약을 고려합니다.",
+      "tags": [
+        "descriptive",
+        "shape",
+        "central-tendency"
+      ],
+      "terms": [
+        "skewness",
+        "median"
+      ],
+      "source_ref": "기술통계 일반 (OpenIntro Statistics 2장)",
+      "status": "draft"
+    },
+    {
+      "id": "A-DESC-011",
+      "type": "mcq",
+      "chapter": "A.desc",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "분포의 꼬리가 얼마나 두꺼운지, 즉 평균에서 멀리 떨어진 극단값이 얼마나 자주 나오는지를 나타내며, 정규분포에서 3(초과 기준으로는 0)인 통계량은?",
+      "choices": [
+        {
+          "text": "왜도",
+          "rationale": "왜도(skewness)는 좌우 비대칭의 방향과 정도를 나타냅니다. 정규분포의 왜도는 3이 아니라 0입니다."
+        },
+        {
+          "text": "첨도",
+          "rationale": null
+        },
+        {
+          "text": "분산",
+          "rationale": "분산은 흩어진 정도의 크기이며, 정규분포라도 σ²에 따라 어떤 양수든 될 수 있어 고정값 3을 갖지 않습니다."
+        },
+        {
+          "text": "변동계수",
+          "rationale": "변동계수는 표준편차 ÷ 평균인 상대 산포이며, 꼬리 두께나 정규분포 기준값과 관계가 없습니다."
+        },
+        {
+          "text": "중앙값 절대편차",
+          "rationale": "MAD는 중앙값 기준의 로버스트 산포 지표로, 척도에 따라 값이 달라지며 꼬리 모양을 따로 나타내지 않습니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "첨도(Kurtosis)는 표준화 편차의 네제곱 평균으로 꼬리 두께를 봅니다. 정규분포가 3이라, 흔히 3을 뺀 초과첨도(excess kurtosis)로 보고하며 양수면 정규보다 극단값이 잦다는 뜻입니다.",
+      "explanation_full": "첨도 = E[((X−μ)/σ)⁴]. 네제곱이라 평균에서 멀리 떨어진 값이 지배하므로, 실제로는 '봉우리의 뾰족함'보다 '꼬리의 무게'를 주로 반영합니다. 라이브러리마다 기본 출력이 첨도인지 초과첨도인지 다르니(예: 어떤 함수는 기본이 초과첨도) 결과를 볼 때 기준을 확인합니다.",
+      "tags": [
+        "descriptive",
+        "shape"
+      ],
+      "terms": [
+        "kurtosis"
+      ],
+      "source_ref": "기술통계 일반 (OpenIntro Statistics 2장)",
+      "status": "draft"
+    },
+    {
+      "id": "A-DESC-012",
+      "type": "mcq",
+      "chapter": "A.desc",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "두 시기 영상의 밴드 정합(co-registration) 오차를 GCP 수백 개에서 측정했더니, 오차 분포가 거의 좌우 대칭인데 초과첨도(excess kurtosis)가 6이었다. 가장 적절한 해석은?",
+      "choices": [
+        {
+          "text": "오차가 한쪽 방향으로 치우쳐 있어, 두 영상 사이에 체계적인 이동(편향)이 있다",
+          "rationale": "한 방향 치우침은 왜도나 평균 오차로 드러납니다. 문제에서 분포는 거의 대칭이며, 첨도는 비대칭을 나타내지 않습니다."
+        },
+        {
+          "text": "오차의 분산이 정규분포를 따를 때보다 6배 크다는 뜻이다",
+          "rationale": "첨도는 표준화한 값으로 계산해 척도(분산)와 무관합니다. 분산이 크든 작든 정규분포의 초과첨도는 0입니다."
+        },
+        {
+          "text": "봉우리가 둥글고 꼬리가 얇은, 정규분포보다 평평한 분포다",
+          "rationale": "평평하고 꼬리가 얇은 분포(예: 균등분포)는 초과첨도가 음수입니다. 초과첨도 6은 정반대로 꼬리가 두꺼운 분포입니다."
+        },
+        {
+          "text": "대부분 오차는 작지만, 큰 오차가 정규분포에서 기대하는 것보다 훨씬 자주 나타난다",
+          "rationale": null
+        },
+        {
+          "text": "봉우리가 두 개인 이봉 분포라서 성격이 다른 두 GCP 집단이 섞여 있다",
+          "rationale": "비슷한 크기의 두 집단이 뚜렷이 갈라진 대칭 이봉 분포는 오히려 초과첨도가 음수 쪽으로 가는 경향이 있습니다. 봉우리 개수는 첨도가 아니라 히스토그램으로 확인합니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "초과첨도가 양수로 크면 꼬리가 두꺼운(heavy-tailed) 분포로, 평소엔 오차가 작다가 가끔 크게 어긋나는 점이 정규 가정보다 훨씬 자주 나온다는 뜻입니다.",
+      "explanation_full": "이런 분포에서 평균 ± 2σ 같은 정규 기반 기준을 쓰면 큰 오차의 빈도를 과소평가합니다. 정합 품질은 RMSE 하나보다 중앙값·90/95 퍼센타일 오차를 함께 보고, 꼬리를 만드는 GCP(구름·그림자 위 오매칭 등)를 따로 확인합니다. 로버스트 추정(RANSAC, Huber 손실)이 필요하다는 신호로도 읽습니다.",
+      "tags": [
+        "descriptive",
+        "shape",
+        "registration"
+      ],
+      "terms": [
+        "kurtosis"
+      ],
+      "source_ref": "기술통계 일반 (OpenIntro Statistics 2장)",
+      "status": "draft"
+    },
+    {
+      "id": "A-DESC-013",
+      "type": "mcq",
+      "chapter": "A.desc",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "중앙값 절대편차(Median Absolute Deviation, MAD)의 정의로 옳은 것은? (x̃ = 자료의 중앙값, x̄ = 평균)",
+      "choices": [
+        {
+          "text": "median( |xᵢ − x̃| )",
+          "rationale": null
+        },
+        {
+          "text": "mean( |xᵢ − x̄| )",
+          "rationale": "평균으로부터의 편차 절댓값을 평균한 것은 평균절대편차(mean absolute deviation)입니다. 기준과 집계가 모두 평균이라 극단값에 끌려갑니다."
+        },
+        {
+          "text": "median( |xᵢ − x̄| )",
+          "rationale": "기준점이 평균이라 극단값이 기준 자체를 옮겨 버립니다. MAD는 기준점과 집계 모두 중앙값을 씁니다."
+        },
+        {
+          "text": "mean( |xᵢ − x̃| )",
+          "rationale": "기준은 중앙값이지만 편차들을 평균으로 모으므로, 큰 편차 하나가 결과를 크게 키웁니다."
+        },
+        {
+          "text": "max( |xᵢ − x̃| )",
+          "rationale": "최대 편차는 가장 멀리 떨어진 값 하나로 정해져 극단값에 가장 민감합니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "MAD는 각 값에서 중앙값을 뺀 절댓값들을 구하고, 그 절댓값들의 중앙값을 취합니다. 기준점과 집계가 모두 중앙값이라 자료의 절반 가까이가 오염되어도 버팁니다(붕괴점 50%).",
+      "explanation_full": "정규분포 자료에서 σ ≈ 1.4826 × MAD 이므로, 표준편차와 비교 가능한 척도가 필요할 때 이 상수를 곱합니다(일부 라이브러리는 scale 옵션으로 제공). '평균절대편차'도 약어가 MAD로 겹쳐 쓰이는 경우가 있어, 문서에는 median absolute deviation이라고 풀어 적는 편이 안전합니다.",
+      "tags": [
+        "descriptive",
+        "dispersion",
+        "robust"
+      ],
+      "terms": [
+        "median-absolute-deviation"
+      ],
+      "source_ref": "Rousseeuw & Croux (1993), Alternatives to the Median Absolute Deviation; 로버스트 통계 일반",
+      "status": "draft"
+    },
+    {
+      "id": "A-DESC-014",
+      "type": "mcq",
+      "chapter": "A.desc",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "한 필지 안의 픽셀 5개 반사율이 0.10, 0.11, 0.12, 0.13, 0.90이다(마지막 값은 포화 픽셀). 이 자료의 중앙값 절대편차(MAD, 척도 상수 미적용)는?",
+      "choices": [
+        {
+          "text": "0.164",
+          "rationale": "중앙값(0.12)으로부터의 편차 0.02, 0.01, 0, 0.01, 0.78을 평균한 값(0.82/5)입니다. 마지막 집계를 평균으로 해서 포화 픽셀의 0.78이 그대로 반영되었습니다."
+        },
+        {
+          "text": "0.251",
+          "rationale": "평균(0.272)으로부터의 편차 절댓값을 평균한 평균절대편차입니다. 기준점과 집계가 모두 극단값에 끌려갔습니다."
+        },
+        {
+          "text": "0.12",
+          "rationale": "0.12는 자료의 중앙값 자체입니다. MAD는 중앙값에서의 편차들을 다시 중앙값으로 모은 값입니다."
+        },
+        {
+          "text": "0.351",
+          "rationale": "0.351은 표본표준편차(n−1로 나눔)입니다. 포화 픽셀 하나 때문에 정상 픽셀들의 흩어짐(약 0.01~0.02)보다 수십 배 커졌습니다."
+        },
+        {
+          "text": "0.01",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "중앙값은 0.12, 편차 절댓값은 0.02, 0.01, 0, 0.01, 0.78이고, 정렬하면 0, 0.01, 0.01, 0.02, 0.78이므로 그 중앙값인 MAD = 0.01입니다. 포화 픽셀이 있어도 정상 픽셀의 흩어짐을 그대로 보여 줍니다.",
+      "explanation_full": "검산: 정렬 자료 0.10, 0.11, 0.12, 0.13, 0.90 → 중앙값 0.12. |x−0.12| = 0.02, 0.01, 0.00, 0.01, 0.78 → 정렬 0.00, 0.01, 0.01, 0.02, 0.78 → 가운데(3번째) 0.01. 같은 자료의 평균은 0.272, 표준편차는 약 0.351로 포화 픽셀 하나에 크게 왜곡됩니다. 정규분포 척도로 맞추면 1.4826 × 0.01 ≈ 0.015입니다.",
+      "tags": [
+        "descriptive",
+        "dispersion",
+        "robust",
+        "calculation"
+      ],
+      "terms": [
+        "median-absolute-deviation",
+        "outlier"
+      ],
+      "source_ref": "Rousseeuw & Croux (1993), Alternatives to the Median Absolute Deviation; 로버스트 통계 일반",
+      "status": "draft"
+    },
+    {
+      "id": "A-DESC-015",
+      "type": "scenario",
+      "chapter": "A.desc",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"타일마다 밝기 정규화할 때 평균이랑 표준편차 쓰지 말고 중앙값이랑 MAD로 z-점수 내. 구름 낀 타일이 꽤 섞여 있어.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "타일별로 (픽셀값 − 평균) / MAD로 표준화해, 척도만 로버스트 지표로 바꾼다",
+          "rationale": "기준점을 평균으로 두면 구름 픽셀이 평균을 끌어올려 중심이 틀어집니다. 지시는 중심(중앙값)과 척도(MAD)를 모두 로버스트하게 바꾸라는 것입니다."
+        },
+        {
+          "text": "타일별로 (픽셀값 − 중앙값) / MAD로 표준화하고, 필요하면 MAD에 1.4826을 곱한다",
+          "rationale": null
+        },
+        {
+          "text": "타일별로 (픽셀값 − 중앙값) / 표준편차로 표준화해, 중심만 로버스트 지표로 바꾼다",
+          "rationale": "중심은 로버스트하지만, 척도인 표준편차가 구름 픽셀 때문에 부풀어 정상 픽셀의 z-점수가 지나치게 작아집니다."
+        },
+        {
+          "text": "타일별로 (픽셀값 − 최솟값) / (최댓값 − 최솟값)으로 0~1 범위에 맞춘다",
+          "rationale": "최소-최대 정규화는 극단값 두 개(가장 밝은 구름 픽셀 등)가 척도를 정하므로 지시의 의도와 정반대로 이상치에 가장 민감합니다."
+        },
+        {
+          "text": "전체 타일을 합쳐 중앙값·MAD를 한 번만 구하고 모든 타일에 같은 값으로 적용한다",
+          "rationale": "지시는 '타일마다' 정규화하라는 것입니다. 전체 한 번만 구하면 타일 간 밝기 차이(촬영 조건 차이)가 보정되지 않습니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "지시의 핵심은 중심과 척도를 모두 로버스트 통계로 바꾸는 것입니다. 중앙값과 MAD는 구름처럼 일부 픽셀이 크게 튀어도 거의 변하지 않아, 정상 픽셀 기준의 z-점수를 얻을 수 있습니다.",
+      "explanation_full": "로버스트 z-점수 z = (x − 중앙값) / (1.4826 × MAD)는 정규분포 자료라면 일반 z-점수와 거의 같아집니다. MAD가 0이 되는 경우(값의 절반 이상이 같은 값, 예: NoData 0이 넓게 남은 타일)에는 나눗셈이 터지므로 NoData를 먼저 마스킹하고 작은 하한값(ε)을 둡니다. 비슷한 로버스트 스케일링으로 (x − 중앙값)/IQR도 쓰이지만, 이번 지시는 MAD를 명시했습니다.",
+      "tags": [
+        "descriptive",
+        "robust",
+        "normalization"
+      ],
+      "terms": [
+        "median-absolute-deviation",
+        "median",
+        "outlier"
+      ],
+      "source_ref": "Rousseeuw & Croux (1993), Alternatives to the Median Absolute Deviation; 로버스트 통계 일반",
+      "status": "draft"
+    },
+    {
+      "id": "A-DESC-016",
+      "type": "scenario",
+      "chapter": "A.desc",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"타일별 평균 NDWI 분포에서 박스플롯 기준으로 위쪽 이상치에 해당하는 타일 목록만 뽑아 줘. 요약값은 Q1 0.12, 중앙값 0.20, Q3 0.30이야.\"\n\n추출 조건으로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "NDWI > 0.45 인 타일",
+          "rationale": "Q3에 1.5를 곱한 값(0.30 × 1.5)입니다. 박스플롯 기준은 Q3에 1.5×IQR을 더하는 것이지 Q3을 1.5배 하는 것이 아닙니다."
+        },
+        {
+          "text": "NDWI > 0.47 인 타일",
+          "rationale": "중앙값에 1.5×IQR을 더한 값(0.20 + 0.27)입니다. 위쪽 울타리의 기준점은 중앙값이 아니라 Q3입니다."
+        },
+        {
+          "text": "NDWI > 0.57 인 타일",
+          "rationale": null
+        },
+        {
+          "text": "NDWI > 0.48 인 타일",
+          "rationale": "Q3에 IQR을 한 번만 더한 값(0.30 + 0.18)입니다. 박스플롯 수염의 한계는 1.5×IQR입니다."
+        },
+        {
+          "text": "NDWI > 0.84 인 타일",
+          "rationale": "Q3 + 3×IQR(0.30 + 0.54)로, Tukey가 '극단 이상치(far out)'를 구분할 때 쓰는 더 바깥 울타리입니다. 박스플롯의 일반 이상치 기준보다 너무 적게 뽑힙니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "IQR = 0.30 − 0.12 = 0.18이고, 박스플롯(Tukey) 위쪽 울타리는 Q3 + 1.5 × IQR = 0.30 + 0.27 = 0.57입니다. 이보다 큰 타일이 위쪽 이상치입니다.",
+      "explanation_full": "아래쪽 울타리는 Q1 − 1.5 × IQR = 0.12 − 0.27 = −0.15입니다. 이 기준은 사분위수로만 정해져 이상치 자체에 영향을 덜 받는다는 장점이 있습니다. 걸러진 타일은 삭제 대상이 아니라 '확인 대상'입니다. NDWI가 튀는 타일은 실제 수계가 넓은 타일일 수도, 구름 그림자나 NoData가 남은 타일일 수도 있으니 원본을 열어 봅니다.",
+      "tags": [
+        "descriptive",
+        "outlier",
+        "boxplot",
+        "calculation"
+      ],
+      "terms": [
+        "interquartile-range",
+        "outlier"
+      ],
+      "source_ref": "Tukey (1977), Exploratory Data Analysis; OpenIntro Statistics 2장",
+      "status": "draft"
+    }
+  ]
+}

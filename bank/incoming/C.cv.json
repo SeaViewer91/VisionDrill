@@ -1,0 +1,993 @@
+{
+  "format": "visiondrill-bank-exchange",
+  "format_version": 1,
+  "terms": [
+    {
+      "id": "validation-set",
+      "term_en": "Validation Set",
+      "term_ko": "검증 세트",
+      "abbreviation": null,
+      "definition": "학습(가중치 갱신)에는 쓰지 않고 하이퍼파라미터 선택·조기 종료·체크포인트 선택에 쓰는 데이터",
+      "usage_example": "체크포인트는 val mIoU 기준으로 고르고, 검증셋 타일은 학습에 절대 섞지 마.",
+      "origin": "standard",
+      "track": "C"
+    },
+    {
+      "id": "test-set",
+      "term_en": "Test Set",
+      "term_ko": "시험 세트",
+      "abbreviation": null,
+      "definition": "모델과 설정을 모두 확정한 뒤 최종 성능을 한 번 추정하기 위해 끝까지 떼어 두는 데이터",
+      "usage_example": "시험셋은 보고서 쓰기 직전에 딱 한 번만 돌려. 그 전엔 열어 보지도 마.",
+      "origin": "standard",
+      "track": "C"
+    },
+    {
+      "id": "k-fold-cross-validation",
+      "term_en": "K-Fold Cross-Validation",
+      "term_ko": "k겹 교차검증",
+      "abbreviation": "k-fold CV",
+      "definition": "데이터를 k개 폴드로 나눠 폴드마다 한 번씩 검증에 쓰고 나머지로 학습해, k개 점수를 평균하는 검증 방법",
+      "usage_example": "샘플이 300개뿐이니 한 번 나누지 말고 5-fold CV로 평균이랑 표준편차 같이 보고해.",
+      "origin": "standard",
+      "track": "C"
+    },
+    {
+      "id": "stratified-split",
+      "term_en": "Stratified Split",
+      "term_ko": "층화 분할",
+      "abbreviation": null,
+      "definition": "각 분할(폴드)에서 클래스 등 층 변수의 비율이 원본 데이터와 같게 유지되도록 나누는 방법",
+      "usage_example": "해안쓰레기 클래스가 드무니까 폴드 나눌 때 층화해서 나눠.",
+      "origin": "standard",
+      "track": "C"
+    },
+    {
+      "id": "data-leakage",
+      "term_en": "Data Leakage",
+      "term_ko": "데이터 누수",
+      "abbreviation": null,
+      "definition": "평가 데이터의 정보나 실제 운용 시점에는 알 수 없는 정보가 학습 과정에 섞여 들어가 평가 성능이 부풀려지는 현상",
+      "usage_example": "overlap 타일이 train/val에 걸쳐 있으면 누수야. 영상 단위로 다시 나눠.",
+      "origin": "standard",
+      "track": "C"
+    },
+    {
+      "id": "spatial-autocorrelation",
+      "term_en": "Spatial Autocorrelation",
+      "term_ko": "공간 자기상관",
+      "abbreviation": null,
+      "definition": "가까운 위치의 관측값일수록 서로 비슷한(상관된) 경향. Moran's I 등으로 측정한다",
+      "usage_example": "잔차 Moran's I가 0.5야. 공간 자기상관이 남아 있으니 랜덤 분할 점수는 믿지 마.",
+      "origin": "standard",
+      "track": "C"
+    },
+    {
+      "id": "spatial-cross-validation",
+      "term_en": "Spatial Cross-Validation",
+      "term_ko": "공간 교차검증",
+      "abbreviation": "spatial CV",
+      "definition": "공간 블록·행정구역·영상 같은 지리적 단위로 폴드를 나눠, 인접한 샘플이 학습과 검증에 동시에 들어가지 않게 하는 교차검증",
+      "usage_example": "랜덤 k-fold 말고 10km 블록 단위 공간 CV로 다시 뽑아.",
+      "origin": "standard",
+      "track": "C"
+    },
+    {
+      "id": "temporal-split",
+      "term_en": "Temporal Split",
+      "term_ko": "시간 분할",
+      "abbreviation": null,
+      "definition": "과거 시점 데이터로 학습하고 이후 시점 데이터로 검증·시험하도록, 시간 순서를 지켜 데이터를 나누는 방법",
+      "usage_example": "2025년 영상에 쓸 모델이니까 2024년 쌍은 평가 전용으로 빼 둬.",
+      "origin": "standard",
+      "track": "C"
+    }
+  ],
+  "questions": [
+    {
+      "id": "C-CV-001",
+      "type": "short",
+      "chapter": "C.cv",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "학습(가중치 갱신)에는 쓰지 않고, 하이퍼파라미터 선택·조기 종료·체크포인트 선택에 반복해서 쓰는 데이터셋의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Validation set",
+          "Validation data",
+          "Validation dataset",
+          "Dev set",
+          "Development set"
+        ],
+        "ko": [
+          "검증 세트",
+          "검증셋",
+          "검증 데이터",
+          "검증 데이터셋",
+          "검증 집합",
+          "밸리데이션 셋"
+        ]
+      },
+      "primary": "Validation set",
+      "explanation_short": "검증 세트(validation set)는 모델과 설정을 고르는 데 쓰는 데이터입니다. 가중치 학습에는 쓰지 않지만 선택 과정에 반복해서 쓰이므로, 최종 성능 보고는 따로 떼어 둔 시험 세트로 합니다.",
+      "explanation_full": "흔한 분할 비율은 학습:검증:시험 = 70:15:15, 80:10:10 등이지만 데이터가 적으면 교차검증을 씁니다. 원격탐사에서는 검증 타일이 학습 타일과 같은 영상·인접 지역에서 나오면 검증 점수가 부풀려지므로, 영상 단위나 공간 블록 단위로 나누는 것이 좋습니다.",
+      "tags": [
+        "data-split",
+        "basics"
+      ],
+      "terms": [
+        "validation-set"
+      ],
+      "source_ref": "ISLR 5.1",
+      "status": "draft"
+    },
+    {
+      "id": "C-CV-002",
+      "type": "mcq",
+      "chapter": "C.cv",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "시험 세트(test set)의 올바른 용도는?",
+      "choices": [
+        {
+          "text": "여러 학습률 후보 중 가장 좋은 값을 고르는 데 쓴다",
+          "rationale": "하이퍼파라미터 선택은 검증 세트의 역할입니다. 시험 세트로 고르면 시험 점수가 낙관적으로 편향됩니다."
+        },
+        {
+          "text": "모델과 설정을 모두 확정한 뒤 최종 성능을 한 번 추정한다",
+          "rationale": null
+        },
+        {
+          "text": "에폭마다 성능을 확인해 조기 종료 시점을 정한다",
+          "rationale": "조기 종료 판단도 모델 선택의 일부이므로 검증 세트로 합니다."
+        },
+        {
+          "text": "학습 데이터가 부족할 때 학습에 합쳐 가중치 갱신에 쓴다",
+          "rationale": "학습에 쓴 데이터는 더 이상 독립적인 평가 자료가 될 수 없습니다."
+        },
+        {
+          "text": "여러 증강 조합을 비교해 가장 좋은 조합을 골라 최종 설정으로 정한다",
+          "rationale": "증강 조합 비교도 설정 선택이므로 검증 세트(또는 교차검증)로 해야 합니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "시험 세트(test set)는 어떤 선택에도 쓰지 않고 남겨 두었다가, 모든 설정을 확정한 뒤 최종 성능을 한 번 추정하는 데 씁니다. 그래야 새 데이터에서의 성능을 치우침 없이 추정할 수 있습니다.",
+      "explanation_full": "시험 세트를 보고 무언가를 바꾸는 순간 시험 세트도 사실상 검증 세트가 됩니다. 실무에서는 시험 세트를 별도 폴더·권한으로 분리하거나, 평가 스크립트 실행 기록을 남겨 '몇 번 봤는지'를 관리하기도 합니다.",
+      "tags": [
+        "data-split",
+        "basics"
+      ],
+      "terms": [
+        "test-set"
+      ],
+      "source_ref": "ISLR 5.1",
+      "status": "draft"
+    },
+    {
+      "id": "C-CV-003",
+      "type": "short",
+      "chapter": "C.cv",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "데이터를 k개 조각으로 나눈 뒤, 각 조각을 한 번씩 검증에 쓰고 나머지로 학습하는 과정을 k번 반복해 점수를 평균하는 검증 방법의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "k-fold cross-validation (k-fold CV)",
+          "k-fold",
+          "Cross-validation"
+        ],
+        "ko": [
+          "k겹 교차검증",
+          "k-폴드 교차검증",
+          "케이폴드 교차검증",
+          "k중 교차검증",
+          "교차검증",
+          "k-분할 교차검증"
+        ]
+      },
+      "primary": "k-fold cross-validation",
+      "explanation_short": "k겹 교차검증(k-fold cross-validation)은 모든 샘플이 검증에 정확히 한 번씩 쓰이도록 k번 학습·평가해 점수를 평균합니다. 한 번만 나누는 것보다 분할 운에 덜 좌우됩니다.",
+      "explanation_full": "k는 5나 10을 흔히 씁니다. 폴드별 점수의 표준편차도 함께 보고하면 성능의 불확실성을 보여 줄 수 있습니다. 대형 딥러닝 모델은 학습 비용 때문에 k겹을 생략하고 고정된 검증 세트를 쓰는 경우가 많고, 공간 데이터에서는 폴드를 무작위가 아닌 공간 단위로 나눠야 합니다.",
+      "tags": [
+        "cross-validation",
+        "basics"
+      ],
+      "terms": [
+        "k-fold-cross-validation"
+      ],
+      "source_ref": "ISLR 5.1.3",
+      "status": "draft"
+    },
+    {
+      "id": "C-CV-004",
+      "type": "short",
+      "chapter": "C.cv",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "데이터를 나눌 때 각 분할(폴드)의 클래스 비율이 원본 데이터의 클래스 비율과 같게 유지되도록 하는 방법의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Stratified split",
+          "Stratified sampling",
+          "Stratification",
+          "Stratified k-fold",
+          "Stratified splitting"
+        ],
+        "ko": [
+          "층화 분할",
+          "층화 추출",
+          "층화 표본추출",
+          "층화",
+          "계층화 분할",
+          "층화 추출법",
+          "층화 샘플링"
+        ]
+      },
+      "primary": "Stratified split",
+      "explanation_short": "층화 분할(stratified split)은 클래스 같은 층 변수의 비율을 모든 분할에서 원본과 같게 유지합니다. 희귀 클래스가 있을 때 폴드마다 비율이 흔들려 평가가 불안정해지는 것을 막습니다.",
+      "explanation_full": "층화는 비율을 '유지'할 뿐 '바꾸지' 않습니다. 클래스 비율을 50:50으로 맞추는 것은 오버샘플링·언더샘플링 같은 리샘플링이며 층화와 다릅니다. scikit-learn의 StratifiedKFold, train_test_split(stratify=...)가 이 기능을 제공합니다.",
+      "tags": [
+        "data-split",
+        "imbalance"
+      ],
+      "terms": [
+        "stratified-split"
+      ],
+      "source_ref": "scikit-learn 문서 StratifiedKFold",
+      "status": "draft"
+    },
+    {
+      "id": "C-CV-005",
+      "type": "short",
+      "chapter": "C.cv",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "평가 데이터의 정보나 실제 운용 시점에는 알 수 없는 정보가 학습 과정에 섞여 들어가, 평가 성능이 실제보다 좋게 나오는 현상의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Data leakage",
+          "Leakage",
+          "Information leakage"
+        ],
+        "ko": [
+          "데이터 누수",
+          "누수",
+          "정보 누수",
+          "데이터 유출",
+          "리키지"
+        ]
+      },
+      "primary": "Data leakage",
+      "explanation_short": "데이터 누수(data leakage)가 있으면 모델이 평가 때 '답을 미리 본' 셈이 되어 점수가 부풀려집니다. 실제 운용에서는 그 정보를 쓸 수 없으므로 성능이 크게 떨어집니다.",
+      "explanation_full": "대표적인 원인은 (1) 분할 전에 전체 데이터로 전처리 통계 계산, (2) 같은 영상·겹치는 타일이 학습과 평가에 동시에 존재, (3) 공간·시간적으로 인접한 샘플의 무작위 분할, (4) 시험 세트를 보면서 설정을 바꾸는 것입니다. 원격탐사에서는 (2)와 (3)이 특히 흔합니다.",
+      "tags": [
+        "leakage",
+        "basics"
+      ],
+      "terms": [
+        "data-leakage"
+      ],
+      "source_ref": "scikit-learn 문서 Cross-validation / Common pitfalls",
+      "status": "draft"
+    },
+    {
+      "id": "C-CV-006",
+      "type": "mcq",
+      "chapter": "C.cv",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "공간 자기상관(spatial autocorrelation)을 가장 잘 설명한 것은?",
+      "choices": [
+        {
+          "text": "같은 위치에서 앞뒤 시점의 관측값이 서로 비슷한 경향",
+          "rationale": "시간 순서상 인접한 값끼리의 상관은 시간(시계열) 자기상관입니다."
+        },
+        {
+          "text": "한 픽셀 안에서 서로 다른 분광 밴드 값이 함께 움직이는 경향",
+          "rationale": "밴드 간 상관(분광 상관)입니다. 위치 간 관계가 아니라 같은 위치의 변수들 사이 관계입니다."
+        },
+        {
+          "text": "설명변수들끼리 강한 선형관계를 보이는 현상",
+          "rationale": "다중공선성 설명입니다. 공간상의 거리와 무관한 변수 간 관계입니다."
+        },
+        {
+          "text": "가까이 있는 위치의 관측값일수록 서로 더 비슷한 경향",
+          "rationale": null
+        },
+        {
+          "text": "영상의 한 픽셀이 지상에서 차지하는 거리",
+          "rationale": "지상 표본 거리(GSD), 즉 공간해상도의 정의입니다. 이름에 '공간'이 들어가 헷갈리기 쉽습니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "공간 자기상관은 '가까운 것은 먼 것보다 더 비슷하다'는 토블러의 지리학 제1법칙을 수치로 나타낸 개념입니다. Moran's I, Geary's C, 베리오그램 등으로 측정합니다.",
+      "explanation_full": "영상의 이웃 픽셀, 인접 타일, 가까운 현장조사 지점은 대부분 강한 양의 공간 자기상관을 갖습니다. 그래서 이들을 무작위로 학습·검증에 나누면 검증 샘플이 학습 샘플의 '거의 복사본'이 되어 성능이 부풀려집니다. 이것이 공간 교차검증이 필요한 이유입니다.",
+      "tags": [
+        "spatial",
+        "autocorrelation"
+      ],
+      "terms": [
+        "spatial-autocorrelation",
+        "autocorrelation"
+      ],
+      "source_ref": "Tobler 1970; Anselin 1995 (LISA)",
+      "status": "draft"
+    },
+    {
+      "id": "C-CV-007",
+      "type": "short",
+      "chapter": "C.cv",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "학습·검증 폴드를 무작위 샘플이 아니라 지리적 블록이나 행정구역 같은 공간 단위로 나눠, 서로 인접한 샘플이 학습과 검증에 동시에 들어가지 않게 하는 교차검증의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Spatial cross-validation (spatial CV)",
+          "Spatial block cross-validation",
+          "Block cross-validation",
+          "Spatial k-fold",
+          "Spatial blocking"
+        ],
+        "ko": [
+          "공간 교차검증",
+          "공간 블록 교차검증",
+          "블록 교차검증",
+          "공간적 교차검증",
+          "공간 CV"
+        ]
+      },
+      "primary": "Spatial cross-validation",
+      "explanation_short": "공간 교차검증(spatial cross-validation)은 폴드를 공간 단위로 나눠 공간 자기상관에 의한 누수를 막습니다. 무작위 분할보다 점수는 보통 낮게 나오지만, 처음 보는 지역에서의 성능에 더 가깝습니다.",
+      "explanation_full": "공간 단위는 정사각 블록, 행정구역, 유역, 원본 영상(scene) 등 과제에 맞게 고릅니다. 검증 지점 주변에 버퍼를 두고 그 안의 학습 샘플을 빼는 공간 leave-one-out 방식도 있습니다. scikit-learn에서는 블록 ID를 그룹으로 넣어 GroupKFold로 구현할 수 있습니다.",
+      "tags": [
+        "spatial",
+        "cross-validation"
+      ],
+      "terms": [
+        "spatial-cross-validation"
+      ],
+      "source_ref": "Roberts et al. 2017, Ecography (구조가 있는 데이터의 교차검증)",
+      "status": "draft"
+    },
+    {
+      "id": "C-CV-008",
+      "type": "short",
+      "chapter": "C.cv",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "과거 시점 데이터로 학습하고 그 이후 시점 데이터로 검증·시험하도록, 시간 순서를 지켜 데이터를 나누는 방법의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Temporal split",
+          "Time-based split",
+          "Time series split",
+          "Chronological split",
+          "Out-of-time validation"
+        ],
+        "ko": [
+          "시간 분할",
+          "시간 기준 분할",
+          "시계열 분할",
+          "시간순 분할",
+          "시점 분할",
+          "시기 분할"
+        ]
+      },
+      "primary": "Temporal split",
+      "explanation_short": "시간 분할(temporal split)은 '과거로 학습해 미래를 맞힌다'는 운용 조건을 평가에서도 그대로 재현합니다. 무작위로 섞으면 미래 정보가 학습에 들어가 성능이 부풀려집니다.",
+      "explanation_full": "시계열 교차검증에서는 학습 구간을 점점 늘리며 바로 다음 구간을 검증하는 방식(expanding window, scikit-learn의 TimeSeriesSplit)을 흔히 씁니다. 원격탐사에서는 다시기 영상 기반 변화탐지·작황 예측처럼 새 연도 영상에 적용할 모델을 평가할 때 필요합니다.",
+      "tags": [
+        "data-split",
+        "temporal"
+      ],
+      "terms": [
+        "temporal-split"
+      ],
+      "source_ref": "scikit-learn 문서 TimeSeriesSplit",
+      "status": "draft"
+    },
+    {
+      "id": "C-CV-009",
+      "type": "mcq",
+      "chapter": "C.cv",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "검증 세트(validation set)가 있는데도 시험 세트(test set)를 따로 두는 가장 중요한 이유는?",
+      "choices": [
+        {
+          "text": "검증 점수는 모델 선택에 반복해 쓰여 낙관적이므로, 선택에 안 쓴 데이터로 최종 성능을 보려고",
+          "rationale": null
+        },
+        {
+          "text": "검증 세트는 학습 세트보다 작아서 정확도나 mIoU 같은 점수를 제대로 계산할 수 없기 때문에",
+          "rationale": "크기가 작아도 점수는 계산할 수 있습니다. 문제는 크기가 아니라 선택 과정에 반복해서 쓰였다는 점입니다."
+        },
+        {
+          "text": "시험 세트로 학습률 같은 하이퍼파라미터를 한 번 더 정밀하게 미세 조정해 성능을 끌어올리기 위해",
+          "rationale": "시험 세트로 조정하면 시험 세트도 선택에 쓰인 데이터가 되어 똑같은 낙관 편향이 생깁니다."
+        },
+        {
+          "text": "마지막에 시험 세트를 학습 데이터에 추가해 최종 모델이 학습하는 데이터 양을 늘리기 위해",
+          "rationale": "학습에 넣는 순간 독립적인 평가 자료가 사라집니다. 시험 세트를 두는 목적과 반대입니다."
+        },
+        {
+          "text": "검증 세트는 분할 방식상 클래스 비율이 원본과 다를 수밖에 없어 대표성을 보장할 수 없기 때문에",
+          "rationale": "층화 분할로 검증 세트의 클래스 비율을 원본과 같게 맞출 수 있습니다. 시험 세트를 따로 두는 이유와 무관합니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "여러 후보 중 검증 점수가 가장 좋은 것을 고르면, 그 점수에는 우연히 검증 세트에 잘 맞은 몫이 섞여 낙관적으로 치우칩니다. 선택에 전혀 쓰지 않은 시험 세트가 있어야 최종 성능을 치우침 없이 추정할 수 있습니다.",
+      "explanation_full": "후보가 많을수록(하이퍼파라미터 조합, 체크포인트 수) 검증 점수의 낙관 편향이 커집니다. 데이터가 부족해 시험 세트를 따로 떼기 어렵다면, 바깥 루프로 성능을 추정하고 안쪽 루프로 설정을 고르는 중첩 교차검증(nested CV)을 씁니다.",
+      "tags": [
+        "data-split",
+        "selection-bias"
+      ],
+      "terms": [
+        "validation-set",
+        "test-set"
+      ],
+      "source_ref": "Cawley & Talbot 2010, JMLR; ESL 7.2",
+      "status": "draft"
+    },
+    {
+      "id": "C-CV-010",
+      "type": "mcq",
+      "chapter": "C.cv",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "1,000개 샘플로 5겹 교차검증(5-fold CV)을 할 때의 설명으로 옳은 것은? (층화 등 추가 조건은 고려하지 않는다)",
+      "choices": [
+        {
+          "text": "모델을 5번 학습하며, 매번 200개로 학습하고 800개로 검증해 검증 데이터를 넉넉하게 확보해 둔다",
+          "rationale": "반대입니다. k겹에서는 한 폴드(1/k)만 검증에 쓰고 나머지 (k−1)/k로 학습합니다."
+        },
+        {
+          "text": "5개 폴드의 검증 점수 중 가장 높은 값을 최종 성능으로 보고한다",
+          "rationale": "최댓값은 운 좋은 분할을 고른 낙관적인 값입니다. 보통 평균(과 표준편차)을 보고합니다."
+        },
+        {
+          "text": "k를 10으로 늘리면 학습 횟수는 줄고 각 학습에 쓰는 데이터도 줄어든다",
+          "rationale": "k를 10으로 늘리면 학습 횟수는 10번으로 늘고, 각 학습 데이터는 900개로 오히려 늘어납니다."
+        },
+        {
+          "text": "폴드를 복원추출로 만들기 때문에 같은 샘플이 여러 폴드의 검증에 반복해서 들어갈 수 있다",
+          "rationale": "복원추출은 부트스트랩 방식입니다. k겹 교차검증은 겹치지 않게 나누므로 각 샘플은 검증에 정확히 한 번만 쓰입니다."
+        },
+        {
+          "text": "모델을 5번 학습하며, 매번 800개로 학습하고 200개로 검증해 모든 샘플이 검증에 한 번씩 쓰인다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "5겹이면 1,000개를 200개씩 5개 폴드로 나누고, 매번 한 폴드(200개)로 검증하고 나머지 4개 폴드(800개)로 학습합니다. 이를 5번 반복하므로 모든 샘플이 검증에 정확히 한 번씩 쓰입니다.",
+      "explanation_full": "계산: 1,000 ÷ 5 = 200(검증), 1,000 − 200 = 800(학습). k = 10이면 검증 100개·학습 900개로 10번 학습합니다. k가 클수록 각 학습 데이터가 늘어 추정 편향은 줄지만 계산량이 늘어납니다. 최종 보고는 폴드 점수의 평균과 표준편차로 합니다.",
+      "tags": [
+        "cross-validation",
+        "calculation"
+      ],
+      "terms": [
+        "k-fold-cross-validation"
+      ],
+      "source_ref": "ISLR 5.1.3",
+      "status": "draft"
+    },
+    {
+      "id": "C-CV-011",
+      "type": "mcq",
+      "chapter": "C.cv",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "영상 패치 분류 데이터에서 해안쓰레기 클래스가 전체의 2%뿐이다. 5겹 교차검증을 층화(stratified)로 구성하는 주된 이유는?",
+      "choices": [
+        {
+          "text": "해안쓰레기와 다른 클래스의 비율을 50:50으로 맞춰 클래스 불균형을 해소하려고",
+          "rationale": "층화는 원본 비율(2%)을 각 폴드에 그대로 유지하는 것입니다. 비율을 바꾸는 것은 오버샘플링·언더샘플링 같은 리샘플링입니다."
+        },
+        {
+          "text": "인접한 패치가 학습과 검증에 나뉘어 생기는 공간 누수를 막으려고",
+          "rationale": "공간 누수는 공간 교차검증으로 막습니다. 클래스 비율만 맞추는 층화는 위치를 고려하지 않습니다."
+        },
+        {
+          "text": "무작위로 나누면 폴드마다 해안쓰레기 비율이 흔들려 검증 지표가 불안정해지므로",
+          "rationale": null
+        },
+        {
+          "text": "검증 폴드에서 해안쓰레기를 빼 학습 데이터를 최대한 확보하려고",
+          "rationale": "검증에 희귀 클래스가 없으면 그 클래스의 성능을 전혀 평가할 수 없습니다. 층화는 오히려 모든 폴드에 고르게 넣습니다."
+        },
+        {
+          "text": "촬영 날짜 순서를 지켜 미래 영상 정보가 학습에 들어가지 않게 하려고",
+          "rationale": "시간 순서를 지키는 것은 시간 분할의 목적입니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "희귀 클래스가 2%뿐이면 무작위 분할에서 어떤 폴드에는 많이, 어떤 폴드에는 거의 없게 들어갈 수 있습니다. 층화 분할은 모든 폴드에 원본과 같은 비율을 넣어 폴드별 지표를 안정시킵니다.",
+      "explanation_full": "예를 들어 패치가 1,000장이면 해안쓰레기는 20장이고, 5겹 층화 시 폴드마다 4장씩 들어갑니다. 무작위라면 어떤 폴드에는 1장도 없을 수 있어 그 폴드의 재현율이 계산되지 않거나 크게 흔들립니다. 공간 누수까지 막으려면 공간 그룹을 유지하면서 층화하는 방식(StratifiedGroupKFold 등)을 씁니다.",
+      "tags": [
+        "stratification",
+        "imbalance"
+      ],
+      "terms": [
+        "stratified-split",
+        "k-fold-cross-validation"
+      ],
+      "source_ref": "scikit-learn 문서 StratifiedKFold",
+      "status": "draft"
+    },
+    {
+      "id": "C-CV-012",
+      "type": "mcq",
+      "chapter": "C.cv",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "다음 중 데이터 누수(data leakage)에 해당하는 것은?",
+      "choices": [
+        {
+          "text": "학습 세트로만 밴드별 평균·표준편차를 구하고, 검증·시험 세트에도 그 값으로 정규화했다",
+          "rationale": "학습 통계만 구해 다른 세트에 그대로 적용하는 것이 누수를 피하는 올바른 방법입니다."
+        },
+        {
+          "text": "회전·뒤집기 증강을 학습 세트에만 적용하고 검증 세트에는 적용하지 않았다",
+          "rationale": "증강은 학습에만 쓰는 것이 일반적이며, 평가 데이터의 정보가 학습에 들어가지 않습니다."
+        },
+        {
+          "text": "학습·검증·시험을 나누기 전에 전체 데이터로 밴드별 평균·표준편차를 구해 정규화했다",
+          "rationale": null
+        },
+        {
+          "text": "에폭마다 검증 손실을 확인해 개선이 멈춘 시점에 조기 종료했다",
+          "rationale": "검증 세트의 본래 용도입니다. 다만 그 검증 점수는 선택에 쓰였으므로 최종 성능은 시험 세트로 따로 봅니다."
+        },
+        {
+          "text": "모든 설정을 확정한 뒤 시험 세트로 딱 한 번 최종 평가를 했다",
+          "rationale": "시험 세트의 올바른 사용법입니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "분할 전에 전체 데이터로 통계를 구하면 검증·시험 데이터의 분포 정보가 전처리를 통해 학습 과정에 섞여 들어갑니다. 전처리 통계는 학습 세트에서만 계산해 다른 세트에 적용해야 합니다.",
+      "explanation_full": "단순 평균·표준편차 정규화는 영향이 작은 편이지만, 같은 원리로 분할 전 특징 선택, PCA, 오버샘플링(SMOTE)처럼 데이터에서 무언가를 '배우는' 전처리는 누수를 크게 만들 수 있습니다. 교차검증에서는 전처리를 폴드마다 학습 폴드로만 다시 맞추도록 파이프라인으로 묶는 것이 안전합니다.",
+      "tags": [
+        "leakage",
+        "preprocessing"
+      ],
+      "terms": [
+        "data-leakage"
+      ],
+      "source_ref": "scikit-learn 문서 Cross-validation / Common pitfalls",
+      "status": "draft"
+    },
+    {
+      "id": "C-CV-013",
+      "type": "mcq",
+      "chapter": "C.cv",
+      "cognitive_level": 2,
+      "difficulty": 4,
+      "stem": "한 시군의 토지피복 픽셀을 무작위로 8:2 분할해 학습한 모델이 검증 정확도 97%를 보였지만, 인접하지 않은 다른 시군 영상에서는 78%였다. 가장 유력한 원인은?",
+      "choices": [
+        {
+          "text": "모델이 과소적합되어 학습 지역에서도 충분한 성능을 내지 못했다",
+          "rationale": "학습 지역 검증 정확도가 97%이므로 과소적합이 아닙니다."
+        },
+        {
+          "text": "층화 분할을 하지 않아 검증 세트의 클래스 비율이 원본과 조금 달랐다",
+          "rationale": "층화는 클래스 비율의 흔들림을 줄일 뿐, 인접 픽셀이 학습·검증에 함께 들어가는 문제는 그대로 남습니다. 19%p 격차의 주원인으로 보기 어렵습니다."
+        },
+        {
+          "text": "검증 비율 20%가 너무 커서 학습에 쓸 픽셀이 부족했다",
+          "rationale": "학습 데이터가 부족했다면 학습 지역 검증 정확도부터 낮았을 것입니다."
+        },
+        {
+          "text": "k겹 교차검증 대신 한 번만 나눠서 우연히 운 좋은 분할이 나왔다",
+          "rationale": "한 번 분할은 점수 변동이 크지만, 무작위 픽셀 분할이라면 k겹으로 바꿔도 모든 폴드가 같은 이유로 부풀려집니다."
+        },
+        {
+          "text": "공간 자기상관 때문에 검증 픽셀이 바로 옆 학습 픽셀과 거의 같아 무작위 분할 검증이 성능을 부풀렸다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "이웃 픽셀은 분광값과 클래스가 거의 같아서, 무작위 픽셀 분할에서는 검증 픽셀마다 바로 옆에 '정답을 아는' 학습 픽셀이 있습니다. 이 공간 자기상관 누수 때문에 97%가 부풀려졌고, 떨어진 지역에서 실제 일반화 성능이 드러난 것입니다.",
+      "explanation_full": "다른 시군과의 영상 조건·피복 구성 차이(도메인 차이)도 격차에 기여할 수 있습니다. 두 효과를 구분하려면 같은 시군 안에서도 공간 블록 단위로 나눈 공간 교차검증 점수를 먼저 구해 보세요. 그 점수가 97%보다 크게 낮다면 누수 효과, 그 점수와 다른 시군 점수의 차이는 지역 간 차이로 볼 수 있습니다.",
+      "tags": [
+        "spatial",
+        "leakage"
+      ],
+      "terms": [
+        "spatial-autocorrelation",
+        "spatial-cross-validation",
+        "data-leakage"
+      ],
+      "source_ref": "Roberts et al. 2017, Ecography (구조가 있는 데이터의 교차검증)",
+      "status": "draft"
+    },
+    {
+      "id": "C-CV-014",
+      "type": "mcq",
+      "chapter": "C.cv",
+      "cognitive_level": 2,
+      "difficulty": 4,
+      "stem": "공간 블록 교차검증(spatial block CV)에서 블록 크기를 정하는 기준으로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "공간 자기상관이 거의 사라지는 거리(예: 베리오그램의 range)보다 크게 잡는다",
+          "rationale": null
+        },
+        {
+          "text": "학습 타일 크기(예: 512×512 픽셀)와 똑같이 맞춰 타일 하나를 블록 하나로 쓴다",
+          "rationale": "타일 크기는 GPU 메모리와 입력 크기로 정한 값일 뿐입니다. 자기상관 범위가 타일보다 넓으면 인접 타일끼리 여전히 비슷해 누수가 남습니다."
+        },
+        {
+          "text": "폴드 수를 최대한 늘릴 수 있도록 블록을 가능한 한 작게 잡아 블록 수를 늘린다",
+          "rationale": "블록이 작을수록 이웃 블록 사이에 자기상관이 남아 무작위 분할과 비슷한 낙관 편향이 생깁니다."
+        },
+        {
+          "text": "클래스 수에 비례하도록 블록 크기를 정해 블록마다 모든 클래스가 들어가게 한다",
+          "rationale": "클래스 구성은 블록을 폴드에 배정할 때 참고할 보조 조건이지, 블록 크기의 기준은 누수를 막을 수 있는 거리입니다."
+        },
+        {
+          "text": "영상의 GSD(예: 10m)와 같은 크기로 잡아 픽셀 하나하나를 블록으로 쓴다",
+          "rationale": "픽셀 하나를 블록으로 쓰면 무작위 픽셀 분할과 같아져 공간 교차검증의 의미가 없습니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "블록 크기는 공간 자기상관이 미치는 거리보다 커야 서로 다른 폴드의 샘플이 사실상 독립이 됩니다. 이 거리는 베리오그램의 range나 거리별 Moran's I(correlogram)로 추정합니다.",
+      "explanation_full": "블록이 너무 크면 검증 블록이 학습 데이터 분포 밖(외삽)이 되어 성능을 비관적으로 추정할 수 있고, 폴드 수도 줄어듭니다. 그래서 자기상관 범위를 기준으로 하되 과제의 실제 적용 조건(예: 학습에 없던 시군에 적용)에 맞춰 조정합니다. R의 blockCV 패키지가 이 절차를 지원합니다.",
+      "tags": [
+        "spatial",
+        "cross-validation"
+      ],
+      "terms": [
+        "spatial-cross-validation",
+        "spatial-autocorrelation"
+      ],
+      "source_ref": "Roberts et al. 2017, Ecography (구조가 있는 데이터의 교차검증); Valavi et al. 2019 (blockCV)",
+      "status": "draft"
+    },
+    {
+      "id": "C-CV-015",
+      "type": "mcq",
+      "chapter": "C.cv",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "2019~2023년 연 1회 영상으로 학습해 이듬해 양식장 면적 변화를 예측하는 모델을 평가한다. 연도를 섞어 무작위로 나누지 않고 시간 분할을 해야 하는 주된 이유는?",
+      "choices": [
+        {
+          "text": "연도별 클래스 비율을 모든 분할에 똑같이 맞춰, 분할마다 달라지는 지표의 흔들림을 최대한 줄이기 위해서",
+          "rationale": "비율을 맞추는 것은 층화 분할의 목적입니다. 시간 분할은 오히려 분할마다 서로 다른 시점을 담습니다."
+        },
+        {
+          "text": "학습에 쓰는 데이터 양을 최대한 늘려 모델의 분산을 줄이기 위해서",
+          "rationale": "시간 분할은 최근 데이터를 평가용으로 떼어 두므로 학습 데이터가 늘지 않습니다."
+        },
+        {
+          "text": "같은 연도 영상 안에 있는 공간 자기상관을 완전히 없애기 위해서",
+          "rationale": "시간 분할은 시점 간 누수를 막을 뿐, 같은 시점 안의 공간 자기상관은 공간 분할로 따로 다뤄야 합니다."
+        },
+        {
+          "text": "운용 때는 미래 영상을 볼 수 없는데, 무작위 분할은 미래 정보로 과거를 맞히게 해 성능을 부풀리므로",
+          "rationale": null
+        },
+        {
+          "text": "k겹 교차검증보다 학습 횟수가 적어 계산량을 줄일 수 있기 때문에",
+          "rationale": "계산량이 줄 수는 있지만 부수 효과일 뿐입니다. 핵심은 운용 조건과 같은 시간 방향의 평가입니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "실제로는 과거 영상만으로 다음 해를 예측해야 합니다. 연도를 섞어 무작위로 나누면 학습에 미래 연도 정보가 들어가 운용 조건보다 쉬운 문제를 풀게 되므로, 시간 순서를 지켜 나눠야 현실적인 성능이 나옵니다.",
+      "explanation_full": "예: 2019~2021년으로 학습, 2022년으로 검증, 2023년으로 시험. 연도 사이에는 센서 교체·촬영 시기·양식 시설 확장 같은 추세 변화가 있어, 시간 분할 점수가 무작위 분할보다 낮게 나오는 것이 정상입니다.",
+      "tags": [
+        "temporal",
+        "leakage"
+      ],
+      "terms": [
+        "temporal-split",
+        "data-leakage"
+      ],
+      "source_ref": "Roberts et al. 2017; scikit-learn 문서 TimeSeriesSplit",
+      "status": "draft"
+    },
+    {
+      "id": "C-CV-016",
+      "type": "mcq",
+      "chapter": "C.cv",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "시험 세트 점수를 보면서 학습률·증강 조합을 30번 바꿔 가장 높은 시험 mIoU(0.84)를 얻었다. 이 0.84를 최종 성능으로 보고할 때의 문제로 옳은 것은?",
+      "choices": [
+        {
+          "text": "가중치 학습에는 시험 세트를 쓰지 않았으므로 보고에는 아무 문제가 없다",
+          "rationale": "가중치에 직접 쓰지 않아도 30번의 선택 과정에 시험 점수를 썼다면 시험 세트에 맞춘 셈입니다. 이것도 누수입니다."
+        },
+        {
+          "text": "시험 세트가 모델 선택에 쓰여, 0.84는 새 데이터에서의 성능보다 낙관적으로 치우쳤을 가능성이 크다",
+          "rationale": null
+        },
+        {
+          "text": "시험을 여러 번 봤으므로 0.84는 실제 성능보다 비관적으로 낮게 나온 값이다",
+          "rationale": "여러 후보 중 최고 점수를 고르면 우연히 운 좋은 결과가 뽑히므로 치우침의 방향은 낙관적(과대)입니다."
+        },
+        {
+          "text": "학습 시간이 30배로 늘었다는 비용 문제 외에는 따로 문제가 없다",
+          "rationale": "비용이 아니라 평가의 독립성이 깨진 것이 핵심 문제입니다."
+        },
+        {
+          "text": "교차검증을 쓰지 않았으므로 0.84는 변동성이 전혀 없는 정확한 값이다",
+          "rationale": "한 번 분할의 점수에도 변동성이 있으며, 더 큰 문제는 선택 과정에 시험 세트를 썼다는 점입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "30개 후보 중 시험 점수가 가장 높은 것을 골랐다면 시험 세트는 사실상 검증 세트 역할을 한 것입니다. 최댓값에는 우연히 잘 맞은 몫이 섞이므로 0.84는 새 데이터 성능을 과대평가할 가능성이 큽니다.",
+      "explanation_full": "이를 시험 세트 오염(test set contamination) 또는 시험 세트에 대한 과적합이라고 부릅니다. 올바른 절차는 검증 세트나 교차검증으로 설정을 고르고, 시험 세트는 마지막에 한 번만 쓰는 것입니다. 이미 오염되었다면 새 시험 데이터(가능하면 다른 지역·시기)를 확보해 다시 평가하는 것이 가장 확실합니다.",
+      "tags": [
+        "test-contamination",
+        "selection-bias"
+      ],
+      "terms": [
+        "test-set",
+        "data-leakage"
+      ],
+      "source_ref": "Cawley & Talbot 2010, JMLR; ESL 7.2",
+      "status": "draft"
+    },
+    {
+      "id": "C-CV-017",
+      "type": "scenario",
+      "chapter": "C.cv",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"512×512, overlap 64로 자른 타일을 무작위로 섞어서 train/val 나눴지? 그러면 val 점수 못 믿어. 원본 영상(scene) 단위로 다시 나눠.\"\n\n이 지시의 의도로 옳은 것은?",
+      "choices": [
+        {
+          "text": "train과 val의 클래스 비율을 원본 데이터와 똑같이 맞추려는 것",
+          "rationale": "그것은 층화 분할의 목적입니다. 영상 단위 분할은 비율보다 공간적 분리를 위한 것입니다."
+        },
+        {
+          "text": "겹치거나 맞닿은 타일이 train과 val에 함께 들어가 생기는 누수를 막아, 검증 점수가 부풀려지지 않게 하려는 것",
+          "rationale": null
+        },
+        {
+          "text": "overlap 영역을 중복 계산하지 않도록 해 학습 속도를 높이려는 것",
+          "rationale": "분할 방식을 바꿔도 타일의 overlap은 그대로이므로 계산량과는 관계가 없습니다."
+        },
+        {
+          "text": "val 타일 수를 늘려 검증 점수의 분산을 줄이려는 것",
+          "rationale": "영상 단위로 나눈다고 val 타일 수가 늘지는 않습니다. 목적은 검증 데이터의 독립성 확보입니다."
+        },
+        {
+          "text": "촬영 시간 순서를 지켜 미래 영상이 학습에 들어가지 않게 하려는 것",
+          "rationale": "지시는 촬영 시점이 아니라, 같은 영상에서 잘린 인접 타일을 train과 val로 분리하라는 것입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "overlap 64로 자르면 이웃 타일이 64픽셀 폭만큼 같은 픽셀을 공유하고, 겹치지 않는 타일도 같은 영상 안에서는 매우 비슷합니다. 이를 무작위로 나누면 val 타일의 상당 부분을 학습 때 이미 본 셈이라, 영상 단위로 나눠 누수를 막으라는 지시입니다.",
+      "explanation_full": "계산해 보면 512×512 타일에서 오른쪽 이웃과 겹치는 영역만 64×512 = 32,768픽셀로 타일 면적(262,144픽셀)의 12.5%입니다. 상하좌우 이웃을 모두 치면 겹침 비율이 더 커집니다. 영상(scene)이 적어 영상 단위 분할이 어렵다면, 공간 블록으로 나누고 블록 경계에 버퍼를 두는 방법도 있습니다.",
+      "tags": [
+        "leakage",
+        "tiling"
+      ],
+      "terms": [
+        "data-leakage",
+        "spatial-autocorrelation"
+      ],
+      "source_ref": "Roberts et al. 2017; scikit-learn 문서 Cross-validation / Common pitfalls",
+      "status": "draft"
+    },
+    {
+      "id": "C-CV-018",
+      "type": "scenario",
+      "chapter": "C.cv",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"건물 추출 모델 성능 보고는 랜덤 k-fold 말고 시군구 단위로 폴드 나눠서 다시 해. 납품 대상이 학습에 없던 지역이야.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "건물 픽셀 비율을 기준으로 층화 k겹 교차검증을 구성해 폴드마다 건물 비율을 맞춘다",
+          "rationale": "층화는 클래스 비율만 맞출 뿐, 같은 시군구의 인접 타일이 학습과 검증에 나뉘는 문제는 막지 못합니다."
+        },
+        {
+          "text": "k를 5에서 10으로 늘려 무작위 k겹 교차검증을 다시 수행하고 평균을 보고한다",
+          "rationale": "k를 늘려도 무작위 분할이면 인접 타일이 양쪽에 섞이는 구조는 그대로입니다."
+        },
+        {
+          "text": "모든 시군구에서 타일을 같은 비율로 무작위 추출해 공통 검증 세트를 만든다",
+          "rationale": "시군구마다 검증 타일을 뽑으면 같은 시군구의 다른 타일이 학습에도 들어가, 처음 보는 지역에 대한 성능을 추정하지 못합니다."
+        },
+        {
+          "text": "시군구를 그룹으로 삼아 한 시군구의 타일은 한 폴드에만 들어가게 폴드를 구성한다",
+          "rationale": null
+        },
+        {
+          "text": "학습에 쓴 시군구 타일 중 모델 신뢰도가 낮은 타일만 골라 검증 세트로 쓴다",
+          "rationale": "학습에 쓴 타일로 평가하면 독립적인 평가가 아니며, 어려운 샘플만 고르면 편향된 점수가 나옵니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "납품 대상이 학습에 없던 지역이므로, 평가도 '처음 보는 시군구'에서의 성능을 재야 합니다. 시군구를 그룹으로 삼아 같은 시군구의 타일이 한 폴드에만 들어가게 하는 그룹 k겹(공간) 교차검증이 이 조건을 재현합니다.",
+      "explanation_full": "scikit-learn의 GroupKFold에 시군구 코드를 groups로 넘기면 구현할 수 있습니다. 시군구마다 타일 수가 크게 다르면 폴드 크기가 불균형해지므로 폴드별 타일 수와 점수를 함께 보고하고, 평균과 함께 가장 나쁜 폴드 점수도 제시하면 납품 지역 성능의 하한을 가늠하기 좋습니다.",
+      "tags": [
+        "spatial",
+        "cross-validation"
+      ],
+      "terms": [
+        "spatial-cross-validation",
+        "k-fold-cross-validation"
+      ],
+      "source_ref": "Roberts et al. 2017, Ecography (구조가 있는 데이터의 교차검증); scikit-learn 문서 GroupKFold",
+      "status": "draft"
+    },
+    {
+      "id": "C-CV-019",
+      "type": "scenario",
+      "chapter": "C.cv",
+      "cognitive_level": 3,
+      "difficulty": 2,
+      "stem": "지시: \"해안쓰레기가 찍힌 드론 영상이 전체 600장 중 30장뿐이야. 5-fold로 나누면 어떤 폴드엔 하나도 안 들어갈 수 있으니까 그거 고려해서 나눠.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "영상별 해안쓰레기 포함 여부를 층 변수로 삼아 층화 분할해 폴드마다 약 6장씩 들어가게 한다",
+          "rationale": null
+        },
+        {
+          "text": "해안쓰레기 영상을 복제해 300장으로 늘린 뒤, 전체 영상을 무작위로 섞어 5개 폴드로 나눈다",
+          "rationale": "분할 전에 복제하면 같은 영상의 복사본이 학습과 검증에 동시에 들어가는 누수가 생깁니다. 오버샘플링은 분할 후 학습 폴드 안에서만 해야 합니다."
+        },
+        {
+          "text": "해안쓰레기 영상 30장은 모두 학습에만 넣고 검증 폴드에서는 뺀다",
+          "rationale": "검증에 해안쓰레기가 없으면 그 클래스의 성능을 전혀 평가할 수 없습니다."
+        },
+        {
+          "text": "랜덤 시드를 여러 번 바꿔 보다가 모든 폴드에 해안쓰레기가 들어가는 시드를 고른다",
+          "rationale": "우연히 조건을 만족하는 시드를 찾는 것은 층화를 수동으로 흉내 낸 것일 뿐, 폴드 간 비율이 고르게 보장되지 않습니다."
+        },
+        {
+          "text": "촬영 날짜순으로 정렬해 앞의 80%는 학습, 뒤의 20%는 검증에 쓴다",
+          "rationale": "해안쓰레기 영상이 특정 시기에 몰려 있으면 한쪽에 치우칩니다. 지시의 요구는 희귀 클래스를 폴드마다 고르게 배분하는 것입니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "희귀 클래스를 모든 폴드에 고르게 넣으라는 지시이므로 층화 분할이 맞습니다. 30장 ÷ 5폴드 = 폴드마다 6장씩 해안쓰레기 영상이 들어갑니다.",
+      "explanation_full": "탐지 과제는 영상 하나에 여러 클래스가 있어 '포함 여부'나 '객체 수 구간'을 층 변수로 쓰는 것이 일반적입니다. 같은 비행에서 연속 촬영한 영상은 서로 겹치거나 비슷하므로, 가능하면 비행(또는 촬영 구역)을 그룹으로 묶은 채 층화하는 StratifiedGroupKFold가 더 안전합니다.",
+      "tags": [
+        "stratification",
+        "imbalance"
+      ],
+      "terms": [
+        "stratified-split",
+        "k-fold-cross-validation"
+      ],
+      "source_ref": "scikit-learn 문서 StratifiedKFold / StratifiedGroupKFold",
+      "status": "draft"
+    },
+    {
+      "id": "C-CV-020",
+      "type": "scenario",
+      "chapter": "C.cv",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"변화탐지 모델은 2025년 영상 쌍에 쓸 거야. 2019~2024년 쌍 섞어서 랜덤으로 나누지 말고, 운용 조건이랑 똑같이 평가되게 나눠.\"\n\n가장 적절한 데이터 구성은?",
+      "choices": [
+        {
+          "text": "전체 연도의 쌍을 섞어 학습:검증:시험 = 8:1:1 비율로 무작위 분할해 평가한다",
+          "rationale": "지시에서 금지한 방식입니다. 미래 시점의 쌍이 학습에 들어가 운용 조건보다 낙관적인 점수가 나옵니다."
+        },
+        {
+          "text": "2024년 쌍으로 학습하고 2019~2023년 쌍으로 검증·시험한다",
+          "rationale": "시간 방향이 거꾸로입니다. 미래 데이터로 학습해 과거를 맞히는 것은 운용 조건과 반대입니다."
+        },
+        {
+          "text": "연도별 비율이 같도록 연도로 층화해 무작위로 분할한다",
+          "rationale": "연도로 층화해도 모든 연도가 학습에 들어가므로 시간 순서를 지키지 못합니다."
+        },
+        {
+          "text": "2024년 쌍을 절반씩 나눠 한쪽은 학습에, 다른 쪽은 시험에 쓴다",
+          "rationale": "같은 해 쌍은 촬영 조건·계절이 비슷해 학습과 시험이 사실상 같은 시점을 공유합니다. 다음 해에 적용하는 운용 조건보다 낙관적으로 평가됩니다."
+        },
+        {
+          "text": "2019~2022년 쌍으로 학습, 2023년 쌍으로 검증, 2024년 쌍으로 시험한다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "2025년에 적용할 모델이므로 '과거로 학습 → 이후 연도로 평가'를 재현해야 합니다. 학습은 가장 오래된 구간, 검증은 그다음 해, 시험은 가장 최근 해로 두면 시간 순서를 지키면서 선택(검증)과 최종 평가(시험)도 분리됩니다.",
+      "explanation_full": "최종 평가가 끝나면 2024년 쌍까지 포함해 다시 학습한 모델을 2025년에 배포하는 것이 일반적입니다. 이때 하이퍼파라미터는 앞서 검증으로 고른 값을 그대로 씁니다. 연도별 센서나 촬영 시기가 다르면 시간 분할 점수가 무작위 분할보다 낮게 나오는 것이 정상입니다.",
+      "tags": [
+        "temporal",
+        "change-detection"
+      ],
+      "terms": [
+        "temporal-split",
+        "test-set"
+      ],
+      "source_ref": "scikit-learn 문서 TimeSeriesSplit; Roberts et al. 2017",
+      "status": "draft"
+    },
+    {
+      "id": "C-CV-021",
+      "type": "scenario",
+      "chapter": "C.cv",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"신뢰도 임계값 0.35는 시험셋 F1 보고 고른 거라며? 그럼 그 F1은 보고서에 못 써. 절차대로 다시 해.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "시험 세트에서 임계값을 0.01 간격으로 더 촘촘히 탐색해 F1이 최대인 값을 다시 찾는다",
+          "rationale": "시험 세트로 더 정밀하게 고를수록 시험 점수의 낙관 편향은 더 커집니다."
+        },
+        {
+          "text": "시험 세트 F1에서 관례적으로 5%p를 빼서 보수적인 값으로 보고한다",
+          "rationale": "편향 크기는 상황마다 달라 임의 보정값으로 바로잡을 수 없습니다. 독립적인 데이터로 다시 평가해야 합니다."
+        },
+        {
+          "text": "검증 세트에서 임계값을 정해 고정한 뒤, 선택에 쓰지 않은 시험 세트로 한 번만 평가한다",
+          "rationale": null
+        },
+        {
+          "text": "검증 세트와 시험 세트를 합쳐 임계값을 다시 고르고 합친 세트의 F1을 보고한다",
+          "rationale": "고르는 데 쓴 데이터로 다시 보고하므로 같은 문제가 반복됩니다."
+        },
+        {
+          "text": "학습 세트에서 임계값을 고른 뒤 그 학습 세트에서 계산한 F1을 보고한다",
+          "rationale": "학습 세트 점수는 모델이 이미 외운 데이터라 가장 낙관적이며, 학습 세트에서 고른 임계값도 새 데이터에 맞지 않을 수 있습니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "임계값도 하이퍼파라미터이므로 검증 세트로 골라야 합니다. 시험 세트로 고른 임계값의 시험 F1은 낙관적으로 치우친 값이라, 검증에서 정한 설정을 선택에 쓰지 않은 시험 데이터로 한 번만 평가해 보고해야 합니다.",
+      "explanation_full": "기존 시험 세트는 이미 임계값 선택에 쓰였으므로, 엄밀하게는 새 시험 데이터를 확보하는 것이 가장 확실합니다. 그럴 수 없다면 오염 사실을 보고서에 밝혀 둡니다. 임계값·NMS IoU·후처리 면적 필터처럼 '학습 후 정하는 값'도 모두 검증 세트 소관이라는 점을 팀 규칙으로 정해 두면 이런 실수를 줄일 수 있습니다.",
+      "tags": [
+        "test-contamination",
+        "threshold"
+      ],
+      "terms": [
+        "test-set",
+        "validation-set",
+        "confidence-threshold"
+      ],
+      "source_ref": "Cawley & Talbot 2010, JMLR",
+      "status": "draft"
+    },
+    {
+      "id": "C-CV-022",
+      "type": "scenario",
+      "chapter": "C.cv",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"양식장 밀도 회귀 모델 잔차에서 Moran's I가 0.58 나왔어. 랜덤 분할로 낸 RMSE는 보고서에서 빼고 다시 계산해.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "Moran's I가 0에 가까워질 때까지 무작위 분할 시드를 바꿔 가며 RMSE를 다시 계산한다",
+          "rationale": "Moran's I는 데이터와 잔차의 공간 구조에서 나오는 값이라 분할 시드를 바꿔도 달라지지 않습니다."
+        },
+        {
+          "text": "밀도 구간 비율이 폴드마다 같도록 층화 k겹 교차검증을 구성해 RMSE를 다시 계산한다",
+          "rationale": "층화는 목표값 분포만 맞출 뿐, 이웃 샘플이 학습과 검증에 나뉘는 문제는 해결하지 못합니다."
+        },
+        {
+          "text": "자기상관 범위보다 큰 공간 블록으로 폴드를 나눈 공간 교차검증으로 RMSE를 다시 계산한다",
+          "rationale": null
+        },
+        {
+          "text": "검증 비율을 20%에서 40%로 늘려 무작위 분할로 RMSE를 다시 계산한다",
+          "rationale": "무작위 분할이면 비율을 바꿔도 검증 샘플이 학습 샘플의 이웃이라는 구조는 그대로입니다."
+        },
+        {
+          "text": "검증 결과는 빼고 학습 세트에서 계산한 RMSE만 보고서에 싣는다",
+          "rationale": "학습 세트 RMSE는 가장 낙관적인 값이라 문제를 더 키웁니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "Moran's I 0.58은 강한 양의 공간 자기상관입니다. 이 상태에서 무작위 분할하면 검증 샘플의 이웃이 학습에 들어가 RMSE가 과소추정되므로, 자기상관 범위보다 큰 블록 단위로 나눈 공간 교차검증으로 다시 계산해야 합니다.",
+      "explanation_full": "Moran's I는 대체로 −1~1 사이 값이며, 0 근처면 공간적으로 무작위, 양수면 비슷한 값끼리 모여 있다는 뜻입니다. 블록 크기는 잔차의 베리오그램 range나 거리별 Moran's I로 정합니다. 잔차에 자기상관이 남아 있다는 것은 모델이 공간 구조를 다 설명하지 못했다는 신호이기도 하므로, 위치 기반 특징 추가나 GWR 같은 공간 모형도 함께 검토할 수 있습니다.",
+      "tags": [
+        "spatial",
+        "autocorrelation",
+        "cross-validation"
+      ],
+      "terms": [
+        "spatial-autocorrelation",
+        "spatial-cross-validation"
+      ],
+      "source_ref": "Roberts et al. 2017, Ecography (구조가 있는 데이터의 교차검증); Anselin 1995 (LISA)",
+      "status": "draft"
+    }
+  ]
+}

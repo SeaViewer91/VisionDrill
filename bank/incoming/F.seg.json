@@ -1,0 +1,790 @@
+{
+  "format": "visiondrill-bank-exchange",
+  "format_version": 1,
+  "terms": [
+    {
+      "id": "pixel-accuracy",
+      "term_en": "Pixel Accuracy",
+      "term_ko": "픽셀 정확도",
+      "abbreviation": "PA",
+      "definition": "전체 픽셀 중 클래스를 맞힌 픽셀의 비율. 원격탐사 분류 정확도 평가에서는 전체 정확도(Overall Accuracy, OA)라고 부름",
+      "usage_example": "배경이 90%라 픽셀 정확도는 높게 나와. 클래스별 IoU도 같이 보고해.",
+      "origin": "standard",
+      "track": "F"
+    },
+    {
+      "id": "mean-iou",
+      "term_en": "Mean Intersection over Union",
+      "term_ko": "평균 IoU",
+      "abbreviation": "mIoU",
+      "definition": "클래스마다 픽셀 단위 IoU(TP/(TP+FP+FN))를 구한 뒤 클래스 수로 단순 평균한 시맨틱 분할 대표 지표",
+      "usage_example": "토지피복 7종 mIoU랑 클래스별 IoU 표 같이 뽑아. 습지만 따로 보자.",
+      "origin": "standard",
+      "track": "F"
+    },
+    {
+      "id": "dice-coefficient",
+      "term_en": "Dice Coefficient",
+      "term_ko": "다이스 계수",
+      "abbreviation": "DSC",
+      "definition": "2|A∩B|/(|A|+|B|)로 정의되는 겹침 지표. 픽셀 단위 F1 점수와 같고, 같은 결과에서 Dice = 2·IoU/(1+IoU)",
+      "usage_example": "비교 논문이 Dice로 보고했으니 우리 IoU도 Dice로 환산해서 같이 적어.",
+      "origin": "standard",
+      "track": "F"
+    },
+    {
+      "id": "boundary-f1-score",
+      "term_en": "Boundary F1 Score",
+      "term_ko": "경계 F1 점수",
+      "abbreviation": "BF score",
+      "definition": "예측 경계와 정답 경계를 허용 거리 안에서 매칭해 경계 픽셀의 정밀도·재현율을 구하고 조화평균한 경계 품질 지표",
+      "usage_example": "건물 폴리곤 납품 건이니 mIoU 말고 허용 거리 2픽셀 기준 BF score도 뽑아.",
+      "origin": "standard",
+      "track": "F"
+    },
+    {
+      "id": "mask-ap",
+      "term_en": "Mask Average Precision",
+      "term_ko": "마스크 AP",
+      "abbreviation": "Mask AP",
+      "definition": "인스턴스 분할에서 예측 마스크와 정답 마스크의 픽셀 IoU로 TP를 판정해 계산한 AP. COCO에서는 iouType='segm'으로 계산",
+      "usage_example": "가두리 개체 수가 중요하니 시맨틱 mIoU 말고 mask AP로 평가해.",
+      "origin": "standard",
+      "track": "F"
+    },
+    {
+      "id": "cohens-kappa",
+      "term_en": "Cohen's Kappa",
+      "term_ko": "코헨 카파 계수",
+      "abbreviation": "κ",
+      "definition": "관측 일치도에서 우연히 일치할 확률을 뺀 일치도 지표, κ = (p_o − p_e)/(1 − p_e). 원격탐사 분류·변화탐지 정확도 평가에 오래 쓰여 옴",
+      "usage_example": "발주처 양식에 Kappa 칸이 있으니 오차행렬에서 계산해서 채워줘.",
+      "origin": "standard",
+      "track": "F"
+    }
+  ],
+  "questions": [
+    {
+      "id": "F-SEG-001",
+      "type": "short",
+      "chapter": "F.seg",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "시맨틱 분할 결과에서 전체 픽셀 가운데 클래스를 올바르게 맞힌 픽셀의 비율을 나타내는 지표의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Pixel Accuracy (PA)",
+          "Overall Accuracy (OA)"
+        ],
+        "ko": [
+          "픽셀 정확도",
+          "전체 정확도",
+          "화소 정확도"
+        ]
+      },
+      "primary": "Pixel Accuracy (PA)",
+      "explanation_short": "픽셀 정확도(Pixel Accuracy)입니다. 원격탐사 분류 정확도 평가에서는 같은 값을 전체 정확도(Overall Accuracy, OA)라고 부릅니다.",
+      "explanation_full": "오차행렬(confusion matrix)의 대각선 합을 전체 픽셀 수로 나눈 값입니다. 계산이 쉽지만 픽셀 수가 많은 클래스(바다, 산림, 배경 등)가 값을 좌우하므로 클래스별 IoU나 F1과 함께 보고해야 합니다.",
+      "tags": [
+        "segmentation",
+        "metric"
+      ],
+      "terms": [
+        "pixel-accuracy"
+      ],
+      "source_ref": "Long et al. 2015, Fully Convolutional Networks for Semantic Segmentation (pixel accuracy, mean IU)",
+      "status": "draft"
+    },
+    {
+      "id": "F-SEG-002",
+      "type": "mcq",
+      "chapter": "F.seg",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "수계 추출용 타일에서 수계 픽셀은 5%, 나머지 95%는 배경이다. 모델이 모든 픽셀을 '배경'으로 예측했다면 픽셀 정확도와 수계 클래스 IoU는?",
+      "choices": [
+        {
+          "text": "픽셀 정확도 0.05, 수계 IoU 0",
+          "rationale": "배경 95%를 모두 맞혔으므로 픽셀 정확도는 0.95입니다. 0.05는 틀린 픽셀의 비율입니다."
+        },
+        {
+          "text": "픽셀 정확도 0.95, 수계 IoU 0",
+          "rationale": null
+        },
+        {
+          "text": "픽셀 정확도 0.95, 수계 IoU 0.95",
+          "rationale": "0.95는 배경 클래스의 IoU입니다. 수계로 예측한 픽셀이 하나도 없으므로 수계 IoU의 교집합은 0입니다."
+        },
+        {
+          "text": "픽셀 정확도 0.95, 수계 IoU 0.05",
+          "rationale": "수계 IoU = 교집합/합집합 = 0/(0.05)이므로 0입니다. 수계 비율 0.05를 IoU로 착각한 값입니다."
+        },
+        {
+          "text": "픽셀 정확도 0, 수계 IoU 0",
+          "rationale": "수계를 하나도 못 찾았지만 배경 픽셀은 모두 맞혔으므로 픽셀 정확도는 0이 아닙니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "배경 95%를 모두 맞혔으니 픽셀 정확도는 0.95로 높지만, 수계 예측이 하나도 없으므로 수계 IoU는 0입니다. 클래스 불균형이 심하면 픽셀 정확도는 모델이 쓸모없다는 사실을 가립니다.",
+      "explanation_full": "배경 IoU는 0.95/(0.95+0.05) = 0.95이므로 두 클래스 mIoU는 (0.95+0)/2 = 0.475입니다. 이처럼 mIoU는 소수 클래스 실패를 드러내지만 픽셀 정확도는 드러내지 못합니다. 수계·선박·쓰레기처럼 대상이 작은 원격탐사 분할에서는 대상 클래스의 IoU·F1을 주 지표로 삼습니다.",
+      "tags": [
+        "segmentation",
+        "metric",
+        "class-imbalance"
+      ],
+      "terms": [
+        "pixel-accuracy",
+        "mean-iou"
+      ],
+      "source_ref": "Long et al. 2015, Fully Convolutional Networks for Semantic Segmentation (pixel accuracy, mean IU)",
+      "status": "draft"
+    },
+    {
+      "id": "F-SEG-003",
+      "type": "short",
+      "chapter": "F.seg",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "시맨틱 분할에서 클래스마다 픽셀 단위 IoU를 구한 뒤 클래스 수로 평균한 대표 지표의 이름은? (영문 약어 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "mean Intersection over Union (mIoU)",
+          "mean IoU",
+          "mean Jaccard index"
+        ],
+        "ko": [
+          "평균 IoU",
+          "평균 교집합 대 합집합 비",
+          "엠아이오유"
+        ]
+      },
+      "primary": "mean Intersection over Union (mIoU)",
+      "explanation_short": "mIoU(mean Intersection over Union)입니다. 클래스별 IoU = TP/(TP+FP+FN)를 구해 클래스 수로 단순 평균합니다.",
+      "explanation_full": "클래스별 IoU를 픽셀 수로 가중하지 않으므로 작은 클래스의 실패가 평균에 그대로 반영됩니다. 데이터셋 전체의 오차행렬을 누적한 뒤 클래스별 IoU를 계산하는 것이 일반적입니다. Cityscapes, ADE20K 등 분할 벤치마크의 주 지표입니다.",
+      "tags": [
+        "segmentation",
+        "metric"
+      ],
+      "terms": [
+        "mean-iou"
+      ],
+      "source_ref": "Long et al. 2015, Fully Convolutional Networks for Semantic Segmentation (pixel accuracy, mean IU)",
+      "status": "draft"
+    },
+    {
+      "id": "F-SEG-004",
+      "type": "mcq",
+      "chapter": "F.seg",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "건물/배경 두 클래스 분할 결과를 픽셀로 세었더니, 건물 기준으로 TP 600, FP 200, FN 200, TN 9,000이었다. mIoU는 약 얼마인가?",
+      "choices": [
+        {
+          "text": "0.60",
+          "rationale": "건물 클래스 IoU(600/1,000)만 계산한 값입니다. mIoU는 배경 IoU까지 평균합니다."
+        },
+        {
+          "text": "0.75",
+          "rationale": "건물 클래스의 Dice(1,200/1,600)입니다. 이 예에서는 정밀도·재현율도 0.75로 같습니다."
+        },
+        {
+          "text": "0.96",
+          "rationale": "픽셀 정확도((600+9,000)/10,000)입니다."
+        },
+        {
+          "text": "0.78",
+          "rationale": null
+        },
+        {
+          "text": "0.30",
+          "rationale": "배경 IoU를 0으로 두고 평균한 값입니다. 배경도 한 클래스로 IoU를 계산합니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "건물 IoU = 600/(600+200+200) = 0.60, 배경 IoU = 9,000/(9,000+200+200) ≈ 0.957이므로 mIoU ≈ (0.60+0.957)/2 ≈ 0.78입니다.",
+      "explanation_full": "배경 입장에서는 건물의 TN이 TP, 건물의 FN(건물을 배경으로 예측)이 FP, 건물의 FP가 FN이 됩니다. 픽셀 정확도 0.96에 비해 mIoU 0.78, 건물 IoU 0.60으로 갈수록 대상 클래스의 실제 품질에 가까워집니다. 건물 추출처럼 대상이 하나인 과제는 배경을 뺀 '건물 IoU'를 주 지표로 쓰는 경우도 많으니 보고서에 계산 범위를 적습니다.",
+      "tags": [
+        "segmentation",
+        "metric",
+        "calculation"
+      ],
+      "terms": [
+        "mean-iou"
+      ],
+      "source_ref": "Long et al. 2015, Fully Convolutional Networks for Semantic Segmentation (pixel accuracy, mean IU)",
+      "status": "draft"
+    },
+    {
+      "id": "F-SEG-005",
+      "type": "short",
+      "chapter": "F.seg",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "예측 영역 A와 정답 영역 B에 대해 2|A∩B| / (|A|+|B|)로 정의되며, 의료영상과 원격탐사 분할에서 IoU와 함께 널리 쓰이는 겹침 지표의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Dice coefficient",
+          "Dice similarity coefficient (DSC)",
+          "Sørensen-Dice coefficient",
+          "Dice score",
+          "F1 score"
+        ],
+        "ko": [
+          "다이스 계수",
+          "다이스 유사도 계수",
+          "다이스 점수"
+        ]
+      },
+      "primary": "Dice coefficient",
+      "explanation_short": "Dice 계수(Dice coefficient)입니다. 픽셀 단위로 보면 2TP/(2TP+FP+FN)이 되어 F1 점수와 같은 식입니다.",
+      "explanation_full": "같은 결과에서 Dice와 IoU는 Dice = 2·IoU/(1+IoU), IoU = Dice/(2−Dice)로 서로 바꿀 수 있고, 항상 Dice ≥ IoU입니다(둘 다 0 또는 1일 때만 같음). 손실 함수로 쓰는 Dice loss(1 − Dice)는 전경이 작은 불균형 분할 학습에 자주 쓰입니다.",
+      "tags": [
+        "segmentation",
+        "metric"
+      ],
+      "terms": [
+        "dice-coefficient"
+      ],
+      "source_ref": "Taha & Hanbury 2015, Metrics for evaluating 3D medical image segmentation (Dice·IoU 관계)",
+      "status": "draft"
+    },
+    {
+      "id": "F-SEG-006",
+      "type": "mcq",
+      "chapter": "F.seg",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "어떤 수계 분할 결과의 수계 클래스 IoU가 0.5이다. 같은 결과의 수계 Dice 계수는?",
+      "choices": [
+        {
+          "text": "약 0.33",
+          "rationale": "IoU보다 작은 값입니다. Dice는 항상 IoU 이상입니다."
+        },
+        {
+          "text": "0.5",
+          "rationale": "Dice와 IoU는 같은 값이 아닙니다. 둘 다 0이거나 1일 때만 같습니다."
+        },
+        {
+          "text": "약 0.67",
+          "rationale": null
+        },
+        {
+          "text": "0.25",
+          "rationale": "IoU를 제곱한 값입니다. Dice = 2·IoU/(1+IoU)입니다."
+        },
+        {
+          "text": "1.0",
+          "rationale": "IoU를 두 배 한 값입니다. 분모의 (1+IoU)를 빠뜨렸습니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "Dice = 2·IoU/(1+IoU) = 2×0.5/1.5 ≈ 0.67입니다. 같은 예측이라도 Dice가 IoU보다 높게 나오므로 논문 수치를 비교할 때 어떤 지표인지 꼭 확인해야 합니다.",
+      "explanation_full": "유도: IoU = TP/(TP+FP+FN), Dice = 2TP/(2TP+FP+FN). TP=1, FP+FN=1이면 IoU=0.5, Dice=2/3입니다. 이 환산은 한 번에 누적해 계산한 값끼리만 정확히 성립하고, 이미지별로 계산해 평균한 값에서는 근사가 됩니다.",
+      "tags": [
+        "segmentation",
+        "metric",
+        "calculation"
+      ],
+      "terms": [
+        "dice-coefficient",
+        "mean-iou"
+      ],
+      "source_ref": "Taha & Hanbury 2015, Metrics for evaluating 3D medical image segmentation (Dice·IoU 관계)",
+      "status": "draft"
+    },
+    {
+      "id": "F-SEG-007",
+      "type": "short",
+      "chapter": "F.seg",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "예측 경계와 정답 경계를 일정 허용 거리 안에서 매칭해 경계 픽셀의 정밀도·재현율을 구하고, 이를 조화평균해 경계 품질을 평가하는 지표의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Boundary F1 score (BF score)",
+          "Boundary F-measure"
+        ],
+        "ko": [
+          "경계 F1 점수",
+          "경계 F1"
+        ]
+      },
+      "primary": "Boundary F1 score (BF score)",
+      "explanation_short": "경계 F1 점수(Boundary F1 score, BF score)입니다. 영역 전체가 아니라 윤곽선이 허용 거리 안에 들어오는지만 평가합니다.",
+      "explanation_full": "정밀도는 '예측 경계 픽셀 중 정답 경계에서 d픽셀 안에 있는 비율', 재현율은 '정답 경계 픽셀 중 예측 경계에서 d픽셀 안에 있는 비율'입니다. 허용 거리 d는 영상 크기나 GSD에 맞춰 정하며, 보고서에 반드시 함께 적습니다. 비슷한 목적의 지표로 Boundary IoU가 있습니다.",
+      "tags": [
+        "segmentation",
+        "metric",
+        "boundary"
+      ],
+      "terms": [
+        "boundary-f1-score"
+      ],
+      "source_ref": "Csurka et al. 2013, What is a good evaluation measure for semantic segmentation? (BF score)",
+      "status": "draft"
+    },
+    {
+      "id": "F-SEG-008",
+      "type": "mcq",
+      "chapter": "F.seg",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "대형 건물 분할에서 IoU만으로는 경계 품질을 평가하기 어려워 경계 지표(boundary F1 등)를 따로 쓴다. 그 이유로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "큰 객체는 내부 픽셀이 대부분이라 경계가 몇 픽셀 어긋나도 IoU가 거의 안 변하기 때문이다",
+          "rationale": null
+        },
+        {
+          "text": "IoU는 클래스 불균형이 있으면 계산할 수 없는 지표이기 때문이다",
+          "rationale": "IoU는 불균형과 상관없이 계산됩니다. 불균형 문제는 주로 픽셀 정확도에서 나타납니다."
+        },
+        {
+          "text": "IoU는 작은 객체에서만 정의되고 큰 객체에서는 정의되지 않기 때문이다",
+          "rationale": "IoU는 크기와 상관없이 정의됩니다. 오히려 작은 객체는 경계 오차에 IoU가 민감하게 반응합니다."
+        },
+        {
+          "text": "경계 지표는 영역 전체의 겹침을 IoU보다 정확하게 계산하는 상위 호환 지표이기 때문이다",
+          "rationale": "경계 지표는 윤곽선 근처 픽셀만 비교하므로 영역 면적이 얼마나 겹치는지는 재지 않습니다. IoU를 대체하는 상위 호환이 아니라 함께 쓰는 보완 지표입니다."
+        },
+        {
+          "text": "IoU는 경계 픽셀을 계산에서 제외하도록 정의되어 있기 때문이다",
+          "rationale": "IoU는 경계 픽셀도 모두 포함해 계산합니다. 다만 전체 면적에서 경계가 차지하는 비중이 작을 뿐입니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "100×100픽셀 건물을 사방으로 1픽셀씩 작게 예측해도 IoU는 98²/100² ≈ 0.96입니다. 면적이 클수록 경계 오차의 비중이 작아지므로 윤곽 품질은 경계 근처만 보는 지표로 따로 평가합니다.",
+      "explanation_full": "반대로 10×10픽셀 객체를 사방 1픽셀 작게 예측하면 IoU는 64/100 = 0.64로 급락합니다. 즉 IoU는 큰 객체의 경계 오차에 둔감하고 작은 객체의 경계 오차에 과민합니다. 건물 윤곽을 벡터로 납품하는 GIS 과제라면 IoU와 경계 지표를 함께 보고하는 것이 좋습니다.",
+      "tags": [
+        "segmentation",
+        "metric",
+        "boundary"
+      ],
+      "terms": [
+        "boundary-f1-score",
+        "mean-iou"
+      ],
+      "source_ref": "Csurka et al. 2013, What is a good evaluation measure for semantic segmentation? (BF score)",
+      "status": "draft"
+    },
+    {
+      "id": "F-SEG-009",
+      "type": "short",
+      "chapter": "F.seg",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "인스턴스 분할 평가에서 박스 IoU 대신 예측 마스크와 정답 마스크의 픽셀 IoU로 TP를 판정해 계산한 AP를 무엇이라 하는가? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Mask AP",
+          "AP^mask",
+          "Segm AP"
+        ],
+        "ko": [
+          "마스크 AP",
+          "마스크 평균 정밀도"
+        ]
+      },
+      "primary": "Mask AP",
+      "explanation_short": "마스크 AP(Mask AP, AP^mask)입니다. 매칭 기준만 마스크 IoU로 바뀌었을 뿐, 점수순 정렬·PR 곡선·IoU 0.50~0.95 평균 등 계산 절차는 박스 AP와 같습니다.",
+      "explanation_full": "COCO 평가 도구에서는 iouType='segm'으로 계산하고, 박스 기준은 iouType='bbox'(AP^box)입니다. Mask R-CNN 계열 논문은 두 값을 함께 보고합니다. 시맨틱 분할 지표(mIoU)는 개체를 구분하지 않으므로 개체 수를 세야 하는 과제에서는 마스크 AP가 필요합니다.",
+      "tags": [
+        "segmentation",
+        "instance",
+        "metric"
+      ],
+      "terms": [
+        "mask-ap"
+      ],
+      "source_ref": "COCO detection evaluation (iouType='segm'), pycocotools COCOeval",
+      "status": "draft"
+    },
+    {
+      "id": "F-SEG-010",
+      "type": "mcq",
+      "chapter": "F.seg",
+      "cognitive_level": 2,
+      "difficulty": 4,
+      "stem": "건물 A와 B(각 면적 100픽셀) 사이에 면적 20픽셀의 좁은 틈이 있다. 모델이 A, B와 틈을 모두 덮는 마스크 하나(면적 220픽셀)를 예측했다. 시맨틱 분할의 건물 IoU와, 인스턴스 분할(마스크 IoU 0.5 기준) 판정으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "시맨틱 건물 IoU 약 0.91, 인스턴스 기준 TP 2 · FP 0 · FN 0",
+          "rationale": "하나의 예측 마스크는 정답 하나와만 매칭될 수 있습니다. 두 건물을 모두 TP로 셀 수 없습니다."
+        },
+        {
+          "text": "시맨틱 건물 IoU 약 0.45, 인스턴스 기준 TP 0 · FP 1 · FN 2",
+          "rationale": "0.45는 예측 마스크와 건물 하나의 마스크 IoU입니다. 시맨틱 IoU는 건물 픽셀 전체(200)와 예측(220)을 비교합니다."
+        },
+        {
+          "text": "시맨틱 건물 IoU 약 0.91, 인스턴스 기준 TP 1 · FP 0 · FN 1",
+          "rationale": "예측 마스크와 A(또는 B)의 IoU는 100/220 ≈ 0.45로 기준 0.5에 못 미쳐 어느 쪽과도 매칭되지 않습니다."
+        },
+        {
+          "text": "시맨틱 건물 IoU 1.0, 인스턴스 기준 TP 1 · FP 0 · FN 1",
+          "rationale": "틈 20픽셀을 건물로 잘못 칠했으므로 시맨틱 IoU는 200/220입니다. 인스턴스 판정도 매칭이 성립하지 않습니다."
+        },
+        {
+          "text": "시맨틱 건물 IoU 약 0.91, 인스턴스 기준 TP 0 · FP 1 · FN 2",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "시맨틱 IoU = 200/220 ≈ 0.91로 높지만, 예측 마스크와 각 건물의 마스크 IoU는 100/220 ≈ 0.45라 매칭되지 않습니다. 따라서 예측 1개는 FP, 건물 2동은 FN입니다.",
+      "explanation_full": "붙어 있는 객체를 하나로 뭉쳐 예측하는 오류는 시맨틱 지표에서는 거의 드러나지 않지만 개체 수·개체별 면적이 필요한 과제에서는 치명적입니다. 밀집 주거지 건물, 가두리 양식장, 주차 차량처럼 객체가 붙어 있는 원격탐사 대상은 인스턴스 기준 지표로 함께 평가해야 합니다.",
+      "tags": [
+        "segmentation",
+        "instance",
+        "metric",
+        "calculation"
+      ],
+      "terms": [
+        "mask-ap",
+        "mean-iou"
+      ],
+      "source_ref": "COCO detection evaluation (iouType='segm'), pycocotools COCOeval",
+      "status": "draft"
+    },
+    {
+      "id": "F-SEG-011",
+      "type": "short",
+      "chapter": "F.seg",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "오차행렬로 구한 관측 일치도에서 '우연히 일치할 확률'을 보정한 일치도 지표로, 원격탐사 토지피복 분류·변화탐지 정확도 평가에 오래 쓰여 온 것의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Cohen's kappa",
+          "Kappa coefficient",
+          "Kappa"
+        ],
+        "ko": [
+          "코헨 카파 계수",
+          "카파 계수",
+          "코헨의 카파"
+        ]
+      },
+      "primary": "Cohen's kappa",
+      "explanation_short": "코헨 카파 계수(Cohen's kappa)입니다. κ = (p_o − p_e)/(1 − p_e)로, 관측 일치도 p_o에서 우연 일치도 p_e를 빼서 보정합니다.",
+      "explanation_full": "1이면 완전 일치, 0이면 우연 수준입니다. 원격탐사 분야에서 오래 표준처럼 쓰였지만, Pontius & Millones(2011)처럼 kappa 대신 수량 불일치(quantity disagreement)와 배치 불일치(allocation disagreement)를 보고하자는 비판도 있습니다. 실무에서는 발주처 양식에 따라 OA·kappa와 클래스별 생산자·사용자 정확도를 함께 제시하는 경우가 많습니다.",
+      "tags": [
+        "segmentation",
+        "metric",
+        "remote-sensing"
+      ],
+      "terms": [
+        "cohens-kappa"
+      ],
+      "source_ref": "Congalton & Green, Assessing the Accuracy of Remotely Sensed Data (오차행렬·Kappa)",
+      "status": "draft"
+    },
+    {
+      "id": "F-SEG-012",
+      "type": "mcq",
+      "chapter": "F.seg",
+      "cognitive_level": 2,
+      "difficulty": 4,
+      "stem": "변화탐지 결과 1,000픽셀을 검증했다. 변화 클래스 기준 TP 60, FP 40, FN 40, TN 860이다. Cohen's kappa는 약 얼마인가?",
+      "choices": [
+        {
+          "text": "0.92",
+          "rationale": "관측 일치도(전체 정확도) (60+860)/1,000입니다. kappa는 여기서 우연 일치도를 보정합니다."
+        },
+        {
+          "text": "약 0.56",
+          "rationale": null
+        },
+        {
+          "text": "0.60",
+          "rationale": "변화 클래스의 F1(=Dice) 2×60/(2×60+40+40)입니다."
+        },
+        {
+          "text": "약 0.43",
+          "rationale": "변화 클래스의 IoU 60/(60+40+40)입니다."
+        },
+        {
+          "text": "0.82",
+          "rationale": "우연 일치도 p_e입니다. kappa = (p_o − p_e)/(1 − p_e)로 한 번 더 계산해야 합니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "p_o = 920/1,000 = 0.92. 예측·정답의 변화 비율이 모두 0.1이므로 p_e = 0.1×0.1 + 0.9×0.9 = 0.82. κ = (0.92 − 0.82)/(1 − 0.82) = 0.10/0.18 ≈ 0.56입니다.",
+      "explanation_full": "전체 정확도 0.92는 높아 보이지만, 무변화가 90%라 '전부 무변화'로 찍어도 0.90이 나옵니다. kappa와 변화 클래스 F1(0.60)·IoU(0.43)는 이런 착시를 걷어낸 값입니다. 같은 오차행렬에서 여러 지표를 함께 계산해 두면 발주처 양식이 무엇을 요구하든 대응할 수 있습니다.",
+      "tags": [
+        "segmentation",
+        "metric",
+        "change-detection",
+        "calculation"
+      ],
+      "terms": [
+        "cohens-kappa"
+      ],
+      "source_ref": "Congalton & Green, Assessing the Accuracy of Remotely Sensed Data (오차행렬·Kappa)",
+      "status": "draft"
+    },
+    {
+      "id": "F-SEG-013",
+      "type": "mcq",
+      "chapter": "F.seg",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "토지피복 5개 클래스 분할에서 전체 픽셀의 2%뿐인 '습지' 클래스 IoU가 0.2에서 0.6으로 크게 좋아졌고, 다른 클래스 결과는 거의 그대로다. 픽셀 정확도와 mIoU의 변화로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "픽셀 정확도가 mIoU보다 크게 오른다",
+          "rationale": "픽셀 정확도는 픽셀 수로 가중되므로 2%짜리 클래스의 개선은 작게 반영됩니다."
+        },
+        {
+          "text": "mIoU는 거의 변하지 않고, 픽셀 정확도만 눈에 띄게 오른다",
+          "rationale": "반대입니다. mIoU는 클래스를 똑같이 평균하므로 습지 IoU 변화가 1/5 비중으로 그대로 반영됩니다."
+        },
+        {
+          "text": "두 지표가 모두 같은 폭으로 오른다",
+          "rationale": "가중 방식이 다르므로(픽셀 수 가중 vs 클래스 단순 평균) 같은 폭으로 움직이지 않습니다."
+        },
+        {
+          "text": "mIoU는 눈에 띄게 오르지만, 픽셀 정확도는 거의 변하지 않는다",
+          "rationale": null
+        },
+        {
+          "text": "다른 클래스가 그대로이므로 두 지표 모두 변하지 않는다",
+          "rationale": "습지 IoU가 오른 만큼 mIoU는 반드시 오릅니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "mIoU는 클래스별 IoU를 똑같이 평균(매크로 평균)하므로 습지 IoU가 0.4 오르면 mIoU는 약 0.4/5 = 0.08 오릅니다. 픽셀 정확도는 픽셀 수로 가중되어 전체의 2%인 습지 개선이 거의 드러나지 않습니다.",
+      "explanation_full": "그래서 희소 클래스가 중요한 과제에서는 mIoU(또는 해당 클래스 IoU)를 주 지표로, 픽셀 정확도는 참고 지표로 둡니다. 반대로 mIoU는 희소 클래스 몇 개의 요동에 크게 흔들리므로 클래스별 IoU 표를 함께 보여 주는 것이 좋습니다.",
+      "tags": [
+        "segmentation",
+        "metric",
+        "class-imbalance"
+      ],
+      "terms": [
+        "mean-iou",
+        "pixel-accuracy",
+        "macro-average"
+      ],
+      "source_ref": "Long et al. 2015, Fully Convolutional Networks for Semantic Segmentation (pixel accuracy, mean IU)",
+      "status": "draft"
+    },
+    {
+      "id": "F-SEG-014",
+      "type": "scenario",
+      "chapter": "F.seg",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"두 시기 Sentinel-2 영상으로 산림 훼손 변화탐지를 했는데 변화 픽셀이 전체의 1%도 안 돼. 보고서에 OA 0.99라고 썼더니 검토자가 의미 없다네. 지표 다시 정리해줘.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "OA는 그대로 두고, 무변화 검증 픽셀을 더 많이 뽑아서 OA의 신뢰구간을 좁혀 제시한다",
+          "rationale": "무변화가 99%인 상황에서는 OA가 무변화 클래스에 좌우됩니다. 표본을 늘려도 변화 탐지 성능은 드러나지 않습니다."
+        },
+        {
+          "text": "무변화 클래스의 IoU를 주 지표로 보고한다",
+          "rationale": "다수 클래스인 무변화의 IoU는 변화를 거의 못 찾아도 0.99 가까이 나옵니다."
+        },
+        {
+          "text": "변화 클래스 기준 정밀도·재현율·F1(과 변화 IoU)을 오차행렬과 함께 제시한다",
+          "rationale": null
+        },
+        {
+          "text": "무변화 클래스의 재현율(특이도)을 OA 대신 주 지표로 보고한다",
+          "rationale": "특이도도 다수 클래스 기준이라 변화를 놓쳐도 높게 나옵니다. 검토자의 지적을 해결하지 못합니다."
+        },
+        {
+          "text": "두 시기 영상의 토지피복 분류 OA를 각각 따로 보고한다",
+          "rationale": "각 시기 분류가 정확해도 두 결과를 비교한 변화 지도의 오차는 누적됩니다. 변화 지도 자체를 평가해야 합니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "변화 픽셀이 1% 미만이면 '전부 무변화'로 찍어도 OA가 0.99입니다. 소수 클래스인 변화 클래스를 양성으로 두고 정밀도(오탐)·재현율(미탐)·F1을 보고해야 실제 탐지 성능이 드러납니다.",
+      "explanation_full": "오차행렬을 함께 제시하면 검토자가 원하는 다른 지표(kappa 등)도 바로 계산할 수 있습니다. 변화탐지 검증 표본을 무작위로만 뽑으면 변화 픽셀이 너무 적게 뽑히므로, 변화/무변화로 층화(stratified)해 표본을 뽑고 면적 비율로 보정하는 방법도 많이 씁니다.",
+      "tags": [
+        "segmentation",
+        "metric",
+        "change-detection",
+        "remote-sensing"
+      ],
+      "terms": [
+        "pixel-accuracy",
+        "dice-coefficient"
+      ],
+      "source_ref": "Congalton & Green, Assessing the Accuracy of Remotely Sensed Data (오차행렬·Kappa)",
+      "status": "draft"
+    },
+    {
+      "id": "F-SEG-015",
+      "type": "scenario",
+      "chapter": "F.seg",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"토지피복 분할 결과를 512×512 타일 2,000장으로 평가했어. 타일마다 7개 클래스 mIoU를 계산해서 평균 냈더니 0.38밖에 안 나와. 눈으로 보면 이렇게 나쁘지 않은데, 계산부터 확인해봐.\"\n\n가장 먼저 확인할 것은?",
+      "choices": [
+        {
+          "text": "0/0인 클래스(정답·예측 모두 없음)를 IoU 0으로 넣었는지 확인하고, 오차행렬을 누적해 다시 계산한다",
+          "rationale": null
+        },
+        {
+          "text": "배경 클래스를 평가에서 빼서 mIoU를 다시 계산한다",
+          "rationale": "원인을 확인하지 않고 클래스를 빼면 지표를 임의로 바꾸는 것입니다. 0.38이라는 이상값의 원인을 설명하지도 못합니다."
+        },
+        {
+          "text": "타일 경계 overlap을 64픽셀로 늘려 가장자리 오차를 줄인 뒤, 전체 타일을 다시 추론해 mIoU를 계산한다",
+          "rationale": "타일 가장자리 오차는 일부 성능 저하를 만들 수 있지만, 눈으로 본 품질과 크게 다른 계산 결과를 먼저 설명하지는 못합니다."
+        },
+        {
+          "text": "지표를 Dice로 바꿔 계산하면 값이 높게 나오므로 Dice로 보고한다",
+          "rationale": "Dice는 IoU보다 항상 크게 나오는 지표일 뿐, 계산 오류를 고치는 것이 아닙니다."
+        },
+        {
+          "text": "클래스 수를 7개에서 4개로 합쳐 다시 학습한다",
+          "rationale": "평가 계산 문제를 확인하기 전에 과제 정의를 바꾸는 것은 순서가 틀렸습니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "타일 한 장에는 보통 7개 클래스 중 몇 개만 나옵니다. 정답과 예측 모두에 없는 클래스의 IoU는 0/0이라 정의되지 않는데, 이를 0으로 넣고 평균하면 mIoU가 크게 떨어집니다. 표준 방식은 전체 데이터셋의 오차행렬을 누적한 뒤 클래스별 IoU를 구하는 것입니다.",
+      "explanation_full": "예: 타일당 평균 3개 클래스만 있고 나머지 4개가 0으로 처리되면, 실제 IoU가 모두 0.9여도 타일 mIoU는 (3×0.9)/7 ≈ 0.39가 됩니다. 타일별 값이 필요하다면 해당 타일에 없는 클래스는 NaN으로 두고 제외(nanmean)해야 하며, 그 경우에도 데이터셋 누적 방식과 값이 다를 수 있으므로 계산 방식을 보고서에 명시합니다.",
+      "tags": [
+        "segmentation",
+        "metric",
+        "remote-sensing"
+      ],
+      "terms": [
+        "mean-iou"
+      ],
+      "source_ref": "Long et al. 2015, Fully Convolutional Networks for Semantic Segmentation (pixel accuracy, mean IU)",
+      "status": "draft"
+    },
+    {
+      "id": "F-SEG-016",
+      "type": "scenario",
+      "chapter": "F.seg",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"GSD 0.5m 항공 정사영상에서 건물 footprint를 추출해 폴리곤으로 납품할 거야. mIoU 0.82면 충분하다는데 경계가 들쭉날쭉해서 폴리곤 품질이 걱정돼. 평가 지표를 보강해봐.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "픽셀 정확도를 추가로 계산해 mIoU와 나란히 표에 넣어 보고한다",
+          "rationale": "픽셀 정확도는 영역 전체를 보는 지표라 경계 품질을 mIoU보다도 더 드러내지 못합니다."
+        },
+        {
+          "text": "건물 박스를 만들어 mAP50을 계산한다",
+          "rationale": "IoU 0.5 기준 박스 AP는 매우 느슨해 윤곽이 들쭉날쭉해도 거의 다 TP가 됩니다."
+        },
+        {
+          "text": "Cohen's kappa를 추가로 계산한다",
+          "rationale": "kappa도 픽셀 단위 일치도라 내부 픽셀에 좌우되며, 경계 품질을 따로 보여 주지 못합니다."
+        },
+        {
+          "text": "mIoU 목표를 0.90으로 올리고, 목표를 넘을 때까지 추가 학습을 진행한다",
+          "rationale": "IoU는 큰 건물의 경계 오차에 둔감하므로 mIoU를 올려도 윤곽 품질이 좋아졌는지 확인할 수 없습니다."
+        },
+        {
+          "text": "허용 거리(예: 2픽셀 = 1m)를 정해 경계 F1 점수를 추가 계산한다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "폴리곤 납품에서 중요한 것은 윤곽선입니다. 경계 F1은 경계 픽셀이 허용 거리 안에 들어오는지만 평가하므로, IoU가 놓치는 들쭉날쭉한 윤곽을 수치로 드러냅니다. 허용 거리는 결과와 함께 보고합니다.",
+      "explanation_full": "허용 거리는 납품 규격의 위치 정확도와 GSD로 정합니다(예: 허용 오차 1m, GSD 0.5m → 2픽셀). 벡터화 이후 단계까지 평가하려면 폴리곤 꼭짓점 수나 정답 폴리곤과의 하우스도르프 거리 같은 기하 지표를 덧붙이기도 합니다.",
+      "tags": [
+        "segmentation",
+        "metric",
+        "boundary",
+        "remote-sensing"
+      ],
+      "terms": [
+        "boundary-f1-score"
+      ],
+      "source_ref": "Csurka et al. 2013, What is a good evaluation measure for semantic segmentation? (BF score)",
+      "status": "draft"
+    },
+    {
+      "id": "F-SEG-017",
+      "type": "scenario",
+      "chapter": "F.seg",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"비교 논문은 수계 분할 Dice 0.90이고, 우리 모델은 같은 데이터셋에서 IoU 0.82야. 우리가 8%p 뒤진다고 써도 돼?\"\n\n가장 적절한 대응은?",
+      "choices": [
+        {
+          "text": "0.82 < 0.90이므로 지시대로 8%p 뒤진다고 쓴다",
+          "rationale": "서로 다른 지표를 그대로 비교한 것입니다. 같은 결과라도 Dice가 IoU보다 높게 나옵니다."
+        },
+        {
+          "text": "IoU 0.82를 Dice로 환산하면 약 0.90이라 뒤진다고 볼 수 없다고 답한다",
+          "rationale": null
+        },
+        {
+          "text": "Dice는 IoU의 제곱이므로 우리 Dice는 약 0.67이라 더 크게 뒤진다고 쓴다",
+          "rationale": "Dice = IoU²가 아니라 Dice = 2·IoU/(1+IoU)입니다."
+        },
+        {
+          "text": "Dice는 항상 IoU보다 작으므로 우리가 오히려 앞선다고 쓴다",
+          "rationale": "반대입니다. Dice는 항상 IoU 이상입니다."
+        },
+        {
+          "text": "Dice는 IoU의 절반이므로 우리 Dice는 0.41이라 크게 뒤진다고 쓴다",
+          "rationale": "Dice와 IoU 사이에 절반 관계는 없습니다. Dice = 2·IoU/(1+IoU)입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "Dice = 2·IoU/(1+IoU) = 2×0.82/1.82 ≈ 0.90이므로 두 모델은 비슷한 수준입니다. 서로 다른 지표를 그대로 비교하지 말고 같은 지표로 맞춰 비교해야 합니다.",
+      "explanation_full": "이 환산은 데이터셋 전체를 누적해 계산했을 때 정확히 성립합니다. 논문이 이미지별 Dice를 평균했다면 근사일 뿐이므로, 가능하면 우리 결과로 Dice를 같은 방식으로 직접 계산해 표에 나란히 적습니다.",
+      "tags": [
+        "segmentation",
+        "metric",
+        "calculation"
+      ],
+      "terms": [
+        "dice-coefficient",
+        "mean-iou"
+      ],
+      "source_ref": "Taha & Hanbury 2015, Metrics for evaluating 3D medical image segmentation (Dice·IoU 관계)",
+      "status": "draft"
+    },
+    {
+      "id": "F-SEG-018",
+      "type": "scenario",
+      "chapter": "F.seg",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"가두리 양식장 칸 수를 세서 보고해야 하니까, 시맨틱 분할 mIoU 말고 개체 단위로 평가 지표를 잡아.\"\n\n가장 적절한 평가 방식은?",
+      "choices": [
+        {
+          "text": "양식장 픽셀의 픽셀 정확도를 계산하고, 그 비율을 칸 수로 환산해 보고한다",
+          "rationale": "픽셀 정확도는 개체를 구분하지 않으며, 붙어 있는 칸들이 하나로 뭉쳐도 값이 거의 변하지 않습니다."
+        },
+        {
+          "text": "양식장 클래스의 Dice를 전체 픽셀로 계산해 보고한다",
+          "rationale": "전체 픽셀로 계산한 Dice는 시맨틱 지표라 개체를 몇 개로 나눴는지 평가하지 못합니다."
+        },
+        {
+          "text": "양식장 경계의 경계 F1 점수만 계산해 보고한다",
+          "rationale": "경계 품질 지표로, 칸이 개체별로 분리됐는지나 개수가 맞는지는 알려 주지 않습니다."
+        },
+        {
+          "text": "인스턴스 분할로 개체별 마스크를 만들고, 마스크 IoU로 매칭한 mask AP와 칸 수 오차를 함께 보고한다",
+          "rationale": null
+        },
+        {
+          "text": "변화탐지 정확도 평가처럼 Cohen's kappa를 계산해 보고한다",
+          "rationale": "kappa는 픽셀 단위 분류 일치도라 개체 단위 평가가 아닙니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "개수를 세려면 붙어 있는 칸을 서로 다른 개체로 나눠야 하므로 인스턴스 분할로 평가합니다. mask AP는 예측 마스크와 정답 마스크를 개체별로 매칭하므로 여러 칸을 하나로 뭉친 예측을 오류로 잡아냅니다.",
+      "explanation_full": "보고 형식 예: 'mask AP50-95, mask AP50, 타일별 칸 수 오차(MAE)'. 개수만이 목적이라면 점 기반 카운팅이나 탐지 방식도 가능하지만, 칸별 면적이 필요하면 인스턴스 마스크가 유리합니다. 평가는 COCO 도구에서 iouType='segm'으로 계산합니다.",
+      "tags": [
+        "segmentation",
+        "instance",
+        "metric",
+        "remote-sensing"
+      ],
+      "terms": [
+        "mask-ap"
+      ],
+      "source_ref": "COCO detection evaluation (iouType='segm'), pycocotools COCOeval",
+      "status": "draft"
+    }
+  ]
+}

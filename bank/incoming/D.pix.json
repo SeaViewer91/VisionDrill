@@ -1,0 +1,914 @@
+{
+  "format": "visiondrill-bank-exchange",
+  "format_version": 1,
+  "terms": [
+    {
+      "id": "pixel",
+      "term_en": "Pixel",
+      "term_ko": "픽셀(화소)",
+      "abbreviation": null,
+      "definition": "디지털 영상을 이루는 격자의 최소 단위 칸으로, 그 칸이 덮는 영역에서 측정한 값을 밴드마다 하나씩 가진다",
+      "usage_example": "이 선박은 10 m 영상에서 3픽셀밖에 안 돼. 박스 라벨 너무 크게 치지 마.",
+      "origin": "standard",
+      "track": "D"
+    },
+    {
+      "id": "raster",
+      "term_en": "Raster",
+      "term_ko": "래스터",
+      "abbreviation": null,
+      "definition": "공간을 같은 크기의 셀(픽셀) 격자로 나누고 셀마다 값을 저장하는 공간 자료 구조",
+      "usage_example": "수계 마스크는 래스터로 먼저 뽑고, 면적 집계는 벡터로 바꿔서 하자.",
+      "origin": "standard",
+      "track": "D"
+    },
+    {
+      "id": "spectral-band",
+      "term_en": "Spectral Band",
+      "term_ko": "분광 밴드",
+      "abbreviation": null,
+      "definition": "센서가 특정 파장 구간의 에너지를 기록해 만든 영상의 한 층. 딥러닝 입력에서는 채널(channel) 하나에 대응한다",
+      "usage_example": "B8 근적외 밴드까지 4채널로 쌓아서 학습 돌려봐.",
+      "origin": "standard",
+      "track": "D"
+    },
+    {
+      "id": "spatial-resolution",
+      "term_en": "Spatial Resolution",
+      "term_ko": "공간해상도",
+      "abbreviation": null,
+      "definition": "영상이 구분해 낼 수 있는 지상 크기의 세밀함. 흔히 픽셀 하나가 대표하는 지상 거리로 표시한다",
+      "usage_example": "공간해상도 10 m 영상으로 소형 어선 개별 탐지는 무리야.",
+      "origin": "standard",
+      "track": "D"
+    },
+    {
+      "id": "ground-sample-distance",
+      "term_en": "Ground Sample Distance",
+      "term_ko": "지상 표본 거리",
+      "abbreviation": "GSD",
+      "definition": "인접한 두 픽셀 중심 사이의 지상 거리, 즉 픽셀 한 변이 지상에서 차지하는 길이",
+      "usage_example": "이번 드론 촬영은 GSD 3 cm로 맞춰서 비행 고도 다시 계산해.",
+      "origin": "standard",
+      "track": "D"
+    },
+    {
+      "id": "spectral-resolution",
+      "term_en": "Spectral Resolution",
+      "term_ko": "분광해상도",
+      "abbreviation": null,
+      "definition": "센서가 기록하는 밴드의 수와 각 밴드 파장폭의 좁음으로 표현되는, 파장을 나누어 보는 능력",
+      "usage_example": "적조 구분하려면 분광해상도가 더 높은 센서가 필요할 수도 있어.",
+      "origin": "standard",
+      "track": "D"
+    },
+    {
+      "id": "radiometric-resolution",
+      "term_en": "Radiometric Resolution",
+      "term_ko": "방사해상도",
+      "abbreviation": null,
+      "definition": "픽셀 하나의 밝기를 몇 단계로 기록하는지 나타내는 해상도로, 양자화 비트 수(비트 심도)로 표시한다. n비트면 2^n 단계",
+      "usage_example": "원본은 12비트야. 8비트로 줄이면 어두운 수면 쪽 값이 뭉개질 수 있어.",
+      "origin": "standard",
+      "track": "D"
+    },
+    {
+      "id": "temporal-resolution",
+      "term_en": "Temporal Resolution",
+      "term_ko": "시간해상도",
+      "abbreviation": null,
+      "definition": "같은 지역을 다시 관측하기까지의 간격(재방문 주기)으로 표현되는 해상도",
+      "usage_example": "주 단위 변화를 보려면 시간해상도부터 맞는 위성인지 확인해.",
+      "origin": "standard",
+      "track": "D"
+    },
+    {
+      "id": "digital-number",
+      "term_en": "Digital Number",
+      "term_ko": "디지털 수치",
+      "abbreviation": "DN",
+      "definition": "센서가 받은 복사량을 정수로 양자화해 저장한, 물리 단위로 보정하기 전의 픽셀 값",
+      "usage_example": "DN 그대로 두 시기 비교하지 말고 반사율로 변환한 다음 차이 봐.",
+      "origin": "standard",
+      "track": "D"
+    }
+  ],
+  "questions": [
+    {
+      "id": "D-PIX-001",
+      "type": "short",
+      "chapter": "D.pix",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "디지털 영상을 이루는 격자의 최소 단위로, 밴드마다 값을 하나씩 가지는 칸을 무엇이라 하는가? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Pixel",
+          "Picture element",
+          "Cell"
+        ],
+        "ko": [
+          "픽셀",
+          "화소",
+          "셀"
+        ]
+      },
+      "primary": "Pixel",
+      "explanation_short": "픽셀(pixel, picture element, 화소)은 래스터 영상을 이루는 격자 한 칸입니다. 다중분광 영상이면 같은 위치의 픽셀이 밴드 수만큼 값을 가집니다.",
+      "explanation_full": "원격탐사에서 픽셀은 점이 아니라 지상의 일정 면적(예: 10 m×10 m)을 대표하는 칸이며, 그 값은 그 면적에서 들어온 신호가 합쳐진 결과입니다. 그래서 픽셀보다 작은 물체는 주변 피복과 섞인 값으로 기록됩니다(혼합 화소). 픽셀 위치는 (행, 열) 인덱스로 가리키고, 지상 좌표와는 좌표 변환 정보(geotransform)로 연결됩니다.",
+      "tags": [
+        "image-basics"
+      ],
+      "terms": [
+        "pixel"
+      ],
+      "source_ref": "원격탐사 개론 일반(Lillesand·Kiefer·Chipman, Remote Sensing and Image Interpretation)",
+      "status": "draft"
+    },
+    {
+      "id": "D-PIX-002",
+      "type": "short",
+      "chapter": "D.pix",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "드론·위성 영상에서 인접한 두 픽셀 중심 사이의 지상 거리, 즉 픽셀 한 변이 지상에서 차지하는 길이를 가리키는 용어는? (영문 약어 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Ground Sample Distance (GSD)",
+          "Ground Sampling Distance"
+        ],
+        "ko": [
+          "지상 표본 거리",
+          "지상 샘플링 거리",
+          "지상 샘플 거리",
+          "지상 표본 간격"
+        ]
+      },
+      "primary": "Ground Sample Distance (GSD)",
+      "explanation_short": "GSD(Ground Sample Distance)는 픽셀 간격을 지상 거리로 나타낸 값입니다. GSD 5 cm면 픽셀 한 칸이 지상 5 cm×5 cm를 덮습니다.",
+      "explanation_full": "항공·드론 촬영에서 GSD는 (센서 픽셀 크기 × 촬영 고도) ÷ 초점거리로 계산하므로, 같은 카메라라면 고도에 비례합니다. 위성 영상의 GSD는 보통 연직(nadir) 방향 기준 값이며 비스듬히 찍을수록 커집니다. GSD는 픽셀 간격일 뿐이라 실제로 구분 가능한 크기(공간해상도)와는 구별해서 말하는 것이 정확합니다.",
+      "tags": [
+        "resolution",
+        "drone"
+      ],
+      "terms": [
+        "ground-sample-distance"
+      ],
+      "source_ref": "사진측량 일반(GSD와 촬영 계획)",
+      "status": "draft"
+    },
+    {
+      "id": "D-PIX-003",
+      "type": "mcq",
+      "chapter": "D.pix",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "방사해상도(radiometric resolution)가 나타내는 것은?",
+      "choices": [
+        {
+          "text": "픽셀 하나의 밝기를 기록하는 단계 수(양자화 비트 수)",
+          "rationale": null
+        },
+        {
+          "text": "픽셀 하나가 덮는 지상 면적의 크기",
+          "rationale": "공간해상도(또는 GSD)에 대한 설명입니다. 방사해상도는 밝기 값을 얼마나 잘게 나누어 기록하는지를 뜻합니다."
+        },
+        {
+          "text": "센서가 기록하는 밴드의 개수와 각 밴드의 파장폭",
+          "rationale": "분광해상도에 대한 설명입니다."
+        },
+        {
+          "text": "같은 지역을 다시 촬영하기까지 걸리는 기간",
+          "rationale": "시간해상도(재방문 주기)에 대한 설명입니다."
+        },
+        {
+          "text": "영상 좌표가 실제 지상 위치와 얼마나 정확히 일치하는지의 정도",
+          "rationale": "기하 정확도(위치 정확도)에 대한 설명으로, 정사보정·지상기준점(GCP)으로 개선합니다. 해상도 개념과는 다릅니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "방사해상도는 한 픽셀의 밝기를 몇 단계로 나눠 기록하는지를 뜻하며 비트 심도(bit depth)로 표시합니다. n비트면 2ⁿ 단계(8비트 256단계, 12비트 4096단계)입니다.",
+      "explanation_full": "방사해상도가 높을수록 어두운 수면이나 밝은 모래사장처럼 값이 좁은 범위에 몰린 곳에서도 미세한 차이를 구분할 수 있습니다. 원격탐사의 네 가지 해상도(공간·분광·방사·시간)는 서로 독립된 축이므로 위성 성능을 말할 때 나누어 확인하는 습관이 필요합니다. 저장 자료형(uint16 등)과 센서의 실제 비트 수는 다를 수 있다는 점도 기억해 두세요.",
+      "tags": [
+        "resolution"
+      ],
+      "terms": [
+        "radiometric-resolution"
+      ],
+      "source_ref": "원격탐사 개론 일반(Lillesand·Kiefer·Chipman, Remote Sensing and Image Interpretation)",
+      "status": "draft"
+    },
+    {
+      "id": "D-PIX-004",
+      "type": "short",
+      "chapter": "D.pix",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "같은 지역을 다시 관측하기까지 걸리는 간격(재방문 주기)으로 표현되는 해상도는? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Temporal resolution"
+        ],
+        "ko": [
+          "시간해상도",
+          "시간적 해상도"
+        ]
+      },
+      "primary": "Temporal resolution",
+      "explanation_short": "시간해상도(temporal resolution)는 재방문 주기(revisit time)로 나타냅니다. 주기가 짧을수록 시간해상도가 높습니다.",
+      "explanation_full": "시간해상도는 궤도, 관측폭(swath), 자세를 기울여 촬영하는 능력, 함께 운용하는 위성 수에 따라 달라집니다. 광학 위성은 구름 때문에 “촬영 주기”보다 “쓸 만한 영상을 얻는 주기”가 훨씬 길어질 수 있어, 모니터링 과제에서는 구름 없는 관측 빈도를 따로 따져야 합니다. 구름을 투과하는 SAR는 이런 면에서 유리합니다.",
+      "tags": [
+        "resolution"
+      ],
+      "terms": [
+        "temporal-resolution"
+      ],
+      "source_ref": "원격탐사 개론 일반(Lillesand·Kiefer·Chipman, Remote Sensing and Image Interpretation)",
+      "status": "draft"
+    },
+    {
+      "id": "D-PIX-005",
+      "type": "mcq",
+      "chapter": "D.pix",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "GIS에서 래스터(raster) 데이터를 바르게 설명한 것은?",
+      "choices": [
+        {
+          "text": "점·선·면의 꼭짓점 좌표와 속성 테이블로 객체를 표현하는 구조",
+          "rationale": "벡터(vector) 데이터 설명입니다. Shapefile·GeoJSON이 대표적입니다."
+        },
+        {
+          "text": "지형 표면을 불규칙한 삼각형 망으로 연결해 표현하는 구조",
+          "rationale": "TIN(Triangulated Irregular Network) 설명입니다. 표고 표현에 쓰지만 규칙 격자 구조가 아닙니다."
+        },
+        {
+          "text": "공간을 같은 크기의 셀 격자로 나누고 셀마다 값을 저장하는 구조",
+          "rationale": null
+        },
+        {
+          "text": "여러 장의 영상을 이어 붙여 한 장으로 만든 결과물",
+          "rationale": "모자이크(mosaic) 설명입니다. 모자이크 결과도 래스터이긴 하지만 래스터의 정의는 아닙니다."
+        },
+        {
+          "text": "위성 궤도·자세 정보를 담아 영상과 함께 배포하는 부가 파일",
+          "rationale": "메타데이터(또는 RPC 같은 센서 모델 파일) 설명입니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "래스터는 행·열 격자의 각 셀(픽셀)에 값을 담는 구조입니다. 위성·드론 영상, DEM, 분류 결과 지도가 모두 래스터이며 GeoTIFF로 많이 저장합니다.",
+      "explanation_full": "래스터는 셀 크기가 정해져 있어 밴드 연산·필터·딥러닝 입력처럼 격자 단위 계산에 편리하고, 벡터는 경계를 좌표로 표현해 면적·길이 계산과 편집에 편리합니다. 실무에서는 분할 결과를 래스터 마스크로 얻은 뒤 폴리곤화(래스터→벡터 변환)해 Shapefile/GeoJSON으로 납품하는 흐름이 흔합니다.",
+      "tags": [
+        "gis",
+        "data-model"
+      ],
+      "terms": [
+        "raster"
+      ],
+      "source_ref": "GIS 개론 일반(래스터·벡터 자료 모델)",
+      "status": "draft"
+    },
+    {
+      "id": "D-PIX-006",
+      "type": "short",
+      "chapter": "D.pix",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "위성 센서가 받은 복사량을 정수로 양자화해 저장한, 물리 단위로 보정하기 전의 픽셀 값을 부르는 이름은? (영문 약어 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Digital Number (DN)"
+        ],
+        "ko": [
+          "디지털 수치",
+          "디지털 넘버",
+          "DN값"
+        ]
+      },
+      "primary": "Digital Number (DN)",
+      "explanation_short": "DN(Digital Number)은 센서 출력을 정수로 기록한 원시 값입니다. 보정 계수(gain·offset 등)를 적용해야 복사휘도나 반사율 같은 물리량이 됩니다.",
+      "explanation_full": "DN 자체에는 단위가 없고 센서·촬영 조건마다 의미가 달라, 다른 날짜나 다른 위성 영상과 직접 비교하기 어렵습니다. 일반적으로 DN → 복사휘도(radiance) → 대기 상단 반사율(TOA) → 대기보정 후 지표 반사율(BOA) 순서로 변환합니다. 배포 제품에 따라 반사율에 배율을 곱해 정수로 저장한 값도 흔히 “DN”이라 부르므로, 메타데이터의 배율·오프셋을 꼭 확인해야 합니다.",
+      "tags": [
+        "radiometry"
+      ],
+      "terms": [
+        "digital-number"
+      ],
+      "source_ref": "원격탐사 개론 일반(Lillesand·Kiefer·Chipman, Remote Sensing and Image Interpretation)",
+      "status": "draft"
+    },
+    {
+      "id": "D-PIX-007",
+      "type": "short",
+      "chapter": "D.pix",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "센서가 기록하는 밴드의 개수와 각 밴드 파장폭의 좁음으로 표현되며, “파장을 얼마나 잘게 나누어 보는가”를 뜻하는 해상도는? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Spectral resolution"
+        ],
+        "ko": [
+          "분광해상도",
+          "스펙트럼 해상도"
+        ]
+      },
+      "primary": "Spectral resolution",
+      "explanation_short": "분광해상도(spectral resolution)는 밴드 수가 많고 각 밴드 파장폭이 좁을수록 높습니다. 다중분광(수~십여 밴드)보다 초분광(수백 밴드)의 분광해상도가 높습니다.",
+      "explanation_full": "분광해상도가 높으면 식생 스트레스, 수질(엽록소·부유물), 광물처럼 반사 스펙트럼의 미세한 차이로 구분되는 대상을 식별하기 쉽습니다. 대신 밴드가 좁을수록 들어오는 빛이 적어 신호 대 잡음비나 공간해상도를 희생하는 경우가 많습니다. 딥러닝에서는 밴드 수가 곧 입력 채널 수가 됩니다.",
+      "tags": [
+        "resolution"
+      ],
+      "terms": [
+        "spectral-resolution",
+        "spectral-band"
+      ],
+      "source_ref": "원격탐사 개론 일반(Lillesand·Kiefer·Chipman, Remote Sensing and Image Interpretation)",
+      "status": "draft"
+    },
+    {
+      "id": "D-PIX-008",
+      "type": "mcq",
+      "chapter": "D.pix",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "“공간해상도가 높다”는 말의 뜻으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "밴드 수가 많고 파장을 잘게 나누어 기록한다",
+          "rationale": "분광해상도가 높다는 뜻입니다."
+        },
+        {
+          "text": "픽셀 값을 더 많은 비트로 세밀하게 기록한다",
+          "rationale": "방사해상도가 높다는 뜻입니다."
+        },
+        {
+          "text": "같은 지역을 더 짧은 간격으로 자주 촬영한다",
+          "rationale": "시간해상도가 높다는 뜻입니다."
+        },
+        {
+          "text": "한 장면이 덮는 지상 범위(관측폭)가 넓다",
+          "rationale": "관측폭(swath)이 넓다는 뜻입니다. 관측폭이 넓은 센서는 오히려 공간해상도가 낮은 경우가 많습니다."
+        },
+        {
+          "text": "픽셀 하나가 대표하는 지상 크기가 작아 작은 물체까지 구분된다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "공간해상도가 높다는 것은 픽셀 하나가 덮는 지상 크기가 작다는 뜻입니다. “해상도 0.5 m”가 “해상도 10 m”보다 공간해상도가 높습니다.",
+      "explanation_full": "숫자(m)가 작을수록 해상도가 “높다”고 말하므로 대화에서 헷갈리기 쉽습니다. “고해상도”라고만 하면 대개 공간해상도를 뜻하지만, 분광·방사·시간 해상도와 섞이지 않도록 어느 해상도인지 밝혀 말하는 것이 좋습니다. 공간해상도가 높을수록 한 장면이 덮는 면적과 재방문 빈도는 불리해지는 경우가 많습니다.",
+      "tags": [
+        "resolution"
+      ],
+      "terms": [
+        "spatial-resolution"
+      ],
+      "source_ref": "원격탐사 개론 일반(Lillesand·Kiefer·Chipman, Remote Sensing and Image Interpretation)",
+      "status": "draft"
+    },
+    {
+      "id": "D-PIX-009",
+      "type": "short",
+      "chapter": "D.pix",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "다중분광 영상에서 특정 파장 구간(예: 근적외선)의 에너지를 기록한 영상의 한 층을 원격탐사에서 무엇이라 부르는가? 딥러닝 입력에서는 채널 하나에 해당한다. (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Band",
+          "Spectral band"
+        ],
+        "ko": [
+          "밴드",
+          "분광 밴드"
+        ]
+      },
+      "primary": "Band",
+      "explanation_short": "밴드(band)는 특정 파장 구간을 기록한 영상 층입니다. 여러 밴드를 쌓은 다중분광 영상은 딥러닝에서 밴드 수만큼의 채널을 가진 입력이 됩니다.",
+      "explanation_full": "위성 제품은 밴드마다 별도 파일로 배포되기도 하고 하나의 GeoTIFF에 여러 밴드를 담기도 합니다. 밴드마다 공간해상도가 다를 수 있어(예: Sentinel-2의 10 m·20 m·60 m 밴드) 쌓기 전에 같은 격자로 리샘플링해야 합니다. “채널”은 영상처리·딥러닝 쪽 표현, “밴드”는 원격탐사 쪽 표현이라고 기억하면 됩니다.",
+      "tags": [
+        "band",
+        "multispectral"
+      ],
+      "terms": [
+        "spectral-band"
+      ],
+      "source_ref": "원격탐사 개론 일반(Lillesand·Kiefer·Chipman, Remote Sensing and Image Interpretation)",
+      "status": "draft"
+    },
+    {
+      "id": "D-PIX-010",
+      "type": "mcq",
+      "chapter": "D.pix",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "드론 카메라 영상 한 장이 6000×4000 픽셀이고 GSD가 2.5 cm이다. 이 영상 한 장이 덮는 지상 범위는?",
+      "choices": [
+        {
+          "text": "15 m × 10 m",
+          "rationale": "GSD를 2.5 mm(0.0025 m)로 잘못 환산한 값입니다. 2.5 cm는 0.025 m입니다."
+        },
+        {
+          "text": "150 m × 100 m",
+          "rationale": null
+        },
+        {
+          "text": "1500 m × 1000 m",
+          "rationale": "GSD를 25 cm(0.25 m)로 잘못 환산한 값입니다."
+        },
+        {
+          "text": "2400 m × 1600 m",
+          "rationale": "픽셀 수를 GSD로 나눈 값(6000 ÷ 2.5)입니다. 지상 범위는 픽셀 수에 GSD를 곱해야 합니다."
+        },
+        {
+          "text": "375 m × 250 m",
+          "rationale": "GSD를 제곱한 값(2.5² = 6.25 cm)을 곱한 결과입니다. 픽셀 면적(GSD²)과 픽셀 한 변 길이(GSD)를 혼동했습니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "지상 범위 = 픽셀 수 × GSD입니다. 6000 × 0.025 m = 150 m, 4000 × 0.025 m = 100 m이므로 150 m × 100 m(1.5 ha)입니다.",
+      "explanation_full": "면적은 150 × 100 = 15,000 m²(1.5 ha)이며, 픽셀 수(2,400만)에 픽셀 면적(0.025² = 0.000625 m²)을 곱해도 같은 값이 나옵니다. 실제 드론 촬영 계획에서는 이 한 장 범위에 전방·측방 중복도(예: 80%/70%)를 적용해 촬영 간격과 비행 경로 간격을 정합니다. cm→m 단위 환산 실수가 가장 흔하므로 항상 m로 바꾼 뒤 곱하세요.",
+      "tags": [
+        "resolution",
+        "drone",
+        "calculation"
+      ],
+      "terms": [
+        "ground-sample-distance"
+      ],
+      "source_ref": "사진측량 일반(GSD와 촬영 계획)",
+      "status": "draft"
+    },
+    {
+      "id": "D-PIX-011",
+      "type": "mcq",
+      "chapter": "D.pix",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "GSD 30 cm 영상이라고 해서 30 cm 크기의 물체를 항상 식별할 수 있는 것은 아니다. 그 이유로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "GSD는 픽셀 대각선 길이를 뜻하므로, 실제 픽셀 한 변은 30 cm보다 짧기 때문",
+          "rationale": "GSD는 픽셀 한 변(인접 픽셀 중심 간 거리)이지 대각선 길이가 아닙니다."
+        },
+        {
+          "text": "GSD는 카메라 센서 소자의 크기라서 지상 거리와는 직접 관계가 없기 때문",
+          "rationale": "센서 소자 크기(픽셀 피치)는 μm 단위의 카메라 내부 값이고, GSD는 그것을 촬영 고도·초점거리로 지상에 투영한 거리입니다."
+        },
+        {
+          "text": "GSD가 30 cm이면 방사해상도가 낮아져 밝기 차이를 기록하지 못하기 때문",
+          "rationale": "GSD와 방사해상도(비트 심도)는 서로 독립적인 특성입니다."
+        },
+        {
+          "text": "GSD는 픽셀 간격일 뿐이고, 알아보려면 여러 픽셀이 필요하며 광학계 흐림도 있기 때문",
+          "rationale": null
+        },
+        {
+          "text": "정사보정을 거치면 GSD가 항상 두 배로 커져 실제 해상도가 60 cm가 되기 때문",
+          "rationale": "정사보정 때 리샘플링 간격을 바꿀 수는 있지만 GSD가 항상 두 배가 되는 규칙은 없습니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "GSD는 픽셀이 지상에서 떨어진 간격이고, 실제로 물체를 구분하는 능력(공간해상도)은 광학계의 흐림(MTF), 대비, 잡음에도 좌우됩니다. 게다가 형태를 알아보려면 물체가 여러 픽셀에 걸쳐야 합니다.",
+      "explanation_full": "일반적으로 “존재 확인”에는 몇 픽셀, “형태 식별”에는 그보다 훨씬 많은 픽셀이 필요하다고 봅니다. 그래서 탐지 과제에서는 대상 크기를 GSD로 나눈 “대상의 픽셀 크기”를 먼저 계산해 보는 것이 좋습니다(예: 길이 6 m 차량은 GSD 30 cm에서 약 20픽셀). 또 판매 영상은 원래 GSD보다 촘촘하게 리샘플링해 제공되기도 하므로, 제품의 픽셀 크기가 곧 센서 분해능이라고 단정하지 않습니다.",
+      "tags": [
+        "resolution"
+      ],
+      "terms": [
+        "ground-sample-distance",
+        "spatial-resolution"
+      ],
+      "source_ref": "원격탐사 개론 일반(Lillesand·Kiefer·Chipman, Remote Sensing and Image Interpretation)",
+      "status": "draft"
+    },
+    {
+      "id": "D-PIX-012",
+      "type": "mcq",
+      "chapter": "D.pix",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "11비트 센서로 촬영한 영상이 uint16(16비트 부호 없는 정수) GeoTIFF로 저장되어 있다(센서가 양자화한 값을 배율 조정 없이 그대로 담음). 이 영상의 DN이 이론적으로 가질 수 있는 최댓값은?",
+      "choices": [
+        {
+          "text": "65535",
+          "rationale": "uint16 자료형의 최댓값입니다. 저장 형식이 16비트여도 센서가 11비트로 양자화했다면 값은 2¹¹−1을 넘지 않습니다."
+        },
+        {
+          "text": "255",
+          "rationale": "8비트(2⁸−1) 영상의 최댓값입니다."
+        },
+        {
+          "text": "2047",
+          "rationale": null
+        },
+        {
+          "text": "4095",
+          "rationale": "12비트(2¹²−1) 센서의 최댓값입니다."
+        },
+        {
+          "text": "2048",
+          "rationale": "11비트가 표현하는 단계의 “개수”(2¹¹)입니다. 0부터 시작하므로 최댓값은 2047입니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "n비트 정수는 0 ~ 2ⁿ−1을 표현하므로 11비트의 최댓값은 2¹¹−1 = 2047입니다. uint16은 11비트 값을 담기 위한 “그릇”일 뿐입니다.",
+      "explanation_full": "컴퓨터는 8·16·32비트 단위로 저장하는 것이 편해서 11·12·14비트 센서 값을 uint16에 담는 경우가 많습니다. 이때 시각화나 정규화를 uint16 최댓값(65535)으로 나누면 영상 전체가 매우 어둡게 나오므로, 센서 비트 수나 실제 값 분포(백분위수)를 기준으로 스케일을 잡아야 합니다. 단, 반사율×10000처럼 가공된 제품은 센서 비트 수와 무관한 범위를 가지므로 메타데이터를 먼저 확인합니다.",
+      "tags": [
+        "resolution",
+        "bit-depth",
+        "calculation"
+      ],
+      "terms": [
+        "radiometric-resolution",
+        "digital-number"
+      ],
+      "source_ref": "원격탐사 개론 일반(Lillesand·Kiefer·Chipman, Remote Sensing and Image Interpretation)",
+      "status": "draft"
+    },
+    {
+      "id": "D-PIX-013",
+      "type": "mcq",
+      "chapter": "D.pix",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "두 날짜의 위성 영상으로 NDVI 변화를 비교하기 전에 DN을 반사율(reflectance)로 변환하라는 이유로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "DN은 센서 보정 계수와 촬영 조건(태양 고도 등)에 따라 달라져 직접 비교할 수 없기 때문",
+          "rationale": null
+        },
+        {
+          "text": "DN에는 음수가 섞여 있어서 밴드 사이의 비율 계산을 할 수 없기 때문",
+          "rationale": "DN은 보통 0 이상의 정수입니다. 음수 문제는 변환 이유가 아닙니다."
+        },
+        {
+          "text": "반사율로 바꾸면 픽셀 크기가 작아져 공간해상도가 좋아지고 경계가 선명해지기 때문",
+          "rationale": "방사 보정은 값의 의미를 바꿀 뿐, 픽셀 크기(공간해상도)는 변하지 않습니다."
+        },
+        {
+          "text": "반사율 변환이 영상의 위치 오차까지 바로잡아 두 날짜 영상을 정확히 겹칠 수 있게 하기 때문",
+          "rationale": "위치 오차는 기하 보정(정사보정·영상 정합)으로 바로잡습니다. 반사율 변환은 방사 보정입니다."
+        },
+        {
+          "text": "DN은 8비트로만 저장되어 NDVI의 소수점 값을 표현할 수 없기 때문",
+          "rationale": "DN의 비트 수는 센서에 따라 8·11·12비트 등 다양하고, NDVI는 계산할 때 실수형으로 바꾸면 됩니다. 저장 비트가 변환 이유가 아닙니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "DN은 센서 이득·오프셋과 태양 고도, 지구-태양 거리 같은 촬영 조건에 따라 같은 지표물도 다른 값을 가집니다. 반사율로 바꿔야 시기·센서가 다른 영상을 같은 기준에서 비교할 수 있습니다.",
+      "explanation_full": "NDVI 같은 밴드 비율 지수는 비율이라 일부 영향이 상쇄되긴 하지만, 밴드마다 보정 계수가 달라 DN으로 계산한 NDVI는 반사율 기반 NDVI와 값이 다릅니다. 변화탐지처럼 날짜 간 비교가 핵심인 작업은 최소 TOA 반사율, 가능하면 대기보정을 거친 BOA(지표) 반사율을 쓰는 것이 원칙입니다. 변환 계수는 영상 메타데이터에 들어 있습니다.",
+      "tags": [
+        "radiometry",
+        "preprocessing"
+      ],
+      "terms": [
+        "digital-number"
+      ],
+      "source_ref": "원격탐사 개론 일반(Lillesand·Kiefer·Chipman, Remote Sensing and Image Interpretation)",
+      "status": "draft"
+    },
+    {
+      "id": "D-PIX-014",
+      "type": "mcq",
+      "chapter": "D.pix",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "어떤 위성이 전정색(panchromatic) 1개 밴드를 0.5 m로, 다중분광(multispectral) 4개 밴드를 2 m로 촬영한다. 옳은 설명은?",
+      "choices": [
+        {
+          "text": "전정색 영상이 공간해상도와 분광해상도 모두 더 높다",
+          "rationale": "전정색은 공간해상도는 높지만, 넓은 파장 구간을 한 밴드로 받으므로 분광해상도는 낮습니다."
+        },
+        {
+          "text": "다중분광 영상의 공간해상도가 더 높고, 전정색 영상의 분광해상도가 더 높다",
+          "rationale": "두 해상도를 반대로 짝지었습니다. 0.5 m가 2 m보다 공간해상도가 높습니다."
+        },
+        {
+          "text": "전정색은 파장폭이 좁은 한 밴드라서 분광해상도가 더 높다",
+          "rationale": "전정색 밴드는 파장폭이 넓은 밴드입니다. 넓은 파장을 모아 빛을 많이 받기 때문에 픽셀을 작게 만들 수 있습니다."
+        },
+        {
+          "text": "두 영상은 방사해상도만 다르고 공간해상도는 서로 같다",
+          "rationale": "0.5 m와 2 m로 공간해상도가 다릅니다."
+        },
+        {
+          "text": "전정색은 공간해상도가, 다중분광은 분광해상도가 더 높다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "전정색은 넓은 파장을 한 밴드로 받아 픽셀을 작게(0.5 m) 만들 수 있고, 다중분광은 파장을 나눠 받는 대신 픽셀이 큽니다(2 m). 그래서 공간해상도는 전정색, 분광해상도는 다중분광이 높습니다.",
+      "explanation_full": "이 둘을 합쳐 다중분광의 색 정보와 전정색의 공간 디테일을 함께 갖는 영상을 만드는 것이 팬샤프닝(pan-sharpening)입니다. 전정색과 다중분광의 해상도 비가 1:4인 구성이 흔합니다. 팬샤프닝 영상은 분광 값이 원본과 조금 달라질 수 있어, 지수 계산 같은 정량 분석에는 원본 다중분광을 쓰는 편이 안전합니다.",
+      "tags": [
+        "resolution",
+        "multispectral"
+      ],
+      "terms": [
+        "spectral-resolution",
+        "spatial-resolution"
+      ],
+      "source_ref": "원격탐사 개론 일반(Lillesand·Kiefer·Chipman, Remote Sensing and Image Interpretation)",
+      "status": "draft"
+    },
+    {
+      "id": "D-PIX-015",
+      "type": "mcq",
+      "chapter": "D.pix",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "양식장 모니터링 과제에서 나온 요구사항들이다. 이 중 “시간해상도”를 높여야 해결되는 것은?",
+      "choices": [
+        {
+          "text": "부표 하나가 2픽셀 정도로만 찍혀 형태를 구분하기 어렵다",
+          "rationale": "대상이 픽셀에 비해 작다는 문제이므로 공간해상도를 높여야 합니다."
+        },
+        {
+          "text": "시설 설치·철거가 주 단위로 바뀌는데 쓸 수 있는 영상은 월 1장뿐이다",
+          "rationale": null
+        },
+        {
+          "text": "적조 해역과 맑은 해역을 구분할 좁은 파장 밴드가 센서에 없다",
+          "rationale": "파장을 나누어 보는 능력, 즉 분광해상도 문제입니다."
+        },
+        {
+          "text": "어두운 수면의 픽셀 값이 몇 단계에 몰려 미세한 차이가 뭉개진다",
+          "rationale": "밝기 단계 수, 즉 방사해상도 문제입니다."
+        },
+        {
+          "text": "영상 속 시설 위치가 기준 지도와 비교했을 때 20 m 정도 어긋나 있다",
+          "rationale": "위치(기하) 정확도 문제로 정사보정·GCP로 해결합니다. 해상도 문제가 아닙니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "변화 주기(주 단위)보다 관측 간격(월 1회)이 길면 변화를 놓치므로, 재방문 주기를 줄이는 시간해상도 개선이 필요합니다.",
+      "explanation_full": "시간해상도는 여러 위성을 함께 쓰거나(군집 운용·다중 센서 조합), 관측폭이 넓거나 자세를 기울여 찍을 수 있는 위성을 고르거나, 구름 영향을 받지 않는 SAR를 더하는 방식으로 개선합니다. 과제 요구사항을 네 가지 해상도(공간·분광·방사·시간)와 기하 정확도로 나누어 적어 보면 어떤 영상이 필요한지 빠르게 정리됩니다.",
+      "tags": [
+        "resolution",
+        "requirements"
+      ],
+      "terms": [
+        "temporal-resolution"
+      ],
+      "source_ref": "원격탐사 개론 일반(Lillesand·Kiefer·Chipman, Remote Sensing and Image Interpretation)",
+      "status": "draft"
+    },
+    {
+      "id": "D-PIX-016",
+      "type": "mcq",
+      "chapter": "D.pix",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "공간해상도 10 m 영상에서 폭 3 m 도로가 논 사이를 지나는 픽셀이 있다. 이 픽셀의 값에 대한 설명으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "픽셀 중심 한 점의 반사값만 기록되므로 도로 또는 논 중 하나의 값이 된다",
+          "rationale": "픽셀은 점 샘플이 아니라 일정 면적에서 들어온 신호를 합친 값입니다."
+        },
+        {
+          "text": "도로가 픽셀보다 좁으므로 도로에서 온 신호는 전혀 기록되지 않는다",
+          "rationale": "도로 신호도 차지하는 면적만큼 섞여 들어갑니다. 완전히 사라지지는 않습니다."
+        },
+        {
+          "text": "센서가 더 넓은 면적을 차지한 피복(논)의 값으로 자동 반올림해 저장한다",
+          "rationale": "그런 다수결 처리는 없습니다. 분류 결과 지도와 달리 원 영상은 신호가 섞인 연속값입니다."
+        },
+        {
+          "text": "도로와 논의 신호가 면적 비율 등에 따라 섞인 혼합 화소 값이 된다",
+          "rationale": null
+        },
+        {
+          "text": "도로 폭이 3 m이므로 그 픽셀만 3 m 해상도로 다시 기록된다",
+          "rationale": "한 영상 안에서 픽셀 크기는 고정입니다. 물체 크기에 따라 픽셀 크기가 바뀌지 않습니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "픽셀 값은 그 칸이 덮는 지상 면적 전체에서 온 신호가 섞인 값입니다. 픽셀보다 작은 대상은 주변 피복과 섞여 혼합 화소(mixed pixel)가 됩니다.",
+      "explanation_full": "혼합 화소는 저해상도 영상에서 경계·소형 객체를 다룰 때 오분류의 주원인입니다. 픽셀 안의 피복 비율을 추정하는 기법을 분광 혼합 분석(spectral unmixing)이라 합니다. 또 실제 센서는 이웃 영역의 빛도 조금씩 섞어 받기 때문에(점확산함수, PSF) 경계 픽셀 값은 단순 면적 비율보다 더 번집니다.",
+      "tags": [
+        "resolution",
+        "mixed-pixel"
+      ],
+      "terms": [
+        "pixel",
+        "spatial-resolution"
+      ],
+      "source_ref": "원격탐사 개론 일반(Lillesand·Kiefer·Chipman, Remote Sensing and Image Interpretation)",
+      "status": "draft"
+    },
+    {
+      "id": "D-PIX-017",
+      "type": "mcq",
+      "chapter": "D.pix",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "GeoTIFF로 저장된 5 m 해상도 수계 마스크(래스터)의 특성으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "셀 크기가 정해져 있어 5 m보다 작은 해안선 굴곡은 계단 모양으로 표현된다",
+          "rationale": null
+        },
+        {
+          "text": "아무리 확대해도 해안선 경계가 매끄러운 곡선으로 유지된다",
+          "rationale": "좌표로 경계를 저장하는 벡터 데이터의 특성입니다. 래스터는 확대하면 셀 경계가 계단처럼 보입니다."
+        },
+        {
+          "text": "각 수체(호수·저수지)가 속성 테이블의 한 행으로 저장된다",
+          "rationale": "객체 단위 속성 테이블은 벡터(Shapefile 등)의 특징입니다. 래스터는 셀마다 값을 가집니다."
+        },
+        {
+          "text": "래스터 파일은 좌표계 정보를 담을 수 없어 별도의 벡터 파일이 반드시 필요하다",
+          "rationale": "GeoTIFF는 좌표계와 좌표 변환 정보(geotransform)를 파일 안에 담습니다."
+        },
+        {
+          "text": "래스터 파일 하나에는 밴드를 하나만 저장할 수 있다",
+          "rationale": "GeoTIFF 같은 래스터 형식은 여러 밴드를 한 파일에 담을 수 있습니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "래스터는 셀 크기가 곧 표현 한계라서, 셀보다 작은 경계 굴곡은 셀 단위 계단 모양으로 근사됩니다.",
+      "explanation_full": "그래서 래스터 마스크를 폴리곤으로 바꾸면 경계가 톱니 모양이 되며, 납품 전에 폴리곤 단순화(simplify)나 평활화를 적용하는 일이 많습니다. 반대로 벡터를 래스터로 바꿀 때(래스터화) 셀 크기를 너무 크게 잡으면 좁은 수로·작은 섬이 사라질 수 있습니다. 두 자료 모델의 장단점을 알고 변환할 때 셀 크기를 의식하는 것이 중요합니다.",
+      "tags": [
+        "gis",
+        "data-model"
+      ],
+      "terms": [
+        "raster"
+      ],
+      "source_ref": "GIS 개론 일반(래스터·벡터 자료 모델)",
+      "status": "draft"
+    },
+    {
+      "id": "D-PIX-018",
+      "type": "mcq",
+      "chapter": "D.pix",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "Sentinel-2의 B2·B3·B4·B8 네 밴드를 쌓아 512×512 타일을 만들고, 8장을 한 배치로 PyTorch 모델에 넣는다. PyTorch 관례(N, C, H, W)에 따른 입력 텐서 모양은?",
+      "choices": [
+        {
+          "text": "(8, 3, 512, 512)",
+          "rationale": "채널 3은 RGB 세 밴드만 쓴 경우입니다. 네 밴드를 쌓았으므로 채널은 4입니다."
+        },
+        {
+          "text": "(4, 8, 512, 512)",
+          "rationale": "배치 크기(N)와 채널 수(C)의 순서를 바꾸었습니다."
+        },
+        {
+          "text": "(8, 4, 512, 512)",
+          "rationale": null
+        },
+        {
+          "text": "(8, 512, 512, 4)",
+          "rationale": "채널을 마지막에 두는 (N, H, W, C) 순서로, TensorFlow 기본 설정(channels_last)에서 쓰는 배치입니다. PyTorch는 채널을 두 번째에 둡니다."
+        },
+        {
+          "text": "(8, 1, 512, 512)",
+          "rationale": "네 밴드를 평균해 한 채널로 만든 경우입니다. 밴드를 쌓으면 밴드 하나가 채널 하나가 됩니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "밴드 하나가 채널 하나이므로 C = 4이고, PyTorch는 (배치, 채널, 높이, 너비) 순서를 씁니다. 따라서 (8, 4, 512, 512)입니다.",
+      "explanation_full": "rasterio로 GeoTIFF를 읽으면 (밴드, 행, 열) = (C, H, W) 배열이 나와 PyTorch 순서와 맞지만, OpenCV·PIL로 읽으면 (H, W, C)라서 축 변환(transpose/permute)이 필요합니다. B2·B3·B4·B8은 모두 10 m 밴드라 바로 쌓을 수 있지만, 20 m 밴드(B11 등)를 섞으려면 먼저 같은 격자로 리샘플링해야 합니다. 사전학습된 RGB 백본에 4채널을 넣을 때는 첫 합성곱 층의 입력 채널 수를 바꿔야 합니다.",
+      "tags": [
+        "band",
+        "deep-learning-input"
+      ],
+      "terms": [
+        "spectral-band"
+      ],
+      "source_ref": "ESA Sentinel-2 사용자 핸드북(밴드 구성), PyTorch 문서 torch.nn.Conv2d",
+      "status": "draft"
+    },
+    {
+      "id": "D-PIX-019",
+      "type": "scenario",
+      "chapter": "D.pix",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"이번에 받는 위성 영상 한 장이 20,000×20,000 픽셀, 4밴드야. 센서는 12비트인데 uint16으로 저장되고 압축은 안 한대. 한 장당 용량 계산해서 서버 공간 잡아 둬.\"\n\n한 장의 대략적인 용량은? (1 GB = 10⁹ 바이트, 헤더 등 부가 정보는 무시)",
+      "choices": [
+        {
+          "text": "2.4 GB",
+          "rationale": "12비트(1.5바이트)로 계산한 값입니다. uint16으로 저장하면 실제 비트 수와 관계없이 픽셀·밴드당 2바이트를 차지합니다."
+        },
+        {
+          "text": "1.6 GB",
+          "rationale": "8비트(1바이트)로 계산한 값입니다."
+        },
+        {
+          "text": "0.8 GB",
+          "rationale": "밴드 수(4)를 곱하지 않은 값입니다. 밴드마다 같은 크기의 층이 하나씩 있습니다."
+        },
+        {
+          "text": "6.4 GB",
+          "rationale": "픽셀·밴드당 4바이트(float32)로 계산한 값입니다. 반사율로 변환해 float32로 저장하면 이 크기가 되지만, 지시의 원본은 uint16입니다."
+        },
+        {
+          "text": "3.2 GB",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "20,000 × 20,000 = 4억 픽셀, × 4밴드 × 2바이트(uint16) = 32억 바이트 ≈ 3.2 GB입니다. 저장 자료형이 uint16이면 센서가 12비트여도 2바이트를 차지합니다.",
+      "explanation_full": "용량 = 가로 × 세로 × 밴드 수 × 자료형 바이트 수입니다. 전처리 중 반사율을 float32로 저장하면 두 배(6.4 GB)가 되므로 중간 산출물까지 고려해 공간을 잡는 것이 좋습니다. GeoTIFF는 무손실 압축(LZW, DEFLATE 등)과 내부 타일링을 지원하므로, 실제 운영에서는 압축 여부와 오버뷰(피라미드) 추가 용량도 함께 확인합니다.",
+      "tags": [
+        "bit-depth",
+        "storage",
+        "calculation"
+      ],
+      "terms": [
+        "radiometric-resolution",
+        "spectral-band"
+      ],
+      "source_ref": "원격탐사 개론 일반(Lillesand·Kiefer·Chipman, Remote Sensing and Image Interpretation)",
+      "status": "draft"
+    },
+    {
+      "id": "D-PIX-020",
+      "type": "scenario",
+      "chapter": "D.pix",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"지금 드론을 고도 80 m로 띄우면 GSD가 2 cm 나와. 과업 기준이 GSD 3 cm 이하니까, 촬영 시간 줄이게 기준 안에서 고도를 최대한 올려서 비행 계획 다시 짜.\"\n\n같은 카메라·렌즈를 쓴다면 새 비행 고도로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "약 53 m",
+          "rationale": "고도와 GSD를 반비례로 잘못 계산한 값(80 × 2/3)입니다. 고도를 낮추면 GSD는 오히려 작아집니다."
+        },
+        {
+          "text": "120 m",
+          "rationale": null
+        },
+        {
+          "text": "180 m",
+          "rationale": "GSD 비율을 제곱(면적 비율)해 곱한 값(80 × (3/2)²)입니다. GSD는 길이이므로 고도에 1차로 비례하며, 이 고도에서는 GSD가 4.5 cm가 되어 기준을 넘습니다."
+        },
+        {
+          "text": "240 m",
+          "rationale": "고도에 기준값 3을 그대로 곱한 값(80 × 3)입니다. 곱해야 하는 것은 GSD 비율 3/2입니다."
+        },
+        {
+          "text": "100 m",
+          "rationale": "기준(3 cm 이하)은 만족하지만 “최대한 올리라”는 지시에 맞지 않습니다. GSD 3 cm가 되는 고도는 120 m입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "같은 카메라라면 GSD는 고도에 비례합니다. 80 m × (3 cm ÷ 2 cm) = 120 m에서 GSD가 3 cm가 됩니다.",
+      "explanation_full": "GSD = (센서 픽셀 크기 × 고도) ÷ 초점거리이므로 고도를 1.5배 올리면 GSD도 1.5배가 됩니다. 한 장이 덮는 가로·세로 길이도 1.5배, 면적은 2.25배가 되어 촬영 매수와 시간이 줄어듭니다. 실제 계획에서는 지형 기복에 따른 GSD 변화, 중복도, 비행 허가 고도 제한도 함께 확인해야 합니다.",
+      "tags": [
+        "drone",
+        "flight-planning",
+        "calculation"
+      ],
+      "terms": [
+        "ground-sample-distance"
+      ],
+      "source_ref": "사진측량 일반(GSD와 촬영 계획)",
+      "status": "draft"
+    },
+    {
+      "id": "D-PIX-021",
+      "type": "scenario",
+      "chapter": "D.pix",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"해안에 쌓인 스티로폼 부표 더미(한 덩어리 지름 1 m 안팎)를 개별로 세는 과제야. Sentinel-2 10 m 밴드로 가능한지 먼저 판단해서 보고해.\"\n\n가장 적절한 판단은?",
+      "choices": [
+        {
+          "text": "20 m 밴드를 10 m로 리샘플링해 밴드를 늘리면 개별 부표를 셀 수 있다",
+          "rationale": "리샘플링은 격자만 촘촘하게 할 뿐 원래 없던 공간 정보를 만들어 내지 못합니다. 10 m 밴드 자체도 1 m 대상을 분리하지 못합니다."
+        },
+        {
+          "text": "근적외선(B8) 밴드를 쓰면 1 m 물체도 형태가 드러나므로 가능하다",
+          "rationale": "밴드를 바꿔도 픽셀 크기(10 m)는 같습니다. 분광 정보로 존재 가능성을 높일 수는 있어도 개별 형태는 보이지 않습니다."
+        },
+        {
+          "text": "12비트 영상이라 밝기를 세밀하게 기록하므로 1 m 물체도 하나씩 셀 수 있다",
+          "rationale": "방사해상도는 밝기 단계의 문제이고, 픽셀보다 작은 물체를 분리해 주지 않습니다."
+        },
+        {
+          "text": "대상이 10 m 픽셀보다 훨씬 작아 개별 계수는 어렵고, 서브미터급 영상을 검토한다",
+          "rationale": null
+        },
+        {
+          "text": "대기보정(BOA)을 하면 연무가 걷혀 경계가 선명해지므로 개별 부표를 분리할 수 있다",
+          "rationale": "대기보정은 반사율 값을 바로잡는 방사 보정이며 공간해상도를 높이지 않습니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "지름 1 m 대상의 면적(약 0.8 m²)은 10 m 픽셀 면적(100 m²)의 1%도 안 되어 주변과 섞인 혼합 화소로만 기록됩니다. 개별 계수에는 대상이 여러 픽셀에 걸치는 서브미터급 위성 영상이나 드론 영상이 필요합니다.",
+      "explanation_full": "과제 검토 때는 “대상 크기 ÷ GSD”로 대상이 몇 픽셀인지 먼저 계산합니다. 1 m 대상은 GSD 0.3 m 영상에서 약 3픽셀, GSD 3 cm 드론 영상에서 약 33픽셀이 되어 개별 계수가 가능한 수준에 가까워집니다. 10 m 영상은 넓은 쓰레기 집적지를 분광적으로 찾아내는 광역 선별 용도로는 쓸 수 있어, 두 해상도를 단계적으로 조합하는 설계도 고려할 만합니다.",
+      "tags": [
+        "resolution",
+        "task-feasibility"
+      ],
+      "terms": [
+        "spatial-resolution",
+        "ground-sample-distance"
+      ],
+      "source_ref": "ESA Sentinel-2 사용자 핸드북(밴드 구성)",
+      "status": "draft"
+    }
+  ]
+}

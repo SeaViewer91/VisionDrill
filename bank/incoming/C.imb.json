@@ -1,0 +1,682 @@
+{
+  "format": "visiondrill-bank-exchange",
+  "format_version": 1,
+  "terms": [
+    {
+      "id": "class-imbalance",
+      "term_en": "Class Imbalance",
+      "term_ko": "클래스 불균형",
+      "abbreviation": null,
+      "definition": "클래스별 샘플 수가 크게 차이 나 학습과 평가가 다수 클래스 쪽으로 치우치기 쉬운 상태",
+      "usage_example": "변화 픽셀이 0.5%라 클래스 불균형이 심해. 정확도 말고 변화 클래스 F1로 봐.",
+      "origin": "standard",
+      "track": "C"
+    },
+    {
+      "id": "class-weighted-loss",
+      "term_en": "Class-Weighted Loss",
+      "term_ko": "클래스 가중 손실",
+      "abbreviation": null,
+      "definition": "손실 함수에서 클래스마다 다른 가중치(흔히 빈도의 역수나 그 제곱근)를 곱해 소수 클래스 오분류에 더 큰 벌점을 주는 방법",
+      "usage_example": "선박 픽셀이 너무 적으니 CE에 클래스 가중치 넣어서 다시 학습해.",
+      "origin": "standard",
+      "track": "C"
+    },
+    {
+      "id": "oversampling",
+      "term_en": "Oversampling",
+      "term_ko": "오버샘플링",
+      "abbreviation": null,
+      "definition": "소수 클래스 샘플을 복제하거나 합성해 학습 데이터에서 그 클래스의 비율을 늘리는 방법",
+      "usage_example": "습지 샘플 오버샘플링은 학습 폴드 안에서만 해. 검증셋엔 손대지 마.",
+      "origin": "standard",
+      "track": "C"
+    },
+    {
+      "id": "undersampling",
+      "term_en": "Undersampling",
+      "term_ko": "언더샘플링",
+      "abbreviation": null,
+      "definition": "다수 클래스 샘플 일부를 버려 클래스 비율을 맞추는 방법",
+      "usage_example": "빈 바다 타일이 너무 많으니 10%만 남기고 언더샘플링해.",
+      "origin": "standard",
+      "track": "C"
+    },
+    {
+      "id": "smote",
+      "term_en": "Synthetic Minority Over-sampling Technique",
+      "term_ko": "SMOTE",
+      "abbreviation": "SMOTE",
+      "definition": "소수 클래스 샘플과 그 k-최근접 소수 클래스 이웃 사이의 선분 위에 새 샘플을 합성하는 오버샘플링 기법",
+      "usage_example": "픽셀 분광 특징 기준으로 SMOTE 돌려서 염생식생 샘플 늘려봐.",
+      "origin": "standard",
+      "track": "C"
+    },
+    {
+      "id": "focal-loss",
+      "term_en": "Focal Loss",
+      "term_ko": "포컬 로스",
+      "abbreviation": null,
+      "definition": "교차 엔트로피에 (1 − p_t)^γ를 곱해 이미 잘 맞히는 쉬운 샘플의 손실을 줄이고 어려운 샘플에 학습을 집중시키는 손실",
+      "usage_example": "배경 픽셀이 손실을 다 먹으니까 focal loss로 바꾸고 γ=2부터 시작해.",
+      "origin": "standard",
+      "track": "C"
+    },
+    {
+      "id": "pr-auc",
+      "term_en": "Area Under the Precision-Recall Curve",
+      "term_ko": "정밀도-재현율 곡선 아래 면적",
+      "abbreviation": "PR-AUC",
+      "definition": "임계값을 바꿔 가며 재현율(x축)과 정밀도(y축)로 그린 PR 곡선 아래 면적. 무작위 분류기의 기대값이 양성 비율과 같아 드문 양성 문제의 성능을 잘 드러낸다",
+      "usage_example": "양성이 1%밖에 안 되니까 모델 비교는 ROC-AUC 말고 PR-AUC로 해.",
+      "origin": "standard",
+      "track": "C"
+    }
+  ],
+  "questions": [
+    {
+      "id": "C-IMB-001",
+      "type": "short",
+      "chapter": "C.imb",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "소수 클래스 샘플 하나와 그 k-최근접 소수 클래스 이웃 사이를 잇는 선분 위에 무작위로 새 샘플을 만들어 소수 클래스를 늘리는 기법의 이름(약어)은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "SMOTE",
+          "Synthetic Minority Over-sampling Technique"
+        ],
+        "ko": [
+          "스모트",
+          "합성 소수 클래스 오버샘플링",
+          "합성 소수 오버샘플링 기법"
+        ]
+      },
+      "primary": "SMOTE",
+      "explanation_short": "SMOTE(Synthetic Minority Over-sampling Technique)는 소수 클래스 샘플을 그대로 복제하는 대신 이웃 소수 샘플과의 사이를 보간해 새 샘플을 합성합니다. 단순 복제보다 소수 클래스 영역을 넓게 채워 과적합을 덜 유발하려는 방법입니다.",
+      "explanation_full": "새 샘플은 x_new = x + λ(x_nn − x), λ ∈ [0, 1]로 만듭니다. 특징 공간에서의 보간이므로 픽셀 분광값·분광지수 같은 표형 특징에 잘 맞습니다. 소수 샘플이 다수 클래스 영역 안에 흩어진 잡음이라면 잘못된 샘플을 더 늘릴 수 있고, 어떤 경우든 데이터 분할 뒤 학습 데이터에만 적용해야 합니다.",
+      "tags": [
+        "imbalance",
+        "resampling"
+      ],
+      "terms": [
+        "smote",
+        "oversampling"
+      ],
+      "source_ref": "Chawla et al. (2002) SMOTE: Synthetic Minority Over-sampling Technique, JAIR",
+      "status": "draft"
+    },
+    {
+      "id": "C-IMB-002",
+      "type": "short",
+      "chapter": "C.imb",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "객체 탐지·세그멘테이션에서 교차 엔트로피에 (1 − p_t)^γ 인자를 곱해, 이미 잘 맞히는 쉬운 샘플(주로 배경)의 손실을 줄이고 어려운 샘플에 학습을 집중시키는 손실 함수의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Focal Loss"
+        ],
+        "ko": [
+          "포컬 로스",
+          "초점 손실",
+          "포컬 손실"
+        ]
+      },
+      "primary": "Focal Loss",
+      "explanation_short": "Focal loss는 정답 클래스 확률 p_t가 높은(쉬운) 샘플일수록 (1 − p_t)^γ가 0에 가까워져 손실 기여가 줄어듭니다. 수많은 쉬운 배경 샘플이 손실을 지배하는 문제를 완화합니다.",
+      "explanation_full": "RetinaNet 논문(Lin et al., 2017)에서 제안되었고 γ = 2, α = 0.25 조합이 대표적으로 보고되었습니다. γ = 0이고 α를 쓰지 않으면 일반 교차 엔트로피와 같습니다. 해안 쓰레기·선박처럼 배경이 압도적인 세그멘테이션에서도 Dice 손실과 함께 자주 씁니다.",
+      "tags": [
+        "imbalance",
+        "loss"
+      ],
+      "terms": [
+        "focal-loss"
+      ],
+      "source_ref": "Lin et al. (2017) Focal Loss for Dense Object Detection",
+      "status": "draft"
+    },
+    {
+      "id": "C-IMB-003",
+      "type": "short",
+      "chapter": "C.imb",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "임계값을 바꿔 가며 재현율을 x축, 정밀도를 y축으로 그린 곡선 아래의 면적으로, 양성이 드문 문제에서 ROC-AUC 대신 자주 쓰는 지표의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "PR-AUC",
+          "AUPRC",
+          "AUC-PR",
+          "Area Under the Precision-Recall Curve"
+        ],
+        "ko": [
+          "PR 곡선 아래 면적",
+          "정밀도-재현율 곡선 아래 면적",
+          "PR 곡선 면적"
+        ]
+      },
+      "primary": "PR-AUC",
+      "explanation_short": "PR-AUC는 정밀도-재현율 곡선 아래 면적으로, TN을 쓰지 않아 음성이 압도적으로 많아도 값이 부풀지 않습니다. 무작위 분류기의 기대값이 양성 비율과 같아 드문 양성 문제의 개선 폭이 잘 드러납니다.",
+      "explanation_full": "실무에서는 사다리꼴 적분 대신 평균 정밀도(AP, Average Precision)로 PR 곡선을 요약하는 경우가 많습니다(예: scikit-learn average_precision_score). 탐지의 mAP도 클래스별 AP를 평균한 것이지만 IoU 매칭이 들어가므로 픽셀·장면 분류의 PR-AUC와 구분합니다.",
+      "tags": [
+        "imbalance",
+        "metric"
+      ],
+      "terms": [
+        "pr-auc",
+        "precision",
+        "recall"
+      ],
+      "source_ref": "Saito & Rehmsmeier (2015) The Precision-Recall Plot Is More Informative than the ROC Plot, PLoS ONE; Davis & Goadrich (2006)",
+      "status": "draft"
+    },
+    {
+      "id": "C-IMB-004",
+      "type": "short",
+      "chapter": "C.imb",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "클래스 비율을 맞추기 위해 다수 클래스 샘플의 일부를 (주로 무작위로) 버리고 학습하는 방법의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Undersampling",
+          "Random Undersampling",
+          "Downsampling"
+        ],
+        "ko": [
+          "언더샘플링",
+          "무작위 언더샘플링",
+          "과소표집",
+          "다운샘플링"
+        ]
+      },
+      "primary": "Undersampling",
+      "explanation_short": "언더샘플링(undersampling)은 다수 클래스 샘플을 줄여 클래스 비율을 맞춥니다. 학습이 빨라지지만 버린 샘플의 정보를 잃습니다.",
+      "explanation_full": "원격탐사에서는 빈 바다·빈 산림 타일처럼 양성이 없는 배경 타일을 일부만 남기는 식으로 자주 씁니다. 버리는 샘플이 대표성을 잃지 않도록 지역·계절별로 골고루 줄이고, 학습 때 비율이 바뀐 만큼 예측 확률이 양성 쪽으로 치우친다는 점을 기억합니다. 영상 해상도를 낮추는 다운샘플링과 이름이 같으니 문맥으로 구분합니다.",
+      "tags": [
+        "imbalance",
+        "resampling"
+      ],
+      "terms": [
+        "undersampling"
+      ],
+      "source_ref": "He & Garcia (2009) Learning from Imbalanced Data, IEEE TKDE",
+      "status": "draft"
+    },
+    {
+      "id": "C-IMB-005",
+      "type": "mcq",
+      "chapter": "C.imb",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "클래스 불균형(class imbalance)을 가장 정확히 설명한 것은?",
+      "choices": [
+        {
+          "text": "서로 다른 클래스의 특징 분포가 크게 겹쳐 있어 결정 경계를 깔끔하게 긋기 어려운 상태",
+          "rationale": "이것은 클래스 중첩(class overlap)입니다. 샘플 수가 같아도 생길 수 있는 별개의 문제입니다."
+        },
+        {
+          "text": "클래스별 샘플 수 차이가 커서 학습·평가가 다수 클래스 쪽으로 치우치기 쉬운 상태",
+          "rationale": null
+        },
+        {
+          "text": "훈련 데이터와 운영 데이터의 입력 분포가 서로 달라진 상태",
+          "rationale": "이것은 데이터셋 이동(dataset shift)입니다. 예: 여름 영상으로 학습해 겨울 영상에 적용."
+        },
+        {
+          "text": "라벨 일부가 잘못 붙어 모델이 틀린 정답을 학습하게 되는 상태",
+          "rationale": "이것은 라벨 잡음(label noise)입니다. 클래스 비율과는 별개의 문제입니다."
+        },
+        {
+          "text": "분류할 클래스 수가 너무 많아 출력층과 혼동행렬이 커지는 상태",
+          "rationale": "클래스 수가 많은 것은 다중 클래스 문제의 규모일 뿐, 클래스 간 샘플 수 차이를 뜻하지 않습니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "클래스 불균형은 변화탐지에서 변화 픽셀이 0.5%뿐인 상황처럼 클래스 간 샘플 수가 크게 차이 나는 상태입니다. 모델이 다수 클래스만 맞혀도 손실과 정확도가 좋아 보여 소수 클래스를 무시하기 쉽습니다.",
+      "explanation_full": "원격탐사에는 선박·해안 쓰레기·산불 피해·변화 픽셀처럼 관심 대상이 드문 과제가 많습니다. 대응은 데이터 쪽(오버·언더샘플링), 손실 쪽(클래스 가중, focal loss), 결정 쪽(임계값 조정), 평가 쪽(F1, PR-AUC, macro 평균)으로 나눠 생각하면 정리가 쉽습니다.",
+      "tags": [
+        "imbalance",
+        "basics"
+      ],
+      "terms": [
+        "class-imbalance"
+      ],
+      "source_ref": "He & Garcia (2009) Learning from Imbalanced Data, IEEE TKDE",
+      "status": "draft"
+    },
+    {
+      "id": "C-IMB-006",
+      "type": "mcq",
+      "chapter": "C.imb",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "클래스 가중 손실(class-weighted loss)에 대한 설명으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "소수 클래스 샘플을 복제해 미니배치에 더 자주 등장하도록 데이터를 늘린다",
+          "rationale": "샘플을 복제해 등장 빈도를 늘리는 것은 오버샘플링으로, 데이터 쪽 방법입니다."
+        },
+        {
+          "text": "학습이 끝난 뒤 소수 클래스의 판정 임계값을 낮춰 더 많이 양성으로 판정한다",
+          "rationale": "임계값 조정은 학습 후 결정 단계의 방법입니다. 손실 함수는 바뀌지 않습니다."
+        },
+        {
+          "text": "이미 잘 맞히는 샘플의 손실을 (1 − p_t)^γ로 줄여 어려운 샘플에 학습을 집중시킨다",
+          "rationale": "이것은 focal loss의 γ 항입니다. 클래스가 아니라 샘플마다의 난이도에 따라 가중합니다."
+        },
+        {
+          "text": "모델 가중치의 크기에 벌점을 주어 파라미터를 작게 유지하고 과적합을 줄인다",
+          "rationale": "이것은 L2 규제(weight decay)입니다. 클래스 비율과는 관계없습니다."
+        },
+        {
+          "text": "소수 클래스 샘플의 손실에 더 큰 가중치를 곱해 그 클래스 오분류에 더 큰 벌점을 준다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "클래스 가중 손실은 손실 함수에서 클래스별 가중치 w_c를 곱해, 드문 클래스를 틀렸을 때 더 크게 벌점을 줍니다. 가중치는 흔히 클래스 빈도의 역수나 그 제곱근으로 정합니다.",
+      "explanation_full": "PyTorch의 CrossEntropyLoss(weight=...), BCEWithLogitsLoss(pos_weight=...), scikit-learn의 class_weight='balanced'가 같은 개념입니다. 데이터를 바꾸지 않아 검증 누수 위험이 없지만, 가중치가 너무 크면 소수 클래스를 과하게 예측해 오탐이 늘 수 있으므로 검증셋 F1로 조정합니다.",
+      "tags": [
+        "imbalance",
+        "loss"
+      ],
+      "terms": [
+        "class-weighted-loss"
+      ],
+      "source_ref": "PyTorch 문서 torch.nn.CrossEntropyLoss; scikit-learn 문서 class_weight",
+      "status": "draft"
+    },
+    {
+      "id": "C-IMB-007",
+      "type": "mcq",
+      "chapter": "C.imb",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "변화탐지 검증 영상의 픽셀 중 0.5%만 실제 변화 픽셀이다. 모든 픽셀을 '무변화'로 예측하는 모델의 정확도와 변화 클래스 재현율은?",
+      "choices": [
+        {
+          "text": "정확도 99.5%, 재현율 0%",
+          "rationale": null
+        },
+        {
+          "text": "정확도 0.5%, 재현율 0%",
+          "rationale": "무변화 픽셀 99.5%를 모두 맞혔으므로 정확도는 99.5%입니다."
+        },
+        {
+          "text": "정확도 99.5%, 재현율 100%",
+          "rationale": "변화 픽셀을 하나도 변화로 예측하지 않았으므로 재현율 TP/(TP + FN)은 0입니다."
+        },
+        {
+          "text": "정확도 50%, 재현율 50%",
+          "rationale": "모든 픽셀을 한 클래스로 찍는 모델은 그 클래스의 비율만큼 정확도를 얻습니다. 50%가 아닙니다."
+        },
+        {
+          "text": "정확도 99.5%, 재현율 계산 불가",
+          "rationale": "재현율의 분모는 실제 변화 픽셀 수(TP + FN)로 0이 아니므로 계산할 수 있고, TP = 0이라 0입니다. 분모가 0이 되어 정의되지 않는 것은 예측 양성이 없는 경우의 정밀도입니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "무변화 99.5%를 전부 맞히므로 정확도는 99.5%지만 변화 픽셀은 하나도 찾지 못해 재현율은 0입니다. 불균형 데이터에서 정확도만 보면 쓸모없는 모델도 뛰어나 보이는 '정확도 역설(accuracy paradox)'입니다.",
+      "explanation_full": "그래서 불균형 과제에서는 소수 클래스 기준의 재현율·정밀도·F1, PR-AUC, 또는 macro 평균 지표를 주 지표로 씁니다. 이 모델의 정밀도는 예측 양성이 0개라 0/0으로 정의되지 않으며, scikit-learn은 일반적으로 경고를 띄우고 0으로 처리합니다(zero_division 인자로 바꿀 수 있음).",
+      "tags": [
+        "imbalance",
+        "metric",
+        "calculation"
+      ],
+      "terms": [
+        "class-imbalance",
+        "accuracy",
+        "recall"
+      ],
+      "source_ref": "He & Garcia (2009) Learning from Imbalanced Data, IEEE TKDE",
+      "status": "draft"
+    },
+    {
+      "id": "C-IMB-008",
+      "type": "mcq",
+      "chapter": "C.imb",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "양성(선박 포함 패치) 비율이 1%인 데이터에서, 점수를 무작위로 매기는 분류기의 ROC-AUC와 PR-AUC 기대값은 각각 약 얼마인가?",
+      "choices": [
+        {
+          "text": "ROC-AUC 0.5, PR-AUC 0.5",
+          "rationale": "PR 곡선에서 무작위 분류기의 정밀도는 모든 재현율에서 양성 비율(0.01) 근처에 머뭅니다. PR-AUC의 기준선은 0.5가 아닙니다."
+        },
+        {
+          "text": "ROC-AUC 0.01, PR-AUC 0.5",
+          "rationale": "두 기준선이 뒤바뀌었습니다. ROC의 무작위 기준선은 대각선(면적 0.5)입니다."
+        },
+        {
+          "text": "ROC-AUC 0.5, PR-AUC 0.01",
+          "rationale": null
+        },
+        {
+          "text": "ROC-AUC 0.01, PR-AUC 0.01",
+          "rationale": "ROC의 두 축(FPR, TPR)은 각각 클래스 내부 비율이라 양성 비율과 무관하게 무작위면 0.5입니다."
+        },
+        {
+          "text": "ROC-AUC 0.99, PR-AUC 0.01",
+          "rationale": "0.99는 모두 음성으로 찍었을 때의 정확도와 혼동한 값입니다. 무작위 점수의 ROC-AUC는 0.5입니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "무작위 점수는 양성과 음성을 구분하지 못하므로 ROC-AUC는 0.5입니다. 반면 정밀도는 어떤 임계값에서도 양성 비율 0.01 근처에 머물러 PR-AUC 기대값도 약 0.01입니다.",
+      "explanation_full": "즉 이 데이터에서 PR-AUC 0.30은 기준선의 30배에 해당하는 의미 있는 성능이지만, ROC-AUC 0.90은 음성이 많아 FPR이 작게 유지되는 덕분에 좋아 보일 수 있습니다. PR-AUC는 양성 비율에 따라 기준선이 달라지므로 양성 비율이 다른 데이터셋끼리는 값을 직접 비교하지 않습니다.",
+      "tags": [
+        "imbalance",
+        "metric"
+      ],
+      "terms": [
+        "pr-auc",
+        "roc-auc"
+      ],
+      "source_ref": "Saito & Rehmsmeier (2015) The Precision-Recall Plot Is More Informative than the ROC Plot, PLoS ONE",
+      "status": "draft"
+    },
+    {
+      "id": "C-IMB-009",
+      "type": "mcq",
+      "chapter": "C.imb",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "α-균형 focal loss FL = −α_t (1 − p_t)^γ log(p_t)에서 α와 γ의 역할을 옳게 짝지은 것은?",
+      "choices": [
+        {
+          "text": "α는 쉬운 샘플의 손실을 줄이는 정도, γ는 클래스별 가중치",
+          "rationale": "역할이 뒤바뀌었습니다. 샘플 난이도(p_t)에 따라 작동하는 것은 (1 − p_t)^γ 항입니다."
+        },
+        {
+          "text": "α는 옵티마이저 학습률, γ는 가중치 감쇠(weight decay) 계수",
+          "rationale": "학습률과 weight decay는 옵티마이저 설정이며 손실 식 안의 α·γ와 무관합니다."
+        },
+        {
+          "text": "α는 라벨 스무딩의 정도, γ는 클래스별 가중치",
+          "rationale": "라벨 스무딩은 정답 분포를 부드럽게 만드는 별개 기법입니다. γ는 난이도 조절 항입니다."
+        },
+        {
+          "text": "α는 클래스별 가중치, γ는 쉬운 샘플의 손실을 줄이는 정도",
+          "rationale": null
+        },
+        {
+          "text": "α와 γ 모두 클래스별 가중치라 하나의 상수로 합칠 수 있다",
+          "rationale": "γ는 지수로 들어가 샘플의 p_t에 따라 가중치가 달라지므로 고정된 클래스 가중치로 합칠 수 없습니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "α_t는 클래스별로 고정된 가중치로, 클래스 가중 교차 엔트로피와 같은 역할입니다. (1 − p_t)^γ는 샘플마다 달라지는 난이도 가중치로, γ가 클수록 잘 맞힌 샘플의 손실을 더 강하게 줄입니다.",
+      "explanation_full": "γ = 0이면 α-가중 교차 엔트로피가 됩니다. 원 논문에서는 γ가 쉬운 음성을 이미 크게 줄여 주기 때문에 양성의 α를 오히려 0.25로 작게 두는 조합이 좋았다고 보고했습니다. α는 '클래스 비율', γ는 '쉬운/어려운 샘플'이라는 서로 다른 축을 다룹니다.",
+      "tags": [
+        "imbalance",
+        "loss"
+      ],
+      "terms": [
+        "focal-loss",
+        "class-weighted-loss"
+      ],
+      "source_ref": "Lin et al. (2017) Focal Loss for Dense Object Detection",
+      "status": "draft"
+    },
+    {
+      "id": "C-IMB-010",
+      "type": "mcq",
+      "chapter": "C.imb",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "소수 클래스를 늘리는 두 방법, 랜덤 오버샘플링과 SMOTE의 차이로 옳은 것은?",
+      "choices": [
+        {
+          "text": "랜덤 오버샘플링은 다수 클래스를 줄이고, SMOTE는 소수 클래스를 늘린다",
+          "rationale": "다수 클래스를 줄이는 것은 언더샘플링입니다. 랜덤 오버샘플링도 소수 클래스를 늘리는 방법입니다."
+        },
+        {
+          "text": "랜덤 오버샘플링은 샘플을 복제하고, SMOTE는 이웃 소수 샘플 사이를 보간해 합성한다",
+          "rationale": null
+        },
+        {
+          "text": "SMOTE는 다수 클래스 샘플과 소수 클래스 샘플 사이를 보간해 경계 부근에 새 샘플을 만든다",
+          "rationale": "원래 SMOTE는 소수 클래스 샘플과 그 소수 클래스 이웃 사이만 보간합니다. 다수 클래스와 섞으면 라벨이 애매한 샘플이 생깁니다."
+        },
+        {
+          "text": "SMOTE는 원본 샘플에 가우시안 잡음만 더해 새 샘플을 만들 뿐 이웃 정보는 쓰지 않는다",
+          "rationale": "SMOTE의 핵심은 k-최근접 소수 이웃을 찾아 그 사이를 보간하는 것입니다. 잡음 추가는 다른 증강 방식입니다."
+        },
+        {
+          "text": "랜덤 오버샘플링은 과적합 위험이 없고, SMOTE는 같은 샘플을 반복해 과적합 위험이 크다",
+          "rationale": "반대입니다. 같은 샘플을 반복 학습하는 랜덤 오버샘플링이 과적합 위험이 더 크고, SMOTE는 이를 줄이려고 제안되었습니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "랜덤 오버샘플링은 소수 샘플을 복원추출로 복제하므로 모델이 같은 점을 반복해 외우기 쉽습니다. SMOTE는 x + λ(x_nn − x)로 이웃 소수 샘플 사이에 새 점을 만들어 소수 클래스 영역을 더 넓게 채웁니다.",
+      "explanation_full": "SMOTE에도 한계가 있습니다. 소수 샘플이 다수 클래스 영역 안의 잡음이라면 그 주변에 잘못된 샘플을 늘리고, 고차원 특징에서는 최근접 이웃의 의미가 약해집니다. Borderline-SMOTE, ADASYN 같은 변형은 경계 근처 샘플에 합성을 집중합니다. 어느 방법이든 분할 후 학습 데이터에만 적용합니다.",
+      "tags": [
+        "imbalance",
+        "resampling"
+      ],
+      "terms": [
+        "smote",
+        "oversampling"
+      ],
+      "source_ref": "Chawla et al. (2002) SMOTE: Synthetic Minority Over-sampling Technique, JAIR",
+      "status": "draft"
+    },
+    {
+      "id": "C-IMB-011",
+      "type": "mcq",
+      "chapter": "C.imb",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "배경 타일을 무작위 언더샘플링해 양성:음성을 1:1로 맞춰 학습했다. 실제 양성 비율은 약 1%이다. 이 방식의 대표적인 부작용으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "소수 클래스 샘플이 반복 복제되어 소수 클래스에 과적합된다",
+          "rationale": "복제로 인한 과적합은 랜덤 오버샘플링의 대표 부작용입니다. 언더샘플링은 소수 클래스를 건드리지 않습니다."
+        },
+        {
+          "text": "학습 데이터가 늘어나 에폭당 학습 시간이 크게 증가한다",
+          "rationale": "언더샘플링은 데이터를 줄이므로 학습 시간은 오히려 줄어듭니다."
+        },
+        {
+          "text": "학습셋에서 만든 합성 샘플이 검증셋으로 새어 들어간다",
+          "rationale": "합성 샘플 누수는 분할 전 SMOTE 같은 오버샘플링의 문제입니다. 언더샘플링은 새 샘플을 만들지 않습니다."
+        },
+        {
+          "text": "언더샘플링하면 손실 함수가 바뀌므로 교차 엔트로피 대신 focal loss를 써야 한다",
+          "rationale": "언더샘플링은 데이터 구성만 바꾸며 손실 함수 선택을 강제하지 않습니다."
+        },
+        {
+          "text": "다수 클래스 정보가 버려지고, 예측 확률이 실제 양성 비율보다 높게 치우친다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "언더샘플링은 버린 배경 타일의 다양한 모습(파도, 구름 그림자 등)을 학습하지 못해 운영에서 오탐이 늘 수 있습니다. 또 학습 때 양성 비율이 50%였으므로 모델이 출력하는 확률이 실제 비율(약 1%)보다 크게 부풀어 있습니다.",
+      "explanation_full": "확률 자체를 쓰는 경우(예: 면적 추정, 위험도 지도)에는 사전확률 보정이나 확률 보정(calibration)으로 되돌려야 합니다(Dal Pozzolo et al., 2015). 정보 손실을 줄이려면 1:1까지 극단적으로 맞추지 않거나, 어려운 음성(hard negative)은 남기고 쉬운 음성만 줄이는 방식을 씁니다.",
+      "tags": [
+        "imbalance",
+        "resampling"
+      ],
+      "terms": [
+        "undersampling"
+      ],
+      "source_ref": "He & Garcia (2009) Learning from Imbalanced Data, IEEE TKDE; Dal Pozzolo et al. (2015) Calibrating Probability with Undersampling for Unbalanced Classification",
+      "status": "draft"
+    },
+    {
+      "id": "C-IMB-012",
+      "type": "scenario",
+      "chapter": "C.imb",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"변화 픽셀이 0.3%밖에 안 돼서 모델이 전부 무변화로 찍어. 데이터는 손대지 말고 손실 함수 쪽에서 클래스 비율을 보정해.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "BCE에 양성 가중치(pos_weight)를 음성/양성 비율 수준으로 주고 검증셋 F1을 보며 조정한다",
+          "rationale": null
+        },
+        {
+          "text": "변화 픽셀 패치를 복제해 학습 데이터에서 변화 비율을 10%까지 늘린다",
+          "rationale": "오버샘플링은 데이터를 바꾸는 방법이라 '데이터는 손대지 말라'는 지시에 어긋납니다."
+        },
+        {
+          "text": "판정 임계값을 0.5에서 0.9로 올려 확실한 픽셀만 판정한다",
+          "rationale": "임계값을 올리면 변화 예측이 더 줄어 문제가 악화됩니다. 또 임계값 조정은 손실 함수 보정이 아닙니다."
+        },
+        {
+          "text": "라벨 스무딩을 0.1로 적용해 모델이 과신하지 않게 만든다",
+          "rationale": "라벨 스무딩은 과신을 줄이는 정규화 기법으로 클래스 비율을 보정하지 않습니다."
+        },
+        {
+          "text": "weight decay를 키워 모델이 다수 클래스에 과적합되지 않게 한다",
+          "rationale": "weight decay는 가중치 크기에 대한 규제로 클래스별 손실 비중을 바꾸지 않습니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "손실 쪽 클래스 비율 보정의 표준 방법은 소수 클래스 오분류에 더 큰 가중치를 곱하는 것입니다. PyTorch 문서는 BCEWithLogitsLoss의 pos_weight로 '음성 수/양성 수'를 예로 들며, 실제로는 이보다 약하게(예: 제곱근) 두고 검증 F1로 조정하기도 합니다.",
+      "explanation_full": "0.3%면 음성/양성 비율이 약 0.997/0.003 ≈ 332로 매우 커서, 그대로 쓰면 변화를 과하게 예측해 오탐이 늘 수 있습니다. focal loss도 손실 쪽 대안이지만 기본 발상은 '쉬운 샘플 억제'라서, 클래스 비율 보정이라는 지시에는 클래스 가중치가 가장 직접적입니다. 평가는 정확도가 아니라 변화 클래스 F1·PR-AUC로 합니다.",
+      "tags": [
+        "imbalance",
+        "loss"
+      ],
+      "terms": [
+        "class-weighted-loss",
+        "class-imbalance"
+      ],
+      "source_ref": "PyTorch 문서 torch.nn.BCEWithLogitsLoss",
+      "status": "draft"
+    },
+    {
+      "id": "C-IMB-013",
+      "type": "scenario",
+      "chapter": "C.imb",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"선박 유무 장면 분류 모델 3개 비교표 만들어. 양성 장면이 2%뿐인데 ROC-AUC가 셋 다 0.97~0.98이라 차이가 안 보여. 비교 지표를 바꿔.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "세 모델의 전체 정확도(Accuracy)로 비교해 가장 높은 모델을 고른다",
+          "rationale": "양성이 2%면 전부 음성으로 찍어도 정확도 98%라 모델 간 차이를 더 가립니다."
+        },
+        {
+          "text": "ROC-AUC를 소수점 넷째 자리까지 표시해 미세한 차이를 드러낸다",
+          "rationale": "자릿수를 늘려도 ROC-AUC가 드문 양성의 오탐 차이에 둔감하다는 문제는 그대로입니다."
+        },
+        {
+          "text": "양성 클래스 기준 PR-AUC(AP)로 비교하고, 무작위 기준선이 양성 비율 0.02임을 함께 적는다",
+          "rationale": null
+        },
+        {
+          "text": "세 모델의 특이도(Specificity)를 같은 임계값에서 비교한다",
+          "rationale": "특이도는 음성 기준이라 음성이 98%인 데이터에서는 모두 높게 나오고 양성 탐지 성능 차이를 보여 주지 못합니다."
+        },
+        {
+          "text": "음성 장면을 줄여 1:1로 만든 테스트셋에서 ROC-AUC를 다시 잰다",
+          "rationale": "ROC-AUC는 클래스 비율이 바뀌어도 기대값이 거의 변하지 않아 차이가 드러나지 않고, 테스트셋을 운영 분포와 다르게 만들면 실제 성능 추정도 왜곡됩니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "양성이 드물면 FP가 많아도 TN이 훨씬 많아 FPR이 작게 유지되므로 ROC-AUC가 모두 높게 나옵니다. PR-AUC는 정밀도로 오탐을 직접 반영해 모델 간 차이를 잘 드러내며, 무작위 기준선이 양성 비율(0.02)이라는 점을 같이 적어야 해석할 수 있습니다.",
+      "explanation_full": "보고서에는 PR 곡선 자체와 운영 임계값에서의 정밀도·재현율도 함께 싣는 것이 좋습니다. 예를 들어 ROC-AUC가 0.97로 같아도 재현율 0.8에서 한 모델은 정밀도 0.6, 다른 모델은 0.3일 수 있습니다.",
+      "tags": [
+        "imbalance",
+        "metric"
+      ],
+      "terms": [
+        "pr-auc",
+        "roc-auc"
+      ],
+      "source_ref": "Saito & Rehmsmeier (2015) The Precision-Recall Plot Is More Informative than the ROC Plot, PLoS ONE",
+      "status": "draft"
+    },
+    {
+      "id": "C-IMB-014",
+      "type": "scenario",
+      "chapter": "C.imb",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"RF 픽셀 분류에서 염생식생 샘플이 너무 적어. SMOTE로 늘리되, 5-겹 교차검증 점수가 부풀지 않게 해.\"\n\n가장 적절한 구현은?",
+      "choices": [
+        {
+          "text": "전체 데이터에 SMOTE를 한 번 적용해 비율을 맞춘 뒤 5-겹으로 나눠 교차검증한다",
+          "rationale": "분할 전 SMOTE는 합성 샘플과 그 원본이 학습·검증에 나뉘어 들어가는 누수를 만들어 점수가 부풀어 오릅니다."
+        },
+        {
+          "text": "검증 폴드에도 SMOTE를 적용해 클래스 비율을 학습 폴드와 똑같이 맞춘다",
+          "rationale": "검증 데이터에 합성 샘플을 넣으면 실제 분포가 아닌 인공 샘플로 평가하게 되어 운영 성능을 추정할 수 없습니다."
+        },
+        {
+          "text": "SMOTE 대신 염생식생 샘플을 10배 복제해 전체 데이터에 추가한 뒤 5-겹으로 나눈다",
+          "rationale": "복제도 분할 전에 하면 같은 샘플이 학습과 검증에 동시에 들어가는 누수가 생깁니다."
+        },
+        {
+          "text": "폴드마다 학습 부분에만 SMOTE를 적용하고 검증 폴드는 원래 비율 그대로 평가하는 파이프라인을 만든다",
+          "rationale": null
+        },
+        {
+          "text": "SMOTE의 k를 1로 줄여 합성 샘플이 원본과 최대한 비슷하게 만들어지도록 한다",
+          "rationale": "k를 줄이면 합성 샘플의 다양성이 줄 뿐, 적용 순서 때문에 생기는 누수 문제는 해결되지 않습니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "교차검증 점수가 부풀지 않으려면 리샘플링을 '학습 데이터 전처리의 일부'로 보고 각 폴드의 학습 부분 안에서만 수행해야 합니다. imbalanced-learn의 Pipeline에 SMOTE와 분류기를 넣어 교차검증 함수에 넘기면 이 순서가 자동으로 지켜집니다.",
+      "explanation_full": "원격탐사 픽셀은 공간 자기상관이 있으므로 폴드도 폴리곤·블록 단위로 나누는 것이 좋습니다. 그렇지 않으면 SMOTE 순서를 지켜도 인접 픽셀 때문에 점수가 여전히 낙관적일 수 있습니다.",
+      "tags": [
+        "imbalance",
+        "resampling",
+        "validation"
+      ],
+      "terms": [
+        "smote",
+        "oversampling"
+      ],
+      "source_ref": "Chawla et al. (2002) SMOTE: Synthetic Minority Over-sampling Technique, JAIR; imbalanced-learn 문서 'Common pitfalls and recommended practices'",
+      "status": "draft"
+    },
+    {
+      "id": "C-IMB-015",
+      "type": "scenario",
+      "chapter": "C.imb",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"해안 쓰레기 세그멘테이션인데 배경 픽셀이 99%라 손실은 금방 작아지는데 쓰레기는 계속 놓쳐. CE를 focal loss로 바꾸고 γ=2부터 해봐.\"\n\n이 지시의 의도로 옳은 것은?",
+      "choices": [
+        {
+          "text": "배경 픽셀을 손실 계산에서 모두 제외하고 쓰레기 픽셀만으로 학습하려는 것",
+          "rationale": "focal loss는 쉬운 샘플의 손실을 줄일 뿐 제외하지 않습니다. 배경을 빼면 배경을 쓰레기로 찍는 오탐을 막을 수 없습니다."
+        },
+        {
+          "text": "이미 잘 맞히는 쉬운 배경 픽셀의 손실 기여를 줄여 어려운 쓰레기·경계 픽셀에 학습을 집중시키려는 것",
+          "rationale": null
+        },
+        {
+          "text": "γ=2로 학습률을 두 배로 키워 손실이 더 빨리 수렴하도록 하려는 것",
+          "rationale": "γ는 손실 식 안의 난이도 조절 지수로 학습률과 무관합니다."
+        },
+        {
+          "text": "쓰레기 픽셀을 합성해 학습 데이터의 클래스 비율 자체를 바꾸려는 것",
+          "rationale": "데이터를 바꾸는 것은 오버샘플링·SMOTE 계열입니다. focal loss는 데이터는 그대로 두고 손실의 가중만 바꿉니다."
+        },
+        {
+          "text": "출력 확률이 실제 빈도와 맞도록 학습이 끝난 모델의 확률을 보정하려는 것",
+          "rationale": "확률 보정(calibration)은 온도 스케일링 같은 사후 기법의 목적입니다. 지시는 학습 중 어떤 픽셀에 집중할지를 바꾸려는 것입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "배경 픽셀 대부분은 모델이 p_t ≈ 0.99로 이미 잘 맞히지만, 수가 많아 교차 엔트로피 합계를 지배합니다. focal loss의 (1 − p_t)^γ는 이런 쉬운 픽셀의 손실을 크게 줄여(γ=2, p_t=0.99면 (0.01)² = 1만분의 1) 어려운 픽셀의 기울기가 학습을 이끌게 합니다.",
+      "explanation_full": "γ를 너무 크게 하면 학습 신호가 약해지고 불안정해질 수 있어 γ=2 전후에서 시작해 검증 IoU·F1로 조정합니다. 세그멘테이션에서는 Dice 손실과 합쳐 쓰는 경우도 많습니다. 평가는 쓰레기 클래스의 IoU·F1로 해야 개선 여부가 보입니다.",
+      "tags": [
+        "imbalance",
+        "loss",
+        "segmentation"
+      ],
+      "terms": [
+        "focal-loss",
+        "class-imbalance"
+      ],
+      "source_ref": "Lin et al. (2017) Focal Loss for Dense Object Detection",
+      "status": "draft"
+    }
+  ]
+}

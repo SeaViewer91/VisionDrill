@@ -1,0 +1,783 @@
+{
+  "format": "visiondrill-bank-exchange",
+  "format_version": 1,
+  "terms": [
+    {
+      "id": "geometric-augmentation",
+      "term_en": "Geometric Augmentation",
+      "term_ko": "기하 증강",
+      "abbreviation": null,
+      "definition": "뒤집기·회전·크기 변경·자르기처럼 픽셀의 위치를 바꾸는 증강으로, 박스·마스크 라벨도 같은 변환으로 함께 바꿔야 한다",
+      "usage_example": "위성 타일이니까 기하 증강은 flip이랑 rot90 다 켜고, 라벨 같이 돌아가는지 그려서 확인해.",
+      "origin": "standard",
+      "track": "G"
+    },
+    {
+      "id": "photometric-augmentation",
+      "term_en": "Photometric Augmentation",
+      "term_ko": "광학 증강",
+      "abbreviation": null,
+      "definition": "밝기·대비·감마·채도·색상 등 픽셀 값만 바꾸고 위치는 그대로 두는 증강으로, 라벨 좌표는 바뀌지 않는다",
+      "usage_example": "촬영 날짜마다 밝기가 달라서 광학 증강 좀 세게 걸어 봐. 단 hue는 건드리지 말고.",
+      "origin": "standard",
+      "track": "G"
+    },
+    {
+      "id": "mosaic-augmentation",
+      "term_en": "Mosaic Augmentation",
+      "term_ko": "모자이크 증강",
+      "abbreviation": null,
+      "definition": "네 장의 이미지를 한 장으로 이어 붙여 다양한 배경·축척의 객체를 한 번에 학습시키는 증강",
+      "usage_example": "타일 경계에 걸린 소형 선박이 많으니 mosaic 확률 올려서 다시 돌려봐.",
+      "origin": "standard",
+      "track": "G"
+    },
+    {
+      "id": "mixup",
+      "term_en": "MixUp",
+      "term_ko": "믹스업",
+      "abbreviation": null,
+      "definition": "두 이미지를 λ : (1−λ) 비율로 픽셀마다 가중합하고 라벨도 같은 비율로 섞는 증강(탐지에서는 두 이미지의 박스를 함께 사용)",
+      "usage_example": "소형 부표가 반투명하게 섞이면 헷갈리니까 mixup 확률은 낮게 둬.",
+      "origin": "standard",
+      "track": "G"
+    },
+    {
+      "id": "copy-paste-augmentation",
+      "term_en": "Copy-Paste Augmentation",
+      "term_ko": "복사-붙여넣기 증강",
+      "abbreviation": null,
+      "definition": "한 이미지의 객체를 인스턴스 마스크로 오려 다른 이미지에 붙이고 라벨을 추가해 희귀 객체 수와 배경 다양성을 늘리는 증강",
+      "usage_example": "폐어구가 희귀하니까 마스크로 오려서 바다 타일에만 copy-paste 해.",
+      "origin": "standard",
+      "track": "G"
+    },
+    {
+      "id": "rotation-invariance",
+      "term_en": "Rotation Invariance",
+      "term_ko": "회전 불변성",
+      "abbreviation": null,
+      "definition": "입력을 회전해도 판단 결과(클래스 등)가 달라지지 않는 성질로, 위에서 내려다본 원격탐사 영상에 회전·반전 증강을 쓰는 근거가 된다",
+      "usage_example": "연직 영상이라 정해진 위쪽이 없어. 회전 불변성 배우게 rot90 증강 넣어도 돼.",
+      "origin": "standard",
+      "track": "G"
+    }
+  ],
+  "questions": [
+    {
+      "id": "G-AUG-001",
+      "type": "short",
+      "chapter": "G.aug",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "학습 이미지 네 장을 축소해 2×2로 이어 붙여 한 장의 학습 이미지로 만드는 증강은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Mosaic augmentation",
+          "Mosaic"
+        ],
+        "ko": [
+          "모자이크 증강",
+          "모자이크"
+        ]
+      },
+      "primary": "Mosaic augmentation",
+      "explanation_short": "모자이크 증강(mosaic augmentation)은 네 이미지를 무작위 비율로 잘라 붙여 한 장으로 만듭니다. 한 장에 여러 장면의 배경과 다양한 크기의 객체가 들어가 작은 객체와 문맥 다양성 학습에 도움이 됩니다.",
+      "explanation_full": "YOLOv4에서 널리 알려진 뒤 YOLO 계열 학습의 기본 증강이 되었습니다. 원격탐사에서 \"모자이크\"는 여러 영상을 이어 붙여 넓은 지역 영상을 만드는 정사영상 모자이크(orthomosaic)를 뜻하기도 하므로, 대화할 때 \"모자이크 증강\"인지 \"영상 모자이크\"인지 구분해서 말합니다.",
+      "tags": [
+        "augmentation",
+        "mosaic"
+      ],
+      "terms": [
+        "mosaic-augmentation"
+      ],
+      "source_ref": "Bochkovskiy et al. 2020, YOLOv4 (Mosaic); Ultralytics 문서 train settings (close_mosaic)",
+      "status": "draft"
+    },
+    {
+      "id": "G-AUG-002",
+      "type": "mcq",
+      "chapter": "G.aug",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "모자이크 증강(mosaic augmentation)이 소형 선박 탐지 학습에 주는 주된 이점은?",
+      "choices": [
+        {
+          "text": "여러 정사영상의 이음새 밝기 차이를 보정해 영상 경계선을 없애 준다",
+          "rationale": "그것은 정사영상 모자이크 제작의 색 균일화 작업입니다. 모자이크 증강은 학습용 이미지를 합성하는 기법입니다."
+        },
+        {
+          "text": "두 이미지를 반투명하게 겹치고 라벨을 비율대로 섞어 클래스 간 결정 경계를 부드럽게 만든다",
+          "rationale": "그것은 MixUp입니다. 모자이크는 이미지를 겹치지 않고 네 구역에 나란히 붙입니다."
+        },
+        {
+          "text": "한 장에 여러 장면의 배경과 축소된 객체가 함께 들어가 작은 객체·다양한 문맥을 더 본다",
+          "rationale": null
+        },
+        {
+          "text": "추론 때 네 장을 한 번에 넣어 처리하므로 추론 속도가 네 배 가까이 빨라진다",
+          "rationale": "모자이크는 학습 때만 쓰는 증강이며 추론 입력 방식과는 관계가 없습니다."
+        },
+        {
+          "text": "라벨이 틀린 객체를 자동으로 찾아 학습 대상에서 빼 주는 효과가 있다",
+          "rationale": "라벨 오류를 찾는 것은 라벨 검수의 역할입니다. 모자이크는 라벨을 그대로 옮겨 붙입니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "모자이크는 네 이미지를 축소·배치해 한 장으로 만들기 때문에 객체가 더 작아지고, 서로 다른 장면의 배경이 한 이미지 안에 섞입니다. 소형 객체 샘플과 문맥 다양성이 늘어나는 것이 핵심 이점입니다.",
+      "explanation_full": "각 이미지가 잘리면서 경계에 걸린 박스는 잘린 만큼 줄어들고, 너무 작아진 박스는 버려집니다. YOLOv4 논문은 한 장에 네 이미지의 통계가 섞이므로 배치 정규화(Batch Normalization)가 층마다 네 이미지의 활성값 통계를 보게 되어 큰 미니배치의 필요가 줄어든다고 설명합니다.",
+      "tags": [
+        "augmentation",
+        "mosaic",
+        "small-object"
+      ],
+      "terms": [
+        "mosaic-augmentation"
+      ],
+      "source_ref": "Bochkovskiy et al. 2020, YOLOv4 (Mosaic); Ultralytics 문서 train settings (close_mosaic)",
+      "status": "draft"
+    },
+    {
+      "id": "G-AUG-003",
+      "type": "short",
+      "chapter": "G.aug",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "두 학습 이미지를 λ : (1−λ) 비율로 픽셀마다 가중합해 한 장으로 만들고, 라벨도 같은 비율로 섞는 증강은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "MixUp",
+          "Mixup augmentation"
+        ],
+        "ko": [
+          "믹스업",
+          "믹스업 증강"
+        ]
+      },
+      "primary": "MixUp",
+      "explanation_short": "MixUp은 두 이미지를 반투명하게 겹치듯 섞고 라벨도 같은 비율로 섞는 증강입니다. 섞는 비율 λ는 보통 베타 분포에서 뽑습니다.",
+      "explanation_full": "분류에서는 원-핫 라벨을 λ 비율로 섞어 결정 경계를 부드럽게 만드는 정규화 효과가 있습니다. 탐지에서는 두 이미지의 박스를 모두 남기는 방식으로 씁니다(구현에 따라 박스에 λ 가중을 두기도 함). 소형 객체가 많은 원격탐사 영상에서는 반투명하게 겹친 객체가 오히려 혼란을 줄 수 있어 낮은 확률로 쓰는 경우가 많습니다.",
+      "tags": [
+        "augmentation",
+        "mixup"
+      ],
+      "terms": [
+        "mixup"
+      ],
+      "source_ref": "Zhang et al. 2018, mixup (ICLR); Yun et al. 2019, CutMix (ICCV)",
+      "status": "draft"
+    },
+    {
+      "id": "G-AUG-004",
+      "type": "mcq",
+      "chapter": "G.aug",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "MixUp과 CutMix의 차이를 바르게 설명한 것은?",
+      "choices": [
+        {
+          "text": "MixUp은 두 이미지 전체를 가중합하고, CutMix는 사각 영역을 오려 붙인 뒤 면적 비율로 라벨을 섞는다",
+          "rationale": null
+        },
+        {
+          "text": "MixUp은 네 장을 2×2 격자로 이어 붙이고, CutMix는 두 장을 반투명하게 겹쳐 라벨을 비율대로 섞는다",
+          "rationale": "2×2 배치는 모자이크 증강이고, 반투명하게 겹치는 것은 MixUp입니다. 두 설명이 뒤섞였습니다."
+        },
+        {
+          "text": "MixUp은 인스턴스 마스크로 객체만 오려 붙이고, CutMix는 두 이미지 전체를 픽셀마다 가중합한다",
+          "rationale": "마스크로 오려 붙이는 것은 copy-paste 증강이고, 전체 가중합은 MixUp입니다."
+        },
+        {
+          "text": "둘 다 라벨은 섞지 않고 붙여 넣은 쪽 이미지의 라벨만 남기며, 섞는 방식만 조금 다르다",
+          "rationale": "두 기법 모두 라벨을 섞는 것이 핵심입니다. MixUp은 λ로, CutMix는 붙인 영역의 면적 비율로 섞습니다."
+        },
+        {
+          "text": "MixUp은 기하 증강에 속하고 CutMix는 광학 증강에 속해 라벨 처리 방식이 서로 다르다",
+          "rationale": "둘 다 여러 이미지를 섞는 혼합(mixing) 계열로, 기하·광학 증강 구분에 들어맞지 않습니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "MixUp은 두 이미지를 전체적으로 반투명하게 겹치는 가중합이고, CutMix는 한 이미지의 사각 패치를 다른 이미지에 오려 붙입니다. 라벨은 MixUp은 λ로, CutMix는 붙인 영역의 면적 비율로 섞습니다.",
+      "explanation_full": "CutMix는 겹친 이미지가 부자연스러운 MixUp의 단점과, 영역을 지우기만 해 정보가 사라지는 Cutout의 단점을 함께 줄이려고 제안되었습니다. 두 기법은 분류에서 먼저 쓰였고, 탐지에서는 박스 처리 방식을 따로 정해 응용합니다.",
+      "tags": [
+        "augmentation",
+        "mixup"
+      ],
+      "terms": [
+        "mixup"
+      ],
+      "source_ref": "Zhang et al. 2018, mixup (ICLR); Yun et al. 2019, CutMix (ICCV)",
+      "status": "draft"
+    },
+    {
+      "id": "G-AUG-005",
+      "type": "short",
+      "chapter": "G.aug",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "한 이미지의 객체를 인스턴스 마스크 모양대로 오려 다른 이미지에 붙여 넣고 라벨도 추가해, 희귀 객체 수를 늘리는 증강은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Copy-paste augmentation",
+          "Copy-paste",
+          "Simple Copy-Paste"
+        ],
+        "ko": [
+          "복사-붙여넣기 증강",
+          "복사 붙여넣기",
+          "카피 페이스트",
+          "카피페이스트 증강"
+        ]
+      },
+      "primary": "Copy-paste augmentation",
+      "explanation_short": "Copy-paste 증강은 마스크로 오려 낸 객체를 다른 이미지에 붙여 새 학습 샘플을 만듭니다. 희귀 클래스의 인스턴스 수를 늘리고 객체를 다양한 배경에 놓아 볼 수 있습니다.",
+      "explanation_full": "Ghiasi 등(2021)의 Simple Copy-Paste는 객체를 무작위 위치에 붙이는 단순한 방식만으로도 인스턴스 분할 성능이 크게 오른다는 것을 보였습니다. 마스크가 있어야 객체만 깔끔하게 오릴 수 있고, 박스만 있으면 배경까지 딸려 옵니다. 원격탐사에서는 붙이는 위치의 문맥(바다·육지)과 축척을 맞추는 것이 중요합니다.",
+      "tags": [
+        "augmentation",
+        "copy-paste"
+      ],
+      "terms": [
+        "copy-paste-augmentation"
+      ],
+      "source_ref": "Ghiasi et al. 2021, Simple Copy-Paste is a Strong Data Augmentation Method for Instance Segmentation (CVPR)",
+      "status": "draft"
+    },
+    {
+      "id": "G-AUG-006",
+      "type": "mcq",
+      "chapter": "G.aug",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "위성 영상 선박 탐지에서 copy-paste 증강을 설계할 때 가장 중요하게 맞춰야 할 조건은?",
+      "choices": [
+        {
+          "text": "붙인 선박은 라벨 없이 두어야 모델이 배경과 선박을 구분하는 법을 스스로 배운다",
+          "rationale": "라벨 없이 붙이면 선박을 배경으로 가르치는 누락 라벨이 됩니다. 붙인 객체에는 반드시 라벨을 추가합니다."
+        },
+        {
+          "text": "박스 라벨만 있어도 박스 사각형을 통째로 붙이면 마스크를 쓴 것과 같은 효과가 난다",
+          "rationale": "사각형을 통째로 붙이면 원래의 바다·부두 배경까지 딸려 와 경계가 부자연스러워집니다. 객체만 오리려면 마스크가 필요합니다."
+        },
+        {
+          "text": "공정한 비교를 위해 검증셋과 시험셋에도 학습 때와 똑같은 copy-paste를 적용한다",
+          "rationale": "증강은 학습셋에만 씁니다. 평가셋에 합성 객체를 넣으면 실제 영상에서의 성능을 잴 수 없습니다."
+        },
+        {
+          "text": "수면처럼 선박이 실제로 있을 만한 곳에, 대상 영상과 같은 축척(GSD)으로 붙인다",
+          "rationale": null
+        },
+        {
+          "text": "붙인 선박이 원래 선박과 반드시 겹치도록 배치해 가림 상황을 인위적으로 만든다",
+          "rationale": "가림을 일부 만들 수는 있지만 \"반드시 겹치게\"는 조건이 아닙니다. 과도한 겹침은 원래 객체를 가려 라벨 오류를 만듭니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "붙여 넣은 객체가 실제로는 나올 수 없는 문맥(육지 위 선박)이거나 축척이 다르면 모델이 비현실적인 단서를 배웁니다. 수면 위치와 GSD를 맞추는 것이 원격탐사 copy-paste의 핵심 조건입니다.",
+      "explanation_full": "이 밖에 태양 방위에 따른 그림자 방향, 영상 간 밝기 차이, 붙인 경계의 부자연스러운 가장자리도 모델이 외울 수 있는 인공 단서입니다. 수계 마스크(예: NDWI 임계값)로 붙일 수 있는 영역을 제한하고, 경계를 약하게 블렌딩하는 방법을 씁니다.",
+      "tags": [
+        "augmentation",
+        "copy-paste",
+        "remote-sensing"
+      ],
+      "terms": [
+        "copy-paste-augmentation"
+      ],
+      "source_ref": "Ghiasi et al. 2021, Simple Copy-Paste is a Strong Data Augmentation Method for Instance Segmentation (CVPR)",
+      "status": "draft"
+    },
+    {
+      "id": "G-AUG-007",
+      "type": "short",
+      "chapter": "G.aug",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "좌우·상하 뒤집기, 회전, 크기 변경, 무작위 자르기처럼 픽셀의 위치를 바꾸는 증강을 통칭하는 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Geometric augmentation",
+          "Geometric transformation augmentation",
+          "Spatial augmentation",
+          "Spatial-level augmentation"
+        ],
+        "ko": [
+          "기하 증강",
+          "기하학적 증강",
+          "기하 변환 증강",
+          "공간 증강"
+        ]
+      },
+      "primary": "Geometric augmentation",
+      "explanation_short": "기하 증강(geometric augmentation)은 영상의 형태·위치를 바꾸는 증강입니다. 픽셀이 움직이므로 박스·마스크 라벨도 같은 변환을 적용해 함께 옮겨야 합니다.",
+      "explanation_full": "Albumentations 같은 라이브러리는 이런 변환을 공간(spatial-level) 변환으로 분류하고 박스·키포인트·마스크를 자동으로 함께 변환해 줍니다. 원격탐사 타일에는 90° 회전과 뒤집기가 특히 자연스럽고, 스케일 증강은 GSD가 다른 영상에 대응할 때 유용합니다.",
+      "tags": [
+        "augmentation",
+        "geometric"
+      ],
+      "terms": [
+        "geometric-augmentation"
+      ],
+      "source_ref": "Shorten & Khoshgoftaar 2019, A survey on Image Data Augmentation for Deep Learning; Albumentations 문서",
+      "status": "draft"
+    },
+    {
+      "id": "G-AUG-008",
+      "type": "mcq",
+      "chapter": "G.aug",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "기하(geometric) 증강과 광학(photometric) 증강의 차이로 옳은 것은?",
+      "choices": [
+        {
+          "text": "기하 증강은 픽셀 값만 바꾸고, 광학 증강은 픽셀 위치를 바꾸므로 박스 좌표를 변환해야 한다",
+          "rationale": "정의가 서로 뒤바뀌었습니다."
+        },
+        {
+          "text": "기하 증강은 박스 좌표도 같이 변환해야 하고, 광학 증강은 박스 좌표를 그대로 둔다",
+          "rationale": null
+        },
+        {
+          "text": "광학 증강을 적용하면 밝기 변화율만큼 박스 크기도 비례해서 조정해야 한다",
+          "rationale": "밝기·대비 변화는 객체의 위치와 크기를 바꾸지 않으므로 박스는 그대로입니다."
+        },
+        {
+          "text": "기하 증강은 학습셋에만, 광학 증강은 검증셋·시험셋에만 적용하는 것이 원칙이다",
+          "rationale": "두 증강 모두 학습셋에 적용합니다. 검증·시험셋은 원본으로 평가합니다."
+        },
+        {
+          "text": "기하 증강은 다중분광 영상에 쓸 수 없지만, 광학 증강은 어떤 밴드 구성에도 그대로 쓸 수 있다",
+          "rationale": "반대에 가깝습니다. 뒤집기·회전은 밴드 수와 무관하게 쓸 수 있지만, HSV 같은 광학 증강은 RGB 3채널을 전제로 합니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "기하 증강은 영상의 기하(위치·형태)를 바꾸므로 라벨 좌표도 같은 변환을 받아야 합니다. 광학 증강은 픽셀 값만 바꾸기 때문에 라벨 좌표가 변하지 않습니다.",
+      "explanation_full": "라벨 변환을 빠뜨리는 것이 가장 흔한 증강 버그입니다. 증강 파이프라인을 만들면 증강된 이미지 위에 라벨을 그려 몇 장을 눈으로 확인하는 습관이 필요합니다. 원격탐사에서 광학 증강은 촬영 시기·대기 상태·센서 차이로 생기는 밝기 변동을 흉내 내는 용도로 씁니다.",
+      "tags": [
+        "augmentation",
+        "geometric",
+        "photometric"
+      ],
+      "terms": [
+        "geometric-augmentation",
+        "photometric-augmentation"
+      ],
+      "source_ref": "Shorten & Khoshgoftaar 2019, A survey on Image Data Augmentation for Deep Learning; Albumentations 문서",
+      "status": "draft"
+    },
+    {
+      "id": "G-AUG-009",
+      "type": "short",
+      "chapter": "G.aug",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "밝기·대비·채도·색상(HSV) 값을 무작위로 바꾸되 픽셀의 위치는 그대로 두는 증강을 통칭하는 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Photometric augmentation",
+          "Color augmentation",
+          "Color jitter",
+          "Pixel-level augmentation",
+          "Radiometric augmentation"
+        ],
+        "ko": [
+          "광학 증강",
+          "광도 증강",
+          "색상 증강",
+          "색 변환 증강",
+          "측광 증강",
+          "컬러 지터"
+        ]
+      },
+      "primary": "Photometric augmentation",
+      "explanation_short": "광학 증강(photometric augmentation)은 픽셀 값만 바꾸는 증강입니다. 라벨 좌표는 그대로이며, 조명·대기·센서 차이로 생기는 밝기·색 변동에 모델을 강하게 만듭니다.",
+      "explanation_full": "대표적으로 밝기(brightness), 대비(contrast), 감마, HSV의 색상(hue)·채도(saturation)·명도(value) 조절이 있습니다. HSV는 RGB 3채널을 전제로 한 색공간이므로 다중분광·SAR 영상에는 그대로 쓸 수 없고, 모든 밴드에 같은 배율을 곱하는 밝기 조절처럼 데이터 특성에 맞는 변환으로 바꿔야 합니다. 원격탐사에서 \"광학 영상\"은 SAR와 대비되는 optical imagery를 뜻하므로, 대화에서 헷갈릴 수 있으면 \"photometric 증강\" 또는 \"밝기·색 증강\"이라고 풀어 말합니다.",
+      "tags": [
+        "augmentation",
+        "photometric"
+      ],
+      "terms": [
+        "photometric-augmentation"
+      ],
+      "source_ref": "Shorten & Khoshgoftaar 2019, A survey on Image Data Augmentation for Deep Learning; Albumentations 문서",
+      "status": "draft"
+    },
+    {
+      "id": "G-AUG-010",
+      "type": "mcq",
+      "chapter": "G.aug",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "다음 중 광학(photometric) 증강에 해당하지 않는 것은?",
+      "choices": [
+        {
+          "text": "밝기(brightness)를 무작위 비율로 조절",
+          "rationale": "픽셀 값을 바꾸는 대표적인 광학 증강입니다."
+        },
+        {
+          "text": "대비(contrast)를 무작위 비율로 조절",
+          "rationale": "픽셀 값 분포를 늘이거나 줄이는 광학 증강입니다."
+        },
+        {
+          "text": "감마(gamma) 값을 무작위로 바꿔 보정",
+          "rationale": "픽셀 값을 비선형으로 바꾸는 광학 증강입니다."
+        },
+        {
+          "text": "채도(saturation)를 무작위 비율로 조절",
+          "rationale": "HSV의 S 성분을 바꾸는 광학 증강입니다."
+        },
+        {
+          "text": "무작위 자르기(random crop)",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "무작위 자르기는 영상의 일부 영역을 떼어 내 픽셀 위치를 바꾸는 기하 증강입니다. 나머지는 모두 픽셀 값만 바꾸는 광학 증강입니다.",
+      "explanation_full": "자르기는 경계에 걸린 박스를 잘라 내거나 버리는 라벨 처리가 필요하다는 점에서도 기하 증강의 특징을 보입니다. 광학 증강은 라벨을 건드릴 필요가 없습니다.",
+      "tags": [
+        "augmentation",
+        "photometric",
+        "geometric"
+      ],
+      "terms": [
+        "photometric-augmentation",
+        "geometric-augmentation"
+      ],
+      "source_ref": "Shorten & Khoshgoftaar 2019, A survey on Image Data Augmentation for Deep Learning; Albumentations 문서",
+      "status": "draft"
+    },
+    {
+      "id": "G-AUG-011",
+      "type": "short",
+      "chapter": "G.aug",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "입력 영상을 회전시켜도 모델의 판단(예: 클래스)이 바뀌지 않는 성질을 무엇이라 하는가? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Rotation invariance",
+          "Rotational invariance"
+        ],
+        "ko": [
+          "회전 불변성",
+          "회전 불변"
+        ]
+      },
+      "primary": "Rotation invariance",
+      "explanation_short": "회전 불변성(rotation invariance)은 입력을 돌려도 출력이 같게 유지되는 성질입니다. 위에서 내려다본 원격탐사 영상의 객체는 어느 방향으로든 놓일 수 있으므로 모델이 이 성질을 갖기를 바랍니다.",
+      "explanation_full": "일반 CNN은 합성곱 구조상 평행 이동에는 비교적 강하지만 회전 불변성은 타고나지 않습니다. 그래서 회전·뒤집기 증강으로 여러 방향의 객체를 보여 주어 이 성질을 학습시킵니다. 박스·마스크처럼 위치를 출력하는 과제에서는 입력을 돌리면 출력도 같이 돌아가야 하므로 엄밀히는 회전 등변성(equivariance)이라고 부릅니다.",
+      "tags": [
+        "augmentation",
+        "rotation",
+        "remote-sensing"
+      ],
+      "terms": [
+        "rotation-invariance"
+      ],
+      "source_ref": "원격탐사 딥러닝 증강 일반; Shorten & Khoshgoftaar 2019, A survey on Image Data Augmentation for Deep Learning; Albumentations 문서",
+      "status": "draft"
+    },
+    {
+      "id": "G-AUG-012",
+      "type": "mcq",
+      "chapter": "G.aug",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "일반 사진 데이터셋에서는 상하 뒤집기를 잘 쓰지 않지만, 연직으로 촬영한 위성·드론 정사영상에서는 상하 뒤집기와 90° 회전을 자유롭게 쓰는 경우가 많다. 그 근거로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "CNN은 합성곱 구조 덕분에 원래 회전 불변이라 회전 증강을 해도 성능에 아무 영향이 없기 때문이다",
+          "rationale": "일반 CNN은 회전 불변성을 타고나지 않습니다. 그래서 회전 증강으로 가르쳐야 합니다."
+        },
+        {
+          "text": "90° 회전을 하면 GSD가 바뀌어 스케일 증강 효과를 함께 얻을 수 있기 때문이다",
+          "rationale": "90° 회전은 픽셀 크기(GSD)를 바꾸지 않습니다. 스케일 변화는 리사이즈 증강에서 옵니다."
+        },
+        {
+          "text": "내려다본 영상에는 정해진 위쪽이 없어, 돌리거나 뒤집은 장면도 실제로 있을 법하기 때문이다",
+          "rationale": null
+        },
+        {
+          "text": "정사영상은 북쪽이 위로 고정되어 있어 회전해도 지리 좌표계가 그대로 유지되기 때문이다",
+          "rationale": "회전하면 오히려 북쪽 방향이 바뀌어 원래 지오트랜스폼과 맞지 않게 됩니다. 증강은 좌표계와 무관하게 픽셀 배열만 바꾸는 것입니다."
+        },
+        {
+          "text": "위성 영상은 밴드 수가 많아 뒤집기를 하면 분광 정보가 더 풍부해지기 때문이다",
+          "rationale": "뒤집기는 밴드 값을 바꾸지 않으므로 분광 정보가 늘지 않습니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "일반 사진은 하늘이 위, 땅이 아래라는 방향 규칙이 있어 상하 뒤집기가 비현실적인 장면을 만듭니다. 연직 영상에서는 객체가 어떤 방향으로든 놓일 수 있어 회전·반전 장면도 자연스럽고, 이것이 회전 불변성을 학습시키는 근거가 됩니다.",
+      "explanation_full": "90° 배수 회전과 뒤집기를 조합하면 8가지 방향(정이면체군 D4)을 얻을 수 있습니다. 다만 그림자 방향(태양 방위)이나 경사 촬영 영상의 기울어짐처럼 방향에 의미가 있는 단서가 있다면, 이런 증강이 그 단서를 흐릴 수 있음을 염두에 둡니다.",
+      "tags": [
+        "augmentation",
+        "rotation",
+        "remote-sensing"
+      ],
+      "terms": [
+        "rotation-invariance",
+        "geometric-augmentation"
+      ],
+      "source_ref": "원격탐사 딥러닝 증강 일반; Shorten & Khoshgoftaar 2019, A survey on Image Data Augmentation for Deep Learning; Albumentations 문서",
+      "status": "draft"
+    },
+    {
+      "id": "G-AUG-013",
+      "type": "mcq",
+      "chapter": "G.aug",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "수평 박스(HBB) 라벨이 달린 차량 데이터에 임의 각도(예: 45°) 회전 증강을 적용하면 생기는 문제로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "회전 후 클래스 번호가 바뀌어 차량이 다른 클래스로 학습될 수 있다",
+          "rationale": "회전은 객체의 클래스를 바꾸지 않습니다. 문제는 박스 좌표 쪽에 있습니다."
+        },
+        {
+          "text": "90° 회전과 달리 45° 회전은 라벨 좌표를 따로 변환할 필요 없이 그대로 쓸 수 있다",
+          "rationale": "모든 회전은 픽셀 위치를 바꾸므로 라벨도 변환해야 합니다."
+        },
+        {
+          "text": "회전하면 영상의 밴드 순서가 뒤섞여 색이 틀어진 채로 학습된다",
+          "rationale": "회전은 공간 배열만 바꾸며 밴드 순서와는 무관합니다."
+        },
+        {
+          "text": "회전한 박스를 감싸는 새 수평 박스가 실제 차량보다 커져 박스가 헐거워진다",
+          "rationale": null
+        },
+        {
+          "text": "회전 각도에 비례해 GSD가 커져서 차량이 실제보다 작게 보이게 된다",
+          "rationale": "회전은 픽셀 크기를 바꾸지 않습니다. 모서리에 빈 영역이 생길 뿐입니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "임의 각도로 돌린 직사각형을 다시 수평 박스로 감싸면 모서리 빈 공간만큼 박스가 커집니다. 45°에서 가장 심하며, 90° 배수 회전은 박스가 정확히 유지되어 이 문제가 없습니다.",
+      "explanation_full": "예를 들어 40×20 px 차량을 45° 돌리면 감싸는 수평 박스는 한 변이 (40 + 20) × cos45° ≈ 42 px인 약 42×42 px가 되어 원래 면적(800 px²)의 두 배가 넘습니다(약 1,800 px²). 그래서 수평 박스 라벨에는 90° 배수 회전과 뒤집기를 주로 쓰고, 임의 각도가 필요하면 마스크에서 박스를 다시 계산하거나 회전 박스(OBB) 라벨을 씁니다.",
+      "tags": [
+        "augmentation",
+        "geometric",
+        "rotation"
+      ],
+      "terms": [
+        "geometric-augmentation",
+        "rotation-invariance"
+      ],
+      "source_ref": "Shorten & Khoshgoftaar 2019, A survey on Image Data Augmentation for Deep Learning; Albumentations 문서",
+      "status": "draft"
+    },
+    {
+      "id": "G-AUG-014",
+      "type": "scenario",
+      "chapter": "G.aug",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"train loss는 계속 떨어지는데 val mAP가 30 epoch부터 내려가. 라벨은 더 못 늘리니까 증강으로 버텨 봐.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "검증셋에도 학습 때와 같은 증강을 걸어 train과 val의 분포를 맞춰 준다",
+          "rationale": "검증셋에 증강을 걸면 실제 영상 성능을 잴 수 없게 됩니다. 과적합이 해결된 것처럼 보일 뿐입니다."
+        },
+        {
+          "text": "학습셋에만 flip·rot90·스케일·밝기 증강을 늘리고, 검증셋은 원본으로 평가한다",
+          "rationale": null
+        },
+        {
+          "text": "증강을 모두 끄고 원본만으로 epoch 수를 두 배로 늘려 끝까지 수렴시킨다",
+          "rationale": "과적합 상황에서 증강을 끄고 더 오래 학습하면 과적합이 심해집니다."
+        },
+        {
+          "text": "검증셋을 학습셋에 합쳐 학습 데이터 양을 늘리고 같은 설정으로 다시 학습한다",
+          "rationale": "검증셋이 없어져 과적합 여부를 확인할 수 없고, 이후 모델 선택도 할 수 없습니다. 지시한 증강 대응도 아닙니다."
+        },
+        {
+          "text": "학습률을 두 배로 높여 손실이 더 빨리 떨어지도록 학습 속도를 올린다",
+          "rationale": "학습률을 높인다고 과적합이 줄지 않으며, 지시한 증강 대응도 아닙니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "train은 좋아지고 val이 나빠지는 것은 과적합 신호입니다. 데이터를 늘릴 수 없을 때는 학습셋에 증강을 강화해 다양성을 늘리고, 평가는 원본 검증셋으로 해야 효과를 제대로 확인할 수 있습니다.",
+      "explanation_full": "증강을 한 번에 모두 올리기보다 하나씩 켜며 val mAP 변화를 기록하면 어떤 증강이 효과가 있는지 알 수 있습니다. 증강을 너무 세게 걸면 학습이 어려워져 과소적합으로 넘어갈 수 있으니 train/val 곡선을 함께 봅니다. 원격탐사 타일에는 90° 회전·뒤집기가 부작용이 적은 첫 번째 선택입니다.",
+      "tags": [
+        "augmentation",
+        "overfitting"
+      ],
+      "terms": [
+        "geometric-augmentation",
+        "photometric-augmentation"
+      ],
+      "source_ref": "Shorten & Khoshgoftaar 2019, A survey on Image Data Augmentation for Deep Learning; Albumentations 문서",
+      "status": "draft"
+    },
+    {
+      "id": "G-AUG-015",
+      "type": "scenario",
+      "chapter": "G.aug",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"적조 탐지 모델 설정 보니까 hue 증강이 기본값으로 켜져 있더라. 이거 그대로 둬도 되는지 검토해.\"\n\n검토 결과로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "색 변화에 강한 모델이 되도록 hue 범위를 최대로 넓혀 다양한 바닷물 색을 학습시킨다",
+          "rationale": "색이 곧 클래스 신호인 과제에서 색을 크게 바꾸면 정상 해수가 적조처럼, 적조가 정상 해수처럼 보이는 잘못된 샘플이 만들어집니다."
+        },
+        {
+          "text": "hue 증강은 그대로 두고, 대신 뒤집기·회전 같은 기하 증강을 모두 끈다",
+          "rationale": "뒤집기·회전은 바닷물 색을 바꾸지 않아 이 과제에 해가 없습니다. 문제의 원인은 그대로 둔 셈입니다."
+        },
+        {
+          "text": "hue 증강은 박스 좌표를 바꾸므로 라벨 좌표 변환 코드를 추가한 뒤 계속 쓴다",
+          "rationale": "hue는 픽셀 값만 바꾸는 광학 증강이라 라벨 좌표 변환과 무관합니다."
+        },
+        {
+          "text": "hue 증강을 학습셋 대신 시험셋에만 적용해 색 변화에 대한 강건성을 평가한다",
+          "rationale": "증강은 학습셋에 쓰는 것이며, 시험셋을 변형하면 실제 영상에서의 성능을 잴 수 없습니다."
+        },
+        {
+          "text": "바닷물 색 자체가 적조 판단 근거라 hue 증강은 끄거나 아주 좁은 범위로 줄인다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "증강은 라벨이 그대로 유효한 범위에서만 써야 합니다. 적조처럼 색이 곧 클래스를 가르는 과제에서 hue를 바꾸면 영상과 라벨이 맞지 않는 샘플이 생기므로, 끄거나 매우 약하게 줄입니다.",
+      "explanation_full": "같은 원리로 식생 활력(건강/스트레스), 수질 탁도, 녹조처럼 분광·색 정보가 판단 근거인 과제에서는 채널 간 비율을 바꾸는 증강을 조심합니다. 조명·대기 차이를 흉내 내려면 모든 채널에 같은 배율을 곱하는 약한 밝기 변화 정도가 안전합니다.",
+      "tags": [
+        "augmentation",
+        "photometric",
+        "remote-sensing",
+        "harmful-augmentation"
+      ],
+      "terms": [
+        "photometric-augmentation"
+      ],
+      "source_ref": "원격탐사 딥러닝 증강 일반; Shorten & Khoshgoftaar 2019, A survey on Image Data Augmentation for Deep Learning; Albumentations 문서",
+      "status": "draft"
+    },
+    {
+      "id": "G-AUG-016",
+      "type": "scenario",
+      "chapter": "G.aug",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"선박 탐지 학습 마지막 10 epoch은 mosaic 끄고 돌려.\"\n\n이 지시의 의도로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "모자이크 이미지는 실제 추론 입력(한 장면 타일)과 모양이 달라, 마지막에 실제 분포로 맞추려는 것이다",
+          "rationale": null
+        },
+        {
+          "text": "모자이크가 GPU 메모리를 많이 차지하므로 마지막 구간의 배치 크기를 키우려는 것이다",
+          "rationale": "모자이크 결과물도 같은 입력 크기로 잘려 들어가므로 메모리 사용량이 크게 달라지지 않습니다. 이 지시의 목적이 아닙니다."
+        },
+        {
+          "text": "모자이크가 켜져 있으면 검증 단계에서 mAP를 계산할 수 없어서 끄려는 것이다",
+          "rationale": "검증은 원본 이미지로 하므로 모자이크 여부와 관계없이 mAP를 계산할 수 있습니다."
+        },
+        {
+          "text": "마지막 구간에서 학습률을 크게 올리기 위해 증강 강도를 미리 줄여 두려는 것이다",
+          "rationale": "마지막 구간은 보통 학습률이 가장 낮아지는 구간입니다. 모자이크를 끄는 목적은 입력 분포를 실제와 맞추는 데 있습니다."
+        },
+        {
+          "text": "모자이크를 끄면 객체가 더 작아지므로, 마지막 구간에 소형 선박 학습을 집중시키려는 것이다",
+          "rationale": "반대입니다. 모자이크는 네 장을 축소해 붙이므로 객체를 더 작게 만들고, 끄면 객체가 원래 크기로 돌아옵니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "모자이크는 네 장면이 이어 붙은 부자연스러운 이미지와 축소된 객체를 만듭니다. 학습 막바지에 이를 끄면 모델이 실제 추론 때 들어올 한 장면 타일의 분포에 맞춰 마무리 조정됩니다.",
+      "explanation_full": "Ultralytics YOLO의 close_mosaic 설정(마지막 N epoch 모자이크 해제)이 이 방식을 구현한 것이며, 문서는 \"마무리 전 학습 안정화\"라고 설명합니다. 이 방식을 제안한 YOLOX는 강한 증강(Mosaic·MixUp)으로 만든 이미지가 자연 영상의 분포와 멀고, 모자이크의 잦은 자르기가 잘린(부정확한) 박스를 만든다는 점을 이유로 마지막 15 epoch에 이를 끄고 실제 분포에서 수렴을 마무리했습니다. 모자이크 이음새 같은 인공 패턴에 익숙해진 부분도 이 구간에서 누그러집니다.",
+      "tags": [
+        "augmentation",
+        "mosaic"
+      ],
+      "terms": [
+        "mosaic-augmentation"
+      ],
+      "source_ref": "Ge et al. 2021, YOLOX: Exceeding YOLO Series in 2021; Bochkovskiy et al. 2020, YOLOv4 (Mosaic); Ultralytics 문서 train settings (close_mosaic)",
+      "status": "draft"
+    },
+    {
+      "id": "G-AUG-017",
+      "type": "scenario",
+      "chapter": "G.aug",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"폐어구 부표 샘플이 300개뿐이야. 인스턴스 마스크 있으니까 copy-paste로 늘려. 단, 바다 위에만.\"\n\n가장 적절한 구현은?",
+      "choices": [
+        {
+          "text": "부표 박스 사각형을 배경째 오려서 타일의 아무 위치에나 붙이고 라벨을 추가한다",
+          "rationale": "배경이 딸려 오고 육지 위에도 붙을 수 있어, 지시의 \"바다 위에만\" 조건과 마스크를 쓰라는 전제를 모두 어깁니다."
+        },
+        {
+          "text": "부표를 수면 위치에 붙이되 잘 보이도록 두 배로 확대해서 붙이고 라벨을 추가한다",
+          "rationale": "축척이 실제와 달라져 모델이 비현실적인 크기를 배웁니다. 대상 영상과 같은 GSD 축척으로 붙여야 합니다."
+        },
+        {
+          "text": "마스크로 부표만 오려 수계 마스크 안에 같은 축척으로 붙이고 라벨을 추가한다",
+          "rationale": null
+        },
+        {
+          "text": "수면 위치에 같은 축척으로 붙이되, 붙인 부표에는 라벨을 달지 않고 배경으로 둔다",
+          "rationale": "라벨 없는 부표는 배경으로 학습되어 오히려 재현율을 떨어뜨립니다."
+        },
+        {
+          "text": "수면에 붙여 만든 합성 샘플을 시험셋에도 넣어 희귀 클래스 평가 표본을 늘린다",
+          "rationale": "합성 샘플로 평가하면 실제 영상에서의 성능을 알 수 없습니다. 평가셋은 원본만 씁니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "지시의 핵심은 희귀 객체를 늘리되 현실적인 문맥을 지키는 것입니다. 마스크로 객체만 오리고, 수계 마스크로 붙일 위치를 수면으로 제한하며, 축척을 맞추고 라벨을 추가합니다. 평가셋은 건드리지 않습니다.",
+      "explanation_full": "수계 마스크는 NDWI 임계값이나 해안선 벡터로 만들 수 있습니다. 한 원본 부표를 너무 여러 번 붙이면 같은 모양을 외우므로, 붙일 때 90° 회전·뒤집기·약한 밝기 변화를 함께 주어 다양성을 늘립니다. 합성 샘플 비율을 바꿔 가며 원본 검증셋에서 희귀 클래스 AP가 어떻게 변하는지 확인합니다.",
+      "tags": [
+        "augmentation",
+        "copy-paste",
+        "remote-sensing"
+      ],
+      "terms": [
+        "copy-paste-augmentation"
+      ],
+      "source_ref": "Ghiasi et al. 2021, Simple Copy-Paste is a Strong Data Augmentation Method for Instance Segmentation (CVPR)",
+      "status": "draft"
+    },
+    {
+      "id": "G-AUG-018",
+      "type": "scenario",
+      "chapter": "G.aug",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"Sentinel-2 10밴드 토지피복 분류에 밴드마다 따로 밝기 지터를 걸고 있더라. NDVI 같은 밴드 비율이 흔들릴 수 있으니 고쳐.\"\n\n가장 적절한 수정은?",
+      "choices": [
+        {
+          "text": "밴드마다 지터 범위를 오히려 더 넓혀 밴드별 변동에 강한 모델로 만든다",
+          "rationale": "밴드별 독립 변화가 커질수록 밴드 비율(분광 특성)이 더 크게 흔들려 지시와 반대입니다."
+        },
+        {
+          "text": "모든 밴드에 같은 값을 더하는 공통 오프셋 방식으로 바꾼다",
+          "rationale": "같은 값 c를 더하면 NDVI가 (NIR − Red)/(NIR + Red + 2c)로 바뀝니다. 비율을 보존하는 것은 곱셈 배율입니다."
+        },
+        {
+          "text": "RGB 3개 밴드만 HSV로 바꿔 hue를 조절하고, 나머지 밴드는 그대로 둔다",
+          "rationale": "가시 밴드만 바꾸면 근적외 등 나머지 밴드와의 비율이 깨집니다. HSV는 10밴드 전체에 정의되지도 않습니다."
+        },
+        {
+          "text": "모든 밴드에 같은 배율을 곱하는 공통 밝기 스케일로 바꾼다",
+          "rationale": null
+        },
+        {
+          "text": "학습 때마다 밴드 순서를 무작위로 섞는 채널 셔플을 추가해 강건성을 높인다",
+          "rationale": "밴드 순서는 파장 정보 그 자체이므로 섞으면 분광 의미가 완전히 무너집니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "NDVI = (NIR − Red)/(NIR + Red)는 두 밴드에 같은 배율 a를 곱해도 a가 약분되어 값이 변하지 않습니다. 모든 밴드에 공통 배율을 곱하면 조명·대기 차이로 인한 밝기 변화를 흉내 내면서 밴드 간 비율은 보존됩니다.",
+      "explanation_full": "같은 값을 더하는 오프셋은 분모만 2c만큼 바꿔 NDVI를 흔듭니다. 대기 산란처럼 밴드마다 다른 변화를 흉내 내야 하는 경우도 있지만, 그때는 물리적으로 그럴듯한 작은 범위로 제한하고 분광 지표에 기대는 클래스의 검증 성능을 확인합니다. 분광 정보가 핵심인 과제에서는 증강이 \"라벨을 바꾸지 않는 변환\"인지가 가장 중요한 기준입니다. 단, 배율이 비율을 보존하는 것은 오프셋이 없는 반사율 값에 곱할 때입니다. Sentinel-2 L2A처럼 DN에 오프셋이 들어간 제품은 먼저 반사율로 변환한 뒤 곱하고, 밴드별 표준화(z-score)를 거친 값에 곱하면 비율이 보존되지 않으므로 증강을 정규화보다 앞에 둡니다.",
+      "tags": [
+        "augmentation",
+        "photometric",
+        "remote-sensing",
+        "spectral"
+      ],
+      "terms": [
+        "photometric-augmentation"
+      ],
+      "source_ref": "원격탐사 딥러닝 증강 일반; Shorten & Khoshgoftaar 2019, A survey on Image Data Augmentation for Deep Learning; Albumentations 문서",
+      "status": "draft"
+    }
+  ]
+}

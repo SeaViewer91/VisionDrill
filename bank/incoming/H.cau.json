@@ -1,0 +1,730 @@
+{
+  "format": "visiondrill-bank-exchange",
+  "format_version": 1,
+  "terms": [
+    {
+      "id": "shortcut-learning",
+      "term_en": "Shortcut Learning",
+      "term_ko": "바로가기 학습",
+      "abbreviation": null,
+      "definition": "모델이 표적 자체의 형상·외형 대신 학습 데이터에서 표적과 우연히 강하게 함께 나타난 배경 맥락이나 편향을 단서로 삼아 손실을 줄이는 현상. 배경이 달라지는 새 환경(OOD)에 배포되면 성능이 무너진다",
+      "usage_example": "선박 모델이 수면 텍스처만 보고 찍는 것 같아. 도크에 올라온 배는 하나도 못 잡잖아, 바로가기 학습 의심돼.",
+      "origin": "standard",
+      "track": "H"
+    },
+    {
+      "id": "structural-causal-model",
+      "term_en": "Structural Causal Model",
+      "term_ko": "구조적 인과 모델",
+      "abbreviation": "SCM",
+      "definition": "변수들 사이의 인과 관계를 방향 그래프와 구조 방정식으로 표현한 모델(Pearl). 노트는 객체 탐지를 환경 도메인 E, 배경 맥락 C, 표적 본질 O, 관측 이미지 X = g(C, O, E), 정답 라벨 Y = f(O), 모델 예측 Ŷ = f_θ(X)의 SCM으로 나타낸다",
+      "usage_example": "선박 탐지 문제를 SCM으로 그려 보면 라벨은 선박 자체에서만 나와야 하는데, 모델이 수면 쪽 경로를 타고 있어.",
+      "origin": "standard",
+      "track": "H"
+    },
+    {
+      "id": "do-operator",
+      "term_en": "Do-Operator (Intervention)",
+      "term_ko": "do 연산자(개입)",
+      "abbreviation": "do(·)",
+      "definition": "변수를 관측된 대로 두지 않고 외부에서 강제로 특정 값으로 고정하는 개입을 나타내는 Pearl의 표기. P(Y | do(C = c))는 C를 c로 '설정'했을 때의 분포로, C = c인 표본을 골라 보는 조건부 확률 P(Y | C = c)와는 교란 변수가 있으면 일반적으로 다르다",
+      "usage_example": "검증 세트에서 육상 배경 선박을 골라 보는 걸로는 부족해. 배경만 바꿔 합성하는 do(C = C′) 실험으로 가.",
+      "origin": "standard",
+      "track": "H"
+    },
+    {
+      "id": "contextual-bias-ratio",
+      "term_en": "Contextual Bias Ratio",
+      "term_ko": "맥락 편향비",
+      "abbreviation": "CBR",
+      "definition": "정상 맥락(In-Context)에서의 mAP 대비 이질적 맥락(Out-of-Context)에 놓인 표적의 mAP가 얼마나 떨어지는지를 (mAP_In − mAP_Out) / mAP_In으로 계산한 지표. Diagnostics 노트가 정의했으며 0.40 초과를 맥락 과적합 경고, 0.70 초과를 치명적 허위 상관으로 본다(잠정치)",
+      "usage_example": "항공기 모델 CBR이 0.62야. 활주로 밖에 있는 비행기는 거의 못 본다는 뜻이니 배경 편향부터 잡자.",
+      "origin": "project",
+      "track": "H"
+    },
+    {
+      "id": "contextual-hallucination-rate",
+      "term_en": "Contextual Hallucination Rate",
+      "term_ko": "맥락 유령 환각율",
+      "abbreviation": "CHR",
+      "definition": "표적을 인페인팅으로 지운 반사실 영상에서, 지운 자리와 IoU ≥ 0.5이고 신뢰도 ≥ 0.5인 박스가 여전히 나오는 영상의 비율. Diagnostics 노트가 정의했으며 0%가 정상, 5% 초과면 배경만 보고 표적을 지어내는 상태로 본다(잠정치)",
+      "usage_example": "빈 계류장에 비행기 박스가 뜬다며? 항공기 지운 영상 만들어서 CHR부터 재 봐.",
+      "origin": "project",
+      "track": "H"
+    },
+    {
+      "id": "invariant-risk-minimization",
+      "term_en": "Invariant Risk Minimization",
+      "term_ko": "불변 위험 최소화",
+      "abbreviation": "IRM",
+      "definition": "학습 데이터를 여러 환경(계절·지역·배경 유형 등)으로 나누고, 환경별 위험의 합에 '각 환경에서 분류기가 이미 최적인지'를 재는 그래디언트 노름 벌점을 더해 모든 환경에서 공통으로 통하는 불변 표현을 학습하는 목적함수(Arjovsky et al., 2019)",
+      "usage_example": "지역별로 배경이 너무 달라서 ERM으로는 계속 배경을 외워. 촬영 지역을 환경으로 나눠 IRM 걸어 보자.",
+      "origin": "standard",
+      "track": "H"
+    }
+  ],
+  "questions": [
+    {
+      "id": "H-CAU-001",
+      "type": "short",
+      "chapter": "H.cau",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "선박 탐지 모델이 선체 형상 대신 '푸른 수면 텍스처'를 단서로 선박을 찾도록 학습되어, 도크나 야적장에 놓인 선박은 놓치는 현상처럼 표적 대신 우연히 결합된 배경 단서를 학습하는 것을 무엇이라 하는가? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Shortcut Learning"
+        ],
+        "ko": [
+          "바로가기 학습",
+          "지름길 학습",
+          "숏컷 학습"
+        ]
+      },
+      "primary": "Shortcut Learning",
+      "explanation_short": "표적 본질 대신 데이터셋에서 표적과 함께 나타나는 배경·편향을 손쉬운 단서로 학습하는 것을 바로가기 학습(Shortcut Learning)이라 합니다. 배경이 달라지는 환경에 배포되면 성능이 무너집니다.",
+      "explanation_full": "노트는 대표 사례로 수면 텍스처로 선박을 찾는 모델(육상 선박 미탐 E_miss)과 활주로 유도선으로 항공기를 찾는 모델(빈 활주로 허위 탐지 E_bkg)을 듭니다. 원인은 학습 데이터에서 특정 표적과 특정 배경 사이의 강한 공선성, 즉 허위 상관관계(Spurious Correlation)입니다. 위성 영상에서는 촬영 지역·계절에 따라 배경이 크게 바뀌므로 특히 흔합니다.",
+      "tags": [
+        "causal",
+        "shortcut"
+      ],
+      "terms": [
+        "shortcut-learning",
+        "spurious-correlation"
+      ],
+      "source_ref": "Diagnostics/research/note/08_causal_counterfactual_diagnostics/01_spurious_correlations_in_vision.md#1",
+      "status": "draft"
+    },
+    {
+      "id": "H-CAU-002",
+      "type": "mcq",
+      "chapter": "H.cau",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "위성 영상 선박 탐지 모델의 평가 결과 중 바로가기 학습(Shortcut Learning)을 가장 강하게 의심하게 하는 것은?",
+      "choices": [
+        {
+          "text": "길이 20 m 미만의 소형 선박에서만 재현율이 낮고 대형 선박은 배경과 무관하게 잘 잡는다",
+          "rationale": "크기에 따른 성능 차이는 스케일 표현력(해상도·FPN 구성) 문제에 가깝습니다. 배경이 달라져서 생긴 차이가 아닙니다."
+        },
+        {
+          "text": "구름·연무가 낀 장면에서는 선박·부표·해안 구조물 가릴 것 없이 전체 성능이 고르게 떨어진다",
+          "rationale": "대기 교란으로 영상 품질 자체가 나빠지는 환경 강건성 문제입니다. 표적 대신 배경을 단서로 쓰는 것과는 다릅니다."
+        },
+        {
+          "text": "수면 위 선박은 잘 잡지만, 같은 크기 선박도 도크나 육상 야적장에 있으면 대부분 놓친다",
+          "rationale": null
+        },
+        {
+          "text": "라벨러마다 박스 경계를 다르게 그려 IoU 0.75 기준 AP가 낮게 나온다",
+          "rationale": "라벨 경계 불일치(라벨 노이즈) 문제입니다. 모델이 무엇을 단서로 삼는지와는 별개입니다."
+        },
+        {
+          "text": "학습 손실은 계속 줄어드는데 검증 손실은 어느 시점부터 늘어난다",
+          "rationale": "일반적인 과적합 징후입니다. 과적합 자체는 무엇에 과적합했는지 알려주지 않으므로 바로가기 학습의 직접 증거가 아닙니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "표적은 그대로인데 배경만 달라졌을 때 성능이 무너진다면, 모델이 선체가 아니라 수면 텍스처를 보고 있다는 뜻입니다. 이것이 바로가기 학습의 전형적인 징후입니다.",
+      "explanation_full": "바로가기 학습은 배경 맥락이 바뀌는 OOD 환경에서 드러납니다. 노트는 이 격차를 맥락 편향비(CBR)로 정량화하고, 배경 교체 개입 do(C = C′)으로 인과적으로 확인하라고 권합니다. 다른 보기들은 스케일, 대기 교란, 라벨 노이즈, 과적합처럼 실제로 흔한 원인이지만 '배경 의존'을 가리키지는 않습니다.",
+      "tags": [
+        "causal",
+        "shortcut"
+      ],
+      "terms": [
+        "shortcut-learning"
+      ],
+      "source_ref": "Diagnostics/research/note/08_causal_counterfactual_diagnostics/01_spurious_correlations_in_vision.md#1",
+      "status": "draft"
+    },
+    {
+      "id": "H-CAU-003",
+      "type": "mcq",
+      "chapter": "H.cau",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "노트의 객체 탐지 구조적 인과 모델(SCM)에서 정답 라벨 Y를 결정해야 하는 유일한 변수는?",
+      "choices": [
+        {
+          "text": "표적 본질 특징 O (형상·에지·부품 배치·고유 반사율)",
+          "rationale": null
+        },
+        {
+          "text": "배경 맥락 C (바다·활주로·도로·산림 등 주변 텍스처)",
+          "rationale": "C가 Y를 결정하는 것처럼 보이는 것이 바로 허위 상관관계입니다. 노트는 Y = f(O)로 둡니다."
+        },
+        {
+          "text": "환경 도메인 E (촬영 지역·계절·기상·센서 고도)",
+          "rationale": "E는 배경과 관측 이미지를 만드는 외생적 인자입니다. 라벨을 직접 결정하지 않습니다."
+        },
+        {
+          "text": "관측 이미지 X (렌더링된 픽셀 텐서)",
+          "rationale": "X = g(C, O, E)는 모델의 입력입니다. 라벨은 픽셀이 아니라 표적의 실제 정체에서 나옵니다."
+        },
+        {
+          "text": "모델 예측 Ŷ (신경망 출력)",
+          "rationale": "Ŷ = f_θ(X)는 모델이 내놓는 추정값이지 정답을 결정하는 변수가 아닙니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "노트는 Y = f(O)로 정의합니다. 정답 라벨은 오직 표적 본질 O에서 나와야 하며(O → Y), 배경 C를 거쳐 Y를 맞히는 경로는 비인과적입니다.",
+      "explanation_full": "노트의 변수: E(환경 도메인), C(배경 맥락), O(표적 본질), X = g(C, O, E), Y = f(O), Ŷ = f_θ(X). 모델은 X만 보므로 X 안의 O 정보와 C 정보 중 무엇에 기대는지가 문제입니다. 토지피복·건물 탐지에서도 '라벨이 무엇에서 결정되는가'를 먼저 적어 두면 어떤 배경 편향을 검사할지 정하기 쉬워집니다.",
+      "tags": [
+        "causal",
+        "scm"
+      ],
+      "terms": [
+        "structural-causal-model"
+      ],
+      "source_ref": "Diagnostics/research/note/08_causal_counterfactual_diagnostics/01_spurious_correlations_in_vision.md#2.1",
+      "status": "draft"
+    },
+    {
+      "id": "H-CAU-004",
+      "type": "mcq",
+      "chapter": "H.cau",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "노트는 객체 탐지 SCM에서 비인과적 뒷문 경로(Backdoor Path)를 Y ← O ← E → C → X → Ŷ로 적는다. 이 경로 때문에 모델이 배경 C로 Y를 맞히는 지름길을 배우게 되는 조건으로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "'수면 위 물체는 선박'처럼 정답 라벨 Y가 배경 C로부터 직접 결정되도록 라벨링 지침이 작성되었을 때",
+          "rationale": "그렇다면 C → Y가 인과 경로가 되어 '허위' 상관이 아닙니다. 노트의 전제는 Y가 오직 O에서만 결정된다는 것입니다."
+        },
+        {
+          "text": "촬영 환경 E 때문에 특정 표적과 특정 배경이 늘 함께 나타나 O와 C가 강하게 묶였을 때",
+          "rationale": null
+        },
+        {
+          "text": "모델 예측 Ŷ가 다시 학습 데이터 X에 피드백되어 X를 바꿀 때",
+          "rationale": "노트의 SCM에는 Ŷ → X 경로가 없습니다. 예측의 되먹임은 다른 종류의 문제(자기강화 편향)입니다."
+        },
+        {
+          "text": "테스트 세트의 배경 분포가 학습 세트와 완전히 같을 때",
+          "rationale": "배경 분포가 같으면 지름길 학습이 드러나지 않을 뿐, 지름길이 생기는 조건은 아닙니다. 문제는 배경이 달라지는 OOD 배포에서 터집니다."
+        },
+        {
+          "text": "표적 O의 크기가 작아 관측 이미지 X에서 몇 픽셀만 차지할 때",
+          "rationale": "표적 크기는 탐지 난이도를 높이지만 뒷문 경로의 성립 조건은 아닙니다. 뒷문 경로는 O와 C를 함께 움직이는 공통 원인에서 생깁니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "E가 O와 C 모두에 영향을 주면(공통 원인) 학습 데이터에서 표적과 배경이 함께 움직입니다. 그러면 모델은 C에서 Y를 유추하는 쉬운 경로를 타고, 배경이 바뀌는 OOD 환경에서 성능이 무너집니다.",
+      "explanation_full": "뒷문 경로는 인과 추론에서 처치 변수로 들어오는 화살표로 시작해 결과까지 이어지는 비인과적 경로로, 대개 공통 원인(교란 변수)을 거칩니다. 여기서는 C ← E → O → Y처럼 E를 거쳐 배경 C와 라벨 Y가 연관됩니다. 노트의 그림에는 E → O 화살표가 명시되어 있지 않지만, 경로 표기(O ← E)는 환경이 표적 분포에도 영향을 준다는 전제를 담고 있습니다. 예를 들어 '항구 지역에서 촬영'(E)이 '선박이 많음'(O)과 '수면 배경'(C)을 동시에 만듭니다. 진단은 배경 교체 개입 do(C = C′)으로 하고, 처방은 Context-Shuffling 증강처럼 학습 데이터에서 O와 C의 결합을 끊는 것입니다.",
+      "tags": [
+        "causal",
+        "scm",
+        "backdoor"
+      ],
+      "terms": [
+        "structural-causal-model",
+        "spurious-correlation"
+      ],
+      "source_ref": "Diagnostics/research/note/08_causal_counterfactual_diagnostics/01_spurious_correlations_in_vision.md#2.2",
+      "status": "draft"
+    },
+    {
+      "id": "H-CAU-005",
+      "type": "short",
+      "chapter": "H.cau",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "Pearl의 인과 추론에서, 변수를 관측된 값 그대로 두는 것이 아니라 외부에서 강제로 특정 값으로 설정하는 '개입'을 나타내는 연산자 표기의 이름은? (예: 배경을 사막으로 바꾸는 조작은 이 연산자를 써서 ___(C = C′)로 적는다) (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Do-Operator (do)",
+          "Do Operator (Intervention Operator)"
+        ],
+        "ko": [
+          "do 연산자",
+          "개입 연산자"
+        ]
+      },
+      "primary": "Do-Operator (do)",
+      "explanation_short": "do 연산자는 변수를 강제로 특정 값으로 설정하는 개입을 나타냅니다. P(Y | do(C = c))는 C = c인 표본을 골라서 보는 조건부 확률 P(Y | C = c)와 교란 변수가 있으면 일반적으로 다릅니다.",
+      "explanation_full": "노트 02장은 배경 교체 do(C = C_counter)와 표적 소거 do(O = ∅)라는 두 개입 실험을 제시합니다. 관측 데이터에서 '육상 배경 선박'을 골라 보면 그 영상들의 다른 차이(해상도, 계절, 선박 종류)가 섞이지만, 같은 선박 픽셀을 두고 배경만 바꾸면 배경의 효과만 떼어 볼 수 있습니다. 원문 표현 차이: 노트는 do(·)를 '반사실적 개입(Counterfactual Intervention)'이라고 부르지만, Pearl의 인과 사다리(1단계 연관, 2단계 개입, 3단계 반사실)에서 do(·)는 2단계 '개입'의 표기이고, 이미 관측된 개별 사례에 대해 '그때 다르게 했다면'을 묻는 반사실은 3단계로 따로 구분합니다. 노트의 '반사실'은 '같은 영상에서 배경만 바뀌었다면'이라는 합성 영상을 만든다는 일상적 의미로 읽으면 됩니다. 외부와 소통할 때는 do(·)를 '개입'으로 부르는 표준 용어를 씁니다.",
+      "tags": [
+        "causal",
+        "intervention"
+      ],
+      "terms": [
+        "do-operator"
+      ],
+      "source_ref": "Diagnostics/research/note/08_causal_counterfactual_diagnostics/02_counterfactual_stress_testing.md#1",
+      "status": "draft"
+    },
+    {
+      "id": "H-CAU-006",
+      "type": "mcq",
+      "chapter": "H.cau",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "선박 탐지 모델이 배경 맥락에 얼마나 의존하는지 알아보려 한다. 다음 중 배경 맥락에 대한 개입 do(C = C′)에 해당하는 작업은?",
+      "choices": [
+        {
+          "text": "기존 검증 세트에서 원래 도크·육상 배경에 있던 선박 영상만 골라 따로 mAP를 계산한다",
+          "rationale": "이미 있는 표본을 골라 보는 것은 조건부 관측 P(Y | C = c)입니다. 그 영상들은 배경 외에도 해상도·선종 등이 달라 배경만의 효과를 분리할 수 없습니다."
+        },
+        {
+          "text": "선박 영역을 인페인팅으로 채워 선박을 지운 뒤 박스가 나오는지 본다",
+          "rationale": "이것은 표적에 대한 개입 do(O = ∅)입니다. 배경이 아니라 표적을 조작합니다."
+        },
+        {
+          "text": "예측과 배경 마스크 영역 사이의 상호정보량 I(Ŷ; X ⊙ M_C)를 계산한다",
+          "rationale": "상호정보량은 예측과 배경 영역 사이의 통계적 의존도를 재는 지표입니다. 배경을 다른 값으로 강제로 설정하는 조작이 아닙니다."
+        },
+        {
+          "text": "학습 데이터를 계절별 환경으로 나눠 IRM 목적함수로 재학습한다",
+          "rationale": "IRM은 배경 편향을 줄이는 처방(학습 방법)입니다. 진단용 개입 실험이 아닙니다."
+        },
+        {
+          "text": "선박 마스크 안 픽셀은 두고 배경 영역만 사막 모래 같은 이질적 배경으로 교체한다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "개입은 한 변수를 외부에서 강제로 정해, 그 변수가 원래 원인(여기서는 환경 E)에 따라 정해지던 연결을 끊는 것입니다. 선박 픽셀은 보존하고 배경만 바꾸는 합성이 do(C = C′)이며, 노트의 실험 1(배경 맥락 스왑)입니다.",
+      "explanation_full": "노트는 배경 스왑 전후 신뢰도 차이를 평균해 평균 인과 맥락 효과 ACE_C = (1/N) Σ (Conf(X_orig) − Conf(X̃_counter))로 요약합니다. ACE_C ≈ 0이면 배경이 바뀌어도 신뢰도가 유지되는 강건한 상태이고, 02장 기준 0.40 초과는 심각한 맥락 취약성입니다(잠정치이며, 처방 매트릭스에는 0.35로 적혀 있어 기준이 일치하지 않습니다). 실무에서는 합성 경계 아티팩트가 모델을 흔들 수 있어 경계 블렌딩을 함께 점검합니다.",
+      "tags": [
+        "causal",
+        "intervention"
+      ],
+      "terms": [
+        "do-operator"
+      ],
+      "source_ref": "Diagnostics/research/note/08_causal_counterfactual_diagnostics/02_counterfactual_stress_testing.md#2.1",
+      "status": "draft"
+    },
+    {
+      "id": "H-CAU-007",
+      "type": "short",
+      "chapter": "H.cau",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "정상 맥락(In-Context)에서의 mAP 대비, 이질적 맥락(Out-of-Context)에 놓인 표적의 mAP가 얼마나 떨어지는지를 (mAP_In − mAP_Out) / mAP_In으로 나타낸 노트의 지표 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Contextual Bias Ratio (CBR)"
+        ],
+        "ko": [
+          "맥락 편향비",
+          "맥락 편향 비율"
+        ]
+      },
+      "primary": "Contextual Bias Ratio (CBR)",
+      "explanation_short": "CBR = (mAP_In-Context − mAP_Out-of-Context) / mAP_In-Context입니다. 낯선 배경에서 성능이 상대적으로 얼마나 떨어지는지를 나타내며 클수록 배경 의존이 큽니다.",
+      "explanation_full": "노트의 판정(사전 잠정치): CBR ≤ 0.15 강건한 표적 중심 표현, 0.15~0.40 정상적인 맥락 활용, 0.40 초과 맥락 과적합 경고, 0.70 초과 치명적 허위 상관. 노트는 선박처럼 본질적으로 특정 배경(수면)에 있는 클래스는 정상 허용폭이 다르므로 도메인별 캘리브레이션이 필요하다고 적습니다. 외부와 소통할 때는 \"평소 배경에서의 성능에 비해 낯선 배경에 놓였을 때 성능이 몇 % 떨어지는지\"처럼 풀어서 말합니다.",
+      "tags": [
+        "causal",
+        "bias"
+      ],
+      "terms": [
+        "contextual-bias-ratio"
+      ],
+      "source_ref": "Diagnostics/research/note/08_causal_counterfactual_diagnostics/01_spurious_correlations_in_vision.md#3.1",
+      "status": "draft"
+    },
+    {
+      "id": "H-CAU-008",
+      "type": "mcq",
+      "chapter": "H.cau",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "공항 항공기 탐지 모델의 mAP가 활주로·계류장 배경(In-Context)에서 0.72, 정비 격납고 앞 잔디나 도심 공터 같은 이질적 배경(Out-of-Context)에서 0.30이다. CBR과 노트의 판정으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "CBR ≈ 0.58, 맥락 과적합 경고(0.40 초과)",
+          "rationale": null
+        },
+        {
+          "text": "CBR = 0.42, 맥락 과적합 경고(0.40 초과)",
+          "rationale": "0.72 − 0.30 = 0.42는 절대 차이입니다. CBR은 이를 In-Context mAP 0.72로 나눈 상대 비율입니다."
+        },
+        {
+          "text": "CBR ≈ 0.58, 치명적 허위 상관(0.70 초과)",
+          "rationale": "0.58은 0.70을 넘지 않으므로 치명 단계가 아니라 경고 단계입니다."
+        },
+        {
+          "text": "CBR = 1.40, 치명적 허위 상관(0.70 초과)",
+          "rationale": "0.42를 Out-of-Context mAP 0.30으로 나눈 값입니다. 분모는 In-Context mAP입니다."
+        },
+        {
+          "text": "CBR ≈ 0.58, 정상적인 맥락 활용 수준",
+          "rationale": "노트에서 정상적인 맥락 활용은 0.15 초과 0.40 이하 구간입니다. 0.58은 이를 넘습니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "CBR = (0.72 − 0.30) / 0.72 = 0.42 / 0.72 ≈ 0.583입니다. 노트 기준 0.40 초과 0.70 이하이므로 '맥락 과적합 경고' 단계입니다.",
+      "explanation_full": "계산: 0.42 ÷ 0.72 = 0.5833. 낯선 배경에서 성능의 58%가 사라진다는 뜻입니다. 기준값(0.15·0.40·0.70)은 노트가 밝힌 사전 잠정치로, 항공기처럼 대부분 활주로·계류장에 있는 클래스는 캘리브레이션 후 허용폭을 다시 정해야 합니다. 이 결과만으로 확정하기보다 배경 교체 개입(ACE_C)으로 인과적으로 확인하는 것이 다음 단계입니다. 외부와 소통할 때는 \"평소 배경에서의 성능에 비해 낯선 배경에 놓였을 때 성능이 몇 % 떨어지는지\"처럼 풀어서 말합니다.",
+      "tags": [
+        "causal",
+        "bias",
+        "calculation"
+      ],
+      "terms": [
+        "contextual-bias-ratio"
+      ],
+      "source_ref": "Diagnostics/research/note/08_causal_counterfactual_diagnostics/01_spurious_correlations_in_vision.md#3.1",
+      "status": "draft"
+    },
+    {
+      "id": "H-CAU-009",
+      "type": "short",
+      "chapter": "H.cau",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "표적을 확산 모델 인페인팅 등으로 완전히 지운 반사실 영상에서, 지운 자리와 IoU ≥ 0.5이면서 신뢰도 ≥ 0.5인 박스를 모델이 여전히 내는 영상의 비율을 노트는 무엇이라 부르는가? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Contextual Hallucination Rate (CHR)"
+        ],
+        "ko": [
+          "맥락 유령 환각율",
+          "맥락 환각률",
+          "맥락 유령 환각률"
+        ]
+      },
+      "primary": "Contextual Hallucination Rate (CHR)",
+      "explanation_short": "표적 소거 개입 do(O = ∅) 후에도 그 자리에 높은 확신도의 박스가 남는 비율을 맥락 유령 환각율(CHR)이라 합니다. 0%가 정상입니다.",
+      "explanation_full": "노트는 CHR > 5%를 '이런 배경에는 표적이 있어야 한다'고 판단해 허위 탐지(E_bkg)를 남발하는 상태로 봅니다. 5%는 경험적 잠정치입니다. 노트 본문은 확신도 기준을 s ≥ τ로 설명하고 수식에는 0.50을 적어 두었으므로, 보고할 때 어떤 임계값을 썼는지 밝힙니다. 빈 양식장 부표 구역, 빈 선석처럼 표적이 자주 있던 자리에서 특히 점검할 가치가 있습니다. 외부와 소통할 때는 \"표적을 지운 영상에서도 그 자리에 표적이 있다고 우기는 비율\"처럼 풀어서 말합니다.",
+      "tags": [
+        "causal",
+        "hallucination"
+      ],
+      "terms": [
+        "contextual-hallucination-rate"
+      ],
+      "source_ref": "Diagnostics/research/note/08_causal_counterfactual_diagnostics/02_counterfactual_stress_testing.md#2.2",
+      "status": "draft"
+    },
+    {
+      "id": "H-CAU-010",
+      "type": "mcq",
+      "chapter": "H.cau",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "항만 선박 탐지 모델 점검을 위해 선박을 지운 반사실 영상 200장을 만들었다. 지운 자리에 IoU ≥ 0.5, 신뢰도 ≥ 0.5인 박스가 나온 영상이 14장, 같은 자리에 박스가 나왔지만 신뢰도가 0.2~0.4인 영상이 9장이었다. CHR과 판정으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "CHR = 11.5%, 5%를 넘어 배경만 보고 표적을 지어내는 상태",
+          "rationale": "신뢰도 0.5 미만인 9장까지 센 값(23 / 200)입니다. 노트의 CHR 수식은 신뢰도 ≥ 0.5 조건을 함께 요구합니다."
+        },
+        {
+          "text": "CHR = 7%, 5%를 넘어 배경만 보고 표적을 지어내는 상태",
+          "rationale": null
+        },
+        {
+          "text": "CHR = 4.5%, 5% 이하라 정상에 가까움",
+          "rationale": "신뢰도가 낮은 9장만 센 값(9 / 200)입니다. 정작 문제인 고신뢰 박스 14장을 뺐습니다."
+        },
+        {
+          "text": "CHR = 7%, 10% 미만이라 정상 범위",
+          "rationale": "노트에서 정상은 CHR = 0%이고 5% 초과가 경고입니다. 10%라는 기준은 노트에 없습니다."
+        },
+        {
+          "text": "CHR ≈ 61%, 박스가 나온 영상 중 고신뢰 비율",
+          "rationale": "14 / 23은 박스가 나온 영상 안에서의 비율입니다. CHR의 분모는 반사실 영상 전체 N = 200입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "CHR = 조건(IoU ≥ 0.5 그리고 신뢰도 ≥ 0.5)을 만족한 영상 수 / 전체 반사실 영상 수 = 14 / 200 = 7%입니다. 노트 기준 5% 초과이므로 배경 맥락만으로 표적을 환각하는 상태입니다.",
+      "explanation_full": "계산: 14 ÷ 200 = 0.07. 노트의 판정(0% 정상, 5% 초과 허위 탐지 남발)은 경험적 잠정치입니다. 처방 매트릭스는 CHR > 5%에 대해 1차로 반사실 인페인팅 하드 네거티브 패치를 학습에 추가하고, 2차로 배경-표적 인과 분리 헤드(Causal Decoupling Head)를 적용하라고 권합니다. 신뢰도 0.2~0.4 박스 9장은 CHR에는 들어가지 않지만 임계값을 낮춰 운영할 계획이라면 함께 보고합니다. 외부와 소통할 때는 \"표적을 지운 영상에서도 그 자리에 표적이 있다고 우기는 비율\"처럼 풀어서 말합니다.",
+      "tags": [
+        "causal",
+        "hallucination",
+        "calculation"
+      ],
+      "terms": [
+        "contextual-hallucination-rate"
+      ],
+      "source_ref": "Diagnostics/research/note/08_causal_counterfactual_diagnostics/02_counterfactual_stress_testing.md#2.2",
+      "status": "draft"
+    },
+    {
+      "id": "H-CAU-011",
+      "type": "short",
+      "chapter": "H.cau",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "학습 데이터를 계절·지역·배경 유형 같은 여러 환경으로 나누고, 환경별 위험의 합에 '환경별 분류기 그래디언트 노름의 제곱' 벌점을 더해 모든 환경에서 공통으로 최적인 표현을 학습하는 목적함수의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Invariant Risk Minimization (IRM)"
+        ],
+        "ko": [
+          "불변 위험 최소화"
+        ]
+      },
+      "primary": "Invariant Risk Minimization (IRM)",
+      "explanation_short": "불변 위험 최소화(IRM)는 min_Φ Σ_e R^e(w ∘ Φ) + λ Σ_e ‖∇_{w|w=1.0} R^e(w ∘ Φ)‖²처럼, 모든 환경에서 같은 분류기가 최적이 되도록 표현 Φ를 학습합니다.",
+      "explanation_full": "경험적 위험 최소화(ERM)는 전체 평균 손실만 줄이므로 특정 환경에서만 통하는 배경 단서도 기꺼이 씁니다. IRM의 그래디언트 벌점은 '이 환경에서는 분류기를 조금 바꾸면 손실이 더 줄어든다'는 신호, 즉 환경마다 다른 허위 특징에 기대고 있다는 신호를 억제합니다(Arjovsky et al., 2019의 IRMv1 형태). 위성 영상에서는 촬영 지역이나 계절을 환경으로 나누는 것이 자연스럽습니다.",
+      "tags": [
+        "causal",
+        "irm"
+      ],
+      "terms": [
+        "invariant-risk-minimization"
+      ],
+      "source_ref": "Diagnostics/research/note/08_causal_counterfactual_diagnostics/03_causal_invariant_prescriptions.md#2.1",
+      "status": "draft"
+    },
+    {
+      "id": "H-CAU-012",
+      "type": "mcq",
+      "chapter": "H.cau",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "배경 편향을 줄이는 처방 가운데 불변 위험 최소화(IRM)를 경험적 위험 최소화(ERM)와 구별하는 핵심 특징은?",
+      "choices": [
+        {
+          "text": "전체 학습 데이터의 평균 손실에 가중치 감쇠(L2) 벌점을 더해 모델을 단순하게 만들어 배경 과적합을 줄인다",
+          "rationale": "이것은 가중치 감쇠를 곁들인 ERM입니다. 환경 구분이 없으므로 환경마다 다른 허위 특징을 걸러내지 못합니다."
+        },
+        {
+          "text": "서로 다른 영상의 표적과 배경을 교차 합성해 표적-배경 상호정보량을 0으로 만든다",
+          "rationale": "이것은 데이터 수준 처방인 반사실적 맥락 셔플링(Context-Shuffling)입니다. 목적함수를 바꾸지 않습니다."
+        },
+        {
+          "text": "박스 밖 배경 피처에서 나온 로짓을 γ배 빼서 최종 점수에서 배경 기여를 지운다",
+          "rationale": "이것은 배경-표적 인과 분리 헤드(Causal Decoupling Head)입니다. 모델 구조 수준 처방입니다."
+        },
+        {
+          "text": "데이터를 환경별로 나누고 환경마다 분류기 그래디언트 벌점을 더해 공통 최적 표현을 찾는다",
+          "rationale": null
+        },
+        {
+          "text": "환경마다 별도 모델을 학습해 추론 때 결과를 평균하는 앙상블을 만든다",
+          "rationale": "환경별 앙상블은 공통 불변 표현을 강제하지 않습니다. 각 모델이 자기 환경의 배경 단서를 그대로 학습할 수 있습니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "IRM의 핵심은 '환경 구분'과 '환경별 최적성 벌점'입니다. 어떤 특징이 한 환경에서만 통하면 그 환경의 그래디언트 벌점이 커지므로, 모든 환경에서 통하는 불변 특징 쪽으로 표현이 밀려납니다.",
+      "explanation_full": "노트의 3계층 처방은 목적함수(IRM), 데이터(Context-Shuffling), 구조(Causal Decoupling Head)로 나뉩니다. 처방 매트릭스에서 IRM은 맥락 과적합 편향(CBR > 0.40 등)의 2차 근본 처방입니다. 환경을 어떻게 나누느냐(지역, 계절, 센서, 배경 유형)가 성패를 좌우하므로, 원격탐사에서는 공간 교차검증 단위와 맞춰 설계하는 것이 좋습니다.",
+      "tags": [
+        "causal",
+        "irm"
+      ],
+      "terms": [
+        "invariant-risk-minimization"
+      ],
+      "source_ref": "Diagnostics/research/note/08_causal_counterfactual_diagnostics/03_causal_invariant_prescriptions.md#2.1",
+      "status": "draft"
+    },
+    {
+      "id": "H-CAU-013",
+      "type": "scenario",
+      "chapter": "H.cau",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"Sentinel-2로 학습한 양식장 탐지 모델이 연안 수면 텍스처만 보고 찍는 건 아닌지 확인해. 양식장 픽셀은 그대로 두고 주변만 내륙 논 배경으로 바꿔서 신뢰도가 평균 얼마나 빠지는지 봐.\"\n\n지시가 요구하는 측정으로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "양식장을 인페인팅으로 지운 영상에서 박스가 남는 비율(CHR)을 구한다",
+          "rationale": "CHR은 표적 소거 개입 do(O = ∅)의 지표입니다. 지시는 표적을 두고 배경만 바꾸는 do(C = C′) 실험입니다."
+        },
+        {
+          "text": "기존 검증 세트를 연안·내륙 타일로 나눠 mAP 격차로 CBR을 구한다",
+          "rationale": "CBR은 이미 있는 In/Out-of-Context 데이터로 구하는 관측 지표입니다. 지시는 같은 양식장 픽셀을 두고 배경만 바꾸라는 개입 실험입니다."
+        },
+        {
+          "text": "촬영 지역을 환경으로 나눠 IRM으로 재학습한다",
+          "rationale": "IRM은 편향이 확인된 뒤 쓰는 처방입니다. 지시는 먼저 의존도를 측정하라는 것입니다."
+        },
+        {
+          "text": "양식장 마스크 밖 배경만 교체한 영상에서 원본 대비 신뢰도 차이를 평균한 ACE_C를 구한다",
+          "rationale": null
+        },
+        {
+          "text": "양식장 영역을 블러 처리했을 때와 배경을 바꿨을 때의 신뢰도 변화 비율(CSR)을 구한다",
+          "rationale": "CSR은 표적 변화와 배경 변화에 대한 민감도 비율입니다. 지시는 배경 교체 한 가지에 대한 평균 신뢰도 하락을 요구합니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "표적 픽셀은 보존하고 배경만 바꾸는 것은 do(C = C_counter) 개입이며, 원본과 교체본의 신뢰도 차이를 평균한 값이 노트의 평균 인과 맥락 효과 ACE_C입니다. 0에 가까우면 배경에 흔들리지 않는 상태입니다.",
+      "explanation_full": "노트 02장은 ACE_C > 0.40을 심각한 맥락 취약성으로 보는데, 처방 매트릭스에는 ACE_C > 0.35로 적혀 있어 기준이 다릅니다. 둘 다 경험적 잠정치이므로 보고서에는 쓴 기준을 명시합니다. 10 m 해상도에서는 양식장 경계 화소가 수면과 섞여 있어, 합성 경계를 어떻게 처리했는지도 함께 기록해야 결과를 재현할 수 있습니다. 외부와 소통할 때는 \"배경만 바꿨을 때 같은 대상의 확신도가 평균 얼마나 빠지는지\"처럼 풀어서 말합니다.",
+      "tags": [
+        "causal",
+        "intervention",
+        "sentinel-2"
+      ],
+      "terms": [
+        "do-operator",
+        "shortcut-learning"
+      ],
+      "source_ref": "Diagnostics/research/note/08_causal_counterfactual_diagnostics/02_counterfactual_stress_testing.md#2.1",
+      "status": "draft"
+    },
+    {
+      "id": "H-CAU-014",
+      "type": "scenario",
+      "chapter": "H.cau",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"공항 영상 분석 결과에서 빈 계류장에도 항공기 박스가 뜬다는 얘기가 나와. 항공기를 지운 반사실 영상 300장 만들어서 숫자로 확인해.\"\n\n가장 적절한 측정 방법은?",
+      "choices": [
+        {
+          "text": "지운 자리에 IoU ≥ 0.5·신뢰도 ≥ 0.5 박스가 나온 영상 비율(CHR)을 구해 5%와 비교한다",
+          "rationale": null
+        },
+        {
+          "text": "항공기는 두고 주변 배경만 사막으로 바꾼 영상에서 원본 대비 신뢰도 하락 평균(ACE_C)을 구한다",
+          "rationale": "배경 교체는 표적이 남아 있는 상태의 실험입니다. '표적이 없는데 박스가 뜨는가'는 표적 소거 실험으로 봐야 합니다."
+        },
+        {
+          "text": "원본 검증 세트의 영상당 오탐 수(FPPI)를 구해 이전 모델과 비교한다",
+          "rationale": "원본 영상의 오탐 수는 다양한 원인이 섞인 값입니다. '항공기가 있던 자리에서 배경 때문에' 생기는 환각만 분리하지 못합니다."
+        },
+        {
+          "text": "활주로 안팎 배경별 mAP 격차로 CBR을 구한다",
+          "rationale": "CBR은 표적이 있는 영상에서 배경이 바뀔 때의 성능 격차입니다. 빈 배경의 허위 박스를 직접 재지 않습니다."
+        },
+        {
+          "text": "Grad-CAM으로 수십 장을 시각화해 활주로 유도선 쪽에 활성이 몰려 있는지 눈으로 확인한다",
+          "rationale": "시각화는 보조 증거일 뿐 지시가 요구한 '숫자'가 아닙니다. 소수 표본의 인상에 의존하게 됩니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "표적 소거 개입 do(O = ∅) 후에도 그 자리에 고신뢰 박스가 남는 비율이 CHR입니다. 노트 기준 0%가 정상, 5% 초과면 배경만 보고 항공기를 지어내는 상태입니다.",
+      "explanation_full": "노트의 CHR 수식은 지운 박스 위치와 IoU ≥ 0.5, 신뢰도 ≥ 0.50을 동시에 요구합니다. 5% 기준은 경험적 잠정치입니다. 인페인팅은 확산 모델이나 바이하모닉 인페인팅을 쓰며, 인페인팅 흔적 자체를 모델이 표적으로 오인하지 않는지(예: 무늬가 부자연스러운 경우) 몇 장은 눈으로 확인해 두는 것이 좋습니다. 외부와 소통할 때는 \"표적을 지운 영상에서도 그 자리에 표적이 있다고 우기는 비율\"처럼 풀어서 말합니다.",
+      "tags": [
+        "causal",
+        "hallucination"
+      ],
+      "terms": [
+        "contextual-hallucination-rate",
+        "do-operator"
+      ],
+      "source_ref": "Diagnostics/research/note/08_causal_counterfactual_diagnostics/02_counterfactual_stress_testing.md#2.2",
+      "status": "draft"
+    },
+    {
+      "id": "H-CAU-015",
+      "type": "scenario",
+      "chapter": "H.cau",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"빈 선석 반사실 영상에서 CHR이 8% 나왔어. 처방 매트릭스의 1차 조치로 이번 주 안에 바로 할 수 있는 거 해.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "박스 밖 배경 로짓을 빼는 Causal Decoupling Head를 설계해 붙인다",
+          "rationale": "Causal Decoupling Head는 유령 표적 환각의 2차(근본) 처방입니다. 지시는 1차 조치를 요구합니다."
+        },
+        {
+          "text": "선박과 배경을 교차 합성하는 Context-Shuffling 증강을 적용한다",
+          "rationale": "Context-Shuffling은 맥락 과적합 편향(CBR·ACE_C 초과) 행의 1차 처방입니다."
+        },
+        {
+          "text": "배경 마스킹 CutMix로 사전 학습을 다시 한다",
+          "rationale": "배경 마스킹 CutMix는 배경 민감도 역전(CSR < 1.0) 행의 1차 처방입니다."
+        },
+        {
+          "text": "선박 클래스의 신뢰도 임계값을 0.9로 올려 배포한다",
+          "rationale": "임계값 상향은 노트의 처방이 아니며, 정상 선박의 재현율까지 함께 깎습니다. 원인(배경 기반 환각)은 그대로 남습니다."
+        },
+        {
+          "text": "선박을 지운 반사실 인페인팅 패치를 하드 네거티브로 학습 데이터에 추가해 재학습한다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "CHR > 5%는 처방 매트릭스의 '유령 표적 환각' 판정 기준이며, 1차 권장 처방은 반사실 인페인팅 하드 네거티브 패치 추가, 2차 근본 처방은 Causal Decoupling Head입니다.",
+      "explanation_full": "하드 네거티브 패치는 '선석 배경은 있지만 선박은 없는' 사례를 명시적으로 학습시켜 배경만으로 박스를 내는 습관을 교정합니다. CHR 5% 기준은 경험적 잠정치입니다. 재학습 후 같은 반사실 세트로 CHR을 다시 재고, 원본 검증 세트의 재현율이 떨어지지 않았는지도 함께 확인합니다. 외부와 소통할 때는 \"표적을 지운 영상에서도 그 자리에 표적이 있다고 우기는 비율\"처럼 풀어서 말합니다.",
+      "tags": [
+        "causal",
+        "hallucination",
+        "prescription"
+      ],
+      "terms": [
+        "contextual-hallucination-rate"
+      ],
+      "source_ref": "Diagnostics/research/note/08_causal_counterfactual_diagnostics/03_causal_invariant_prescriptions.md#3",
+      "status": "draft"
+    },
+    {
+      "id": "H-CAU-016",
+      "type": "scenario",
+      "chapter": "H.cau",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"항공기 모델이 CBR 0.55, ACE_C 0.45야. 먼저 데이터 쪽에서 손쓰고, 그래도 안 되면 학습 목적함수를 바꾸는 순서로 가자.\"\n\n지시에 맞는 처방 순서는?",
+      "choices": [
+        {
+          "text": "1차: 반사실 인페인팅 하드 네거티브 추가 / 2차: Causal Decoupling Head",
+          "rationale": "이것은 유령 표적 환각(CHR > 5%) 행의 처방입니다. 지시의 지표(CBR·ACE_C)는 맥락 과적합을 가리킵니다."
+        },
+        {
+          "text": "1차: 배경 마스킹 CutMix 사전 학습 / 2차: 상호정보량 정규화 손실",
+          "rationale": "이것은 배경 민감도 역전(CSR < 1.0) 행의 처방입니다."
+        },
+        {
+          "text": "1차: Context-Shuffling 증강 / 2차: 불변 위험 최소화(IRM)",
+          "rationale": null
+        },
+        {
+          "text": "1차: Temperature Scaling / 2차: MC Dropout",
+          "rationale": "둘 다 신뢰도 보정·불확실성 추정 기법으로, 배경 편향을 줄이지 않습니다."
+        },
+        {
+          "text": "1차: Modality Dropout / 2차: STN 자가 정렬 헤드",
+          "rationale": "다종 센서 융합의 모달리티 붕괴·정렬 오차 처방입니다. 배경 맥락 편향과는 무관합니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "CBR > 0.40과 ACE_C > 0.35는 처방 매트릭스의 '맥락 과적합 편향' 기준입니다. 1차는 데이터 수준의 Context-Shuffling 증강, 2차 근본 처방은 목적함수 수준의 IRM입니다.",
+      "explanation_full": "Context-Shuffling은 서로 다른 영상의 표적과 배경을 교차 합성해 P(C, O)를 P(C)·P(O)로 분해하려는 증강입니다(노트는 이로써 I(C; O) = 0을 목표로 합니다). IRM은 환경별 그래디언트 벌점으로 불변 표현을 강제합니다. 기준값(CBR 0.40, ACE_C 0.35 또는 0.40)은 경험적 잠정치입니다. 외부와 소통할 때는 \"평소 배경에서의 성능에 비해 낯선 배경에 놓였을 때 성능이 몇 % 떨어지는지\"처럼 풀어서 말합니다.",
+      "tags": [
+        "causal",
+        "prescription"
+      ],
+      "terms": [
+        "contextual-bias-ratio",
+        "invariant-risk-minimization"
+      ],
+      "source_ref": "Diagnostics/research/note/08_causal_counterfactual_diagnostics/03_causal_invariant_prescriptions.md#3",
+      "status": "draft"
+    },
+    {
+      "id": "H-CAU-017",
+      "type": "scenario",
+      "chapter": "H.cau",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"항공 정사영상 차량 탐지 모델 점검 결과야. 차량 영역만 블러 줬을 때 신뢰도가 평균 0.12 떨어졌고, 배경만 바꿨을 때는 0.30 떨어졌어. 노트의 CSR로 판정해서 보고해.\"\n\n보고 내용으로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "CSR = 0.30 / 0.12 = 2.5로 1.0 이상이므로 인과적으로 문제없다",
+          "rationale": "CSR은 표적 변화에 대한 반응(분자)을 배경 변화에 대한 반응(분모)으로 나눕니다. 분자·분모를 뒤집었습니다."
+        },
+        {
+          "text": "CSR = 0.12 / 0.30 = 0.4로 1.0 미만이므로, 모델이 차량 변화보다 배경 변화에 더 민감한 '역전 결함' 상태이다",
+          "rationale": null
+        },
+        {
+          "text": "CSR = 0.4로 3.0 이상 기준을 충족해 인과적 신뢰성이 확보되었다",
+          "rationale": "0.4는 3.0에 한참 못 미칩니다. 노트는 CSR ≥ 3.0일 때 인과적 신뢰성이 확보되었다고 봅니다."
+        },
+        {
+          "text": "CSR = 0.12 − 0.30 = −0.18로 음수이므로 판정할 수 없다",
+          "rationale": "CSR은 차이가 아니라 비율입니다. 두 신뢰도 변화의 크기를 나눠 비교합니다."
+        },
+        {
+          "text": "CSR = 0.4이며, 모델이 차량 변화에 배경 변화보다 2.5배 더 민감하다는 뜻이다",
+          "rationale": "0.4는 표적 반응이 배경 반응의 0.4배라는 뜻입니다. 해석 방향이 반대입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "CSR ≈ ΔConf(표적 블러·변형) / ΔConf(배경 교체) = 0.12 / 0.30 = 0.4입니다. 노트는 CSR < 1.0을 표적보다 배경에 더 요동치는 '역전 결함'으로, CSR ≥ 3.0을 인과적 신뢰성 확보로 봅니다.",
+      "explanation_full": "CSR은 원래 |∂Ŷ/∂O| / |∂Ŷ/∂C|로 정의되고, 실무에서는 표적 블러·변형과 배경 교체 실험의 신뢰도 변화로 근사합니다. 기준값(1.0·3.0)은 노트의 경험적 판정선(잠정치)입니다. 처방 매트릭스는 CSR < 1.0에 대해 1차로 배경 마스킹 CutMix 사전 학습, 2차로 상호정보량 정규화 손실을 제시합니다. 도로 위 차량처럼 배경이 매우 규칙적인 데이터에서 자주 나타납니다. 외부와 소통할 때는 \"대상이 바뀔 때와 배경이 바뀔 때 모델이 각각 얼마나 흔들리는지의 비율\"처럼 풀어서 말합니다.",
+      "tags": [
+        "causal",
+        "calculation"
+      ],
+      "terms": [
+        "shortcut-learning",
+        "spurious-correlation"
+      ],
+      "source_ref": "Diagnostics/research/note/08_causal_counterfactual_diagnostics/02_counterfactual_stress_testing.md#3",
+      "status": "draft"
+    }
+  ]
+}

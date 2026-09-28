@@ -1,0 +1,1051 @@
+{
+  "format": "visiondrill-bank-exchange",
+  "format_version": 1,
+  "terms": [
+    {
+      "id": "onnx",
+      "term_en": "Open Neural Network Exchange",
+      "term_ko": "개방형 신경망 교환 형식",
+      "abbreviation": "ONNX",
+      "definition": "학습 프레임워크와 무관하게 신경망의 계산 그래프와 가중치를 저장하는 개방형 모델 표현 형식. ONNX Runtime, TensorRT 등 여러 추론 엔진이 읽을 수 있다",
+      "usage_example": "납품 서버엔 PyTorch가 없으니까 ONNX로 뽑아. 타일 크기 바뀌어도 돌게 dynamic axes 꼭 걸고.",
+      "origin": "standard",
+      "track": "G"
+    },
+    {
+      "id": "tensorrt",
+      "term_en": "TensorRT",
+      "term_ko": "텐서RT",
+      "abbreviation": "TRT",
+      "definition": "NVIDIA GPU용 추론 최적화 SDK. 레이어 융합, FP16·INT8 정밀도 변환, 커널 자동 선택으로 대상 GPU에 맞춘 추론 엔진을 빌드한다",
+      "usage_example": "Jetson에서 직접 TensorRT 엔진 빌드해. 워크스테이션에서 만든 엔진 복사하면 안 돌아.",
+      "origin": "standard",
+      "track": "G"
+    },
+    {
+      "id": "quantization",
+      "term_en": "Quantization",
+      "term_ko": "양자화",
+      "abbreviation": null,
+      "definition": "가중치·활성값을 FP32보다 적은 비트로 표현해 모델 크기·메모리·연산량을 줄이는 기법. 좁게는 INT8 같은 정수 표현을, 넓게는 FP16 같은 저정밀도 변환까지 가리킨다. INT8 정적 양자화는 보통 값 범위를 정하는 보정(calibration)이나 양자화 인식 학습이 필요하다",
+      "usage_example": "INT8 양자화 들어가기 전에 보정용으로 해역·계절별 타일 500장 골고루 뽑아 둬.",
+      "origin": "standard",
+      "track": "G"
+    },
+    {
+      "id": "latency",
+      "term_en": "Latency",
+      "term_ko": "지연시간",
+      "abbreviation": null,
+      "definition": "입력 하나를 넣은 시점부터 그 결과를 받을 때까지 걸리는 시간. 보통 ms 단위로 재며 평균과 함께 p95·p99 같은 꼬리 값도 본다",
+      "usage_example": "드론 실시간 탐지는 프레임당 지연시간 50 ms 안쪽으로 맞춰야 해.",
+      "origin": "standard",
+      "track": "G"
+    },
+    {
+      "id": "throughput",
+      "term_en": "Throughput",
+      "term_ko": "처리량",
+      "abbreviation": null,
+      "definition": "단위 시간당 처리하는 입력 수(예: 초당 타일 수). 배치를 키우면 대개 늘어나지만 개별 입력의 지연시간은 길어질 수 있다",
+      "usage_example": "야간 일괄 추론은 처리량만 보면 돼. 배치별로 초당 타일 몇 장 나오는지 찍어줘.",
+      "origin": "standard",
+      "track": "G"
+    },
+    {
+      "id": "sliding-window-inference",
+      "term_en": "Sliding Window Inference",
+      "term_ko": "슬라이딩 윈도우 추론",
+      "abbreviation": null,
+      "definition": "메모리에 한 번에 들어가지 않는 큰 영상을 고정 크기 창으로 겹치게(overlap) 이동하며 잘라 추론하고, 결과를 원래 영상 좌표로 옮겨 합치는 방식. 겹침 영역의 중복 제거와 타일 경계 효과 처리가 필요하다",
+      "usage_example": "장면 통째로 512 창, overlap 64로 슬라이딩 윈도우 돌리고, 경계 중복은 전역 NMS로 정리해.",
+      "origin": "standard",
+      "track": "G"
+    },
+    {
+      "id": "geotransform",
+      "term_en": "Geotransform",
+      "term_ko": "지오트랜스폼",
+      "abbreviation": null,
+      "definition": "래스터의 픽셀 (열, 행)을 지도 좌표 (X, Y)로 바꾸는 6개 계수의 아핀 변환. GDAL 순서로 (좌상단 X, 픽셀 폭, 행 회전항, 좌상단 Y, 열 회전항, 픽셀 높이)이며 북쪽이 위인 영상에서 픽셀 높이는 음수다",
+      "usage_example": "결과 마스크 저장할 때 원본 transform이랑 CRS 그대로 넘겨. 안 그러면 좌표 (0, 0) 바다 한가운데 가서 떠.",
+      "origin": "standard",
+      "track": "G"
+    },
+    {
+      "id": "polygonization",
+      "term_en": "Polygonization",
+      "term_ko": "폴리곤화",
+      "abbreviation": null,
+      "definition": "래스터 마스크에서 같은 값으로 연결된 픽셀 영역을 폴리곤 벡터로 바꾸는 래스터→벡터 변환. GDAL Polygonize, rasterio.features.shapes 등으로 수행하며 geotransform을 넣어야 지도 좌표가 된다",
+      "usage_example": "양식장 마스크 폴리곤화해서 GeoPackage로 주고, 5㎡ 미만 조각은 빼.",
+      "origin": "standard",
+      "track": "G"
+    }
+  ],
+  "questions": [
+    {
+      "id": "G-EXPORT-001",
+      "type": "short",
+      "chapter": "G.export",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "PyTorch·TensorFlow 등에서 학습한 모델의 계산 그래프와 가중치를 프레임워크와 무관한 형식으로 저장해, 여러 추론 엔진에서 불러 쓸 수 있게 하는 공개 표준 모델 형식의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Open Neural Network Exchange (ONNX)"
+        ],
+        "ko": [
+          "오닉스",
+          "개방형 신경망 교환 형식"
+        ]
+      },
+      "primary": "Open Neural Network Exchange (ONNX)",
+      "explanation_short": "ONNX(Open Neural Network Exchange)는 신경망을 연산자(operator) 그래프와 가중치로 표현하는 개방형 형식입니다. 한 번 내보내면 ONNX Runtime, TensorRT, OpenVINO 등 여러 엔진에서 실행할 수 있습니다.",
+      "explanation_full": "ONNX 파일에는 opset 버전이 붙어 있어, 사용하는 연산자를 대상 런타임이 지원하는지 확인해야 합니다. 학습 코드와 무관하게 배포할 수 있어 PyTorch가 설치되지 않은 서버나 다른 언어(C++, C#) 애플리케이션에 모델을 넘길 때 표준처럼 쓰입니다. 위성 영상 분석 결과를 GIS 소프트웨어 플러그인에 넣는 경우에도 ONNX Runtime을 자주 씁니다.",
+      "tags": [
+        "deployment",
+        "onnx"
+      ],
+      "terms": [
+        "onnx"
+      ],
+      "source_ref": "ONNX 공식 문서",
+      "status": "draft"
+    },
+    {
+      "id": "G-EXPORT-002",
+      "type": "mcq",
+      "chapter": "G.export",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "512×512 타일로 학습한 완전 합성곱 분할 모델을 PyTorch에서 기본 설정으로 ONNX 내보내기(export)했다. 1024×1024 타일을 넣자 ONNX Runtime이 입력 형상 불일치 오류를 낸다. 가장 적절한 해결은?",
+      "choices": [
+        {
+          "text": "ONNX opset 버전을 한 단계 낮춰 다시 내보낸다",
+          "rationale": "opset은 사용할 수 있는 연산자 집합의 버전입니다. 입력 크기가 그래프에 고정된 문제와는 관계가 없습니다."
+        },
+        {
+          "text": "내보낼 때 배치·높이·너비 축을 동적 축(dynamic axes)으로 지정한다",
+          "rationale": null
+        },
+        {
+          "text": "모델을 FP16으로 변환해 메모리 사용량을 줄인다",
+          "rationale": "정밀도를 바꿔도 그래프에 고정된 입력 형상은 그대로이므로 오류가 해결되지 않습니다."
+        },
+        {
+          "text": "ONNX는 고정 크기 입력만 지원하므로 1024×1024 타일로 모델을 처음부터 다시 학습한다",
+          "rationale": "ONNX는 동적 차원을 지원합니다. 완전 합성곱 모델이면 재학습 없이 내보내기 설정만 바꾸면 됩니다."
+        },
+        {
+          "text": "입력 텐서의 차원 순서를 NCHW에서 NHWC로 바꿔 넣는다",
+          "rationale": "차원 순서를 바꾸면 모델이 기대하는 배치 형식과 달라져 오히려 다른 오류가 납니다. 크기 고정 문제는 그대로입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "PyTorch의 ONNX 내보내기는 일반적으로 동적 축을 따로 지정하지 않으면 예시 입력(dummy input)의 형상을 그래프에 고정합니다. 배치·높이·너비를 동적 축으로 지정해야 다른 크기의 타일을 받을 수 있습니다.",
+      "explanation_full": "기존 방식에서는 torch.onnx.export의 dynamic_axes 인자에 입력 이름별로 {0: 'batch', 2: 'height', 3: 'width'}처럼 지정하고, 새 dynamo 기반 방식에서는 dynamic_shapes 인자를 주로 씁니다(PyTorch 버전에 따라 기본 방식과 인자 처리가 다르므로 사용하는 버전의 문서를 확인합니다). 모델 내부에 크기를 상수로 쓰는 연산(예: 고정 크기 reshape, 특정 풀링 크기)이 있으면 동적 축을 걸어도 실패할 수 있으니 내보낸 뒤 여러 크기로 직접 실행해 확인합니다. 원격탐사에서는 장면 가장자리 타일 크기가 달라지는 경우가 많아 동적 축 설정이 특히 중요합니다.",
+      "tags": [
+        "deployment",
+        "onnx"
+      ],
+      "terms": [
+        "onnx"
+      ],
+      "source_ref": "PyTorch 문서 torch.onnx",
+      "status": "draft"
+    },
+    {
+      "id": "G-EXPORT-003",
+      "type": "short",
+      "chapter": "G.export",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "NVIDIA GPU에서 레이어 융합(layer fusion), FP16·INT8 정밀도 변환, 하드웨어별 커널 자동 선택으로 신경망 추론을 최적화해 엔진 파일을 만들어 주는 NVIDIA의 SDK 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "TensorRT",
+          "TRT"
+        ],
+        "ko": [
+          "텐서RT",
+          "텐서알티"
+        ]
+      },
+      "primary": "TensorRT",
+      "explanation_short": "TensorRT는 NVIDIA GPU 전용 추론 최적화 SDK입니다. ONNX 등으로 받은 모델을 대상 GPU에 맞게 최적화한 엔진(engine)으로 빌드합니다.",
+      "explanation_full": "합성곱·배치 정규화·활성화를 하나의 커널로 합치는 레이어 융합, 텐서 코어를 쓰는 FP16/INT8 연산, GPU마다 가장 빠른 커널을 고르는 자동 튜닝으로 PyTorch 대비 지연시간을 크게 줄이는 경우가 많습니다. 서버 GPU뿐 아니라 드론·선박 탑재용 Jetson 같은 엣지 기기 배포에서 표준처럼 쓰입니다.",
+      "tags": [
+        "deployment",
+        "tensorrt"
+      ],
+      "terms": [
+        "tensorrt"
+      ],
+      "source_ref": "NVIDIA TensorRT Developer Guide",
+      "status": "draft"
+    },
+    {
+      "id": "G-EXPORT-004",
+      "type": "mcq",
+      "chapter": "G.export",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "사무실 워크스테이션(x86, RTX GPU)에서 TensorRT로 빌드한 엔진 파일(.engine)을 드론용 Jetson 보드에 복사했더니 로드되지 않는다. 가장 적절한 설명은?",
+      "choices": [
+        {
+          "text": "엔진 파일은 ONNX 형식이 아니어서 Jetson의 TensorRT가 읽을 수 없다",
+          "rationale": "엔진은 원래 ONNX가 아닌 TensorRT 직렬화 형식이며, 같은 환경에서 빌드했다면 정상적으로 읽힙니다. 문제는 형식이 아니라 빌드 환경 종속성입니다."
+        },
+        {
+          "text": "Jetson GPU는 FP32 연산을 지원하지 않아 엔진을 FP16으로만 만들어야 한다",
+          "rationale": "Jetson GPU도 FP32 연산을 지원합니다. FP16은 속도를 위한 선택이지 필수 조건이 아닙니다."
+        },
+        {
+          "text": "엔진 파일 확장자를 Jetson용 .plan으로 바꾸지 않았기 때문이다",
+          "rationale": ".engine, .plan 같은 확장자는 관례일 뿐이며 내용은 같습니다. 확장자를 바꿔도 로드 가능 여부는 달라지지 않습니다."
+        },
+        {
+          "text": "엔진은 빌드한 GPU·TensorRT 버전에 종속되므로 Jetson에서 다시 빌드해야 한다",
+          "rationale": null
+        },
+        {
+          "text": "입력 영상 크기가 달라서이므로 Jetson에서 입력을 워크스테이션과 같은 크기로 리사이즈하면 된다",
+          "rationale": "입력 크기 불일치는 실행 시점의 오류이지, 엔진 파일 자체가 로드되지 않는 원인이 아닙니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "TensorRT 엔진은 빌드한 GPU 아키텍처·플랫폼과 TensorRT 버전에 맞춰 최적화된 결과물이라 기본적으로 다른 기기로 옮겨 쓸 수 없습니다. ONNX 파일을 옮겨 Jetson에서 엔진을 다시 빌드해야 합니다.",
+      "explanation_full": "그래서 배포 산출물로는 ONNX(이식 가능)와 대상 기기별 엔진(이식 불가)을 구분해 관리합니다. Jetson에서는 trtexec나 TensorRT Python API로 ONNX를 빌드하며, 빌드에 수 분 이상 걸릴 수 있으니 한 번 만든 엔진은 같은 기기·같은 JetPack 버전에서 재사용합니다. JetPack을 업그레이드하면 대개 TensorRT 버전도 바뀌어 엔진을 다시 빌드해야 합니다. 최근 TensorRT에는 버전·하드웨어 호환 옵션이 있지만 적용 조건이 제한적이고, x86 워크스테이션과 Jetson(ARM)처럼 플랫폼이 다르면 일반적으로 엔진을 공유할 수 없습니다.",
+      "tags": [
+        "deployment",
+        "tensorrt",
+        "edge"
+      ],
+      "terms": [
+        "tensorrt"
+      ],
+      "source_ref": "NVIDIA TensorRT Developer Guide",
+      "status": "draft"
+    },
+    {
+      "id": "G-EXPORT-005",
+      "type": "short",
+      "chapter": "G.export",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "가중치와 활성값을 FP32 대신 INT8 같은 낮은 비트 수의 정수로 표현해 모델 크기와 연산량을 줄이고 추론을 빠르게 하는 기법의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Quantization",
+          "Model quantization"
+        ],
+        "ko": [
+          "양자화",
+          "모델 양자화"
+        ]
+      },
+      "primary": "Quantization",
+      "explanation_short": "양자화(quantization)는 32비트 부동소수점 값을 8비트 정수 등 더 적은 비트로 근사해 표현하는 기법입니다. 모델 크기와 메모리 대역폭, 연산량이 줄어 INT8 연산을 지원하는 엣지 기기·CPU·GPU에서 추론이 대개 빨라집니다.",
+      "explanation_full": "INT8 양자화는 실수 범위를 정수 256단계에 대응시키는 scale(과 zero-point)을 정해야 하며, 학습 후 대표 데이터로 범위를 추정하는 사후 양자화(PTQ)와 학습 중에 양자화 오차를 반영하는 양자화 인식 학습(QAT)이 있습니다. INT8 가중치는 FP32의 1/4 크기입니다. 위성 영상처럼 밴드별 값 범위가 넓은 입력은 정규화를 제대로 해 두어야 양자화 손실이 작습니다.",
+      "tags": [
+        "deployment",
+        "quantization"
+      ],
+      "terms": [
+        "quantization"
+      ],
+      "source_ref": "NVIDIA TensorRT Developer Guide (Working with Quantized Types); Jacob et al. 2018",
+      "status": "draft"
+    },
+    {
+      "id": "G-EXPORT-006",
+      "type": "mcq",
+      "chapter": "G.export",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "배포 전 FP32 모델을 FP16 또는 INT8로 바꾸려 한다. 두 방식의 비교로 옳은 것은?",
+      "choices": [
+        {
+          "text": "FP16은 대개 보정 없이도 손실이 작고, INT8은 보정이나 양자화 인식 학습이 필요하며 손실이 더 클 수 있다",
+          "rationale": null
+        },
+        {
+          "text": "FP16은 보정 데이터가 반드시 필요하지만, INT8은 변환만 하면 정확도가 FP32와 항상 같다",
+          "rationale": "반대입니다. FP16은 부동소수점이라 INT8보다 넓은 값 범위를 별도 스케일 없이 표현할 수 있어 대개 그대로 변환해도 되지만, INT8은 값 범위를 정하는 보정이 필요하고 정확도가 떨어질 수 있습니다."
+        },
+        {
+          "text": "INT8로 바꾸면 모델 파일 크기가 FP32보다 커지는 대신 추론 속도가 빨라진다",
+          "rationale": "INT8은 값 하나를 1바이트로 저장하므로 4바이트인 FP32보다 가중치 크기가 약 1/4로 줄어듭니다."
+        },
+        {
+          "text": "FP16과 INT8 모두 비트 수만 줄 뿐이라 GPU 종류와 관계없이 속도 향상 폭이 같다",
+          "rationale": "속도 향상은 하드웨어가 해당 정밀도 연산(텐서 코어, INT8 명령 등)을 지원하는지에 따라 크게 다릅니다."
+        },
+        {
+          "text": "FP16 모델은 CPU에서만, INT8 모델은 NVIDIA GPU에서만 실행할 수 있다",
+          "rationale": "두 정밀도 모두 여러 하드웨어에서 실행됩니다. INT8은 CPU(ONNX Runtime, OpenVINO 등)와 NPU에서도 널리 쓰이고, FP16은 GPU에서 특히 효과가 큽니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "FP16은 FP32와 같은 부동소수점 방식이라 대부분의 모델에서 정확도 손실이 매우 작습니다. INT8은 실수 값을 256단계 정수로 대응시키므로 범위를 정하는 보정(calibration)이나 양자화 인식 학습(QAT)이 필요하고 손실 위험이 더 큽니다.",
+      "explanation_full": "FP16의 가수부가 짧아 정밀도가 떨어지고 표현 범위도 좁아지긴 하지만, 추론에서는 대개 무시할 만한 수준입니다(드물게 큰 활성값이 넘쳐 오버플로가 나는 층은 FP32로 남깁니다). INT8은 지원 하드웨어에서 대개 FP16보다 더 빠르고 가중치 메모리도 절반이지만, 이상치가 큰 활성값이나 작은 객체 탐지 head에서 손실이 커질 수 있으므로 반드시 검증셋으로 FP32 대비 지표를 비교합니다.",
+      "tags": [
+        "deployment",
+        "quantization",
+        "precision"
+      ],
+      "terms": [
+        "quantization"
+      ],
+      "source_ref": "NVIDIA TensorRT Developer Guide (Reduced Precision)",
+      "status": "draft"
+    },
+    {
+      "id": "G-EXPORT-007",
+      "type": "mcq",
+      "chapter": "G.export",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "해안 양식장 탐지 모델에 INT8 사후 양자화(PTQ)를 적용하려 한다. 보정(calibration) 데이터로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "정규분포 난수로 만든 가상 이미지 수백 장",
+          "rationale": "난수 이미지는 실제 영상이 만드는 활성값 분포를 반영하지 못해 값 범위가 엉뚱하게 잡힙니다."
+        },
+        {
+          "text": "보정 시간을 줄이기 위해 가장 대표적인 영상 타일 1장",
+          "rationale": "한 장으로는 다양한 조건의 활성값 범위를 추정할 수 없어 다른 영상에서 값이 잘리거나 해상도가 낭비됩니다."
+        },
+        {
+          "text": "ImageNet 같은 대규모 자연 영상 데이터셋에서 무작위로 고른 이미지 수백 장",
+          "rationale": "도메인이 달라 활성값 분포가 실제 위성·항공 영상과 다릅니다. 보정 데이터는 배포 대상 분포를 대표해야 합니다."
+        },
+        {
+          "text": "구름·바다만 있어 객체가 없는 타일 위주로 뽑은 수백 장",
+          "rationale": "객체가 없는 타일만 쓰면 양식장 특징이 만드는 활성값 범위가 빠져 정작 탐지 대상에서 손실이 커집니다."
+        },
+        {
+          "text": "실제 추론 대상의 센서·지역·계절 조건을 고루 담은 학습 타일 수백 장",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "사후 양자화의 보정 단계는 대표 입력을 모델에 흘려 층별 활성값 범위를 추정합니다. 따라서 배포 때 들어올 영상의 분포를 고루 대표하는 수백 장 규모의 데이터가 적절하며, 라벨은 필요 없습니다.",
+      "explanation_full": "보정 데이터가 치우치면 일부 조건에서 활성값이 범위를 벗어나 잘리거나(clipping), 범위가 너무 넓어 작은 값의 해상도가 떨어집니다. 원격탐사에서는 센서, 촬영 계절, 해역(탁도), 태양 고도처럼 밝기 분포를 바꾸는 조건을 골고루 넣는 것이 중요합니다. 보정 방식(최댓값, 엔트로피, 백분위 등)에 따라서도 결과가 달라지므로, 보정 후에는 검증셋으로 FP32 대비 지표를 반드시 비교합니다.",
+      "tags": [
+        "deployment",
+        "quantization",
+        "calibration"
+      ],
+      "terms": [
+        "quantization"
+      ],
+      "source_ref": "NVIDIA TensorRT Developer Guide (INT8 Calibration)",
+      "status": "draft"
+    },
+    {
+      "id": "G-EXPORT-008",
+      "type": "short",
+      "chapter": "G.export",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "추론 서비스에서 입력 하나(예: 타일 한 장, 영상 프레임 하나)를 넣은 시점부터 그 결과를 받을 때까지 걸리는 시간을 무엇이라 하나? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Latency",
+          "Inference latency"
+        ],
+        "ko": [
+          "지연시간",
+          "레이턴시",
+          "추론 지연시간",
+          "응답 시간"
+        ]
+      },
+      "primary": "Latency",
+      "explanation_short": "지연시간(latency)은 요청 하나가 들어와 결과가 나올 때까지의 시간으로, 보통 ms 단위로 잽니다. 드론 실시간 탐지처럼 즉시 반응해야 하는 서비스에서 핵심 지표입니다.",
+      "explanation_full": "평균만 보면 가끔 크게 늦어지는 요청을 놓치므로 p95·p99 같은 백분위 지연시간도 함께 봅니다. 측정할 때는 GPU 워밍업 후 여러 번 반복해 재고, 전처리(영상 읽기·정규화)와 후처리(NMS, 좌표 변환)까지 포함한 전체 시간(end-to-end)과 모델만의 시간을 구분해 보고합니다. 지연시간과 처리량(throughput)은 서로 다른 지표이며 배치 크기에 따라 반대로 움직일 수 있습니다.",
+      "tags": [
+        "deployment",
+        "performance"
+      ],
+      "terms": [
+        "latency"
+      ],
+      "source_ref": "MLPerf Inference 벤치마크 규칙; 시스템 성능 측정 일반",
+      "status": "draft"
+    },
+    {
+      "id": "G-EXPORT-009",
+      "type": "mcq",
+      "chapter": "G.export",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "배포 성능 지표 중 처리량(throughput)을 나타내는 단위로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "ms (입력 하나를 넣고 결과를 받기까지 걸리는 시간)",
+          "rationale": "입력 하나의 결과를 받기까지의 시간은 지연시간(latency)이고, 그 단위가 ms입니다."
+        },
+        {
+          "text": "GB (추론 중 사용하는 GPU 메모리 양)",
+          "rationale": "메모리 사용량으로, 배치 크기의 상한을 정하는 자원 지표입니다."
+        },
+        {
+          "text": "장/초 (1초에 처리하는 이미지·타일 수)",
+          "rationale": null
+        },
+        {
+          "text": "GFLOPs (이미지 한 장 추론에 필요한 연산량)",
+          "rationale": "모델의 연산량 지표입니다. 같은 연산량이라도 하드웨어와 최적화에 따라 실제 처리 속도는 크게 다릅니다."
+        },
+        {
+          "text": "mAP (검증셋에서 측정한 탐지 정확도)",
+          "rationale": "mAP는 탐지 정확도 지표로, 속도나 처리 능력과는 관계가 없습니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "처리량(throughput)은 단위 시간에 처리하는 입력 수입니다. 초당 이미지 수(images/s), 초당 프레임 수(FPS), 시간당 처리 면적(km²/h) 등으로 표현합니다.",
+      "explanation_full": "대량의 위성 장면을 밤새 일괄 처리하는 작업은 처리량이, 드론 영상을 즉시 판단하는 작업은 지연시간이 중요합니다. 연산량(FLOPs)은 모델의 이론적 비용이고 처리량은 실제 하드웨어에서 측정한 결과이므로, 배포 보고서에는 측정 조건(GPU 종류, 배치 크기, 정밀도)과 함께 처리량을 적습니다.",
+      "tags": [
+        "deployment",
+        "performance"
+      ],
+      "terms": [
+        "throughput"
+      ],
+      "source_ref": "MLPerf Inference 벤치마크 규칙; 시스템 성능 측정 일반",
+      "status": "draft"
+    },
+    {
+      "id": "G-EXPORT-010",
+      "type": "mcq",
+      "chapter": "G.export",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "GPU에서 타일 추론을 측정했다. 배치 크기 1이면 타일 한 장에 20 ms, 배치 크기 16이면 16장 묶음 한 번에 160 ms가 걸린다(전처리·전송 시간은 무시). 배치 16으로 바꿨을 때에 대한 설명으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "처리량이 초당 800장으로 16배가 되고, 타일 하나의 지연시간은 20 ms 그대로 유지된다",
+          "rationale": "배치 처리 시간이 20 ms로 유지된다고 잘못 가정한 계산입니다. 실제로는 16장에 160 ms가 걸려 초당 16 ÷ 0.16 = 100장입니다."
+        },
+        {
+          "text": "처리량은 초당 100장으로 2배가 되지만, 타일당 지연시간은 160 ms로 늘어난다",
+          "rationale": null
+        },
+        {
+          "text": "처리량과 지연시간이 모두 좋아져 타일마다 10 ms 만에 결과가 나온다",
+          "rationale": "10 ms는 총 시간을 장수로 나눈 평균 처리 시간(처리량의 역수)일 뿐입니다. 각 타일의 결과는 묶음 전체가 끝나는 160 ms 뒤에 나옵니다."
+        },
+        {
+          "text": "처리량은 초당 50장 그대로이고, 지연시간만 160 ms로 늘어난다",
+          "rationale": "배치 16의 처리량은 16 ÷ 0.16 s = 100장/초로, 배치 1의 50장/초보다 늘었습니다."
+        },
+        {
+          "text": "처리량은 초당 6.25장으로 줄고, 지연시간은 160 ms로 늘어난다",
+          "rationale": "1 ÷ 0.16 s = 6.25는 초당 처리하는 '묶음' 수입니다. 묶음마다 16장이므로 장 단위 처리량은 100장/초입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "배치 1의 처리량은 1 ÷ 0.02 s = 50장/초, 배치 16은 16 ÷ 0.16 s = 100장/초로 2배입니다. 하지만 각 타일은 묶음 전체 계산이 끝나야 결과가 나오므로 지연시간은 20 ms에서 160 ms로 늘어납니다.",
+      "explanation_full": "배치를 키우면 GPU 병렬성을 더 활용해 처리량이 늘지만, 묶음이 찰 때까지 기다리는 시간과 묶음 계산 시간 때문에 개별 요청의 지연시간은 늘어납니다. 그래서 야간 일괄 추론처럼 처리량이 중요한 작업은 메모리가 허용하는 큰 배치를, 실시간 탐지처럼 지연시간이 중요한 작업은 작은 배치를 씁니다. 실제 측정에서는 전처리·데이터 전송 시간이 병목이 되는 경우도 많으므로 전체 파이프라인 기준으로도 확인합니다.",
+      "tags": [
+        "deployment",
+        "performance",
+        "batch",
+        "calculation"
+      ],
+      "terms": [
+        "latency",
+        "throughput"
+      ],
+      "source_ref": "시스템 성능 측정 일반; NVIDIA Triton 문서 (Dynamic Batching)",
+      "status": "draft"
+    },
+    {
+      "id": "G-EXPORT-011",
+      "type": "short",
+      "chapter": "G.export",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "위성 장면처럼 GPU 메모리에 한 번에 들어가지 않는 큰 영상을, 일정 크기의 창을 일정 간격(stride)으로 겹치며 옮겨 가며 잘라 추론한 뒤 결과를 원래 영상 크기로 합치는 추론 방식의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Sliding window inference",
+          "Sliding window",
+          "Tiled inference",
+          "Sliced inference"
+        ],
+        "ko": [
+          "슬라이딩 윈도우 추론",
+          "슬라이딩 윈도우",
+          "타일 추론",
+          "타일링 추론"
+        ]
+      },
+      "primary": "Sliding window inference",
+      "explanation_short": "슬라이딩 윈도우 추론(sliding window inference)은 큰 영상을 겹치는 창 단위로 잘라 추론하고 결과를 원래 좌표로 옮겨 합치는 방식입니다. 타일 추론(tiled inference)이라고도 부릅니다.",
+      "explanation_full": "겹침(overlap)을 두는 이유는 창 가장자리에 걸려 잘린 객체나, 주변 문맥이 부족한 가장자리 예측을 이웃 창의 중앙부 예측으로 보완하기 위해서입니다. 대신 겹침 영역에서 나온 중복 탐지는 병합 단계에서 NMS 등으로 제거해야 합니다. 작은 객체 탐지에서는 SAHI(Slicing Aided Hyper Inference)처럼 잘라서 추론하는 기법이 널리 쓰입니다.",
+      "tags": [
+        "deployment",
+        "tiling"
+      ],
+      "terms": [
+        "sliding-window-inference"
+      ],
+      "source_ref": "SAHI 논문(Akyon et al. 2022); MONAI 문서 sliding_window_inference",
+      "status": "draft"
+    },
+    {
+      "id": "G-EXPORT-012",
+      "type": "mcq",
+      "chapter": "G.export",
+      "cognitive_level": 2,
+      "difficulty": 4,
+      "stem": "10,000×8,000 픽셀(가로×세로) GeoTIFF를 512×512 창, 겹침(overlap) 64픽셀로 슬라이딩 윈도우 추론한다. 창은 좌상단에서 시작해 stride만큼 이동하고, 마지막 창이 영상 밖으로 나가면 영상 끝에 맞춰 당겨 붙인다(패딩 없음). 필요한 창의 총 개수는?",
+      "choices": [
+        {
+          "text": "320개",
+          "rationale": "겹침 없이 512씩 나눈 경우입니다(가로 ⌈10000/512⌉ = 20, 세로 ⌈8000/512⌉ = 16). 겹침 64를 반영하면 stride가 448로 줄어 창이 더 필요합니다."
+        },
+        {
+          "text": "374개",
+          "rationale": "가로 22 × 세로 17로, 마지막 가장자리 창을 빼먹은 계산입니다. 이 경우 오른쪽 80픽셀, 아래쪽 320픽셀이 추론되지 않습니다."
+        },
+        {
+          "text": "252개",
+          "rationale": "stride를 512 + 64 = 576으로 잘못 잡은 계산입니다(가로 18 × 세로 14). 겹치게 하려면 stride는 창 크기에서 겹침을 뺀 448입니다."
+        },
+        {
+          "text": "414개",
+          "rationale": null
+        },
+        {
+          "text": "546개",
+          "rationale": "겹침을 양쪽에 두 번 빼 stride를 512 − 128 = 384로 잡은 계산입니다(가로 26 × 세로 21)."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "stride = 512 − 64 = 448입니다. 가로 창 수 = ⌈(10000 − 512) / 448⌉ + 1 = ⌈21.18⌉ + 1 = 23, 세로 창 수 = ⌈(8000 − 512) / 448⌉ + 1 = ⌈16.71⌉ + 1 = 18이므로 23 × 18 = 414개입니다.",
+      "explanation_full": "검산: 가로는 시작 위치 0, 448, …, 448×21 = 9408까지 22개 창이 9408 + 512 = 9920픽셀까지만 덮으므로, 끝에 맞춘 창(시작 9488) 1개를 더해 23개입니다. 세로는 0 ~ 448×16 = 7168까지 17개 창이 7680픽셀까지 덮고, 끝에 맞춘 창(시작 7488) 1개를 더해 18개입니다. 가장자리 창을 당겨 붙이는 대신 영상 밖을 패딩하는 방식도 있으며, 그때는 패딩 영역 예측을 결과에서 잘라내야 합니다. 창 개수는 추론 시간 견적(창 수 × 창당 지연시간 ÷ 배치 효율)에 바로 쓰입니다.",
+      "tags": [
+        "deployment",
+        "tiling",
+        "calculation"
+      ],
+      "terms": [
+        "sliding-window-inference"
+      ],
+      "source_ref": "슬라이딩 윈도우 타일링 계산 일반",
+      "status": "draft"
+    },
+    {
+      "id": "G-EXPORT-013",
+      "type": "mcq",
+      "chapter": "G.export",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "건물 분할 모델로 항공 정사영상을 타일 추론해 이어 붙였더니, 타일 경계를 따라 건물 마스크가 끊기거나 격자 모양 줄무늬(seam)가 생긴다. 가장 적절한 처리는?",
+      "choices": [
+        {
+          "text": "타일을 겹치게 잘라 추론하고, 가장자리 예측은 버리거나 낮은 가중치로 섞어 중앙부 위주로 합친다",
+          "rationale": null
+        },
+        {
+          "text": "겹침을 0으로 설정해 이웃 타일의 예측이 서로 섞이지 않도록 완전히 분리한 상태로 이어 붙인다",
+          "rationale": "겹침이 없으면 가장자리 픽셀의 문맥 부족 문제가 그대로 남아 경계 끊김이 오히려 두드러집니다."
+        },
+        {
+          "text": "타일 크기를 256×256으로 줄여 모델이 경계 부근을 더 자세히 보도록 한다",
+          "rationale": "타일이 작아지면 경계 개수가 늘고 타일마다 볼 수 있는 문맥은 줄어 seam이 더 많아집니다."
+        },
+        {
+          "text": "이어 붙인 최종 이진 마스크 전체에 가우시안 블러를 걸어 경계선을 흐리게 만든다",
+          "rationale": "증상만 가릴 뿐 끊긴 예측은 고쳐지지 않고, 실제 건물 윤곽까지 흐려집니다."
+        },
+        {
+          "text": "타일 경계에 닿은 픽셀만 모폴로지 침식(erosion)으로 한 겹 깎아낸다",
+          "rationale": "침식은 마스크를 더 줄이므로 이미 끊긴 부분이 더 벌어집니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "합성곱 모델은 타일 가장자리에서 주변 문맥이 부족하고 패딩 영향을 받아 예측이 불안정합니다. 겹침을 두고 각 타일의 중앙부 예측을 주로 쓰면(가장자리 버리기 또는 가중 평균) 경계 줄무늬가 사라집니다.",
+      "explanation_full": "흔한 방법은 두 가지입니다. ① 겹침의 절반만큼 각 타일 가장자리를 잘라내고 중앙부만 이어 붙이는 방식, ② 겹치는 픽셀의 확률(로짓)을 중앙이 높고 가장자리가 낮은 가중치(가우시안·코사인 창)로 평균하는 방식입니다. 이진화는 합친 확률에 대해 한 번만 해야 합니다. 원격탐사 모자이크에서는 타일 경계뿐 아니라 촬영 장면 경계(모자이크 경계)의 밝기 차이도 비슷한 줄무늬를 만들 수 있으니 구분해서 봅니다.",
+      "tags": [
+        "deployment",
+        "tiling",
+        "segmentation"
+      ],
+      "terms": [
+        "sliding-window-inference"
+      ],
+      "source_ref": "MONAI 문서 sliding_window_inference (gaussian blending); U-Net 논문(overlap-tile 전략)",
+      "status": "draft"
+    },
+    {
+      "id": "G-EXPORT-014",
+      "type": "short",
+      "chapter": "G.export",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "GeoTIFF에서 픽셀의 (열, 행) 번호를 지도 좌표 (X, Y)로 바꾸는 데 쓰는 6개 계수(좌상단 원점 좌표, 픽셀 크기, 회전항)의 묶음을 GDAL에서 무엇이라 부르나? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Geotransform",
+          "Affine geotransform"
+        ],
+        "ko": [
+          "지오트랜스폼",
+          "아핀 지오트랜스폼"
+        ]
+      },
+      "primary": "Geotransform",
+      "explanation_short": "지오트랜스폼(geotransform)은 픽셀 좌표를 지도 좌표로 바꾸는 아핀 변환 계수 6개입니다. X = GT0 + 열×GT1 + 행×GT2, Y = GT3 + 열×GT4 + 행×GT5로 계산합니다.",
+      "explanation_full": "GT0·GT3은 영상 좌상단 모서리의 지도 좌표, GT1은 픽셀 폭, GT5는 픽셀 높이(북쪽이 위인 영상에서는 음수), GT2·GT4는 회전항으로 보통 0입니다. rasterio에서는 같은 정보를 Affine 객체(transform)로 다루며 계수 순서가 GDAL과 다르므로(a, b, c, d, e, f = 픽셀 폭, 회전, 좌상단 X, 회전, 픽셀 높이, 좌상단 Y) 섞어 쓰지 않도록 주의합니다. 좌표값의 의미(미터인지 도인지)는 함께 저장되는 CRS가 정합니다.",
+      "tags": [
+        "gis",
+        "geotiff",
+        "coordinates"
+      ],
+      "terms": [
+        "geotransform"
+      ],
+      "source_ref": "GDAL 문서 Raster Data Model (Affine GeoTransform)",
+      "status": "draft"
+    },
+    {
+      "id": "G-EXPORT-015",
+      "type": "mcq",
+      "chapter": "G.export",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "EPSG:5186 GeoTIFF의 geotransform(GDAL 순서)이 (215000.0, 0.5, 0.0, 452000.0, 0.0, −0.5)이다. 열(col) 1200, 행(row) 800인 픽셀의 좌상단 모서리 지도 좌표 (X, Y)는?",
+      "choices": [
+        {
+          "text": "(215400.0, 451400.0)",
+          "rationale": "열과 행을 뒤바꿔 계산한 값입니다(X = 215000 + 800×0.5, Y = 452000 − 1200×0.5). X에는 열, Y에는 행을 씁니다."
+        },
+        {
+          "text": "(215600.0, 452400.0)",
+          "rationale": "픽셀 높이 −0.5의 부호를 무시해 Y를 더한 값입니다. 행 번호가 커질수록 남쪽으로 내려가므로 Y는 줄어야 합니다."
+        },
+        {
+          "text": "(215600.0, 451600.0)",
+          "rationale": null
+        },
+        {
+          "text": "(216200.0, 451200.0)",
+          "rationale": "픽셀 크기 0.5를 곱하지 않고 픽셀 수를 그대로 미터로 더한 값입니다."
+        },
+        {
+          "text": "(215600.25, 451599.75)",
+          "rationale": "픽셀 중심 좌표입니다(좌상단 모서리 + 반 픽셀). 문제는 픽셀의 좌상단 모서리를 물었습니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "X = 215000 + 1200 × 0.5 + 800 × 0 = 215600, Y = 452000 + 1200 × 0 + 800 × (−0.5) = 451600이므로 (215600.0, 451600.0)입니다.",
+      "explanation_full": "EPSG:5186은 미터 단위 평면 좌표계이므로 0.5는 픽셀 크기 0.5 m를 뜻합니다. 탐지 박스나 폴리곤 꼭짓점을 지도 좌표로 바꿀 때 같은 식을 쓰며, 픽셀 중심이 필요하면 열·행에 0.5를 더해 계산합니다. 모서리와 중심을 혼동하면 반 픽셀(여기서는 0.25 m) 어긋나는데, 저해상도 영상(예: Sentinel-2 10 m)에서는 5 m 차이가 되어 벡터 중첩 시 눈에 띕니다.",
+      "tags": [
+        "gis",
+        "geotiff",
+        "coordinates",
+        "calculation"
+      ],
+      "terms": [
+        "geotransform"
+      ],
+      "source_ref": "GDAL 문서 Raster Data Model (Affine GeoTransform)",
+      "status": "draft"
+    },
+    {
+      "id": "G-EXPORT-016",
+      "type": "mcq",
+      "chapter": "G.export",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "rasterio로 GeoTIFF를 numpy 배열로 읽어 수계 분할 추론을 한 뒤, 결과 마스크를 새 GeoTIFF로 저장했다. QGIS에서 열어 보니 원본 영상과 겹치지 않고 좌표 (0, 0) 근처에 표시된다. 가장 가능성 높은 원인은?",
+      "choices": [
+        {
+          "text": "결과 마스크를 uint8 자료형으로 저장하는 바람에 GeoTIFF에 기록되는 좌표 정밀도가 떨어졌다",
+          "rationale": "픽셀 자료형은 픽셀 값의 표현 방식일 뿐, 영상이 지도의 어디에 놓이는지(위치 정보)와는 관계없습니다."
+        },
+        {
+          "text": "NoData 값을 지정하지 않아 배경 픽셀이 0으로 채워졌다",
+          "rationale": "NoData 미지정은 배경이 투명하게 보이지 않는 표시 문제입니다. 영상 위치는 바뀌지 않습니다."
+        },
+        {
+          "text": "저장할 때 밴드 순서를 RGB에서 BGR로 바꿨다",
+          "rationale": "밴드 순서는 색 표현에만 영향을 줍니다. 단일 밴드 마스크의 위치와는 무관합니다."
+        },
+        {
+          "text": "추론 전 입력 정규화 평균·표준편차를 잘못 적용했다",
+          "rationale": "정규화 오류는 예측 품질을 떨어뜨릴 뿐, 저장된 결과의 지리적 위치를 바꾸지 않습니다."
+        },
+        {
+          "text": "저장할 때 원본의 transform(geotransform)과 CRS를 넘기지 않았다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "numpy 배열에는 좌표 정보가 없습니다. 새 GeoTIFF를 쓸 때 원본의 transform과 CRS를 넘기지 않으면 파일에 위치 정보가 없어 대개 원점 (0, 0)·픽셀 크기 1인 기본(항등) 변환으로 취급되고 엉뚱한 위치에 놓입니다.",
+      "explanation_full": "rasterio에서는 원본의 src.profile(또는 src.transform, src.crs)을 복사해 dtype·count만 바꾼 뒤 결과를 쓰는 것이 안전합니다. 추론 과정에서 영상을 리사이즈하거나 잘라냈다면 transform도 그에 맞게 갱신해야 합니다(예: 창 단위로 쓸 때는 rasterio.windows.transform 사용). 좌표 (0, 0)은 EPSG:4326에서 기니만 앞바다라서 \"아프리카 앞바다에 떴다\"는 말이 이런 오류의 대표 증상입니다.",
+      "tags": [
+        "gis",
+        "geotiff",
+        "coordinates"
+      ],
+      "terms": [
+        "geotransform"
+      ],
+      "source_ref": "rasterio 문서 Writing datasets; GDAL 문서 Raster Data Model",
+      "status": "draft"
+    },
+    {
+      "id": "G-EXPORT-017",
+      "type": "short",
+      "chapter": "G.export",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "분할 결과인 래스터 마스크에서 같은 값으로 연결된 픽셀 영역을 찾아 폴리곤(벡터) 도형으로 바꾸는 과정을 무엇이라 하나? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Polygonization",
+          "Raster-to-vector conversion",
+          "Vectorization"
+        ],
+        "ko": [
+          "폴리곤화",
+          "벡터화",
+          "래스터-벡터 변환",
+          "폴리고나이즈"
+        ]
+      },
+      "primary": "Polygonization",
+      "explanation_short": "폴리곤화(polygonization)는 래스터 마스크의 연결된 같은 값 영역을 폴리곤으로 바꾸는 래스터→벡터 변환입니다. GDAL의 Polygonize, rasterio.features.shapes 등이 이 작업을 합니다.",
+      "explanation_full": "결과 폴리곤을 GIS에서 면적 계산·중첩 분석·편집에 쓰려면 벡터 형식(Shapefile, GeoJSON, GeoPackage)이 필요해 분할 모델 납품 단계에서 거의 항상 거칩니다. 변환할 때 geotransform을 넣어야 꼭짓점이 지도 좌표가 되고, 결과 파일에 CRS를 지정해야 다른 레이어와 겹쳐집니다. 픽셀 경계를 그대로 따르므로 계단형 경계와 작은 조각이 생기기 쉬워 단순화·면적 필터 같은 후처리가 뒤따릅니다.",
+      "tags": [
+        "gis",
+        "vector"
+      ],
+      "terms": [
+        "polygonization"
+      ],
+      "source_ref": "GDAL 문서 gdal_polygonize; rasterio 문서 rasterio.features",
+      "status": "draft"
+    },
+    {
+      "id": "G-EXPORT-018",
+      "type": "mcq",
+      "chapter": "G.export",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "0.3 m GSD 항공영상의 건물 분할 마스크를 폴리곤으로 바꿨더니, 경계가 픽셀 모양의 계단형이고 몇 픽셀짜리 잡음 폴리곤이 수천 개 생겼다. 가장 적절한 후처리는?",
+      "choices": [
+        {
+          "text": "좌표계를 EPSG:4326으로 재투영해 좌표를 도(degree) 단위로 바꾼다",
+          "rationale": "좌표계 변환은 도형 모양을 바꾸지 않습니다. 오히려 도 단위가 되어 면적 기준 필터링이 어려워집니다."
+        },
+        {
+          "text": "작은 폴리곤을 최소 면적 기준으로 지우고, Douglas-Peucker로 꼭짓점을 단순화한다",
+          "rationale": null
+        },
+        {
+          "text": "마스크를 최근접 보간으로 4배 업샘플링한 뒤 다시 폴리곤화해 경계를 더 촘촘하게 만든다",
+          "rationale": "최근접 업샘플링은 같은 모양을 더 많은 꼭짓점으로 표현할 뿐이고, 잡음 조각도 그대로 남습니다."
+        },
+        {
+          "text": "모든 폴리곤을 각각의 외접 사각형(bounding box)으로 바꿔 저장한다",
+          "rationale": "L자형·회전된 건물의 실제 형상 정보가 사라지고 면적이 과대 추정됩니다."
+        },
+        {
+          "text": "Shapefile 대신 GeoJSON 형식으로 바꿔 저장한다",
+          "rationale": "저장 형식을 바꿔도 도형 자체는 같으므로 계단 경계와 잡음 조각은 그대로입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "폴리곤화 후에는 최소 면적 필터로 잡음 조각을 제거하고, Douglas-Peucker 같은 단순화 알고리즘으로 허용 오차 이내의 불필요한 꼭짓점을 줄이는 것이 표준 후처리입니다.",
+      "explanation_full": "단순화 허용 오차는 GSD의 1~2배 정도에서 시작해 형상이 망가지지 않는지 눈으로 확인하며 조정하는 경우가 많습니다(0.3 m GSD라면 0.3~0.6 m). 이웃 폴리곤과 경계를 공유해야 하는 토지피복 지도에서는 개별 단순화가 틈·겹침을 만들 수 있으므로 위상을 보존하는 단순화를 씁니다. 건물처럼 직각 형태가 뚜렷한 대상은 직교화(regularization) 후처리를 추가하기도 합니다. 잡음이 많다면 폴리곤화 전에 마스크에 모폴로지 열기(opening)를 먼저 적용하는 것도 방법입니다.",
+      "tags": [
+        "gis",
+        "vector",
+        "post-processing"
+      ],
+      "terms": [
+        "polygonization"
+      ],
+      "source_ref": "GDAL/OGR 문서 Simplify; Douglas & Peucker 1973",
+      "status": "draft"
+    },
+    {
+      "id": "G-EXPORT-019",
+      "type": "scenario",
+      "chapter": "G.export",
+      "cognitive_level": 3,
+      "difficulty": 2,
+      "stem": "지시: \"밤에 도는 Sentinel-2 전국 토지피복 추론은 결과를 아침에만 받으면 돼. 타일 하나 응답 속도는 신경 쓰지 말고, GPU 메모리 되는 데까지 배치 키워서 시간당 처리 타일 수를 최대로 뽑아.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "배치 크기를 1로 두어 타일 하나의 응답 시간을 최소로 만든다",
+          "rationale": "지시와 반대입니다. 배치 1은 지연시간을 줄이는 설정이며 GPU 병렬성을 덜 써서 처리량은 낮아집니다."
+        },
+        {
+          "text": "테스트 시간 증강(TTA)을 켜서 타일별 예측 정확도를 높인다",
+          "rationale": "TTA는 타일마다 여러 번 추론하므로 처리량이 오히려 몇 분의 1로 줄어듭니다. 지시의 목표와 다릅니다."
+        },
+        {
+          "text": "메모리 한도 안에서 배치를 늘려 초당 타일 수를 실측하고, 데이터는 병렬로 미리 읽어 둔다",
+          "rationale": null
+        },
+        {
+          "text": "타일을 128×128로 작게 잘라 한 배치에 훨씬 더 많은 타일을 채워 넣어 GPU를 꽉 채운다",
+          "rationale": "같은 면적을 처리하는 데 필요한 타일 수가 크게 늘고(예: 512→128이면 16배) 타일당 문맥이 줄어 정확도도 떨어집니다. 면적 기준 처리량이 좋아진다는 보장도 없습니다."
+        },
+        {
+          "text": "GPU 대신 코어 수가 많은 CPU 서버로 옮겨 여러 프로세스로 나눠 돌린다",
+          "rationale": "대량의 CNN 추론은 일반적으로 GPU의 처리량이 훨씬 높습니다. 지시는 GPU에서 배치를 키우라는 것입니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "지연시간이 중요하지 않은 일괄(batch) 추론에서는 메모리가 허용하는 한 배치를 키워 처리량을 최대화합니다. 이때 데이터 로딩이 병목이 되지 않도록 병렬 로딩·미리 읽기(prefetch)를 함께 설정하고, 배치 크기별 처리량을 실측해 가장 좋은 값을 고릅니다.",
+      "explanation_full": "배치를 키울수록 처리량이 늘다가 GPU가 포화되면 더 늘지 않는 구간이 옵니다. 그 이상은 메모리만 쓰므로 실측 곡선을 보고 정합니다. 위성 장면 추론에서는 GeoTIFF 읽기·타일 자르기(디스크 I/O와 CPU)가 GPU보다 느린 경우가 많아, DataLoader의 num_workers를 늘리거나 COG(Cloud Optimized GeoTIFF)처럼 부분 읽기에 유리한 형식을 쓰는 것이 처리량 개선에 큰 역할을 합니다.",
+      "tags": [
+        "deployment",
+        "performance",
+        "batch",
+        "scenario"
+      ],
+      "terms": [
+        "throughput",
+        "latency"
+      ],
+      "source_ref": "시스템 성능 측정 일반; PyTorch 문서 torch.utils.data",
+      "status": "draft"
+    },
+    {
+      "id": "G-EXPORT-020",
+      "type": "scenario",
+      "chapter": "G.export",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"받는 쪽 서버에 GPU가 없어. PyTorch 모델을 ONNX로 내보내서 ONNX Runtime CPU로 돌리되, 넘기기 전에 원래 모델이랑 결과 같은지 꼭 확인해.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "ONNX로 내보낸 뒤 같은 입력 타일들을 PyTorch와 ONNX Runtime(CPU)에 넣어 출력 차이와 지표를 비교한다",
+          "rationale": null
+        },
+        {
+          "text": "ONNX 파일을 TensorRT 엔진으로 빌드해 CPU 서버에서의 추론 속도부터 최적화해 둔다",
+          "rationale": "TensorRT는 NVIDIA GPU 전용이라 GPU가 없는 서버에서는 쓸 수 없습니다. 결과 동등성 확인도 빠져 있습니다."
+        },
+        {
+          "text": "ONNX 파일 용량이 원래 .pt 파일과 비슷한지 보고 변환이 제대로 됐는지 판단한다",
+          "rationale": "파일 크기가 비슷해도 연산자 변환 오류로 출력이 달라질 수 있습니다. 결과 동등성은 실제 출력을 비교해야 확인됩니다."
+        },
+        {
+          "text": "CPU에서 빨리 돌도록 보정 데이터 없이 바로 INT8로 변환해 넘긴다",
+          "rationale": "지시는 원래 모델과 결과가 같은지 확인하라는 것입니다. 검증 없이 정밀도를 낮추면 결과 차이가 더 커질 수 있습니다."
+        },
+        {
+          "text": "ONNX Runtime으로 모델을 처음부터 다시 학습시켜 CPU 환경에 맞춘다",
+          "rationale": "학습된 가중치를 그대로 내보내면 되므로 재학습할 이유가 없습니다. 실행 환경이 바뀌어도 모델 자체는 같습니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "ONNX 변환 후에는 같은 입력을 원래 PyTorch 모델과 ONNX Runtime에 넣어 출력 텐서의 차이(최대 절대오차 등)와 최종 지표가 허용 범위 안인지 확인하는 동등성 검증을 먼저 합니다.",
+      "explanation_full": "FP32 그대로 변환했다면 출력 차이는 모델·연산자에 따라 다르지만 대개 매우 작습니다(예: 최대 절대오차 1e-5~1e-4 수준). 이보다 크게 벌어지면 지원되지 않는 연산자 대체, 전처리 불일치(정규화 값, 밴드 순서), 학습 모드(model.eval() 누락으로 dropout·BN 동작 차이) 같은 원인을 의심합니다. 검증에는 무작위 텐서만이 아니라 실제 위성 타일 여러 장을 쓰고, 최종 산출물(마스크 mIoU, 탐지 mAP)까지 비교해 두면 납품 근거가 됩니다.",
+      "tags": [
+        "deployment",
+        "onnx",
+        "cpu",
+        "scenario"
+      ],
+      "terms": [
+        "onnx"
+      ],
+      "source_ref": "ONNX Runtime 문서; PyTorch 문서 torch.onnx",
+      "status": "draft"
+    },
+    {
+      "id": "G-EXPORT-021",
+      "type": "scenario",
+      "chapter": "G.export",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"드론에 올린 Jetson에서 차량 탐지를 실시간으로 돌려야 해. TensorRT FP16 엔진으로 가고, FP32 원본 대비 mAP가 얼마나 빠지는지 검증셋으로 확인해서 보고해.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "워크스테이션에서 FP16 엔진을 빌드해 Jetson에 복사하고, 프레임당 속도만 측정해 보고한다",
+          "rationale": "TensorRT 엔진은 빌드한 기기에 종속되어 옮겨 쓸 수 없고, 지시한 mAP 비교도 빠져 있습니다."
+        },
+        {
+          "text": "보정 데이터 없이 INT8 엔진을 만들어 Jetson에서의 추론 속도를 최대로 끌어올린다",
+          "rationale": "지시는 FP16입니다. INT8은 보정 없이 만들면 정확도 손실 위험이 크고, 정확도 확인도 빠져 있습니다."
+        },
+        {
+          "text": "FP16으로 바꾼 모델을 먼저 다시 학습시켜 정밀도 손실을 복구한 뒤 배포한다",
+          "rationale": "손실이 얼마인지 측정하기도 전에 재학습하는 것은 순서가 틀렸습니다. FP16은 대개 재학습 없이도 손실이 작습니다."
+        },
+        {
+          "text": "Jetson에서 ONNX로 FP16 엔진을 빌드하고, 같은 검증셋으로 FP32와 mAP를 비교하며 지연시간도 잰다",
+          "rationale": null
+        },
+        {
+          "text": "FP32 모델을 PyTorch 그대로 Jetson에 올려 검증셋 mAP를 측정해 보고한다",
+          "rationale": "FP32 원본의 mAP만 재서는 FP16 엔진의 손실을 알 수 없습니다. 지시한 TensorRT FP16 엔진 평가가 빠져 있습니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "TensorRT 엔진은 대상 기기(Jetson)에서 빌드해야 하고, 정밀도를 낮춘 뒤에는 같은 검증셋으로 원본과 정확도를 비교해야 합니다. 실시간 요구가 있으므로 프레임당 지연시간도 함께 측정해 보고합니다.",
+      "explanation_full": "보고서에는 'FP32 mAP / FP16 mAP / 차이'와 '프레임당 지연시간(평균, p95) / FPS'를 같은 조건(입력 크기, 배치 1, 전후처리 포함 여부)으로 적습니다. FP16에서 손실이 예상보다 크면 오버플로가 나는 층을 FP32로 남기는 혼합 정밀도 빌드를 검토합니다. 드론 탑재 기기는 발열로 성능이 떨어질 수 있으므로 몇 분 이상 연속 실행한 뒤의 지연시간도 확인하는 것이 좋습니다.",
+      "tags": [
+        "deployment",
+        "tensorrt",
+        "edge",
+        "scenario"
+      ],
+      "terms": [
+        "tensorrt",
+        "quantization",
+        "latency"
+      ],
+      "source_ref": "NVIDIA TensorRT Developer Guide; NVIDIA Jetson 문서",
+      "status": "draft"
+    },
+    {
+      "id": "G-EXPORT-022",
+      "type": "scenario",
+      "chapter": "G.export",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"INT8로 바꿨더니 양식장 부표 탐지 recall이 FP32보다 12%p 떨어졌어. 모델 건드리기 전에 보정 쪽부터 확인해봐.\"\n\n가장 먼저 확인할 것은?",
+      "choices": [
+        {
+          "text": "NMS의 IoU 임계값을 낮춰 겹쳐 있는 부표를 더 많이 남기도록 조정한다",
+          "rationale": "FP32와 INT8에 같은 후처리를 썼다면 NMS 설정은 두 결과 차이의 원인이 아닙니다. 원인 확인 전에 후처리를 바꾸는 것은 지시와 다릅니다."
+        },
+        {
+          "text": "학습률을 낮춰 모델을 처음부터 다시 학습한 뒤 INT8로 변환한다",
+          "rationale": "지시는 모델을 건드리기 전에 보정부터 보라는 것입니다. 재학습은 원인을 확인한 뒤의 선택지입니다."
+        },
+        {
+          "text": "입력 GeoTIFF의 좌표계가 EPSG:5186으로 올바르게 지정돼 있는지 메타데이터부터 확인한다",
+          "rationale": "좌표계는 결과의 지도 위치에 관한 정보로, 모델 내부 연산이나 recall에는 영향을 주지 않습니다."
+        },
+        {
+          "text": "ONNX opset 버전을 최신으로 올려 모델을 다시 내보낸다",
+          "rationale": "opset 문제라면 보통 변환 오류가 나거나 FP32 변환에서도 차이가 나타납니다. INT8에서만 recall이 크게 떨어진 것은 양자화 범위 문제를 먼저 의심할 신호입니다."
+        },
+        {
+          "text": "보정에 쓴 영상이 부표가 있는 실제 해역·조건을 대표하는지, 장수가 충분한지 확인한다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "INT8에서만 성능이 크게 떨어졌다면 보정 데이터로 잡은 활성값 범위가 실제 입력과 맞지 않는 경우가 가장 흔합니다. 보정 영상이 탐지 대상(부표)과 실제 촬영 조건을 대표하는지, 수량이 충분한지부터 확인합니다.",
+      "explanation_full": "보정을 바로잡아도 손실이 크면 다음 단계로 ① 보정 방식 변경(엔트로피·백분위), ② 민감한 층(첫 합성곱, 탐지 head)을 FP16/FP32로 남기는 혼합 정밀도, ③ 양자화 인식 학습(QAT) 순으로 검토합니다. 부표처럼 작은 객체는 약한 활성 신호가 양자화 단계에 묻혀 사라지기 쉬워 recall 하락이 먼저 나타나는 경향이 있습니다. 비교는 반드시 같은 검증셋·같은 후처리 설정으로 합니다.",
+      "tags": [
+        "deployment",
+        "quantization",
+        "calibration",
+        "scenario"
+      ],
+      "terms": [
+        "quantization"
+      ],
+      "source_ref": "NVIDIA TensorRT Developer Guide (INT8 Calibration)",
+      "status": "draft"
+    },
+    {
+      "id": "G-EXPORT-023",
+      "type": "scenario",
+      "chapter": "G.export",
+      "cognitive_level": 3,
+      "difficulty": 5,
+      "stem": "지시: \"KOMPSAT-3A 장면 하나 통째로 선박 탐지 돌려. 512 타일에 overlap 64로 자르고, 겹친 데서 두 번 잡힌 배는 정리해서 좌표 붙은 GeoJSON 하나로 줘.\"\n\n가장 적절한 처리 순서는?",
+      "choices": [
+        {
+          "text": "타일별로 NMS만 한 뒤 박스를 그대로 모아, 각 타일 기준 픽셀 좌표로 GeoJSON을 만든다",
+          "rationale": "타일 사이의 중복은 타일별 NMS로 지워지지 않습니다. 또 타일 기준 픽셀 좌표는 지도 좌표가 아니라 GIS에서 제 위치에 표시되지 않습니다."
+        },
+        {
+          "text": "타일 원점 오프셋을 더해 장면 좌표로 옮기고, 전체 NMS로 중복을 지운 뒤 geotransform으로 지도 좌표화한다",
+          "rationale": null
+        },
+        {
+          "text": "겹침 영역에 조금이라도 걸친 박스는 모두 버려 중복을 원천 차단한 뒤 GeoJSON으로 저장한다",
+          "rationale": "겹침 영역의 박스를 양쪽 타일에서 모두 버리면 경계 부근 선박이 결과에서 통째로 사라집니다."
+        },
+        {
+          "text": "타일마다 GeoJSON을 따로 저장한 뒤 GIS 소프트웨어에서 파일들을 하나로 합친다",
+          "rationale": "파일을 합치기만 하면 겹침 영역에서 두 번 잡힌 선박이 그대로 중복으로 남습니다."
+        },
+        {
+          "text": "각 타일에서 신뢰도가 가장 높은 박스 하나만 남기고 GeoJSON으로 저장한다",
+          "rationale": "한 타일에 여러 척이 있으면 나머지 선박을 모두 잃습니다. 중복 제거가 아니라 탐지 누락을 만듭니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "타일 내부 좌표에 타일 원점(열·행 오프셋)을 더해 장면 전체 픽셀 좌표로 통일해야 서로 다른 타일의 박스를 비교할 수 있습니다. 그다음 전역 NMS로 중복을 지우고, geotransform으로 지도 좌표로 바꿔 CRS와 함께 GeoJSON으로 저장합니다.",
+      "explanation_full": "좌표 통일 → 중복 제거 → 지리좌표 변환 순서가 핵심입니다. 박스 꼭짓점 네 개를 각각 geotransform으로 변환하면 회전항이 있는 영상에서도 올바른 폴리곤이 됩니다. GeoJSON 표준(RFC 7946)은 WGS84 경도·위도를 기본으로 하므로, 평면 좌표계 그대로 넘길 때는 받는 쪽과 CRS를 합의하고 명시합니다. 겹침 64픽셀보다 큰 선박은 어느 타일에도 온전히 들어가지 않을 수 있으니 대상 크기에 맞게 overlap을 정합니다.",
+      "tags": [
+        "deployment",
+        "tiling",
+        "gis",
+        "scenario"
+      ],
+      "terms": [
+        "sliding-window-inference",
+        "geotransform",
+        "nms"
+      ],
+      "source_ref": "SAHI 논문(Akyon et al. 2022); GDAL 문서 Raster Data Model",
+      "status": "draft"
+    },
+    {
+      "id": "G-EXPORT-024",
+      "type": "scenario",
+      "chapter": "G.export",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"0.5 m 정사영상 건물 마스크, 원본이랑 같은 EPSG:5186으로 폴리곤화해서 GeoPackage로 줘. 면적 10㎡ 미만 조각은 빼고.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "마스크를 폴리곤화한 뒤 면적이 10픽셀 미만인 폴리곤을 제거하고 EPSG:5186으로 저장한다",
+          "rationale": "0.5 m 픽셀 하나는 0.25㎡이므로 10픽셀은 2.5㎡에 불과합니다. 10㎡ 기준이면 40픽셀 미만을 빼야 합니다."
+        },
+        {
+          "text": "폴리곤을 EPSG:4326으로 재투영한 뒤 면적 값이 10 미만인 폴리곤을 제거한다",
+          "rationale": "EPSG:4326의 면적은 제곱도(degree²) 단위라 10㎡와 비교할 수 없고, 지시한 EPSG:5186과도 다릅니다."
+        },
+        {
+          "text": "원본 transform을 넣어 폴리곤화하고 EPSG:5186을 지정한 뒤, 미터 기준 10㎡ 미만을 지운다",
+          "rationale": null
+        },
+        {
+          "text": "변환 행렬 없이 폴리곤화해 꼭짓점을 픽셀 좌표로 두고, 파일의 좌표계 정보만 EPSG:5186으로 지정한다",
+          "rationale": "꼭짓점 좌표가 픽셀 번호로 남아 좌표계만 붙여서는 지도 위치가 맞지 않습니다. 폴리곤화할 때 geotransform을 넣어야 합니다."
+        },
+        {
+          "text": "면적 필터는 생략하고 모든 폴리곤을 Douglas-Peucker로 단순화해서 그대로 넘긴다",
+          "rationale": "단순화는 꼭짓점을 줄일 뿐 작은 조각을 없애지 않습니다. 지시한 면적 필터가 빠져 있습니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "폴리곤화할 때 원본 geotransform을 넣어야 꼭짓점이 EPSG:5186 미터 좌표가 되고, 그래야 면적도 ㎡로 바로 계산됩니다. 0.5 m 해상도에서 10㎡는 10 ÷ 0.25 = 40픽셀입니다.",
+      "explanation_full": "rasterio.features.shapes(mask, transform=src.transform)으로 폴리곤을 얻고 GeoDataFrame에 crs='EPSG:5186'을 지정한 뒤 geometry.area < 10인 행을 지우고 to_file(..., driver='GPKG')로 저장하는 흐름이 일반적입니다. 면적 계산은 반드시 미터 단위 평면 좌표계에서 해야 하며, 경위도 좌표계에서는 등적 좌표계로 변환한 뒤 계산합니다. 배경(0) 영역도 폴리곤으로 나오므로 건물 값(1)만 골라 담습니다.",
+      "tags": [
+        "gis",
+        "vector",
+        "coordinates",
+        "scenario"
+      ],
+      "terms": [
+        "polygonization",
+        "geotransform"
+      ],
+      "source_ref": "rasterio 문서 rasterio.features; GeoPandas 문서",
+      "status": "draft"
+    }
+  ]
+}

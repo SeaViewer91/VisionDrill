@@ -1,0 +1,787 @@
+{
+  "format": "visiondrill-bank-exchange",
+  "format_version": 1,
+  "terms": [
+    {
+      "id": "logistic-regression",
+      "term_en": "Logistic Regression",
+      "term_ko": "로지스틱 회귀",
+      "abbreviation": null,
+      "definition": "이진 결과의 로그 오즈(logit)를 설명변수의 선형결합으로 모델링하고, 시그모이드로 0~1 확률을 출력하는 분류 모형. 계수는 최대우도로 추정한다",
+      "usage_example": "양식장 유무는 먼저 로지스틱 회귀로 베이스라인 잡아 두고 딥러닝 결과랑 비교하자.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "log-odds",
+      "term_en": "Log-odds (Logit)",
+      "term_ko": "로그 오즈(로짓)",
+      "abbreviation": "logit",
+      "definition": "확률 p를 log(p/(1 − p))로 바꾼 값. 0~1 확률을 −∞~∞로 펼쳐 선형 모형과 연결하는 로지스틱 회귀의 연결함수이며 시그모이드의 역함수",
+      "usage_example": "계수는 로짓 척도라서 그대로 확률 변화로 읽으면 안 돼.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "sigmoid-function",
+      "term_en": "Sigmoid Function",
+      "term_ko": "시그모이드 함수",
+      "abbreviation": "σ",
+      "definition": "σ(z) = 1/(1 + e^(−z)). 실수 전체를 0~1로 매끄럽게 눌러 확률로 해석하게 하는 S자 함수이며, 로짓(로그 오즈)의 역함수",
+      "usage_example": "마지막 층에 시그모이드 붙여서 픽셀별 수계 확률로 뽑아.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "maximum-likelihood-estimation",
+      "term_en": "Maximum Likelihood Estimation",
+      "term_ko": "최대우도추정",
+      "abbreviation": "MLE",
+      "definition": "관측된 데이터가 나올 확률(우도)을 가장 크게 만드는 모수 값을 추정치로 삼는 방법. 로지스틱 회귀 계수는 이 방법으로 반복 계산해 구한다",
+      "usage_example": "로지스틱 계수가 수렴 안 한다고? MLE가 발산하는 거니까 완전 분리부터 의심해 봐.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "odds",
+      "term_en": "Odds",
+      "term_ko": "오즈",
+      "abbreviation": null,
+      "definition": "사건이 일어날 확률과 일어나지 않을 확률의 비, p/(1 − p)",
+      "usage_example": "구름 확률 0.8이면 오즈로는 4야. 확률이랑 헷갈리지 마.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "odds-ratio",
+      "term_en": "Odds Ratio",
+      "term_ko": "오즈비",
+      "abbreviation": "OR",
+      "definition": "두 조건에서의 오즈의 비. 로지스틱 회귀에서는 설명변수가 1 단위 늘 때 오즈가 몇 배가 되는지를 e^β로 나타낸다",
+      "usage_example": "해안선 거리 오즈비를 km당으로 뽑아서 표로 정리해줘.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "decision-boundary",
+      "term_en": "Decision Boundary",
+      "term_ko": "결정 경계",
+      "abbreviation": null,
+      "definition": "분류기의 예측 클래스가 바뀌는 입력 공간의 경계. 로지스틱 회귀에서 임계값 0.5의 경계는 선형예측자 = 0인 직선(초평면)이다",
+      "usage_example": "두 밴드 산점도에 결정 경계 그어서 어디서 헷갈리는지 보여줘.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "log-loss",
+      "term_en": "Log Loss",
+      "term_ko": "로그 손실",
+      "abbreviation": null,
+      "definition": "−[y·log p + (1 − y)·log(1 − p)]의 평균. 정답 클래스에 준 예측 확률이 낮을수록 크게 벌하는 손실로, 음의 로그우도(이진 교차 엔트로피)와 같다",
+      "usage_example": "정확도만 보지 말고 검증 로그 손실도 같이 봐. 확률값을 후처리에 그대로 쓰니까.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "multinomial-logistic-regression",
+      "term_en": "Multinomial Logistic Regression",
+      "term_ko": "다항 로지스틱 회귀",
+      "abbreviation": null,
+      "definition": "로지스틱 회귀를 서로 배타적인 K개 클래스로 확장한 모형(softmax 회귀). 클래스별 선형 점수를 softmax로 합이 1인 확률로 바꾸고 교차 엔트로피로 학습한다",
+      "usage_example": "토지피복 6개 클래스 베이스라인은 softmax 회귀로 한 번에 돌려봐.",
+      "origin": "standard",
+      "track": "B"
+    }
+  ],
+  "questions": [
+    {
+      "id": "B-LOG-001",
+      "type": "short",
+      "chapter": "B.log",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "확률 p를 log(p / (1 − p))로 바꿔 0~1 범위를 −∞~∞로 펼치는 함수(로지스틱 회귀의 연결함수)의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Logit (log-odds)",
+          "Logit function"
+        ],
+        "ko": [
+          "로짓",
+          "로그 오즈",
+          "로짓 함수"
+        ]
+      },
+      "primary": "Logit (log-odds)",
+      "explanation_short": "로짓은 오즈 p/(1 − p)에 로그를 취한 로그 오즈입니다. 로지스틱 회귀는 이 로짓을 설명변수의 선형결합 β₀ + β₁x₁ + …로 모델링합니다.",
+      "explanation_full": "로짓의 역함수가 시그모이드 σ(z) = 1/(1 + e^(−z))입니다. p = 0.5이면 로짓은 0, p가 1에 가까워지면 +∞, 0에 가까워지면 −∞가 됩니다. 로지스틱 회귀 계수는 로짓 척도의 변화량이라 확률 변화로 바로 읽으면 안 됩니다.",
+      "tags": [
+        "classification",
+        "logistic-regression"
+      ],
+      "terms": [
+        "log-odds",
+        "logit"
+      ],
+      "source_ref": "ISLR 4.3절(Logistic Regression)",
+      "status": "draft"
+    },
+    {
+      "id": "B-LOG-002",
+      "type": "short",
+      "chapter": "B.log",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "어떤 픽셀이 구름일 확률이 0.8일 때, 구름일 오즈(odds)는 얼마인가? (숫자로)",
+      "accepted_answers": {
+        "en": [
+          "4",
+          "4:1"
+        ],
+        "ko": [
+          "4",
+          "4대1"
+        ]
+      },
+      "primary": "4",
+      "explanation_short": "오즈는 p/(1 − p)이므로 0.8 / 0.2 = 4입니다. '구름일 가능성이 아닐 가능성의 4배'라는 뜻입니다.",
+      "explanation_full": "확률과 오즈는 다른 척도입니다. p = 0.5이면 오즈 1, p = 0.2이면 0.25, p = 0.9이면 9입니다. 확률이 작을 때(예: 0.01)는 오즈(≈ 0.0101)와 확률이 거의 같지만, 확률이 클수록 차이가 커집니다.",
+      "tags": [
+        "classification",
+        "logistic-regression",
+        "calculation"
+      ],
+      "terms": [
+        "odds"
+      ],
+      "source_ref": "ISLR 4.3절(Logistic Regression)",
+      "status": "draft"
+    },
+    {
+      "id": "B-LOG-003",
+      "type": "short",
+      "chapter": "B.log",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "이진 분류에서 −[y·log p + (1 − y)·log(1 − p)]의 평균으로 계산하며, 정답 클래스에 낮은 확률을 줄수록 크게 벌하는 손실의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Log loss",
+          "Binary cross-entropy (BCE)",
+          "Cross-entropy loss",
+          "Cross-entropy",
+          "Logistic loss",
+          "Negative log-likelihood (NLL)"
+        ],
+        "ko": [
+          "로그 손실",
+          "이진 교차 엔트로피",
+          "교차 엔트로피 손실",
+          "교차 엔트로피",
+          "로지스틱 손실",
+          "음의 로그우도"
+        ]
+      },
+      "primary": "Log loss",
+      "explanation_short": "로그 손실(이진 교차 엔트로피)은 정답 클래스에 준 확률의 로그에 음수를 붙인 값의 평균입니다. 로지스틱 회귀의 최대우도 추정은 이 손실을 최소화하는 것과 같습니다.",
+      "explanation_full": "정답 확률이 1에 가까우면 손실이 0에 가깝고, 0에 가까우면 무한대로 커집니다. 그래서 '틀린 쪽에 확신한' 예측을 크게 벌합니다. 딥러닝에서 시그모이드 출력과 함께 쓰는 BCE 손실(PyTorch의 BCEWithLogitsLoss 등)이 같은 개념입니다.",
+      "tags": [
+        "classification",
+        "logistic-regression",
+        "loss"
+      ],
+      "terms": [
+        "log-loss",
+        "cross-entropy-loss"
+      ],
+      "source_ref": "ISLR 4.3절(Logistic Regression) · scikit-learn 문서 sklearn.metrics.log_loss",
+      "status": "draft"
+    },
+    {
+      "id": "B-LOG-004",
+      "type": "short",
+      "chapter": "B.log",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "분류기가 한 클래스에서 다른 클래스로 예측을 바꾸는 입력 공간의 경계(로지스틱 회귀에서 임계값 0.5를 쓰면 선형예측자 = 0인 초평면)를 무엇이라 하는가? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Decision boundary",
+          "Decision surface"
+        ],
+        "ko": [
+          "결정 경계",
+          "의사결정 경계",
+          "결정 경계면"
+        ]
+      },
+      "primary": "Decision boundary",
+      "explanation_short": "결정 경계는 예측 클래스가 바뀌는 경계입니다. 로지스틱 회귀에서는 σ(z) = 0.5 ⇔ z = 0이므로 β₀ + β₁x₁ + … = 0인 직선(초평면)이 됩니다.",
+      "explanation_full": "선형예측자가 입력의 1차식이면 결정 경계도 선형입니다. 곡선 경계가 필요하면 다항항·상호작용항을 넣거나 비선형 모형을 씁니다. 임계값을 바꾸면 경계는 기울기는 그대로인 채 평행 이동합니다.",
+      "tags": [
+        "classification",
+        "logistic-regression"
+      ],
+      "terms": [
+        "decision-boundary"
+      ],
+      "source_ref": "ISLR 4.3절(Logistic Regression)",
+      "status": "draft"
+    },
+    {
+      "id": "B-LOG-005",
+      "type": "short",
+      "chapter": "B.log",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "로지스틱 회귀를 서로 배타적인 K개(3개 이상) 클래스로 확장해, 클래스별 선형 점수를 softmax로 확률로 바꾸는 모형의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Multinomial logistic regression",
+          "Softmax regression",
+          "Multiclass logistic regression"
+        ],
+        "ko": [
+          "다항 로지스틱 회귀",
+          "소프트맥스 회귀",
+          "다중 클래스 로지스틱 회귀",
+          "다범주 로지스틱 회귀"
+        ]
+      },
+      "primary": "Multinomial logistic regression",
+      "explanation_short": "다항 로지스틱 회귀(softmax 회귀)는 클래스 k의 확률을 exp(z_k) / Σexp(z_j)로 계산합니다. 확률의 합이 1이 되며, 다중 클래스 교차 엔트로피로 학습합니다.",
+      "explanation_full": "딥러닝 분류기의 마지막 층(선형층 + softmax + 교차 엔트로피)은 앞단 특징 위에 올린 다항 로지스틱 회귀와 같은 구조입니다. 이름이 비슷한 '다항 회귀(polynomial regression)'는 거듭제곱 항을 넣는 회귀로 전혀 다른 개념입니다.",
+      "tags": [
+        "classification",
+        "logistic-regression",
+        "multiclass"
+      ],
+      "terms": [
+        "multinomial-logistic-regression",
+        "softmax"
+      ],
+      "source_ref": "ISLR 4.3.5절 · ESL 4.4절",
+      "status": "draft"
+    },
+    {
+      "id": "B-LOG-006",
+      "type": "mcq",
+      "chapter": "B.log",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "픽셀이 수계인지(1) 아닌지(0)를 밴드 값으로 예측하려 한다. 설명변수의 선형결합 z에 로지스틱 시그모이드 함수 σ(z) = 1/(1 + e^(−z))를 씌워 0~1 확률을 출력하는 모형은?",
+      "choices": [
+        {
+          "text": "선형 회귀(OLS)",
+          "rationale": "선형 회귀의 출력은 −∞~∞라 확률 범위를 벗어날 수 있고 시그모이드를 쓰지 않습니다."
+        },
+        {
+          "text": "프로빗 회귀",
+          "rationale": "프로빗도 이진 결과 모형이지만 로지스틱 함수 1/(1 + e^(−z)) 대신 표준정규 누적분포함수 Φ(z)를 씁니다. 모양은 비슷한 S자이지만 다른 함수입니다."
+        },
+        {
+          "text": "로지스틱 회귀",
+          "rationale": null
+        },
+        {
+          "text": "포아송 회귀",
+          "rationale": "포아송 회귀는 개수(0, 1, 2, …) 자료에 로그 연결함수를 쓰는 모형입니다."
+        },
+        {
+          "text": "Ridge 회귀",
+          "rationale": "Ridge는 L2 패널티를 더한 선형 회귀로, 연속형 결과를 예측하며 시그모이드를 쓰지 않습니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "로지스틱 회귀는 로그 오즈를 선형결합으로 두고, 그 역함수인 시그모이드 σ(z) = 1/(1 + e^(−z))로 0~1 확률을 냅니다.",
+      "explanation_full": "0/1을 OLS로 그대로 적합하는 선형 확률 모형은 예측이 0~1을 벗어나고 이분산이 생겨 잘 쓰지 않습니다. 로지스틱 회귀는 계수를 오즈비로 해석할 수 있어, 딥러닝 모형과 비교할 해석 가능한 베이스라인으로 자주 씁니다. 신경망의 마지막 층이 시그모이드 + 이진 교차 엔트로피라면 그 층은 로지스틱 회귀와 같은 구조입니다.",
+      "tags": [
+        "classification",
+        "logistic-regression"
+      ],
+      "terms": [
+        "logistic-regression",
+        "sigmoid-function"
+      ],
+      "source_ref": "ISLR 4.3절(Logistic Regression)",
+      "status": "draft"
+    },
+    {
+      "id": "B-LOG-007",
+      "type": "mcq",
+      "chapter": "B.log",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "양식장 존재 여부(1/0)를 예측하는 로지스틱 회귀에서 '해안선까지 거리(km)'의 계수가 −0.5로 추정되었다. 다른 변수가 같을 때 거리가 1km 늘면?",
+      "choices": [
+        {
+          "text": "양식장이 있을 오즈가 e^(−0.5) ≈ 0.61배가 된다(약 39% 감소)",
+          "rationale": null
+        },
+        {
+          "text": "양식장이 있을 확률이 0.5(50%p)만큼 줄어든다",
+          "rationale": "계수는 확률이 아니라 로그 오즈의 변화량입니다. 확률 변화량은 현재 확률 수준에 따라 달라집니다."
+        },
+        {
+          "text": "양식장이 있을 확률이 현재 수준과 관계없이 e^(−0.5) ≈ 0.61배가 된다",
+          "rationale": "e^β는 확률이 아니라 오즈의 배수입니다. 확률의 배수는 기준 확률에 따라 달라지며, 확률이 아주 작을 때만 근사적으로 0.61배에 가깝습니다."
+        },
+        {
+          "text": "양식장이 있을 오즈가 계수 그대로 0.5배, 즉 절반이 된다",
+          "rationale": "오즈의 배수는 계수 자체가 아니라 e^β입니다. e^(−0.5) ≈ 0.61입니다."
+        },
+        {
+          "text": "양식장이 있을 로그 오즈가 e^(−0.5) ≈ 0.61만큼 줄어든다",
+          "rationale": "로그 오즈는 계수만큼(−0.5) 줄어듭니다. 지수를 취한 e^β는 오즈의 배수입니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "로지스틱 회귀 계수 β는 설명변수 1단위 증가당 로그 오즈의 변화이므로, 오즈는 e^β배가 됩니다. e^(−0.5) ≈ 0.607이므로 오즈가 약 39% 줄어듭니다.",
+      "explanation_full": "확률의 변화는 비선형이라 기준 확률에 따라 다릅니다. 확률 0.5(오즈 1)에서는 오즈 0.607 → 확률 0.607/1.607 ≈ 0.38로 약 12%p 줄지만, 확률 0.05에서는 약 0.031로 약 2%p만 줄어듭니다. 보고서에는 '오즈비(km당) 0.61'처럼 오즈 척도임을 명시해야 오해가 없습니다.",
+      "tags": [
+        "classification",
+        "logistic-regression",
+        "interpretation"
+      ],
+      "terms": [
+        "odds-ratio",
+        "log-odds"
+      ],
+      "source_ref": "ISLR 4.3절(Logistic Regression) · Hosmer, Lemeshow & Sturdivant, Applied Logistic Regression 1·3장",
+      "status": "draft"
+    },
+    {
+      "id": "B-LOG-008",
+      "type": "mcq",
+      "chapter": "B.log",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "오즈비(odds ratio)의 정의로 옳은 것은?",
+      "choices": [
+        {
+          "text": "두 조건에서의 사건 확률의 비",
+          "rationale": "확률의 비는 상대위험도(relative risk)입니다. 사건이 드물 때만 오즈비와 근사적으로 비슷합니다."
+        },
+        {
+          "text": "두 조건에서의 사건 확률의 차",
+          "rationale": "확률의 차는 위험 차이(risk difference)입니다."
+        },
+        {
+          "text": "두 조건에서의 오즈의 차",
+          "rationale": "오즈비는 차가 아니라 비(나눗셈)입니다."
+        },
+        {
+          "text": "두 조건에서의 오즈(p/(1 − p))의 비",
+          "rationale": null
+        },
+        {
+          "text": "사건이 일어날 확률과 일어나지 않을 확률의 비",
+          "rationale": "그것은 오즈 자체(p/(1 − p))입니다. 오즈비는 두 조건의 오즈를 다시 나눈 값입니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "오즈비는 조건 A의 오즈를 조건 B의 오즈로 나눈 값입니다. 1이면 차이가 없고, 1보다 크면 A에서 사건이 일어날 오즈가 더 큽니다.",
+      "explanation_full": "로지스틱 회귀에서 설명변수 x가 1 늘 때의 오즈비는 e^β로, x 값과 관계없이 일정합니다(확률 변화량은 x에 따라 다름). 이것이 로지스틱 회귀 계수를 오즈비로 보고하는 이유입니다. 사건이 흔한 경우(예: 확률 0.3 이상) 오즈비를 확률의 배수(상대위험도)처럼 말하면 효과를 과장하게 됩니다.",
+      "tags": [
+        "classification",
+        "logistic-regression"
+      ],
+      "terms": [
+        "odds-ratio",
+        "odds"
+      ],
+      "source_ref": "Hosmer, Lemeshow & Sturdivant, Applied Logistic Regression 1·3장",
+      "status": "draft"
+    },
+    {
+      "id": "B-LOG-009",
+      "type": "mcq",
+      "chapter": "B.log",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "조건 A에서 픽셀이 구름일 확률은 0.2이고, 조건 B에서는 0.5이다. A 대비 B의 오즈비는?",
+      "choices": [
+        {
+          "text": "2.5",
+          "rationale": "확률의 비(0.5 / 0.2)입니다. 오즈비는 오즈끼리의 비입니다."
+        },
+        {
+          "text": "4",
+          "rationale": null
+        },
+        {
+          "text": "0.3",
+          "rationale": "확률의 차(0.5 − 0.2)입니다."
+        },
+        {
+          "text": "0.75",
+          "rationale": "오즈의 차(1 − 0.25)입니다. 오즈비는 뺄셈이 아니라 나눗셈입니다."
+        },
+        {
+          "text": "0.25",
+          "rationale": "조건 A의 오즈(0.2 / 0.8)일 뿐입니다. 오즈비는 B의 오즈 1을 A의 오즈 0.25로 나눈 값입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "오즈는 p/(1 − p)이므로 A: 0.2/0.8 = 0.25, B: 0.5/0.5 = 1입니다. 오즈비 = 1 / 0.25 = 4이며, 확률의 비(2.5)와 다릅니다.",
+      "explanation_full": "확률은 2.5배 늘었지만 오즈는 4배 늘었습니다. 기준 확률이 클수록 오즈비와 확률의 비의 차이가 벌어지므로, 보고할 때 어떤 척도인지 반드시 밝혀야 합니다.",
+      "tags": [
+        "classification",
+        "logistic-regression",
+        "calculation"
+      ],
+      "terms": [
+        "odds",
+        "odds-ratio"
+      ],
+      "source_ref": "Hosmer, Lemeshow & Sturdivant, Applied Logistic Regression 1·3장",
+      "status": "draft"
+    },
+    {
+      "id": "B-LOG-010",
+      "type": "mcq",
+      "chapter": "B.log",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "로지스틱 회귀의 계수 추정 방법에 대한 설명으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "잔차제곱합을 최소화하는 닫힌 형태의 행렬 공식으로 한 번에 구한다",
+          "rationale": "그것은 OLS입니다. 로지스틱 회귀는 닫힌 해가 없어 반복 계산이 필요합니다."
+        },
+        {
+          "text": "잔차가 정규분포를 따른다는 가정이 성립할 때에만 계수를 추정할 수 있다",
+          "rationale": "로지스틱 회귀는 결과가 베르누이 분포를 따른다고 보며, 정규 잔차 가정을 쓰지 않습니다."
+        },
+        {
+          "text": "우도를 최대화하는 것은 곧 로그 손실을 최대화하는 것과 같다",
+          "rationale": "로그 손실은 음의 로그우도(평균)이므로, 우도 최대화는 로그 손실 최소화와 같습니다."
+        },
+        {
+          "text": "한 설명변수만으로 두 클래스가 완벽하게 갈라질수록 계수 추정이 더 빠르고 안정적으로 수렴한다",
+          "rationale": "완전 분리가 되면 계수를 키울수록 우도가 계속 커져 최대우도 추정치가 존재하지 않고(발산) 표준오차도 폭증합니다."
+        },
+        {
+          "text": "관측된 0/1 결과가 나올 확률(우도)을 최대화하는 계수를 반복 계산으로 찾는다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "로지스틱 회귀는 각 관측의 베르누이 우도 ∏ p_i^(y_i)·(1 − p_i)^(1 − y_i)를 최대화하는 계수를 찾습니다. 닫힌 해가 없어 뉴턴-랩슨(IRLS)이나 경사 기반 최적화로 반복해서 구합니다.",
+      "explanation_full": "로지스틱 회귀의 로그우도는 계수에 대해 오목(concave)하므로, (준)완전 분리가 없고 설명변수 사이에 완전 공선성이 없으면 최댓값이 하나로 정해져 반복 계산이 안정적으로 수렴합니다. 로그우도를 최대화하는 것은 로그 손실(이진 교차 엔트로피)을 최소화하는 것과 같아서, 딥러닝의 분류 손실과 같은 원리입니다.",
+      "tags": [
+        "classification",
+        "logistic-regression",
+        "estimation"
+      ],
+      "terms": [
+        "maximum-likelihood-estimation",
+        "logistic-regression",
+        "log-loss"
+      ],
+      "source_ref": "ISLR 4.3절(Logistic Regression) · ESL 4.4.1절",
+      "status": "draft"
+    },
+    {
+      "id": "B-LOG-011",
+      "type": "mcq",
+      "chapter": "B.log",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "두 밴드 x₁, x₂로 적합한 로지스틱 회귀의 선형예측자가 z = −4 + 2x₁ + x₂이다. 확률 임계값 0.5를 쓸 때 결정 경계는?",
+      "choices": [
+        {
+          "text": "2x₁ + x₂ = 0.5인 직선",
+          "rationale": "확률 0.5를 선형예측자에 그대로 넣은 실수입니다. 확률 0.5는 z = 0에 해당합니다."
+        },
+        {
+          "text": "시그모이드 모양으로 휘어진 곡선",
+          "rationale": "시그모이드는 z를 확률로 바꾸는 변환일 뿐이며, 입력 공간에서 z = 상수인 경계는 직선입니다."
+        },
+        {
+          "text": "2x₁ + x₂ = 4인 직선",
+          "rationale": null
+        },
+        {
+          "text": "2x₁ + x₂ = −4인 직선",
+          "rationale": "절편을 옮길 때 부호를 잘못 처리했습니다. −4 + 2x₁ + x₂ = 0 → 2x₁ + x₂ = 4입니다."
+        },
+        {
+          "text": "원점을 중심으로 한 원",
+          "rationale": "원형 경계는 x₁², x₂² 같은 2차항을 넣어야 나옵니다. 선형예측자가 1차식이면 경계는 직선입니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "σ(z) = 0.5 ⇔ z = 0이므로 경계는 −4 + 2x₁ + x₂ = 0, 즉 2x₁ + x₂ = 4인 직선입니다. 이 직선보다 2x₁ + x₂가 크면 클래스 1로 예측합니다.",
+      "explanation_full": "임계값을 0.3으로 낮추면 z = logit(0.3) = ln(0.3/0.7) ≈ −0.85가 경계가 되어 2x₁ + x₂ ≈ 3.15로, 기울기는 같고 평행 이동한 직선이 됩니다. 두 밴드 산점도에 이 직선을 그려 보면 어떤 픽셀들이 경계 근처에서 헷갈리는지 직관적으로 볼 수 있습니다.",
+      "tags": [
+        "classification",
+        "logistic-regression",
+        "calculation"
+      ],
+      "terms": [
+        "decision-boundary",
+        "logistic-regression"
+      ],
+      "source_ref": "ISLR 4.3절(Logistic Regression)",
+      "status": "draft"
+    },
+    {
+      "id": "B-LOG-012",
+      "type": "mcq",
+      "chapter": "B.log",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "정답이 y = 1인 샘플에 대해 모델 A는 확률 0.9, 모델 B는 0.1을 예측했다. 자연로그(ln) 기준 로그 손실은 각각 얼마인가?",
+      "choices": [
+        {
+          "text": "A ≈ 0.11, B ≈ 2.30",
+          "rationale": null
+        },
+        {
+          "text": "A = 0.10, B = 0.90",
+          "rationale": "|y − p|, 즉 절대오차입니다. 로그 손실은 −ln p입니다."
+        },
+        {
+          "text": "A = 0.01, B = 0.81",
+          "rationale": "(y − p)², 즉 제곱오차(Brier 점수 방식)입니다."
+        },
+        {
+          "text": "A ≈ −0.11, B ≈ −2.30",
+          "rationale": "ln p에 음수 부호를 붙이지 않았습니다. 로그 손실은 −ln p라 항상 0 이상입니다."
+        },
+        {
+          "text": "A ≈ 0.05, B = 1.00",
+          "rationale": "상용로그(log₁₀)로 계산한 값입니다. 문제는 자연로그 기준입니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "y = 1이면 로그 손실은 −ln p입니다. A: −ln 0.9 ≈ 0.105, B: −ln 0.1 ≈ 2.303으로, 틀린 쪽에 확신한 예측을 약 22배 크게 벌합니다.",
+      "explanation_full": "절대오차로는 두 예측의 차이가 9배(0.1 대 0.9), 제곱오차로는 81배지만, 로그 손실은 p → 0일 때 무한대로 커지므로 '확신에 찬 오답'을 특히 강하게 벌합니다. 그래서 라벨 오류가 섞인 데이터에서는 몇몇 샘플이 손실을 지배할 수 있어, 확률을 [ε, 1 − ε]로 잘라 계산하거나 라벨 스무딩을 쓰기도 합니다.",
+      "tags": [
+        "classification",
+        "logistic-regression",
+        "calculation",
+        "loss"
+      ],
+      "terms": [
+        "log-loss"
+      ],
+      "source_ref": "scikit-learn 문서 sklearn.metrics.log_loss · ESL 4.4.1절",
+      "status": "draft"
+    },
+    {
+      "id": "B-LOG-013",
+      "type": "mcq",
+      "chapter": "B.log",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "다항 로지스틱 회귀(softmax 회귀)에 대한 설명으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "클래스별 출력 확률은 서로 독립적으로 계산되므로 확률을 모두 더해도 1이 되지 않는다",
+          "rationale": "softmax는 exp 점수를 전체 합으로 나누므로 확률의 합이 항상 1입니다. 합이 1이 아닌 독립 출력은 클래스별 시그모이드입니다."
+        },
+        {
+          "text": "한 샘플에 여러 클래스가 동시에 붙는 다중 라벨 분류에 알맞다",
+          "rationale": "softmax는 클래스들이 서로 배타적일 때 씁니다. 다중 라벨 분류는 클래스마다 시그모이드 + 이진 교차 엔트로피를 씁니다."
+        },
+        {
+          "text": "클래스 수와 관계없이 입력 공간을 하나의 직선(초평면)으로만 나눈다",
+          "rationale": "K개 클래스는 클래스 쌍마다 선형 경계가 생겨 입력 공간이 여러 영역으로 나뉩니다."
+        },
+        {
+          "text": "클래스가 2개이면 시그모이드를 쓰는 이진 로지스틱 회귀와 같은 모형이 된다",
+          "rationale": null
+        },
+        {
+          "text": "학습할 때 로그 손실 대신 평균제곱오차를 쓰는 것이 표준이다",
+          "rationale": "표준 학습 목표는 다중 클래스 교차 엔트로피(음의 로그우도)입니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "K = 2일 때 softmax의 클래스 1 확률은 e^(z₁) / (e^(z₁) + e^(z₂)) = σ(z₁ − z₂)로, 두 점수의 차를 선형예측자로 쓰는 이진 로지스틱 회귀와 같습니다.",
+      "explanation_full": "softmax 회귀에서는 모든 클래스 점수에 같은 상수를 더해도 확률이 변하지 않으므로, 보통 한 클래스를 기준(점수 0)으로 두거나 규제로 식별성을 확보합니다. 토지피복처럼 픽셀당 한 클래스만 갖는 문제는 softmax, 한 영상에 '구름'과 '물'이 동시에 있을 수 있는 영상 단위 태깅은 클래스별 시그모이드가 맞습니다.",
+      "tags": [
+        "classification",
+        "logistic-regression",
+        "multiclass"
+      ],
+      "terms": [
+        "multinomial-logistic-regression",
+        "softmax",
+        "sigmoid-function"
+      ],
+      "source_ref": "ESL 4.4절 · ISLR 4.3.5절",
+      "status": "draft"
+    },
+    {
+      "id": "B-LOG-014",
+      "type": "scenario",
+      "chapter": "B.log",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"토지피복 6개 클래스(수계·산림·농경지·시가지·나지·초지)를 픽셀 단위로 한 번에 분류하는 로지스틱 베이스라인 만들어줘. 픽셀 하나는 클래스 하나만 가져.\"\n\n가장 적절한 구성은?",
+      "choices": [
+        {
+          "text": "클래스 번호 1~6을 연속형 y로 두고 선형 회귀를 적합한 뒤 예측값을 반올림한다",
+          "rationale": "명목형 클래스에 번호 간격과 순서를 가정하게 되어 의미가 없습니다."
+        },
+        {
+          "text": "클래스별 선형 점수를 softmax로 확률로 바꾸는 다항 로지스틱 회귀를 교차 엔트로피로 학습한다",
+          "rationale": null
+        },
+        {
+          "text": "클래스마다 시그모이드 출력을 두고, 확률 합이 1이 아니어도 되는 다중 라벨 방식으로 학습한다",
+          "rationale": "다중 라벨은 한 픽셀에 여러 클래스가 동시에 붙을 수 있을 때의 구성입니다. '픽셀당 한 클래스'라는 조건과 맞지 않습니다. (클래스별 이진 모형 6개를 따로 학습해 argmax로 하나를 고르는 OvR도 가능은 하지만, 확률 합이 1로 맞지 않아 배타적 클래스 문제에서는 softmax보다 덜 적절합니다.)"
+        },
+        {
+          "text": "이진 로지스틱 회귀 하나로 '수계 대 나머지'만 학습해 가장 중요한 클래스부터 확보한다",
+          "rationale": "6개 클래스 중 하나만 구분하므로 지시(6개 클래스 분류)를 충족하지 못합니다."
+        },
+        {
+          "text": "로그 손실 대신 훈련 데이터의 정확도를 직접 최대화하도록 계수를 추정한다",
+          "rationale": "정확도는 계수에 대해 계단 함수라 직접 최적화하기 어렵고, 확률의 품질도 보장하지 못합니다. 학습 목표는 교차 엔트로피입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "클래스가 서로 배타적인 다중 분류에는 다항(softmax) 로지스틱 회귀가 맞습니다. softmax는 6개 클래스 확률의 합을 1로 맞추고, 다중 클래스 교차 엔트로피(음의 로그우도)로 학습합니다.",
+      "explanation_full": "scikit-learn의 LogisticRegression은 다중 클래스 자료에서 일반적으로 다항(softmax) 방식으로 학습합니다(버전에 따라 기본값·옵션 이름이 다르므로 문서를 확인). 밴드마다 척도가 다르면 표준화하고, 클래스 불균형이 크면 class_weight를 검토합니다. 이 베이스라인은 CNN 분류기의 마지막 층과 같은 구조라 '특징이 부족한지, 분류기가 부족한지'를 가를 때 비교 기준이 됩니다.",
+      "tags": [
+        "classification",
+        "logistic-regression",
+        "multiclass"
+      ],
+      "terms": [
+        "multinomial-logistic-regression",
+        "softmax",
+        "log-loss"
+      ],
+      "source_ref": "ESL 4.4절 · scikit-learn 문서 LogisticRegression",
+      "status": "draft"
+    },
+    {
+      "id": "B-LOG-015",
+      "type": "scenario",
+      "chapter": "B.log",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"수계 여부를 NDWI 하나로 로지스틱 회귀 돌렸는데, 계수가 85에 표준오차가 수천이고 수렴 경고까지 떠. 원인 파악해서 대응해봐.\"\n\n가장 적절한 판단과 조치는?",
+      "choices": [
+        {
+          "text": "다중공선성 때문이므로 VIF를 계산해 VIF가 높은 변수를 모형에서 제거한다",
+          "rationale": "설명변수가 NDWI 하나뿐이라 변수 사이의 공선성은 생길 수 없습니다."
+        },
+        {
+          "text": "잔차의 이분산 때문이므로 종속변수에 로그 변환을 적용한 뒤 다시 적합한다",
+          "rationale": "종속변수가 0/1이라 로그 변환은 의미가 없고(log 0 불가), 이 증상은 이분산과 관계가 없습니다."
+        },
+        {
+          "text": "최적화가 덜 끝난 것이므로 최대 반복 횟수를 크게 늘려 수렴할 때까지 다시 적합한다",
+          "rationale": "완전 분리 상태에서는 계수를 키울수록 우도가 계속 커지므로, 반복을 늘려도 계수만 더 커지고 유한한 값으로 수렴하지 않습니다."
+        },
+        {
+          "text": "수계 픽셀 수가 부족한 것이므로 수계 픽셀을 복제해 표본 수를 두 배로 늘린다",
+          "rationale": "같은 픽셀을 복제해도 두 클래스가 완벽히 갈리는 구조는 그대로라 추정치 발산이 해결되지 않습니다."
+        },
+        {
+          "text": "NDWI 값 하나로 클래스가 완벽히 갈리는 완전 분리이므로, L2 규제나 Firth 보정으로 추정한다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "한 변수로 두 클래스가 완벽히 나뉘면 계수를 키울수록 우도가 계속 커져 최대우도 추정치가 무한대로 발산합니다. L2 규제나 Firth 보정은 계수에 벌점을 줘 유한한 추정치를 얻게 합니다.",
+      "explanation_full": "먼저 NDWI 값과 라벨을 산점도로 그려 어떤 임계값에서 두 클래스가 완벽히 갈리는지 확인합니다. 라벨 자체를 NDWI 임계값으로 만들었다면 이는 모형 문제가 아니라 라벨 누수이므로, 독립적인 라벨(현장 조사, 고해상도 판독)을 확보해야 합니다. 분리 자체는 NDWI가 매우 강한 분류 변수라는 뜻이므로, 목적이 분류뿐이라면 임계값 규칙으로 충분한지도 검토합니다.",
+      "tags": [
+        "classification",
+        "logistic-regression",
+        "estimation",
+        "prescription"
+      ],
+      "terms": [
+        "maximum-likelihood-estimation",
+        "logistic-regression"
+      ],
+      "source_ref": "Albert & Anderson (1984) · Firth (1993) · Hosmer, Lemeshow & Sturdivant, Applied Logistic Regression 1·3장",
+      "status": "draft"
+    },
+    {
+      "id": "B-LOG-016",
+      "type": "scenario",
+      "chapter": "B.log",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"구름 확률 모델 두 개가 검증셋 정확도는 둘 다 0.92로 같아. 출력 확률을 후처리 가중치로 그대로 쓸 거니까, 확률 품질 기준으로 하나 골라줘.\"\n\n가장 적절한 선택 기준은?",
+      "choices": [
+        {
+          "text": "훈련셋 로그 손실이 더 낮은 모델을 고른다",
+          "rationale": "훈련 손실은 과적합된 모델일수록 낮아 새 데이터에서의 확률 품질을 나타내지 못합니다."
+        },
+        {
+          "text": "임계값을 0.5에서 0.6으로 바꿔 다시 잰 검증 정확도가 더 높은 모델을 고른다",
+          "rationale": "정확도는 임계값 한 점에서의 맞고 틀림만 셉니다. 확률값이 얼마나 믿을 만한지는 반영하지 못합니다."
+        },
+        {
+          "text": "검증셋 ROC AUC가 더 높은 모델을 고른다",
+          "rationale": "AUC는 샘플의 순위(정렬)만 평가하므로, 확률값 자체가 실제 빈도와 맞는지(보정)는 반영하지 못합니다."
+        },
+        {
+          "text": "검증셋 로그 손실이 더 낮은 모델을 고른다",
+          "rationale": null
+        },
+        {
+          "text": "계수(오즈비)의 절댓값이 더 큰 모델을 고른다",
+          "rationale": "계수 크기는 확률 품질과 직접 관계가 없습니다. 오히려 0이나 1에 지나치게 가까운 과신 확률의 신호일 수 있습니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "로그 손실은 정답 클래스에 준 확률이 낮을수록, 특히 틀린 쪽에 확신할수록 크게 벌하므로 확률 품질을 직접 반영합니다. 정확도가 같아도 확률을 더 잘 낸 모델은 검증 로그 손실이 더 낮습니다.",
+      "explanation_full": "확률 품질을 더 자세히 보려면 Brier 점수와 신뢰도 다이어그램(reliability diagram)을 함께 봅니다. 확률이 한쪽으로 치우쳐 있으면 검증 데이터로 Platt 스케일링이나 등위(isotonic) 회귀 보정을 적용할 수 있습니다. 구름 확률을 가중치로 쓰는 합성(compositing)처럼 확률값 자체가 결과에 들어가는 작업일수록 보정이 중요합니다.",
+      "tags": [
+        "classification",
+        "logistic-regression",
+        "evaluation"
+      ],
+      "terms": [
+        "log-loss"
+      ],
+      "source_ref": "scikit-learn 문서 Probability calibration · ESL 7.2절",
+      "status": "draft"
+    },
+    {
+      "id": "B-LOG-017",
+      "type": "short",
+      "chapter": "B.log",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "관측된 데이터가 나올 확률(우도, likelihood)을 가장 크게 만드는 모수 값을 추정치로 삼는 방법으로, 로지스틱 회귀 계수를 구할 때 쓰는 추정법의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Maximum likelihood estimation (MLE)",
+          "Maximum likelihood"
+        ],
+        "ko": [
+          "최대우도추정",
+          "최대가능도추정",
+          "최우추정",
+          "최대우도법",
+          "최대가능도법",
+          "최우추정법"
+        ]
+      },
+      "primary": "Maximum likelihood estimation (MLE)",
+      "explanation_short": "최대우도추정(MLE)은 '이 모수라면 지금의 데이터가 나올 확률이 얼마인가(우도)'를 최대화하는 모수를 고릅니다. 로지스틱 회귀는 베르누이 우도를 최대화해 계수를 구합니다.",
+      "explanation_full": "실제 계산에서는 곱을 합으로 바꾸려고 로그우도를 최대화하며, 이는 음의 로그우도(로그 손실)를 최소화하는 것과 같습니다. 오차가 정규분포인 선형 회귀에서는 최대우도 추정치가 OLS 추정치와 같아집니다. AIC·BIC의 −2·log L 항도 이 최대 로그우도 값입니다.",
+      "tags": [
+        "classification",
+        "logistic-regression",
+        "estimation"
+      ],
+      "terms": [
+        "maximum-likelihood-estimation"
+      ],
+      "source_ref": "Casella & Berger, Statistical Inference 7.2.2절 · ISLR 4.3절(Logistic Regression)",
+      "status": "draft"
+    }
+  ]
+}

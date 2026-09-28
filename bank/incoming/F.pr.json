@@ -1,0 +1,692 @@
+{
+  "format": "visiondrill-bank-exchange",
+  "format_version": 1,
+  "terms": [
+    {
+      "id": "f1-score",
+      "term_en": "F1 Score",
+      "term_ko": "F1 점수",
+      "abbreviation": "F1",
+      "definition": "정밀도와 재현율의 조화평균, 2PR/(P+R). 둘 중 작은 값 쪽으로 끌려가는 단일 요약 지표",
+      "usage_example": "conf 0.2~0.5 구간에서 F1 제일 높은 지점이랑 그때 P/R 같이 표로 뽑아줘.",
+      "origin": "standard",
+      "track": "F"
+    },
+    {
+      "id": "true-positive",
+      "term_en": "True Positive",
+      "term_ko": "참 양성",
+      "abbreviation": "TP",
+      "definition": "같은 클래스이면서 아직 다른 예측과 매칭되지 않은 정답과 IoU 기준 이상으로 겹친 예측",
+      "usage_example": "IoU 0.5 기준으로 TP 몇 개 나왔는지 타일별로 세서 올려줘.",
+      "origin": "standard",
+      "track": "F"
+    },
+    {
+      "id": "false-positive",
+      "term_en": "False Positive",
+      "term_ko": "거짓 양성(오탐)",
+      "abbreviation": "FP",
+      "definition": "어떤 정답과도 매칭되지 못한 예측. 배경 오검출, 위치가 크게 어긋난 박스, 이미 매칭된 정답에 대한 중복 박스가 모두 포함됨",
+      "usage_example": "파랑 흰 포말을 선박으로 잡은 FP가 많네. 오탐 유형별로 분류해봐.",
+      "origin": "standard",
+      "track": "F"
+    },
+    {
+      "id": "false-negative",
+      "term_en": "False Negative",
+      "term_ko": "거짓 음성(미탐)",
+      "abbreviation": "FN",
+      "definition": "어떤 예측과도 매칭되지 못한 정답 객체, 즉 모델이 놓친 객체",
+      "usage_example": "구름 그림자 밑 차량이 FN으로 몰려 있어. 미탐 사례만 모아서 보여줘.",
+      "origin": "standard",
+      "track": "F"
+    },
+    {
+      "id": "precision-recall-curve",
+      "term_en": "Precision-Recall Curve",
+      "term_ko": "정밀도-재현율 곡선",
+      "abbreviation": "PR curve",
+      "definition": "신뢰도 임계값을 높은 값부터 낮은 값까지 바꿔 가며 얻은 (재현율, 정밀도) 점들을 이은 곡선",
+      "usage_example": "클래스별 PR 곡선 겹쳐 그려서 양식장 부표만 왜 처지는지 봐봐.",
+      "origin": "standard",
+      "track": "F"
+    },
+    {
+      "id": "operating-point",
+      "term_en": "Operating Point",
+      "term_ko": "운영점",
+      "abbreviation": null,
+      "definition": "실제 배포에서 쓸 신뢰도 임계값 하나를 정했을 때 대응되는 PR 곡선(또는 ROC 곡선) 위의 한 점",
+      "usage_example": "검증셋에서 recall 0.9 만족하는 운영점 잡고, 그 conf로 테스트 성능 보고해.",
+      "origin": "standard",
+      "track": "F"
+    },
+    {
+      "id": "false-positives-per-image",
+      "term_en": "False Positives Per Image",
+      "term_ko": "이미지당 오탐 수",
+      "abbreviation": "FPPI",
+      "definition": "전체 오탐(FP) 수를 평가 이미지(타일·장면) 수로 나눈 값. 검수자가 한 장당 걸러내야 할 오탐 부담을 나타냄",
+      "usage_example": "빈 바다 타일 포함해서 FPPI 다시 계산해줘. 판독 인력 산정에 쓸 거야.",
+      "origin": "standard",
+      "track": "F"
+    }
+  ],
+  "questions": [
+    {
+      "id": "F-PR-003",
+      "type": "short",
+      "chapter": "F.pr",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "정밀도(Precision)와 재현율(Recall)의 조화평균, 즉 2PR/(P+R)로 두 값을 하나로 요약한 지표의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "F1 score",
+          "F1",
+          "F-measure",
+          "F-score"
+        ],
+        "ko": [
+          "F1 점수",
+          "에프원 점수",
+          "F1 스코어"
+        ]
+      },
+      "primary": "F1 score",
+      "explanation_short": "F1 점수(F1 score)는 정밀도와 재현율의 조화평균입니다. 두 값 중 하나라도 낮으면 F1도 낮아지므로 균형을 한 숫자로 볼 때 씁니다.",
+      "explanation_full": "일반형은 F_β = (1+β²)PR/(β²P+R)이며, β>1이면 재현율을, β<1이면 정밀도를 더 중시합니다. F1은 β=1인 경우입니다. 탐지 결과 보고에서는 특정 신뢰도 임계값(운영점)에서의 P·R·F1을 함께 적는 것이 보통입니다.",
+      "tags": [
+        "detection",
+        "metric"
+      ],
+      "terms": [
+        "f1-score"
+      ],
+      "source_ref": "Padilla et al. 2020, A Survey on Performance Metrics for Object-Detection Algorithms",
+      "status": "draft"
+    },
+    {
+      "id": "F-PR-004",
+      "type": "mcq",
+      "chapter": "F.pr",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "확실한 것 하나만 예측하는 모델이 정밀도(Precision) 1.0, 재현율(Recall) 0.02를 기록했다. 이 모델의 F1 점수와 그 의미로 옳은 것은?",
+      "choices": [
+        {
+          "text": "약 0.04 — 조화평균이라 작은 값(재현율)에 끌려간다",
+          "rationale": null
+        },
+        {
+          "text": "0.51 — 두 값의 산술평균이므로 정밀도가 높으면 절반 이상은 보장된다",
+          "rationale": "(1.0+0.02)/2 = 0.51은 산술평균입니다. F1은 조화평균이라 산술평균보다 항상 같거나 작습니다."
+        },
+        {
+          "text": "약 0.14 — 두 값의 기하평균이므로 극단적인 차이를 적당히 완화한다",
+          "rationale": "√(1.0×0.02) ≈ 0.14는 기하평균입니다. F1의 정의는 2PR/(P+R)입니다."
+        },
+        {
+          "text": "1.0 — F1은 정밀도와 재현율 중 큰 값을 따라가므로 정밀도가 완벽하면 F1도 완벽하다",
+          "rationale": "반대입니다. 조화평균은 작은 값 쪽으로 끌려가므로 재현율이 낮으면 F1도 낮습니다."
+        },
+        {
+          "text": "0.02 — F1은 항상 두 값 중 작은 값과 정확히 같다",
+          "rationale": "작은 값에 가깝긴 하지만 같지는 않습니다. 이 경우 F1 = 0.04/1.02 ≈ 0.039로 최솟값 0.02보다 큽니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "F1 = 2×1.0×0.02/(1.0+0.02) = 0.04/1.02 ≈ 0.039입니다. 조화평균은 작은 값에 끌려가므로, 정밀도만 극단적으로 높고 거의 아무것도 찾지 못하는 모델은 F1이 낮게 나옵니다.",
+      "explanation_full": "산술평균이었다면 0.51로 '그럭저럭 괜찮은 모델'처럼 보였을 것입니다. F1이 조화평균을 쓰는 이유가 바로 이런 치우친 모델을 걸러내기 위해서입니다. 조화평균은 항상 최솟값 이상, 최솟값의 2배 이하 범위에 있습니다. 해안 쓰레기 탐지처럼 확실한 몇 개만 내놓는 모델이 '정밀도 100%'로 보고되는 일을 막으려면 재현율이나 F1을 함께 적어야 합니다.",
+      "tags": [
+        "detection",
+        "metric",
+        "calculation"
+      ],
+      "terms": [
+        "f1-score",
+        "precision",
+        "recall"
+      ],
+      "source_ref": "Padilla et al. 2020, A Survey on Performance Metrics for Object-Detection Algorithms",
+      "status": "draft"
+    },
+    {
+      "id": "F-PR-005",
+      "type": "mcq",
+      "chapter": "F.pr",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "객체 탐지 평가에서 쓰는 용어와 그 뜻의 연결로 옳은 것은?",
+      "choices": [
+        {
+          "text": "FP(거짓 양성): 이미지 안에 있었지만 모델이 끝내 찾지 못해 어떤 예측과도 매칭되지 않은 정답 객체",
+          "rationale": "모델이 놓친 정답은 FN(거짓 음성, 미탐)입니다. FP는 정답과 매칭되지 못한 '예측'입니다."
+        },
+        {
+          "text": "FN(거짓 음성): 정답이 전혀 없는 배경 위치에 모델이 그린 예측 박스",
+          "rationale": "정답이 없는 곳에 나온 예측은 FP(오탐)입니다. FN은 매칭되지 못한 '정답'입니다."
+        },
+        {
+          "text": "TP(참 양성): 같은 클래스이면서 아직 매칭되지 않은 정답과 IoU 기준 이상으로 겹친 예측",
+          "rationale": null
+        },
+        {
+          "text": "TN(참 음성): 객체가 없는 배경을 배경으로 맞힌 수로, 탐지 정밀도 계산에 쓰인다",
+          "rationale": "탐지에서는 '배경을 맞힌 박스'의 수를 셀 수 없어 TN을 정의하지 않고, 정밀도 TP/(TP+FP)에도 TN은 들어가지 않습니다."
+        },
+        {
+          "text": "TP(참 양성): 신뢰도 점수가 0.5 이상인 예측으로, 정답과의 겹침은 따지지 않는다",
+          "rationale": "TP 여부는 점수가 아니라 정답과의 매칭(클래스 일치 + IoU 기준)으로 정합니다. 점수는 어떤 예측을 평가에 넣을지 정하는 데 쓰입니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "TP는 정답과 올바르게 매칭된 예측, FP는 매칭되지 못한 예측(오탐), FN은 매칭되지 못한 정답(미탐)입니다. 매칭 조건은 같은 클래스·IoU 기준 이상·그 정답이 아직 다른 예측과 짝지어지지 않았을 것입니다.",
+      "explanation_full": "외우는 요령: 두 번째 글자(P/N)는 모델의 판단(있다/없다), 첫 글자(T/F)는 그 판단이 맞았는지입니다. FP = '있다고 했는데 틀림', FN = '없다고(못 찾았다고) 했는데 틀림'. 탐지에서는 배경 영역이 무한히 많아 TN을 세지 않으므로 정확도(Accuracy) 대신 정밀도·재현율을 씁니다.",
+      "tags": [
+        "detection",
+        "metric"
+      ],
+      "terms": [
+        "true-positive",
+        "false-positive",
+        "false-negative"
+      ],
+      "source_ref": "Everingham et al. 2010, The PASCAL VOC Challenge (평가 절차)",
+      "status": "draft"
+    },
+    {
+      "id": "F-PR-006",
+      "type": "mcq",
+      "chapter": "F.pr",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "KOMPSAT-3A 항구 타일 한 장에 정답 선박이 10척 있다. 신뢰도 임계값을 넘긴 예측 12개를 IoU 0.5 기준으로 매칭한 결과는 다음과 같다.\n- 7개: 서로 다른 정답 7척과 IoU 0.5 이상으로 매칭(클래스 일치)\n- 2개: 이미 매칭된 정답과 IoU 0.6으로 겹치지만 점수가 더 낮은 중복 박스\n- 1개: 아직 매칭되지 않은 정답과 IoU 0.3으로 겹침\n- 2개: 방파제 위 빈 곳에 나온 박스\n\nTP, FP, FN 수로 옳은 것은?",
+      "choices": [
+        {
+          "text": "TP 9, FP 3, FN 1",
+          "rationale": "중복 박스 2개를 TP로 센 결과입니다. 정답 하나에는 예측 하나만 매칭되고, 나머지 중복은 FP입니다."
+        },
+        {
+          "text": "TP 7, FP 3, FN 3",
+          "rationale": "중복 박스 2개를 빼먹은 결과입니다. 중복도 매칭되지 못한 예측이므로 FP에 들어갑니다."
+        },
+        {
+          "text": "TP 8, FP 4, FN 2",
+          "rationale": "IoU 0.3 박스를 TP로 센 결과입니다. 기준 0.5에 못 미치므로 FP이고, 그 정답은 FN으로 남습니다."
+        },
+        {
+          "text": "TP 7, FP 5, FN 4",
+          "rationale": "IoU 0.3 박스를 FP와 별도로 FN 하나를 더 센 이중 집계입니다. FN은 매칭되지 못한 정답 수(10−7=3)입니다."
+        },
+        {
+          "text": "TP 7, FP 5, FN 3",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "매칭된 7개만 TP입니다. FP는 중복 2 + 위치 어긋남(IoU 0.3) 1 + 배경 2 = 5개, FN은 매칭되지 못한 정답 10 − 7 = 3척입니다. 따라서 정밀도 7/12 ≈ 0.58, 재현율 7/10 = 0.70입니다.",
+      "explanation_full": "검산: TP + FP = 예측 수(7+5=12), TP + FN = 정답 수(7+3=10)가 항상 성립해야 합니다. 위치가 크게 어긋난 박스 하나는 'FP 1개 + FN 1개'로 동시에 지표를 깎는다는 점이 중요합니다. 매칭은 보통 점수가 높은 예측부터 차례로 수행하므로(greedy), 중복 박스 중 점수가 낮은 쪽이 FP가 됩니다.",
+      "tags": [
+        "detection",
+        "metric",
+        "calculation"
+      ],
+      "terms": [
+        "true-positive",
+        "false-positive",
+        "false-negative"
+      ],
+      "source_ref": "Everingham et al. 2010, The PASCAL VOC Challenge (평가 절차)",
+      "status": "draft"
+    },
+    {
+      "id": "F-PR-007",
+      "type": "mcq",
+      "chapter": "F.pr",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "학습·NMS 설정은 그대로 두고 신뢰도 임계값(conf threshold)만 0.25에서 0.5로 올렸다. 같은 평가셋에서 일반적으로 나타나는 변화로 옳은 것은?",
+      "choices": [
+        {
+          "text": "정밀도와 재현율이 함께 높아진다",
+          "rationale": "남는 예측이 줄어들 뿐 새 TP가 생기지 않으므로 재현율은 오를 수 없습니다."
+        },
+        {
+          "text": "재현율은 높아지고 정밀도는 낮아진다",
+          "rationale": "임계값을 낮출 때의 변화입니다. 임계값을 올리면 예측이 줄어 재현율은 같거나 떨어집니다."
+        },
+        {
+          "text": "FN은 줄어들고 FP는 늘어난다",
+          "rationale": "반대입니다. 예측을 더 많이 버리므로 FP는 같거나 줄고, 놓치는 정답(FN)은 같거나 늘어납니다."
+        },
+        {
+          "text": "재현율은 같거나 낮아지고, 정밀도는 대체로 높아진다",
+          "rationale": null
+        },
+        {
+          "text": "정밀도와 재현율은 그대로이고 예측 박스 개수만 줄어든다",
+          "rationale": "버려진 예측 중 TP가 있으면 재현율이 떨어지고, FP만 버려지면 정밀도가 오릅니다. TP가 하나도 없는 극단적인 경우가 아니라면 박스 수만 줄고 두 지표가 모두 그대로일 수는 없습니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "임계값을 올리면 점수가 낮은 예측이 빠지므로 TP가 늘 수 없어 재현율은 같거나 낮아집니다. 빠지는 예측에 FP가 많으면 정밀도가 오르지만, 점수 순서에 따라 정밀도가 조금 내려가는 구간도 있을 수 있습니다.",
+      "explanation_full": "재현율은 임계값에 대해 단조(monotonic)이지만 정밀도는 단조가 아닙니다. PR 곡선이 톱니 모양으로 오르내리는 이유입니다. 실무 보고는 \"conf 0.25→0.5: P 0.71→0.83, R 0.90→0.81\"처럼 교환 관계를 숫자로 보여 주는 것이 좋습니다.",
+      "tags": [
+        "detection",
+        "metric",
+        "tuning"
+      ],
+      "terms": [
+        "confidence-threshold",
+        "precision",
+        "recall"
+      ],
+      "source_ref": "Padilla et al. 2020, A Survey on Performance Metrics for Object-Detection Algorithms",
+      "status": "draft"
+    },
+    {
+      "id": "F-PR-008",
+      "type": "short",
+      "chapter": "F.pr",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "신뢰도 임계값을 높은 값에서 낮은 값으로 바꿔 가며 얻은 (재현율, 정밀도) 점들을 가로축 재현율, 세로축 정밀도로 이어 그린 곡선의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Precision-Recall curve (PR curve)"
+        ],
+        "ko": [
+          "정밀도-재현율 곡선",
+          "PR 곡선",
+          "PR 커브"
+        ]
+      },
+      "primary": "Precision-Recall curve (PR curve)",
+      "explanation_short": "정밀도-재현율 곡선(PR curve)입니다. 임계값을 낮출수록 오른쪽(재현율↑)으로 이동하며 보통 정밀도는 내려갑니다.",
+      "explanation_full": "PR 곡선 아래 면적(보간 적용)이 AP이고, 클래스별 AP의 평균이 mAP입니다. 가로축이 거짓 양성률(FPR)인 ROC 곡선과 헷갈리기 쉬운데, 탐지에서는 TN을 셀 수 없어 ROC 대신 PR 곡선을 씁니다.",
+      "tags": [
+        "detection",
+        "metric"
+      ],
+      "terms": [
+        "precision-recall-curve"
+      ],
+      "source_ref": "Padilla et al. 2020, A Survey on Performance Metrics for Object-Detection Algorithms",
+      "status": "draft"
+    },
+    {
+      "id": "F-PR-009",
+      "type": "mcq",
+      "chapter": "F.pr",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "신뢰도 하한을 0.001로 두고 모든 예측을 넣어 그린 '선박' 클래스의 PR 곡선이 재현율 0.8 지점에서 끝났다(더 오른쪽 점이 없다). 이것이 뜻하는 바로 옳은 것은?",
+      "choices": [
+        {
+          "text": "이 클래스의 정밀도가 0.8이므로 예측 5개 중 1개가 오탐이다",
+          "rationale": "곡선이 끝나는 위치는 가로축(재현율) 값입니다. 정밀도는 세로축이며 끝점의 정밀도는 따로 읽어야 합니다."
+        },
+        {
+          "text": "예측을 모두 써도 정답의 20%는 어떤 예측과도 매칭되지 않아, 임계값 조정만으로는 재현율을 0.8 넘게 올릴 수 없다",
+          "rationale": null
+        },
+        {
+          "text": "신뢰도 임계값 0.8에서 재현율이 최대가 되므로 운영 임계값을 0.8로 정해야 한다",
+          "rationale": "곡선의 가로축은 임계값이 아니라 재현율입니다. 재현율이 최대가 되는 것은 가장 낮은 임계값(여기서는 0.001)일 때입니다."
+        },
+        {
+          "text": "이 클래스의 AP가 0.8이다",
+          "rationale": "AP는 곡선 아래 면적입니다. 최대 재현율이 0.8이면 AP는 0.8 이하이며, 정밀도가 1보다 낮은 구간만큼 더 작아집니다."
+        },
+        {
+          "text": "모델이 각 선박을 80% 확률로 탐지한다는 보정된 확률값이다",
+          "rationale": "재현율은 평가셋 정답 중 찾아낸 비율이지 개별 객체에 대한 확률 보정값이 아닙니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "PR 곡선의 오른쪽 끝은 가장 낮은 임계값에서의 재현율, 즉 모델이 낼 수 있는 최대 재현율입니다. 0.8에서 끝났다면 20%의 정답에는 IoU 기준 이상으로 매칭되는 예측이 없으니, 임계값이 아니라 모델·데이터·후처리(NMS, 최대 탐지 수, 입력 해상도)를 봐야 합니다.",
+      "explanation_full": "최대 재현율이 낮은 흔한 원인: 작은 객체가 다운샘플링으로 사라짐, NMS가 붙어 있는 객체를 지움, 이미지당 최대 탐지 수 제한, 박스 위치가 IoU 기준에 못 미침(이때는 FP+FN으로 집계됨). 원격탐사에서는 타일 경계에 잘린 객체가 미탐으로 남는 경우도 많으므로 타일 overlap 설정도 함께 확인합니다.",
+      "tags": [
+        "detection",
+        "metric"
+      ],
+      "terms": [
+        "precision-recall-curve",
+        "recall"
+      ],
+      "source_ref": "Padilla et al. 2020, A Survey on Performance Metrics for Object-Detection Algorithms",
+      "status": "draft"
+    },
+    {
+      "id": "F-PR-010",
+      "type": "short",
+      "chapter": "F.pr",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "배포할 때 쓸 신뢰도 임계값 하나를 정하면 PR 곡선 위의 한 점이 정해진다. 실제로 운영할 성능을 나타내는 이 점을 무엇이라 하는가? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Operating point",
+          "Operating threshold"
+        ],
+        "ko": [
+          "운영점",
+          "동작점",
+          "작동점"
+        ]
+      },
+      "primary": "Operating point",
+      "explanation_short": "운영점(operating point)은 실제로 사용할 임계값에 해당하는 곡선 위의 한 점입니다. mAP가 곡선 전체를 요약한다면, 운영점은 '이 설정으로 돌리면 P·R이 얼마인가'를 알려 줍니다.",
+      "explanation_full": "운영점은 검증셋에서 요구 조건(목표 재현율, 허용 오탐 수 등)에 맞춰 고르고, 그 임계값을 고정한 채 테스트셋 성능을 보고합니다. 테스트셋을 보고 임계값을 고르면 성능이 부풀려집니다.",
+      "tags": [
+        "detection",
+        "metric",
+        "deployment"
+      ],
+      "terms": [
+        "operating-point"
+      ],
+      "source_ref": "Padilla et al. 2020, A Survey on Performance Metrics for Object-Detection Algorithms",
+      "status": "draft"
+    },
+    {
+      "id": "F-PR-011",
+      "type": "mcq",
+      "chapter": "F.pr",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "탐지 모델의 운영점(operating point) 선택에 대한 설명으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "미탐·오탐 비용이 다르면 요구 조건(예: 재현율 ≥ 0.95)을 만족하는 점 중에서 고른다",
+          "rationale": null
+        },
+        {
+          "text": "어떤 과제든 F1이 최대가 되는 신뢰도 임계값을 운영점으로 삼는 것이 원칙이며, 다른 기준은 쓰지 않는다",
+          "rationale": "F1 최대점은 정밀도와 재현율을 똑같이 중시할 때의 기본값일 뿐입니다. 미탐 비용이 훨씬 큰 과제라면 재현율을 우선해야 합니다."
+        },
+        {
+          "text": "운영점은 테스트셋 PR 곡선에서 가장 좋은 점을 고르고, 같은 테스트셋 결과를 최종 성능으로 보고한다",
+          "rationale": "테스트셋으로 임계값을 고르고 같은 셋으로 보고하면 성능이 낙관적으로 부풀려집니다. 운영점은 검증셋에서 고릅니다."
+        },
+        {
+          "text": "운영점은 학습 전에 정하는 하이퍼파라미터이므로, 바꾸려면 모델을 다시 학습해야 한다",
+          "rationale": "신뢰도 임계값은 추론 후처리 설정이라 재학습 없이 바꿀 수 있습니다."
+        },
+        {
+          "text": "mAP가 최대가 되는 신뢰도 임계값을 찾아 그 값을 운영점으로 정한다",
+          "rationale": "mAP는 모든 임계값을 훑어 계산한 요약값이라 특정 임계값에 따라 달라지지 않습니다. 운영점 선택 기준이 될 수 없습니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "운영점은 과제의 비용 구조로 정합니다. 놓치면 안 되는 과제는 목표 재현율을 먼저 맞춘 뒤 그 안에서 정밀도가 가장 높은 임계값을, 오탐이 비싼 과제는 허용 오탐 수를 먼저 맞춥니다. 선택은 검증셋에서 하고 테스트셋은 보고용으로만 씁니다.",
+      "explanation_full": "예: 불법 어구 탐지처럼 놓치면 곤란한 과제는 '재현율 ≥ 0.9 조건에서 정밀도 최대', 판독 인력이 한정된 광역 모니터링은 '장면당 오탐 ≤ 2건 조건에서 재현율 최대'처럼 제약 조건을 먼저 문장으로 합의해 두면 임계값 논쟁이 줄어듭니다.",
+      "tags": [
+        "detection",
+        "metric",
+        "deployment"
+      ],
+      "terms": [
+        "operating-point",
+        "f1-score"
+      ],
+      "source_ref": "Padilla et al. 2020, A Survey on Performance Metrics for Object-Detection Algorithms",
+      "status": "draft"
+    },
+    {
+      "id": "F-PR-012",
+      "type": "short",
+      "chapter": "F.pr",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "평가한 전체 오탐(FP) 수를 이미지(또는 타일) 수로 나눈 값, 즉 이미지 한 장당 평균 오탐 수를 나타내는 지표의 이름은? (영문 약어 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "False Positives Per Image (FPPI)",
+          "False positive per image"
+        ],
+        "ko": [
+          "이미지당 오탐 수",
+          "이미지당 거짓 양성 수",
+          "장당 오탐 수"
+        ]
+      },
+      "primary": "False Positives Per Image (FPPI)",
+      "explanation_short": "FPPI(False Positives Per Image)는 이미지 한 장당 평균 오탐 수입니다. 검수자가 한 장을 볼 때 걸러내야 할 오탐이 몇 건인지 바로 알려 줍니다.",
+      "explanation_full": "보행자 탐지 분야에서 '재현율(또는 미탐률) 대 FPPI' 곡선으로 널리 쓰였습니다. 정밀도는 정답 수가 많고 적음에 따라 같은 오탐 수라도 값이 달라지지만, FPPI는 이미지 수 기준이라 광역 모니터링의 판독 부담을 추정할 때 편리합니다.",
+      "tags": [
+        "detection",
+        "metric"
+      ],
+      "terms": [
+        "false-positives-per-image"
+      ],
+      "source_ref": "Dollár et al. 2012, Pedestrian Detection: An Evaluation of the State of the Art",
+      "status": "draft"
+    },
+    {
+      "id": "F-PR-013",
+      "type": "mcq",
+      "chapter": "F.pr",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "Sentinel-1 선박 탐지 평가셋은 타일 400장, 정답 선박 250척이다. 어떤 임계값에서 예측 300개가 나왔고 그중 220개가 TP였다. FPPI와 정밀도로 옳은 것은?",
+      "choices": [
+        {
+          "text": "FPPI 0.75, 정밀도 약 0.73",
+          "rationale": "0.75는 전체 예측 수를 타일 수로 나눈 값(300/400)입니다. FPPI는 오탐만 셉니다."
+        },
+        {
+          "text": "FPPI 0.32, 정밀도 0.88",
+          "rationale": "0.32는 오탐을 정답 수로 나눈 값(80/250), 0.88은 재현율(220/250)입니다."
+        },
+        {
+          "text": "FPPI 0.20, 정밀도 약 0.73",
+          "rationale": null
+        },
+        {
+          "text": "FPPI 약 0.27, 정밀도 약 0.73",
+          "rationale": "0.27은 오탐을 예측 수로 나눈 값(80/300), 즉 1 − 정밀도입니다. FPPI의 분모는 이미지 수입니다."
+        },
+        {
+          "text": "FPPI 0.20, 정밀도 0.88",
+          "rationale": "FPPI는 맞지만 0.88은 재현율(220/250)입니다. 정밀도의 분모는 예측 수입니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "FP = 300 − 220 = 80이므로 FPPI = 80 / 400 = 0.20, 정밀도 = 220 / 300 ≈ 0.73입니다. 참고로 재현율은 220 / 250 = 0.88입니다.",
+      "explanation_full": "FPPI 0.2는 '판독자가 타일 5장을 볼 때마다 오탐 1건'이라는 뜻입니다. 하루 처리 타일 수를 곱하면 오탐 검수에 들어가는 인력을 바로 추정할 수 있어 운영 협의에 유용합니다. 분모에 들어가는 이미지 수에는 정답이 없는 빈 타일도 반드시 포함해야 합니다.",
+      "tags": [
+        "detection",
+        "metric",
+        "calculation"
+      ],
+      "terms": [
+        "false-positives-per-image",
+        "false-positive",
+        "precision"
+      ],
+      "source_ref": "Dollár et al. 2012, Pedestrian Detection: An Evaluation of the State of the Art",
+      "status": "draft"
+    },
+    {
+      "id": "F-PR-014",
+      "type": "scenario",
+      "chapter": "F.pr",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"해안 쓰레기 탐지는 재현율 0.9는 무조건 지켜야 해. 그 조건 안에서 오탐이 제일 적게 나오는 conf로 잡아줘.\"\n\n검증셋 결과:\n| conf | 정밀도 | 재현율 |\n| 0.1 | 0.55 | 0.95 |\n| 0.2 | 0.68 | 0.93 |\n| 0.3 | 0.77 | 0.90 |\n| 0.4 | 0.84 | 0.86 |\n| 0.5 | 0.89 | 0.80 |\n\n선택할 신뢰도 임계값은?",
+      "choices": [
+        {
+          "text": "0.1",
+          "rationale": "재현율 조건은 만족하지만 정밀도가 0.55로 가장 낮아 오탐이 가장 많습니다."
+        },
+        {
+          "text": "0.2",
+          "rationale": "재현율 조건은 만족하지만 0.3보다 정밀도가 낮아(0.68) 오탐이 더 많습니다."
+        },
+        {
+          "text": "0.4",
+          "rationale": "F1이 가장 높은 점(약 0.85)이지만 재현율 0.86으로 '0.9 무조건' 조건을 어깁니다."
+        },
+        {
+          "text": "0.3",
+          "rationale": null
+        },
+        {
+          "text": "0.5",
+          "rationale": "정밀도는 가장 높지만 재현율 0.80으로 조건을 크게 어깁니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "먼저 재현율 ≥ 0.9를 만족하는 후보(0.1, 0.2, 0.3)를 추리고, 그중 정밀도가 가장 높은(오탐이 가장 적은) 0.3을 고릅니다. F1 최대점(0.4, F1 ≈ 0.85)은 제약 조건을 어기므로 답이 아닙니다.",
+      "explanation_full": "F1 계산: 0.1→0.70, 0.2→0.79, 0.3→0.83, 0.4→0.85, 0.5→0.84. 재현율이 거의 같을 때 정밀도가 높을수록 오탐 수 자체도 적습니다(정답 N개일 때 FP = TP×(1−P)/P: 0.3→약 0.27N, 0.2→약 0.44N, 0.1→약 0.78N). 이처럼 '제약 조건을 만족하는 점 중 최적'이 운영점 선택의 기본 틀입니다. 다만 검증셋 재현율이 경계값 0.90에 딱 걸려 있으므로 테스트셋에서 밑돌 위험이 있다는 점을 보고서에 함께 적어 둡니다.",
+      "tags": [
+        "detection",
+        "metric",
+        "deployment"
+      ],
+      "terms": [
+        "operating-point",
+        "confidence-threshold"
+      ],
+      "source_ref": "Padilla et al. 2020, A Survey on Performance Metrics for Object-Detection Algorithms",
+      "status": "draft"
+    },
+    {
+      "id": "F-PR-015",
+      "type": "scenario",
+      "chapter": "F.pr",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"검증셋 precision 0.95라고 보고했는데, 광역 해역 모니터링을 실제로 돌려 보니 판독자가 오탐 확인하느라 난리야. 원인 좀 짚어봐.\"\n\n(참고: 검증셋은 선박이 1척 이상 있는 타일만 모아 만들었다.)\n\n가장 먼저 해야 할 일은?",
+      "choices": [
+        {
+          "text": "재현율을 높이기 위해 신뢰도 임계값을 낮추고 다시 배포한다",
+          "rationale": "임계값을 낮추면 오탐이 더 늘어 민원이 악화됩니다. 문제는 재현율이 아니라 오탐 부담입니다."
+        },
+        {
+          "text": "정밀도 0.95면 예측 20개 중 오탐은 1개뿐이므로, 판독자 교육 문제로 결론 내리고 모델은 그대로 둔다",
+          "rationale": "정밀도는 평가셋 구성에 좌우됩니다. 빈 타일이 빠진 평가셋의 정밀도는 운영 환경의 오탐 부담을 대표하지 못합니다."
+        },
+        {
+          "text": "NMS IoU 임계값을 낮춰 중복 박스를 더 강하게 제거한다",
+          "rationale": "중복 박스가 원인이라는 근거가 없습니다. 빈 바다의 파랑·섬·구조물 오탐은 NMS로 줄어들지 않습니다."
+        },
+        {
+          "text": "mAP50-95로 다시 평가해 박스 위치 정밀도를 확인한다",
+          "rationale": "mAP는 같은 평가셋에서 계산하므로 빈 타일 누락 문제를 드러내지 못하고, 위치 정밀도는 이 민원과 관계가 적습니다."
+        },
+        {
+          "text": "빈 바다 타일을 운영 비율대로 넣은 평가셋으로 FPPI(장면당 오탐 수)를 다시 계산한다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "검증셋이 선박 있는 타일로만 구성되면 빈 바다에서 생기는 오탐이 평가에 거의 잡히지 않습니다. 운영 분포대로 빈 타일을 넣고 FPPI를 계산해야 판독 부담을 제대로 추정할 수 있습니다.",
+      "explanation_full": "광역 모니터링은 대부분의 타일에 객체가 없으므로, 타일당 오탐이 0.05건만 돼도 타일 1만 장이면 500건입니다. 평가셋을 만들 때 '객체가 있는 타일만 라벨링해 쓰는' 습관이 이런 괴리를 만듭니다. 운영점도 빈 타일을 포함한 검증셋에서 '장면당 오탐 ≤ N건' 조건으로 다시 고르는 것이 좋습니다.",
+      "tags": [
+        "detection",
+        "metric",
+        "remote-sensing"
+      ],
+      "terms": [
+        "false-positives-per-image",
+        "false-positive",
+        "precision"
+      ],
+      "source_ref": "Padilla et al. 2020, A Survey on Performance Metrics for Object-Detection Algorithms",
+      "status": "draft"
+    },
+    {
+      "id": "F-PR-016",
+      "type": "scenario",
+      "chapter": "F.pr",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"모델 두 개 비교하는데 A는 P 0.92 / R 0.70, B는 P 0.80 / R 0.82야. 둘 다 conf 0.25 기준이고. F1 하나로 어느 게 나은지 말해줘.\"\n\n가장 적절한 보고는?",
+      "choices": [
+        {
+          "text": "차이가 없다. 두 모델 모두 정밀도와 재현율의 평균이 0.81로 같다",
+          "rationale": "0.81은 산술평균입니다. F1은 조화평균이라 두 값의 차이가 큰 A가 더 손해를 봅니다."
+        },
+        {
+          "text": "B가 근소하게 낫다. F1이 B 약 0.81, A 약 0.80이다",
+          "rationale": null
+        },
+        {
+          "text": "A가 낫다. F1이 A 약 0.81, B 약 0.80이다",
+          "rationale": "두 값을 뒤바꿔 적었습니다. A의 F1은 약 0.795, B는 약 0.810입니다."
+        },
+        {
+          "text": "A가 낫다. 정밀도가 0.92로 더 높기 때문이다",
+          "rationale": "지시는 F1 하나로 비교하라는 것입니다. 정밀도만 보면 재현율 차이(0.70 vs 0.82)를 무시하게 됩니다."
+        },
+        {
+          "text": "B가 낫다. F1이 B 약 0.66, A 약 0.64이다",
+          "rationale": "0.66, 0.64는 P×R을 계산한 값입니다. F1 = 2PR/(P+R)입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "A: 2×0.92×0.70/1.62 ≈ 0.795, B: 2×0.80×0.82/1.62 ≈ 0.810입니다. 산술평균은 둘 다 0.81이지만 조화평균인 F1은 P·R이 고른 B가 조금 더 높습니다.",
+      "explanation_full": "차이가 0.015 정도로 작으므로 \"conf 0.25 한 점 기준으로는 B가 근소 우위, PR 곡선 전체(AP)와 운영점 요구 조건도 함께 비교 권장\"처럼 한계를 덧붙이면 좋습니다. 한 임계값에서의 F1은 그 운영점의 성능일 뿐, 다른 임계값에서는 순위가 바뀔 수 있습니다.",
+      "tags": [
+        "detection",
+        "metric",
+        "calculation"
+      ],
+      "terms": [
+        "f1-score"
+      ],
+      "source_ref": "Padilla et al. 2020, A Survey on Performance Metrics for Object-Detection Algorithms",
+      "status": "draft"
+    },
+    {
+      "id": "F-PR-017",
+      "type": "scenario",
+      "chapter": "F.pr",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"소형 어선 탐지 리포트(IoU 0.5 기준)에서 precision이랑 recall이 둘 다 낮게 나왔어. 그런데 결과 영상을 눈으로 보면 배는 거의 다 잡혀 있거든. 원인부터 짚어봐.\"\n\n가장 먼저 확인할 것은?",
+      "choices": [
+        {
+          "text": "정답 라벨 누락: 라벨이 빠진 선박에 나온 예측이 오탐으로 집계됐는지 확인한다",
+          "rationale": "라벨 누락은 FP만 늘려 정밀도를 낮출 뿐, 재현율은 낮추지 않습니다. 두 지표가 함께 낮은 현상을 설명하지 못합니다."
+        },
+        {
+          "text": "신뢰도 임계값: 너무 높게 잡혀서 점수가 낮은 예측이 많이 버려졌는지 확인하고, 임계값을 낮춰 리포트를 다시 뽑는다",
+          "rationale": "임계값이 너무 높으면 재현율은 낮지만 정밀도는 대체로 높게 나옵니다. 또 '거의 다 잡혀 있다'는 관찰과 맞지 않습니다."
+        },
+        {
+          "text": "박스 위치 오차: IoU 0.5 미만 예측은 FP, 그 정답은 FN으로 이중 집계되니 IoU 0.3 결과와 비교",
+          "rationale": null
+        },
+        {
+          "text": "클래스 불균형: 어선 클래스 표본이 적어 분류 점수가 낮은지 확인한다",
+          "rationale": "분류 점수가 낮다면 예측 자체가 적게 나와야 합니다. 박스는 나오는데 지표만 낮은 상황과 맞지 않습니다."
+        },
+        {
+          "text": "NMS 설정: IoU 임계값이 높아 중복 박스가 남는지 확인한다",
+          "rationale": "중복 박스는 FP를 늘려 정밀도만 낮춥니다. 매칭된 정답은 그대로이므로 재현율 저하를 설명하지 못합니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "눈으로는 잡혔는데 P·R이 함께 낮다면, 박스가 객체 위에 있긴 해도 IoU 기준에 못 미치는 경우가 의심됩니다. 이런 예측 하나는 FP 1개와 FN 1개를 동시에 만들어 두 지표를 함께 깎습니다.",
+      "explanation_full": "소형 객체는 박스가 몇 픽셀만 어긋나도 IoU가 크게 떨어집니다(예: 10×10 박스가 3픽셀 밀리면 IoU ≈ 0.54, 4픽셀이면 약 0.43). IoU 0.3·0.5 결과를 나란히 보여 주면 '찾기 문제'와 '위치 문제'를 분리할 수 있습니다. 위치 문제로 확인되면 입력 해상도, 박스 회귀 손실, 라벨 박스 기준의 일관성을 봅니다.",
+      "tags": [
+        "detection",
+        "metric",
+        "remote-sensing"
+      ],
+      "terms": [
+        "false-positive",
+        "false-negative",
+        "iou"
+      ],
+      "source_ref": "Padilla et al. 2020, A Survey on Performance Metrics for Object-Detection Algorithms",
+      "status": "draft"
+    }
+  ]
+}

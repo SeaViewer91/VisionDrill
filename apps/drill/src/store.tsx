@@ -41,7 +41,7 @@ export function useDrill(): Ctx {
 
 async function loadBundledPack(): Promise<Uint8Array | null> {
   try {
-    const r = await fetch('./packs/sample.vdpack');
+    const r = await fetch('./packs/default.vdpack');
     if (!r.ok) return null;
     return new Uint8Array(await r.arrayBuffer());
   } catch {
@@ -123,12 +123,13 @@ export function DrillProvider({ children }: { children: ReactNode }) {
           const bytes = await idbGet(IDB_KEY);
           if (bytes) l = Learner.open(sql, bytes);
         }
-        if (!l) {
-          // 첫 실행: 앱에 들어 있는 기본 문제 팩을 설치
-          l = Learner.create(sql);
-          const pack = await loadBundledPack();
-          if (pack) l.importPack(sql, pack);
-        }
+        const firstRun = !l;
+        if (!l) l = Learner.create(sql);
+        // 앱에 들어 있는 기본 문제 팩: 첫 실행이면 설치, 앱 업데이트로 기본 팩이 바뀌었으면 교체 (직접 가져온 팩은 유지)
+        const pack = await loadBundledPack();
+        const applied = pack ? l.applyBundledPack(sql, pack) : null;
+        if (applied && !firstRun)
+          toast(`기본 문제 팩이 ${applied.manifest.pack_version}(으)로 업데이트됨: 문항 ${applied.manifest.question_count}개 (새 문항 ${applied.added})`);
         learnerRef.current = l;
         setLearner(l);
         await save();
@@ -137,7 +138,7 @@ export function DrillProvider({ children }: { children: ReactNode }) {
         setFatal((e as Error).message ?? String(e));
       }
     })();
-  }, [save]);
+  }, [save, toast]);
 
   useEffect(() => {
     const h = () => {

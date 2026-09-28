@@ -1,0 +1,914 @@
+{
+  "format": "visiondrill-bank-exchange",
+  "format_version": 1,
+  "terms": [
+    {
+      "id": "confusion-matrix",
+      "term_en": "Confusion Matrix",
+      "term_ko": "혼동행렬",
+      "abbreviation": null,
+      "definition": "실제 클래스와 예측 클래스의 조합별 샘플 수를 교차표로 정리한 것. 원격탐사에서는 오차행렬(error matrix)이라고도 한다",
+      "usage_example": "OA 한 줄만 보내지 말고 클래스별 혼동행렬 붙여서 어디서 헷갈리는지 보여줘.",
+      "origin": "standard",
+      "track": "C"
+    },
+    {
+      "id": "accuracy",
+      "term_en": "Accuracy (Overall Accuracy)",
+      "term_ko": "정확도(전체 정확도)",
+      "abbreviation": "OA",
+      "definition": "전체 샘플 중 올바르게 분류된 비율, (TP + TN)/전체. 다중 클래스에서는 혼동행렬 대각선 합/전체 합이며, 원격탐사에서는 전체 정확도(OA)라 부른다",
+      "usage_example": "변화 픽셀이 1%라 정확도 99%는 의미 없어. 클래스별 지표 같이 봐.",
+      "origin": "standard",
+      "track": "C"
+    },
+    {
+      "id": "f1-score",
+      "term_en": "F1 Score",
+      "term_ko": "F1 점수",
+      "abbreviation": "F1",
+      "definition": "정밀도와 재현율의 조화평균, 2PR/(P + R) = 2TP/(2TP + FP + FN)",
+      "usage_example": "임계값 0.5로 고정하지 말고 검증셋 F1 최대 되는 지점 찾아봐.",
+      "origin": "standard",
+      "track": "C"
+    },
+    {
+      "id": "specificity",
+      "term_en": "Specificity",
+      "term_ko": "특이도",
+      "abbreviation": "TNR",
+      "definition": "실제 음성 중 음성으로 맞게 예측한 비율, TN/(TN + FP). 1 − 특이도가 위양성률(FPR)이다",
+      "usage_example": "맑은 픽셀 날리면 안 되니까 구름 마스크는 특이도 0.97 밑으로 떨어지면 안 돼.",
+      "origin": "standard",
+      "track": "C"
+    },
+    {
+      "id": "roc-auc",
+      "term_en": "Area Under the ROC Curve",
+      "term_ko": "ROC 곡선 아래 면적",
+      "abbreviation": "ROC-AUC",
+      "definition": "임계값을 바꿔 가며 위양성률(x축)과 재현율(y축)로 그린 ROC 곡선 아래 면적. 무작위 양성 하나가 무작위 음성 하나보다 높은 점수를 받을 확률과 같다",
+      "usage_example": "임계값 정하기 전 단계니까 후보 모델 비교는 ROC-AUC로 먼저 하자.",
+      "origin": "standard",
+      "track": "C"
+    },
+    {
+      "id": "macro-average",
+      "term_en": "Macro Average",
+      "term_ko": "매크로 평균",
+      "abbreviation": null,
+      "definition": "클래스별로 지표를 따로 계산한 뒤 클래스 수로 단순 평균하는 방식. 샘플 수와 관계없이 모든 클래스를 같은 비중으로 반영한다(micro·weighted 평균과 대비)",
+      "usage_example": "습지 같은 작은 클래스도 똑같이 봐야 하니까 macro-F1로 보고해.",
+      "origin": "standard",
+      "track": "C"
+    },
+    {
+      "id": "producers-accuracy",
+      "term_en": "Producer's Accuracy",
+      "term_ko": "생산자 정확도",
+      "abbreviation": "PA",
+      "definition": "참조(실제) 자료에서 특정 클래스인 샘플 중 지도에서도 그 클래스로 올바르게 분류된 비율. 1 − 누락 오차(omission error)이며 재현율에 해당한다",
+      "usage_example": "논 생산자 정확도가 낮네. 실제 논이 다른 클래스로 많이 빠졌다는 거야.",
+      "origin": "standard",
+      "track": "C"
+    },
+    {
+      "id": "users-accuracy",
+      "term_en": "User's Accuracy",
+      "term_ko": "사용자 정확도",
+      "abbreviation": "UA",
+      "definition": "지도에서 특정 클래스로 분류된 샘플 중 실제로 그 클래스인 비율. 1 − 포함 오차(commission error)이며 정밀도에 해당한다",
+      "usage_example": "지도 쓰는 쪽은 '논이라고 칠해진 곳이 진짜 논이냐'가 궁금하니 사용자 정확도부터 봐.",
+      "origin": "standard",
+      "track": "C"
+    },
+    {
+      "id": "cohens-kappa",
+      "term_en": "Cohen's Kappa",
+      "term_ko": "카파 계수",
+      "abbreviation": "κ",
+      "definition": "관측 일치도 p_o에서 우연히 일치할 기대 비율 p_e를 보정한 일치도, κ = (p_o − p_e)/(1 − p_e)",
+      "usage_example": "평가 기준에 카파도 있으니 오차행렬에서 κ 같이 계산해서 넣어.",
+      "origin": "standard",
+      "track": "C"
+    }
+  ],
+  "questions": [
+    {
+      "id": "C-MET-001",
+      "type": "short",
+      "chapter": "C.met",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "분류 결과를 '실제 클래스 × 예측 클래스' 교차표로 정리해 각 칸에 해당 샘플 수를 적은 표의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Confusion Matrix",
+          "Error Matrix"
+        ],
+        "ko": [
+          "혼동행렬",
+          "오차행렬",
+          "오분류표",
+          "정오분류표"
+        ]
+      },
+      "primary": "Confusion Matrix",
+      "explanation_short": "혼동행렬(confusion matrix)은 실제·예측 클래스 조합별 개수를 담은 표로, 정확도·정밀도·재현율·카파 등 대부분의 분류 지표가 여기서 계산됩니다. 원격탐사에서는 오차행렬(error matrix)이라는 이름을 많이 씁니다.",
+      "explanation_full": "이진 분류면 TP·FP·FN·TN 네 칸이고, K개 클래스면 K×K 표가 됩니다. 대각선은 맞게 분류된 수, 비대각선은 어떤 클래스가 어떤 클래스로 잘못 갔는지를 보여 줍니다. 행·열 중 어느 쪽이 실제(참조)인지는 도구·문헌마다 다르므로(scikit-learn은 행이 실제, 원격탐사 교재는 흔히 열이 참조), 표를 받으면 축 정의부터 확인합니다.",
+      "tags": [
+        "metric",
+        "basics"
+      ],
+      "terms": [
+        "confusion-matrix"
+      ],
+      "source_ref": "Congalton & Green, Assessing the Accuracy of Remotely Sensed Data; scikit-learn 문서 confusion_matrix",
+      "status": "draft"
+    },
+    {
+      "id": "C-MET-002",
+      "type": "short",
+      "chapter": "C.met",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "이진 분류에서 실제 음성 중 음성으로 올바르게 예측한 비율, 즉 TN / (TN + FP)의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Specificity",
+          "True Negative Rate (TNR)",
+          "Selectivity"
+        ],
+        "ko": [
+          "특이도",
+          "진음성률",
+          "참음성률"
+        ]
+      },
+      "primary": "Specificity",
+      "explanation_short": "특이도(specificity)는 음성을 음성이라고 맞힌 비율입니다. 1 − 특이도가 위양성률(FPR)이며, ROC 곡선의 x축이 바로 이 FPR입니다.",
+      "explanation_full": "재현율(민감도, TP/(TP + FN))이 '양성을 놓치지 않는 능력'이라면 특이도는 '음성을 괜히 양성으로 찍지 않는 능력'입니다. 정밀도(TP/(TP + FP))와 혼동하기 쉬운데, 정밀도는 예측 양성이 분모이고 특이도는 실제 음성이 분모라는 차이를 기억하세요.",
+      "tags": [
+        "metric",
+        "binary"
+      ],
+      "terms": [
+        "specificity",
+        "recall"
+      ],
+      "source_ref": "Fawcett (2006) An introduction to ROC analysis",
+      "status": "draft"
+    },
+    {
+      "id": "C-MET-003",
+      "type": "short",
+      "chapter": "C.met",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "정밀도(P)와 재현율(R)의 조화평균 2PR / (P + R)로 계산하는 분류 지표의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "F1 Score",
+          "F1",
+          "F-measure",
+          "F-score",
+          "F1-measure"
+        ],
+        "ko": [
+          "F1 점수",
+          "F1 스코어",
+          "에프원 점수",
+          "F값"
+        ]
+      },
+      "primary": "F1 Score",
+      "explanation_short": "F1 점수는 정밀도와 재현율의 조화평균으로, 둘 중 하나라도 낮으면 크게 낮아집니다. 양성 클래스가 드문 문제에서 정확도 대신 자주 씁니다.",
+      "explanation_full": "조화평균은 작은 값에 끌려가므로 P = 1.0, R = 0.1이면 산술평균은 0.55지만 F1은 2 × 1.0 × 0.1 / 1.1 ≈ 0.18입니다. 재현율을 더 중시하면 F2, 정밀도를 더 중시하면 F0.5처럼 Fβ를 씁니다. F1은 TN을 쓰지 않으므로 배경 픽셀이 압도적으로 많아도 값이 부풀지 않습니다.",
+      "tags": [
+        "metric",
+        "binary"
+      ],
+      "terms": [
+        "f1-score",
+        "precision",
+        "recall"
+      ],
+      "source_ref": "scikit-learn 문서 f1_score; van Rijsbergen (1979) Information Retrieval",
+      "status": "draft"
+    },
+    {
+      "id": "C-MET-004",
+      "type": "short",
+      "chapter": "C.met",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "오차행렬의 관측 일치도(전체 정확도)에서 우연히 일치할 것으로 기대되는 비율을 보정해 (p_o − p_e) / (1 − p_e)로 계산하는 일치도 지표의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Cohen's Kappa",
+          "Kappa Coefficient",
+          "Kappa",
+          "Kappa Statistic",
+          "KHAT"
+        ],
+        "ko": [
+          "카파 계수",
+          "코헨의 카파",
+          "코헨 카파",
+          "카파",
+          "카파 통계량"
+        ]
+      },
+      "primary": "Cohen's Kappa",
+      "explanation_short": "카파 계수(Cohen's kappa)는 무작위로 분류해도 맞을 만큼의 일치(p_e)를 빼고 남은 일치 정도를 봅니다. 1이면 완전 일치, 0이면 우연 수준입니다.",
+      "explanation_full": "p_e는 각 클래스의 (행 합 × 열 합)/N²을 모두 더해 구합니다. 원격탐사 정확도 평가에서 전통적으로 OA와 함께 보고해 왔지만, 해석이 어렵고 OA와 정보가 크게 겹친다는 비판(Pontius & Millones, 2011)도 있어 최근에는 클래스별 생산자·사용자 정확도와 면적 보정 추정을 함께 보고하는 추세입니다.",
+      "tags": [
+        "metric",
+        "remote-sensing",
+        "accuracy-assessment"
+      ],
+      "terms": [
+        "cohens-kappa"
+      ],
+      "source_ref": "Cohen (1960); Congalton & Green, Assessing the Accuracy of Remotely Sensed Data; Pontius & Millones (2011) Death to Kappa",
+      "status": "draft"
+    },
+    {
+      "id": "C-MET-005",
+      "type": "short",
+      "chapter": "C.met",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "원격탐사 정확도 평가에서, 참조(현장) 자료상 특정 클래스인 샘플 중 분류 지도에서도 그 클래스로 올바르게 분류된 비율의 이름은? '1 − 누락 오차(omission error)'와 같다. (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Producer's Accuracy (PA)"
+        ],
+        "ko": [
+          "생산자 정확도",
+          "제작자 정확도"
+        ]
+      },
+      "primary": "Producer's Accuracy (PA)",
+      "explanation_short": "생산자 정확도(producer's accuracy)는 참조 기준으로 '실제 그 클래스를 지도가 얼마나 빠짐없이 잡았는가'를 봅니다. 머신러닝 용어로는 해당 클래스의 재현율입니다.",
+      "explanation_full": "지도를 만드는 사람(생산자) 입장에서 '이 클래스를 얼마나 잘 잡아냈나'를 보는 지표라 이런 이름이 붙었습니다. 반대로 사용자 정확도는 지도를 쓰는 사람 입장에서 '지도에 그 클래스로 표시된 곳이 실제로 맞나'로, 정밀도에 해당합니다. 오차행렬의 어느 축이 참조인지 먼저 확인하고 참조 쪽 합계로 나눕니다.",
+      "tags": [
+        "metric",
+        "remote-sensing",
+        "accuracy-assessment"
+      ],
+      "terms": [
+        "producers-accuracy",
+        "recall"
+      ],
+      "source_ref": "Story & Congalton (1986) Accuracy assessment: a user's perspective; Congalton & Green, Assessing the Accuracy of Remotely Sensed Data",
+      "status": "draft"
+    },
+    {
+      "id": "C-MET-006",
+      "type": "short",
+      "chapter": "C.met",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "임계값을 바꿔 가며 위양성률(FPR)을 x축, 재현율(TPR)을 y축으로 그린 곡선 아래의 면적으로, 임계값과 무관하게 모델의 순위 매기기 성능을 요약하는 지표의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "ROC-AUC",
+          "AUC",
+          "AUROC",
+          "Area Under the ROC Curve"
+        ],
+        "ko": [
+          "ROC 곡선 아래 면적",
+          "ROC 곡선하 면적",
+          "에이유씨"
+        ]
+      },
+      "primary": "ROC-AUC",
+      "explanation_short": "ROC-AUC는 ROC 곡선 아래 면적으로 0.5면 무작위 수준, 1이면 완벽한 분리입니다. 임계값을 정하기 전에 모델의 전반적인 양성·음성 구분 능력을 비교할 때 씁니다.",
+      "explanation_full": "ROC 곡선의 x축 FPR = FP/(FP + TN) = 1 − 특이도, y축 TPR = 재현율입니다. 양성이 매우 드물면 TN이 많아 FPR이 잘 커지지 않으므로 ROC-AUC가 낙관적으로 보일 수 있어, 그때는 PR-AUC를 함께 봅니다(클래스 불균형 장 참고).",
+      "tags": [
+        "metric",
+        "threshold-free"
+      ],
+      "terms": [
+        "roc-auc"
+      ],
+      "source_ref": "Fawcett (2006) An introduction to ROC analysis",
+      "status": "draft"
+    },
+    {
+      "id": "C-MET-007",
+      "type": "mcq",
+      "chapter": "C.met",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "혼동행렬에서 (TP + TN) / (TP + FP + FN + TN)으로 계산하는 지표는?",
+      "choices": [
+        {
+          "text": "정밀도(Precision)",
+          "rationale": "정밀도는 TP/(TP + FP)로 예측 양성 중 실제 양성의 비율입니다. TN은 쓰지 않습니다."
+        },
+        {
+          "text": "재현율(Recall)",
+          "rationale": "재현율은 TP/(TP + FN)으로 실제 양성 중 찾아낸 비율입니다."
+        },
+        {
+          "text": "정확도(Accuracy)",
+          "rationale": null
+        },
+        {
+          "text": "특이도(Specificity)",
+          "rationale": "특이도는 TN/(TN + FP)로 실제 음성만 분모로 씁니다."
+        },
+        {
+          "text": "F1 점수(F1 Score)",
+          "rationale": "F1은 정밀도와 재현율의 조화평균으로 식에 TN이 들어가지 않습니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "정확도(accuracy)는 전체 샘플 중 맞게 분류한 비율로, 원격탐사에서는 전체 정확도(OA, Overall Accuracy)라고 부릅니다. 다중 클래스에서는 오차행렬 대각선 합 / 전체 합입니다.",
+      "explanation_full": "직관적이지만 클래스 비율이 치우치면 의미가 약해집니다. 예를 들어 변화 픽셀이 1%인 변화탐지에서 모두 '무변화'로 찍어도 정확도는 99%입니다. 그래서 클래스별 정밀도·재현율(원격탐사의 사용자·생산자 정확도)을 함께 보고합니다.",
+      "tags": [
+        "metric",
+        "basics"
+      ],
+      "terms": [
+        "accuracy",
+        "confusion-matrix"
+      ],
+      "source_ref": "scikit-learn 문서 'Metrics and scoring: classification metrics'; Congalton & Green, Assessing the Accuracy of Remotely Sensed Data",
+      "status": "draft"
+    },
+    {
+      "id": "C-MET-008",
+      "type": "mcq",
+      "chapter": "C.met",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "원격탐사 정확도 평가에서 특정 클래스의 사용자 정확도(User's Accuracy)가 뜻하는 것은?",
+      "choices": [
+        {
+          "text": "지도에서 그 클래스로 분류된 샘플 중 실제로도 그 클래스인 샘플의 비율",
+          "rationale": null
+        },
+        {
+          "text": "참조 자료에서 그 클래스인 샘플 중 지도에서도 그 클래스로 분류된 비율",
+          "rationale": "이것은 생산자 정확도(재현율에 해당)입니다. 분모가 참조 자료 기준이라는 점이 다릅니다."
+        },
+        {
+          "text": "전체 검증 샘플 중 클래스와 관계없이 올바르게 분류된 샘플의 비율",
+          "rationale": "이것은 전체 정확도(OA)로, 특정 클래스가 아닌 지도 전체의 지표입니다."
+        },
+        {
+          "text": "지도 전체에서 우연히 일치할 기대 비율을 보정한 뒤 남은 일치도",
+          "rationale": "우연 일치 보정은 카파 계수의 개념이며 클래스별 비율이 아닙니다."
+        },
+        {
+          "text": "그 클래스로 분류된 픽셀이 전체 지도 면적에서 차지하는 비율",
+          "rationale": "면적 비율은 클래스 면적 추정에 쓰는 값으로 정확도 지표가 아닙니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "사용자 정확도(user's accuracy)는 지도 사용자 관점에서 '지도에 논으로 표시된 곳이 실제로 논일 확률'입니다. 1 − 포함 오차(commission error)이며, 머신러닝의 정밀도에 해당합니다.",
+      "explanation_full": "오차행렬에서 분류 결과 쪽 합계를 분모로 씁니다. 생산자 정확도는 참조 쪽 합계를 분모로 씁니다. 두 값을 함께 보면 그 클래스가 과대 분류(사용자 정확도↓)되는지 과소 분류(생산자 정확도↓)되는지 알 수 있습니다.",
+      "tags": [
+        "metric",
+        "remote-sensing",
+        "accuracy-assessment"
+      ],
+      "terms": [
+        "users-accuracy",
+        "precision"
+      ],
+      "source_ref": "Story & Congalton (1986) Accuracy assessment: a user's perspective",
+      "status": "draft"
+    },
+    {
+      "id": "C-MET-009",
+      "type": "mcq",
+      "chapter": "C.met",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "다중 클래스 토지피복 분류에서 클래스별 F1을 각각 계산한 뒤, 샘플 수와 관계없이 클래스 수로 단순 평균하는 방식은?",
+      "choices": [
+        {
+          "text": "마이크로 평균(micro average)",
+          "rationale": "마이크로 평균은 모든 클래스의 TP·FP·FN을 먼저 합친 뒤 한 번에 지표를 계산합니다. 샘플이 많은 클래스가 결과를 좌우합니다."
+        },
+        {
+          "text": "가중 평균(weighted average)",
+          "rationale": "가중 평균은 클래스별 지표를 각 클래스의 실제 샘플 수(support)로 가중해 평균합니다. 단순 평균이 아닙니다."
+        },
+        {
+          "text": "샘플 평균(samples average)",
+          "rationale": "샘플 평균은 다중 레이블 문제에서 샘플마다 지표를 계산해 평균하는 방식입니다."
+        },
+        {
+          "text": "조화 평균(harmonic mean)",
+          "rationale": "조화평균은 정밀도와 재현율을 F1으로 합칠 때 쓰는 방식이지, 클래스별 값을 합치는 방식의 이름이 아닙니다."
+        },
+        {
+          "text": "매크로 평균(macro average)",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "매크로 평균은 클래스별 지표를 구한 뒤 클래스 수로 나눈 단순 평균이라, 샘플이 적은 클래스도 큰 클래스와 같은 비중을 가집니다. 소수 클래스 성능이 중요할 때 씁니다.",
+      "explanation_full": "예를 들어 습지가 전체의 1%라도 7개 클래스의 macro-F1에서는 1/7의 비중을 가집니다. 반면 micro·weighted 평균은 큰 클래스(산림·농경지 등)의 성능이 결과를 지배합니다. 보고할 때는 어떤 평균인지 반드시 명시합니다(scikit-learn의 average 인자).",
+      "tags": [
+        "metric",
+        "multiclass"
+      ],
+      "terms": [
+        "macro-average"
+      ],
+      "source_ref": "scikit-learn 문서 'Metrics and scoring: classification metrics'",
+      "status": "draft"
+    },
+    {
+      "id": "C-MET-010",
+      "type": "mcq",
+      "chapter": "C.met",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "변화탐지 픽셀 분류 결과가 TP = 40, FP = 10, FN = 20, TN = 930이다. F1 점수는 약 얼마인가?",
+      "choices": [
+        {
+          "text": "0.97",
+          "rationale": "0.97은 정확도 (40 + 930)/1,000입니다. TN이 압도적으로 많아 높게 나올 뿐 변화 픽셀 탐지 성능을 대표하지 않습니다."
+        },
+        {
+          "text": "0.80",
+          "rationale": "0.80은 정밀도 40/(40 + 10)입니다."
+        },
+        {
+          "text": "0.67",
+          "rationale": "0.67은 재현율 40/(40 + 20)입니다."
+        },
+        {
+          "text": "0.73",
+          "rationale": null
+        },
+        {
+          "text": "0.99",
+          "rationale": "0.99는 특이도 930/(930 + 10) ≈ 0.989입니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "정밀도 = 40/50 = 0.80, 재현율 = 40/60 ≈ 0.667이므로 F1 = 2 × 0.80 × 0.667 / (0.80 + 0.667) ≈ 0.727입니다. TP로 바로 계산해도 2TP/(2TP + FP + FN) = 80/110 ≈ 0.727로 같습니다.",
+      "explanation_full": "정확도 0.97과 F1 0.73의 차이는 음성(무변화) 픽셀 930개가 정확도를 끌어올리기 때문입니다. 드문 양성 클래스를 다루는 변화탐지·쓰레기 탐지에서는 정확도 대신 F1이나 정밀도·재현율 쌍을 주 지표로 삼습니다.",
+      "tags": [
+        "metric",
+        "binary",
+        "calculation"
+      ],
+      "terms": [
+        "f1-score",
+        "accuracy"
+      ],
+      "source_ref": "scikit-learn 문서 f1_score",
+      "status": "draft"
+    },
+    {
+      "id": "C-MET-011",
+      "type": "mcq",
+      "chapter": "C.met",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "구름(양성) 마스크 검증 결과가 TP = 900, FP = 100, FN = 300, TN = 8,900이다. 특이도는 약 얼마인가?",
+      "choices": [
+        {
+          "text": "0.90",
+          "rationale": "0.90은 정밀도 900/(900 + 100)입니다. 분모가 예측 양성(구름으로 예측한 픽셀)입니다."
+        },
+        {
+          "text": "0.99",
+          "rationale": null
+        },
+        {
+          "text": "0.75",
+          "rationale": "0.75는 재현율 900/(900 + 300)으로, 실제 구름 중 잡아낸 비율입니다."
+        },
+        {
+          "text": "0.96",
+          "rationale": "0.96은 정확도 (900 + 8,900)/10,200 ≈ 0.961로, 구름·맑음 전체를 분모로 씁니다. 특이도는 실제 음성(맑음)만 분모로 씁니다."
+        },
+        {
+          "text": "0.01",
+          "rationale": "0.01은 위양성률 FPR = 100/9,000 ≈ 0.011로, 1 − 특이도입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "특이도 = TN/(TN + FP) = 8,900/(8,900 + 100) = 8,900/9,000 ≈ 0.989입니다. 실제 맑은 픽셀 9,000개 중 약 99%를 맑음으로 남겼다는 뜻입니다.",
+      "explanation_full": "같은 결과의 재현율은 0.75로, 구름을 4분의 1이나 놓쳤습니다. 이처럼 특이도가 높아도 재현율이 낮을 수 있으므로 구름 마스크는 두 방향 오류(구름 놓침, 맑은 픽셀 삭제)를 각각 목표로 관리합니다. 정밀도와 특이도는 둘 다 FP가 등장하지만 분모가 다릅니다.",
+      "tags": [
+        "metric",
+        "binary",
+        "calculation"
+      ],
+      "terms": [
+        "specificity",
+        "recall"
+      ],
+      "source_ref": "Fawcett (2006) An introduction to ROC analysis",
+      "status": "draft"
+    },
+    {
+      "id": "C-MET-012",
+      "type": "mcq",
+      "chapter": "C.met",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "오차행렬(행 = 분류 결과, 열 = 참조, 클래스 순서: 수계·식생·나지)\n수계 행: 45, 5, 0 (행 합 50)\n식생 행: 15, 80, 5 (행 합 100)\n나지 행: 0, 15, 35 (행 합 50)\n열 합: 60, 100, 40 (전체 200)\n\n'수계'의 생산자 정확도는?",
+      "choices": [
+        {
+          "text": "0.75",
+          "rationale": null
+        },
+        {
+          "text": "0.90",
+          "rationale": "0.90은 45/50으로 분류 결과(행) 합으로 나눈 수계의 사용자 정확도입니다."
+        },
+        {
+          "text": "0.80",
+          "rationale": "0.80은 대각선 합 160/200인 전체 정확도(OA)입니다."
+        },
+        {
+          "text": "0.25",
+          "rationale": "0.25는 15/60으로 수계의 누락 오차(1 − 생산자 정확도)입니다."
+        },
+        {
+          "text": "0.10",
+          "rationale": "0.10은 5/50으로 수계의 포함 오차(1 − 사용자 정확도)입니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "생산자 정확도는 참조 기준이므로 수계 열의 합 60을 분모로 씁니다. 45/60 = 0.75이며, 실제 수계 15개가 식생으로 누락되었습니다.",
+      "explanation_full": "같은 행렬에서 수계의 사용자 정확도는 45/50 = 0.90입니다. 즉 지도에 수계로 표시된 곳은 대체로 맞지만, 실제 수계 중 4분의 1을 식생으로 놓쳤습니다(과소 분류). 수생식물이나 부유 조류가 있는 얕은 물이 식생으로 분류되는 전형적인 패턴입니다.",
+      "tags": [
+        "metric",
+        "remote-sensing",
+        "accuracy-assessment",
+        "calculation"
+      ],
+      "terms": [
+        "producers-accuracy",
+        "users-accuracy",
+        "confusion-matrix"
+      ],
+      "source_ref": "Congalton & Green, Assessing the Accuracy of Remotely Sensed Data",
+      "status": "draft"
+    },
+    {
+      "id": "C-MET-013",
+      "type": "mcq",
+      "chapter": "C.met",
+      "cognitive_level": 2,
+      "difficulty": 4,
+      "stem": "오차행렬(행 = 분류 결과, 열 = 참조, 클래스 순서: 수계·식생·나지)\n수계 행: 45, 5, 0 (행 합 50)\n식생 행: 15, 80, 5 (행 합 100)\n나지 행: 0, 15, 35 (행 합 50)\n열 합: 60, 100, 40 (전체 200)\n\n전체 정확도 p_o = 0.80일 때 카파 계수(κ)는 약 얼마인가?",
+      "choices": [
+        {
+          "text": "0.80",
+          "rationale": "0.80은 관측 일치도 p_o(전체 정확도)입니다. 카파는 여기서 우연 일치를 보정한 값입니다."
+        },
+        {
+          "text": "0.38",
+          "rationale": "0.375는 우연 일치 기대 비율 p_e = (50×60 + 100×100 + 50×40)/200²입니다."
+        },
+        {
+          "text": "0.68",
+          "rationale": null
+        },
+        {
+          "text": "0.43",
+          "rationale": "0.425는 분자 p_o − p_e만 계산한 값입니다. (1 − p_e)로 나눠야 합니다."
+        },
+        {
+          "text": "0.53",
+          "rationale": "0.53은 분자 0.425를 p_o(0.80)로 나눈 값입니다. 분모는 1 − p_e입니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "우연 일치 p_e = Σ(행 합 × 열 합)/N² = (50×60 + 100×100 + 50×40)/40,000 = 15,000/40,000 = 0.375입니다. κ = (0.80 − 0.375)/(1 − 0.375) = 0.425/0.625 = 0.68입니다.",
+      "explanation_full": "카파는 '우연히 맞힐 수 있는 몫'을 뺀 뒤 남은 개선 여지 중 얼마를 달성했는지를 뜻합니다. 관행적으로 0.61~0.80을 상당한 일치로 해석하기도 하지만(Landis & Koch, 1977) 이 구간은 임의적인 기준입니다. 보고서에는 κ 하나보다 오차행렬 전체와 클래스별 생산자·사용자 정확도를 함께 싣는 것이 좋습니다.",
+      "tags": [
+        "metric",
+        "remote-sensing",
+        "accuracy-assessment",
+        "calculation"
+      ],
+      "terms": [
+        "cohens-kappa",
+        "confusion-matrix"
+      ],
+      "source_ref": "Cohen (1960); Congalton & Green, Assessing the Accuracy of Remotely Sensed Data",
+      "status": "draft"
+    },
+    {
+      "id": "C-MET-014",
+      "type": "mcq",
+      "chapter": "C.met",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "선박/비선박 패치 분류기의 ROC-AUC가 0.85이다. 이 값의 해석으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "임계값 0.5에서 전체 패치의 85%를 올바르게 분류한다는 뜻이다",
+          "rationale": "그것은 특정 임계값에서의 정확도입니다. ROC-AUC는 모든 임계값을 아우르는 순위 성능이라 특정 임계값의 정확도를 말해 주지 않습니다."
+        },
+        {
+          "text": "선박으로 예측한 패치 중 85%가 실제로 선박 패치라는 뜻이다",
+          "rationale": "그것은 정밀도의 정의입니다. ROC 곡선에는 정밀도가 나타나지 않습니다."
+        },
+        {
+          "text": "어떤 임계값을 쓰든 실제 선박 패치의 85%를 찾아낸다는 뜻이다",
+          "rationale": "재현율은 임계값에 따라 달라집니다. ROC-AUC는 재현율을 FPR 전 범위에 걸쳐 적분한 면적입니다."
+        },
+        {
+          "text": "모델이 출력한 확률이 실제 선박일 확률과 평균적으로 85% 일치한다",
+          "rationale": "확률값이 실제 빈도와 맞는지는 보정(calibration)의 문제로 신뢰도 곡선이나 Brier 점수로 봅니다. ROC-AUC는 점수의 순위만 봅니다."
+        },
+        {
+          "text": "무작위로 고른 선박 패치가 비선박 패치보다 높은 점수를 받을 확률이 약 0.85이다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "ROC-AUC는 무작위 양성 하나와 무작위 음성 하나를 뽑았을 때 양성의 점수가 더 높을 확률과 같습니다(동점은 절반으로 셈). 즉 임계값과 무관한 '순위 매기기' 성능입니다.",
+      "explanation_full": "그래서 ROC-AUC가 높아도 실제 운영 임계값에서의 정밀도·재현율은 따로 확인해야 하며, 점수에 단조 증가 변환을 해도 AUC는 변하지 않습니다. 이 확률은 Mann-Whitney U 통계량을 (양성 수 × 음성 수)로 나눈 값과 같습니다. 양성이 매우 드물 때는 PR-AUC가 운영 성능을 더 잘 드러냅니다.",
+      "tags": [
+        "metric",
+        "threshold-free"
+      ],
+      "terms": [
+        "roc-auc"
+      ],
+      "source_ref": "Fawcett (2006) An introduction to ROC analysis; Hanley & McNeil (1982)",
+      "status": "draft"
+    },
+    {
+      "id": "C-MET-015",
+      "type": "mcq",
+      "chapter": "C.met",
+      "cognitive_level": 2,
+      "difficulty": 4,
+      "stem": "샘플마다 정확히 하나의 클래스를 예측하는 단일 레이블 다중 클래스 분류에서, 마이크로 평균 F1(micro-F1)과 항상 같아지는 값은?",
+      "choices": [
+        {
+          "text": "매크로 평균 F1(macro-F1)",
+          "rationale": "매크로 F1은 클래스별 F1의 단순 평균이라 클래스 크기·성능이 고르지 않으면 micro-F1과 달라집니다."
+        },
+        {
+          "text": "전체 정확도(Accuracy)",
+          "rationale": null
+        },
+        {
+          "text": "가중 평균 F1(weighted-F1)",
+          "rationale": "가중 평균 F1은 클래스별 F1을 샘플 수로 가중한 값으로, 일반적으로 정확도와 같지 않습니다."
+        },
+        {
+          "text": "카파 계수(Cohen's kappa)",
+          "rationale": "카파는 정확도에서 우연 일치를 보정한 값이라 대개 정확도보다 작습니다."
+        },
+        {
+          "text": "매크로 평균 정밀도(macro-precision)",
+          "rationale": "클래스별 정밀도의 단순 평균으로, 클래스 크기와 예측 분포에 따라 정확도와 달라집니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "단일 레이블 다중 클래스에서는 한 샘플의 오답이 어떤 클래스의 FP 1개이자 다른 클래스의 FN 1개가 되므로 전체 FP 합 = 전체 FN 합입니다. 따라서 micro 정밀도 = micro 재현율 = micro-F1 = 정확도가 됩니다.",
+      "explanation_full": "그래서 micro-F1을 따로 보고해도 정확도 이상의 정보를 주지 못하고, 큰 클래스에 지배됩니다. 작은 클래스의 성능을 드러내려면 macro 평균이나 클래스별 표를 함께 제시합니다. 참고로 샘플 수 가중 평균 재현율도 같은 이유로 정확도와 같아집니다.",
+      "tags": [
+        "metric",
+        "multiclass"
+      ],
+      "terms": [
+        "macro-average",
+        "accuracy"
+      ],
+      "source_ref": "scikit-learn 문서 'Metrics and scoring: classification metrics'",
+      "status": "draft"
+    },
+    {
+      "id": "C-MET-016",
+      "type": "scenario",
+      "chapter": "C.met",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"양식장 부표 패치 분류기, 현장팀이 오탐 많다고 해. 대신 재현율은 0.90 밑으로 떨어지면 안 돼. 임계값 다시 잡아.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "테스트셋에서 F1이 최대가 되는 임계값을 골라 그 테스트 점수를 그대로 보고한다",
+          "rationale": "F1 최대점은 재현율 0.90 조건을 보장하지 않습니다. 또 테스트셋으로 임계값을 고르면 테스트 성능이 낙관적으로 부풀어집니다."
+        },
+        {
+          "text": "임계값을 0.5 아래로 낮춰 양성 예측을 늘려 재현율 여유를 확보한다",
+          "rationale": "임계값을 낮추면 재현율은 오르지만 오탐(FP)이 더 늘어 지시의 목적과 반대입니다."
+        },
+        {
+          "text": "ROC-AUC가 가장 높은 체크포인트로 교체하고 임계값은 0.5로 유지한다",
+          "rationale": "ROC-AUC는 임계값과 무관한 순위 지표라 운영 임계값을 정해 주지 않습니다. 0.5가 조건을 만족한다는 보장도 없습니다."
+        },
+        {
+          "text": "검증셋 PR 곡선에서 재현율 0.90 이상인 임계값 중 정밀도가 가장 높은 값을 고른다",
+          "rationale": null
+        },
+        {
+          "text": "훈련셋에서 전체 정확도가 최대가 되는 임계값을 찾아 적용한다",
+          "rationale": "훈련셋 점수는 과적합으로 낙관적이고, 정확도는 드문 양성의 오탐·미탐을 제대로 반영하지 못합니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "지시는 '재현율 ≥ 0.90'이라는 제약 아래 오탐을 최소화(정밀도 최대화)하라는 뜻입니다. 검증셋에서 임계값별 정밀도·재현율을 계산해 조건을 만족하는 구간 중 정밀도가 가장 높은 임계값을 고르고, 테스트셋에서는 그 값으로 한 번만 평가합니다.",
+      "explanation_full": "scikit-learn의 precision_recall_curve로 임계값별 값을 얻을 수 있습니다. 운영 환경의 양성 비율이 검증셋과 다르면 정밀도가 달라지므로 현장 분포에 가까운 검증셋을 쓰는 것이 중요합니다. 공간 자기상관이 있으면 검증셋도 지역 단위로 분리합니다.",
+      "tags": [
+        "metric",
+        "threshold"
+      ],
+      "terms": [
+        "precision",
+        "recall",
+        "confidence-threshold"
+      ],
+      "source_ref": "scikit-learn 문서 precision_recall_curve",
+      "status": "draft"
+    },
+    {
+      "id": "C-MET-017",
+      "type": "scenario",
+      "chapter": "C.met",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"7개 클래스 토지피복 지도 보고서에 OA 92%만 적혀 있네. 습지가 검증 샘플의 1%밖에 안 되는데, 작은 클래스도 제대로 되는지 보이게 지표 보강해.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "클래스별 생산자·사용자 정확도 표와 함께 클래스를 같은 비중으로 평균한 macro-F1을 보고한다",
+          "rationale": null
+        },
+        {
+          "text": "micro-F1을 추가로 계산해 OA와 나란히 보고한다",
+          "rationale": "단일 레이블 분류에서 micro-F1은 OA와 같아 새 정보가 없고, 큰 클래스에 지배됩니다."
+        },
+        {
+          "text": "샘플 수로 가중한 weighted-F1을 추가로 계산해 보고한다",
+          "rationale": "가중 평균은 샘플이 많은 클래스 비중이 커서 1%인 습지의 성능이 거의 드러나지 않습니다."
+        },
+        {
+          "text": "습지를 가장 비슷한 클래스와 합쳐 6개 클래스로 다시 계산한다",
+          "rationale": "클래스를 합치면 수치는 좋아 보이지만 습지 성능을 보이라는 지시를 피하는 것이고, 산출물의 클래스 체계도 바뀝니다."
+        },
+        {
+          "text": "OA의 95% 신뢰구간을 계산해 불확실성을 함께 표시한다",
+          "rationale": "신뢰구간은 OA의 불확실성을 보여 줄 뿐 클래스별 성능 차이는 드러내지 못합니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "OA와 micro·weighted 평균은 큰 클래스에 지배되므로 1%인 습지의 성능이 가려집니다. 클래스별 생산자·사용자 정확도(재현율·정밀도)와 macro-F1을 함께 제시해야 작은 클래스의 문제가 보입니다.",
+      "explanation_full": "원격탐사 정확도 평가 권고(Olofsson et al., 2014)는 오차행렬과 클래스별 생산자·사용자 정확도를 기본으로 싣도록 합니다. 층화 표본으로 뽑았다면 지도 면적 비율로 보정한 추정치를 쓰는 것도 고려합니다. 습지 샘플이 적으면 클래스별 지표의 신뢰구간이 넓다는 점도 함께 밝힙니다.",
+      "tags": [
+        "metric",
+        "multiclass",
+        "reporting"
+      ],
+      "terms": [
+        "macro-average",
+        "producers-accuracy",
+        "users-accuracy"
+      ],
+      "source_ref": "Olofsson et al. (2014) Good practices for estimating area and assessing accuracy of land change",
+      "status": "draft"
+    },
+    {
+      "id": "C-MET-018",
+      "type": "scenario",
+      "chapter": "C.met",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"지자체에서 '지도에 논으로 칠해진 필지에 가 보면 실제로 논일 확률이 얼마냐'고 물어. 오차행렬에서 그 숫자 뽑아서 답해.\"\n\n답해야 할 값은?",
+      "choices": [
+        {
+          "text": "논의 생산자 정확도: 참조가 논인 샘플 중 분류 결과도 논인 비율",
+          "rationale": "생산자 정확도는 '실제 논을 지도가 얼마나 잡았나'입니다. 질문은 지도에 표시된 논이 맞을 확률이라 분모가 분류 결과여야 합니다."
+        },
+        {
+          "text": "전체 정확도(OA): 대각선 합을 전체 검증 샘플 수로 나눈 비율",
+          "rationale": "OA는 모든 클래스를 합친 값이라 논에 대한 질문에 답하지 못합니다."
+        },
+        {
+          "text": "논의 누락 오차: 참조가 논인 샘플 중 다른 클래스로 분류된 비율",
+          "rationale": "누락 오차는 1 − 생산자 정확도로, 실제 논을 놓친 비율입니다."
+        },
+        {
+          "text": "카파 계수: 우연 일치를 보정한 지도 전체의 일치도",
+          "rationale": "카파는 지도 전체의 일치도이며 특정 클래스 표시가 맞을 확률을 주지 않습니다."
+        },
+        {
+          "text": "논의 사용자 정확도: 분류 결과가 논인 샘플 중 참조도 논인 비율",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "'지도에 논으로 표시된 곳이 실제로 논일 확률'은 지도 사용자 관점의 정확도, 즉 논의 사용자 정확도(= 정밀도, 1 − 포함 오차)입니다. 분류 결과 쪽 논 합계를 분모로 씁니다.",
+      "explanation_full": "지도를 쓰는 쪽은 사용자 정확도를, 지도를 만든 쪽이 '빠뜨린 게 없나'를 볼 때는 생산자 정확도를 봅니다. 검증 샘플을 지도 클래스별로 층화 추출했다면 사용자 정확도는 층 안의 비율로 바로 추정되지만, 생산자 정확도와 OA는 지도 면적 비율로 가중해야 합니다. 오차행렬의 행·열 방향을 먼저 확인하세요.",
+      "tags": [
+        "metric",
+        "remote-sensing",
+        "accuracy-assessment"
+      ],
+      "terms": [
+        "users-accuracy",
+        "producers-accuracy"
+      ],
+      "source_ref": "Story & Congalton (1986); Olofsson et al. (2014)",
+      "status": "draft"
+    },
+    {
+      "id": "C-MET-019",
+      "type": "scenario",
+      "chapter": "C.met",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"연안 토지피복 지도 검증했더니 OA는 90%인데 카파가 0.35밖에 안 나와. 검증 샘플의 90%가 바다야. 왜 이렇게 차이 나는지 설명 자료 만들어.\"\n\n설명의 핵심으로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "카파 계산에 오류가 있다. OA가 90%라면 카파도 0.8 이상이 나와야 정상이다",
+          "rationale": "카파는 p_e에 따라 달라지므로 OA가 높아도 낮게 나올 수 있습니다. OA만으로 카파가 정해지지 않습니다."
+        },
+        {
+          "text": "바다가 압도적이라 우연 일치 p_e가 커서, OA의 상당 부분이 바다 덕분이고 소수 클래스는 잘 맞지 않았을 가능성이 크다",
+          "rationale": null
+        },
+        {
+          "text": "카파는 검증 샘플 수가 많을수록 작아지므로 샘플 수를 줄여 다시 계산해야 한다",
+          "rationale": "카파는 비율로 계산하므로 샘플 수 자체가 값을 체계적으로 낮추지 않습니다. 샘플 수는 신뢰구간 폭에 영향을 줍니다."
+        },
+        {
+          "text": "OA는 우연 일치를 과소평가하므로 카파 0.35가 진짜 정확도이고 OA는 버려야 한다",
+          "rationale": "OA는 우연 일치를 보정하지 않을 뿐 과소평가하는 것이 아닙니다. 두 지표는 다른 질문에 답하므로 어느 한쪽이 '진짜 정확도'가 아닙니다."
+        },
+        {
+          "text": "바다 샘플이 많아 카파가 과대평가되었으므로 실제 일치도는 0.35보다 더 낮다",
+          "rationale": "방향이 반대입니다. 한 클래스가 우세하면 p_e가 커져 카파는 낮아지는 쪽으로 움직입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "카파는 (p_o − p_e)/(1 − p_e)이므로, 바다가 90%를 차지해 '바다'끼리 우연히 일치할 확률 p_e가 크면 OA가 높아도 카파는 낮아집니다. 역산하면 p_e ≈ (0.90 − 0.35)/(1 − 0.35) ≈ 0.85로, 모두 바다로 찍어도 OA가 90%인 상황에서 그 이상 맞힌 몫이 작다는 뜻입니다.",
+      "explanation_full": "설명 자료에는 오차행렬과 함께 갯벌·염생식생 같은 소수 클래스의 생산자·사용자 정확도를 보여 주는 것이 가장 설득력 있습니다. 카파는 클래스 비율에 민감하고 해석 기준이 모호하다는 비판이 있으므로, 지표 하나로 결론 내리지 말고 클래스별 표를 중심으로 설명합니다. 예를 들어 참조의 바다가 90%이고 지도가 약 94%를 바다로 칠했다면 바다 칸만으로 p_e에 0.90 × 0.94 ≈ 0.85가 들어갑니다. 이때 OA 0.90이면 κ ≈ (0.90 − 0.85)/(1 − 0.85) ≈ 0.35 안팎이 됩니다.",
+      "tags": [
+        "metric",
+        "remote-sensing",
+        "accuracy-assessment"
+      ],
+      "terms": [
+        "cohens-kappa",
+        "accuracy"
+      ],
+      "source_ref": "Cohen (1960); Pontius & Millones (2011) Death to Kappa",
+      "status": "draft"
+    },
+    {
+      "id": "C-MET-020",
+      "type": "scenario",
+      "chapter": "C.met",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"구름 마스크 새 버전 검증해. 실제 맑은 픽셀 중에서 구름으로 잘못 지워 버리는 비율이 3%를 넘으면 시계열에 구멍이 너무 생겨서 배포 못 해.\"\n\n구름을 양성으로 둘 때, 이 조건을 확인할 지표로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "재현율 ≥ 0.97 (놓친 구름 ≤ 3%)",
+          "rationale": "재현율은 실제 구름 중 잡아낸 비율로, 맑은 픽셀이 지워지는 문제와 무관합니다."
+        },
+        {
+          "text": "정밀도 ≥ 0.97 (구름 예측 중 오탐 ≤ 3%)",
+          "rationale": "정밀도는 구름으로 예측한 픽셀 중 실제 구름 비율입니다. 분모가 예측 양성이라, 실제 맑은 픽셀 중 몇 %가 지워졌는지와 다릅니다."
+        },
+        {
+          "text": "정확도 ≥ 0.97 (전체 오분류 ≤ 3%)",
+          "rationale": "정확도는 구름·맑음을 합친 전체 비율이라, 맑은 픽셀만의 오류율 3% 조건을 직접 보장하지 않습니다."
+        },
+        {
+          "text": "특이도 ≥ 0.97 (위양성률 FPR ≤ 0.03)",
+          "rationale": null
+        },
+        {
+          "text": "F1 ≥ 0.97 (정밀도·재현율 균형)",
+          "rationale": "F1은 TN을 쓰지 않아 맑은 픽셀이 얼마나 보존되는지 알려 주지 않습니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "'실제 맑은 픽셀 중 구름으로 잘못 찍힌 비율'은 위양성률 FPR = FP/(FP + TN)이고, 이것이 3% 이하라는 것은 특이도 TN/(TN + FP) ≥ 0.97과 같습니다.",
+      "explanation_full": "정밀도와 특이도는 둘 다 FP가 등장해 헷갈리지만, 정밀도는 예측 양성 기준·특이도는 실제 음성 기준입니다. 장면마다 구름량이 크게 다르면 정밀도는 구름량에 따라 요동치지만 특이도는 맑은 픽셀 기준이라 비교적 안정적으로 관리할 수 있습니다. 구름을 놓치는 허용 한도(재현율 목표)도 따로 함께 정합니다.",
+      "tags": [
+        "metric",
+        "binary",
+        "threshold"
+      ],
+      "terms": [
+        "specificity"
+      ],
+      "source_ref": "Fawcett (2006) An introduction to ROC analysis",
+      "status": "draft"
+    }
+  ]
+}

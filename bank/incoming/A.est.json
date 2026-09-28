@@ -1,0 +1,666 @@
+{
+  "format": "visiondrill-bank-exchange",
+  "format_version": 1,
+  "terms": [
+    {
+      "id": "population",
+      "term_en": "Population",
+      "term_ko": "모집단",
+      "abbreviation": null,
+      "definition": "알고 싶은 대상 전체의 집합. 여기서 일부를 뽑은 것이 표본(sample)이고, 모집단의 특성값(평균·비율 등)을 모수(parameter)라 함",
+      "usage_example": "모집단을 '국내 연안 전체 양식장'으로 잡을 거면 검증 표본도 전 연안에서 뽑아야지, 남해만 뽑으면 안 돼.",
+      "origin": "standard",
+      "track": "A"
+    },
+    {
+      "id": "sampling-error",
+      "term_en": "Sampling Error",
+      "term_ko": "표본오차",
+      "abbreviation": null,
+      "definition": "모집단 전체가 아니라 일부 표본만 관측했기 때문에 생기는, 표본 통계량과 모수 사이의 우연한 차이",
+      "usage_example": "검증 포인트가 150개뿐이라 1~2%p 차이는 표본오차 수준이야. 개선됐다고 쓰지 마.",
+      "origin": "standard",
+      "track": "A"
+    },
+    {
+      "id": "standard-error",
+      "term_en": "Standard Error",
+      "term_ko": "표준오차",
+      "abbreviation": "SE",
+      "definition": "추정량(표본평균, 표본비율 등)의 표본분포가 갖는 표준편차. 표본을 다시 뽑을 때 추정값이 흔들리는 정도",
+      "usage_example": "표준편차 말고 평균의 표준오차를 적어. 픽셀 수가 늘면 줄어드는 쪽이 표준오차야.",
+      "origin": "standard",
+      "track": "A"
+    },
+    {
+      "id": "confidence-interval",
+      "term_en": "Confidence Interval",
+      "term_ko": "신뢰구간",
+      "abbreviation": "CI",
+      "definition": "같은 절차를 반복하면 정해진 비율(신뢰수준)만큼 모수를 포함하도록 만든, 표본에서 계산한 구간",
+      "usage_example": "정확도 0.91만 쓰지 말고 95% 신뢰구간 같이 붙여서 보고서에 넣어.",
+      "origin": "standard",
+      "track": "A"
+    },
+    {
+      "id": "point-estimation",
+      "term_en": "Point Estimation",
+      "term_ko": "점추정",
+      "abbreviation": null,
+      "definition": "표본으로부터 모수를 하나의 값으로 추정하는 것(예: 표본비율로 정확도 추정). 불확실성은 따로 표준오차나 구간으로 제시",
+      "usage_example": "0.88은 점추정치일 뿐이니까 표준오차랑 같이 적어 줘.",
+      "origin": "standard",
+      "track": "A"
+    },
+    {
+      "id": "bootstrap",
+      "term_en": "Bootstrap",
+      "term_ko": "부트스트랩",
+      "abbreviation": null,
+      "definition": "가진 표본에서 복원추출로 같은 크기의 재표본을 반복해 만들고, 추정량을 매번 다시 계산해 그 분포로 표준오차·신뢰구간을 구하는 재표본 방법",
+      "usage_example": "mAP는 공식이 없으니까 테스트 이미지 단위로 부트스트랩 돌려서 구간 뽑아.",
+      "origin": "standard",
+      "track": "A"
+    }
+  ],
+  "questions": [
+    {
+      "id": "A-EST-001",
+      "type": "mcq",
+      "chapter": "A.est",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "우리나라 연안의 모든 양식장 중 무작위로 300개를 골라 고해상도 위성영상으로 면적을 측정하고, 이를 바탕으로 연안 양식장의 평균 면적을 추정하려 한다. 이 조사에서 모집단(population)은?",
+      "choices": [
+        {
+          "text": "무작위로 고른 양식장 300개",
+          "rationale": "실제로 관측한 300개는 모집단에서 뽑은 표본(sample)입니다."
+        },
+        {
+          "text": "300개 양식장의 평균 면적",
+          "rationale": "표본에서 계산한 값은 통계량(statistic)이며, 모수를 추정하는 데 쓰는 추정치입니다."
+        },
+        {
+          "text": "연안 양식장 전체의 평균 면적",
+          "rationale": "알고 싶은 대상 전체의 특성값은 모수(parameter)입니다. 모집단은 값이 아니라 대상의 집합입니다."
+        },
+        {
+          "text": "우리나라 연안의 양식장 전체",
+          "rationale": null
+        },
+        {
+          "text": "측정에 사용한 위성영상의 전체 픽셀",
+          "rationale": "위성영상은 측정 수단입니다. 추론하려는 대상은 픽셀이 아니라 양식장입니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "모집단은 알고 싶은 대상 전체(연안의 모든 양식장)이고, 그중 뽑은 300개가 표본, 표본의 평균 면적이 통계량, 모집단의 평균 면적이 모수입니다.",
+      "explanation_full": "추정은 '표본 통계량으로 모집단 모수를 추측하는 일'입니다. 모집단을 명확히 정의해야 표본 추출 틀(sampling frame)도 정해집니다. 예를 들어 표본을 남해안에서만 뽑았다면 결론은 '남해안 양식장'에 대해서만 일반화할 수 있습니다. 원격탐사 정확도 평가에서 모집단은 흔히 '지도 전체의 모든 픽셀(또는 평가 단위)'입니다.",
+      "tags": [
+        "estimation",
+        "sampling"
+      ],
+      "terms": [
+        "population"
+      ],
+      "source_ref": "추정 일반 (OpenIntro Statistics 5장)",
+      "status": "draft"
+    },
+    {
+      "id": "A-EST-002",
+      "type": "short",
+      "chapter": "A.est",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "모집단 전체가 아닌 일부 표본만 관측했기 때문에 생기는, 표본 통계량과 모수 사이의 우연한 차이를 무엇이라 하는가? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Sampling error"
+        ],
+        "ko": [
+          "표본오차",
+          "표집오차",
+          "샘플링 오차"
+        ]
+      },
+      "primary": "Sampling error",
+      "explanation_short": "표본오차(Sampling Error)는 표본을 어떻게 뽑느냐에 따라 우연히 생기는 추정값의 흔들림입니다. 표본을 키우면 줄어들고, 표준오차로 그 크기를 잽니다.",
+      "explanation_full": "표본오차는 절차를 제대로 지켜도 피할 수 없는 오차이며, 무작위 추출이라면 확률적으로 크기를 계산할 수 있습니다. 이와 달리 라벨 오류, 측정 오류, 특정 지역만 뽑는 선택 편향 같은 비표본오차(non-sampling error)는 표본을 키워도 줄지 않고 체계적으로 결과를 틀어 놓습니다.",
+      "tags": [
+        "estimation",
+        "sampling"
+      ],
+      "terms": [
+        "sampling-error"
+      ],
+      "source_ref": "추정 일반 (OpenIntro Statistics 5장)",
+      "status": "draft"
+    },
+    {
+      "id": "A-EST-003",
+      "type": "mcq",
+      "chapter": "A.est",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "토지피복 지도의 전체 정확도(모집단 값)를 추정하는 과정에서 생길 수 있는 다음 오차 중, 표본오차(sampling error)에 해당하는 것은?",
+      "choices": [
+        {
+          "text": "판독자가 현장 사진 없이 판독하다 습지를 수계로 잘못 라벨링해, 검증 참조 자료 자체에 오류가 생겼다",
+          "rationale": "참조 자료(라벨)의 오류는 측정 오차, 즉 비표본오차입니다. 포인트를 늘려도 같은 식으로 틀리면 줄지 않습니다."
+        },
+        {
+          "text": "무작위로 뽑은 검증 포인트가 100개뿐이어서, 추정 정확도가 우연히 참값보다 3%p 높게 나왔다",
+          "rationale": null
+        },
+        {
+          "text": "구름 낀 지역을 표본 추출 대상에서 빼서, 정확도가 체계적으로 높게 추정되었다",
+          "rationale": "추출 틀에서 특정 지역을 제외한 것은 선택 편향(비표본오차)입니다. 우연이 아니라 한 방향으로 치우치게 만듭니다."
+        },
+        {
+          "text": "검증 포인트 좌표계를 잘못 지정해 포인트가 영상과 30 m씩 어긋났다",
+          "rationale": "좌표계 오류는 처리 오류로 인한 비표본오차입니다. 표본 크기와 무관하게 체계적으로 결과를 틀어 놓습니다."
+        },
+        {
+          "text": "분류 모델이 산림과 농경지를 자주 혼동해 지도 자체의 정확도가 낮다",
+          "rationale": "지도의 정확도가 낮은 것은 추정 대상(모수)의 실제 값이며 추정 오차가 아닙니다. 표본오차는 그 값을 추정할 때의 흔들림입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "표본오차는 '일부만 뽑았기 때문에' 생기는 우연한 차이라서 표본을 키우면 줄어듭니다. 라벨 오류, 추출 대상 제외, 좌표 오류는 표본을 키워도 줄지 않는 비표본오차입니다.",
+      "explanation_full": "정확도 평가 보고서에서 신뢰구간은 표본오차만 반영합니다. 라벨 품질, 추출 설계 편향, 위치 오차 같은 비표본오차는 구간에 나타나지 않으므로 따로 점검하고 적어야 합니다. 신뢰구간이 좁다고 결과가 정확하다는 보장이 되지 않는 이유입니다.",
+      "tags": [
+        "estimation",
+        "sampling",
+        "accuracy-assessment"
+      ],
+      "terms": [
+        "sampling-error",
+        "population"
+      ],
+      "source_ref": "Olofsson et al. (2014), Good practices for estimating area and assessing accuracy of land change; OpenIntro Statistics 5·6장",
+      "status": "draft"
+    },
+    {
+      "id": "A-EST-004",
+      "type": "short",
+      "chapter": "A.est",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "표본평균이나 표본비율 같은 추정량의 표본분포가 갖는 표준편차, 즉 표본을 다시 뽑을 때 추정값이 흔들리는 정도를 무엇이라 하는가? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Standard error (SE)"
+        ],
+        "ko": [
+          "표준오차"
+        ]
+      },
+      "primary": "Standard error (SE)",
+      "explanation_short": "표준오차(Standard Error, SE)는 추정값의 불확실성을 나타냅니다. 표본평균의 표준오차는 σ/√n으로, 표본 크기가 커질수록 작아집니다.",
+      "explanation_full": "표준편차(SD)는 개별 관측치가 흩어진 정도라 n이 늘어도 줄지 않지만, 표준오차는 추정값의 흔들림이라 n이 늘면 1/√n 비율로 줄어듭니다. 표본비율(예: 정확도 p̂)의 표준오차는 √(p̂(1−p̂)/n)입니다. 보고서에 '±값'을 적을 때 SD인지 SE인지 반드시 밝혀야 합니다.",
+      "tags": [
+        "estimation",
+        "standard-error"
+      ],
+      "terms": [
+        "standard-error"
+      ],
+      "source_ref": "추정 일반 (OpenIntro Statistics 5장)",
+      "status": "draft"
+    },
+    {
+      "id": "A-EST-005",
+      "type": "mcq",
+      "chapter": "A.est",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "넓은 논 지역에서 무작위로 뽑은 픽셀 100개의 NDVI 표본평균이 0.62, 표본표준편차가 0.04였다. 평균 NDVI의 표준오차는?",
+      "choices": [
+        {
+          "text": "0.04",
+          "rationale": "0.04는 개별 픽셀값이 흩어진 정도인 표준편차입니다. 평균의 흔들림인 표준오차는 이를 √n으로 나눈 값입니다."
+        },
+        {
+          "text": "0.0004",
+          "rationale": "n = 100으로 나눈 값입니다. 표준오차는 √n = 10으로 나눕니다(분산을 n으로 나누는 것과 헷갈린 경우)."
+        },
+        {
+          "text": "0.0016",
+          "rationale": "0.04² = 0.0016은 분산입니다. 표준오차와 관계없는 값입니다."
+        },
+        {
+          "text": "0.4",
+          "rationale": "√n을 곱한 값입니다. 표본이 커질수록 표준오차는 커지는 게 아니라 작아집니다."
+        },
+        {
+          "text": "0.004",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "표본평균의 표준오차는 s/√n = 0.04/√100 = 0.04/10 = 0.004입니다.",
+      "explanation_full": "검산: √100 = 10, 0.04 ÷ 10 = 0.004. 따라서 대략적인 95% 신뢰구간은 0.62 ± 1.96 × 0.004 ≈ 0.62 ± 0.008입니다. 이 계산은 픽셀들이 서로 독립이라는 가정에 기댑니다. 넓은 지역에서 무작위로 흩어 뽑았다면 대체로 괜찮지만, 붙어 있는 픽셀을 뽑았다면 공간 자기상관 때문에 실제 표준오차는 이보다 큽니다.",
+      "tags": [
+        "estimation",
+        "standard-error",
+        "calculation"
+      ],
+      "terms": [
+        "standard-error"
+      ],
+      "source_ref": "추정 일반 (OpenIntro Statistics 5장)",
+      "status": "draft"
+    },
+    {
+      "id": "A-EST-006",
+      "type": "short",
+      "chapter": "A.est",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "표본에서 계산한 구간으로, 같은 절차를 여러 번 반복했을 때 정해진 비율(예: 95%)만큼 모수를 포함하도록 만든 것을 무엇이라 하는가? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Confidence interval (CI)"
+        ],
+        "ko": [
+          "신뢰구간"
+        ]
+      },
+      "primary": "Confidence interval (CI)",
+      "explanation_short": "신뢰구간(Confidence Interval, CI)은 점추정치에 불확실성의 폭을 붙인 구간입니다. 흔히 '추정치 ± 임계값 × 표준오차' 형태로 만듭니다.",
+      "explanation_full": "95% 신뢰구간은 대략 추정치 ± 1.96 × SE입니다. '95%'는 구간을 만드는 절차의 성공률이지, 이미 계산된 특정 구간에 모수가 들어 있을 확률이 아니라는 점이 흔한 오해 포인트입니다. 구간추정(interval estimation)은 이런 구간으로 모수를 추정하는 방식 전체를 가리킵니다.",
+      "tags": [
+        "estimation",
+        "confidence-interval"
+      ],
+      "terms": [
+        "confidence-interval"
+      ],
+      "source_ref": "추정 일반 (OpenIntro Statistics 5장)",
+      "status": "draft"
+    },
+    {
+      "id": "A-EST-007",
+      "type": "mcq",
+      "chapter": "A.est",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "무작위 검증 포인트로 토지피복 지도의 전체 정확도를 추정했더니 95% 신뢰구간이 [0.86, 0.92]였다. 빈도주의 통계의 해석으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "같은 방식으로 구간을 만드는 일을 여러 번 반복하면, 그 구간들의 약 95%가 참 정확도를 포함한다",
+          "rationale": null
+        },
+        {
+          "text": "이미 계산된 이 구간 [0.86, 0.92] 안에 참 정확도가 들어 있을 확률이 95%이다",
+          "rationale": "빈도주의에서 참 정확도는 고정된 값이라, 이미 계산된 구간은 참값을 포함하거나 포함하지 않거나 둘 중 하나입니다. 95%는 구간을 만드는 절차의 성공률입니다. 모수에 확률을 부여하는 해석은 베이지안 신용구간(credible interval)의 해석입니다."
+        },
+        {
+          "text": "검증 포인트의 95%가 각각 0.86~0.92 범위의 정확도를 보인다",
+          "rationale": "포인트 하나하나는 맞음/틀림(1/0)이라 개별 정확도라는 값이 없습니다. 신뢰구간은 개별 관측치의 범위가 아니라 모수에 대한 구간입니다."
+        },
+        {
+          "text": "같은 모델을 새 영상들에 적용하면, 그 영상들의 95%에서 정확도가 0.86~0.92로 나온다",
+          "rationale": "이는 미래 관측값의 범위인 예측구간(prediction interval)의 해석입니다. 신뢰구간은 이 지도 전체의 정확도라는 모수 하나에 대한 구간입니다."
+        },
+        {
+          "text": "계산에 쓴 표본 정확도(0.89)가 이 구간 안에 들어 있을 확률이 95%이다",
+          "rationale": "표본 정확도는 구간의 중심으로 계산에 쓰인 값이라 항상(100%) 구간 안에 있습니다. 신뢰구간은 표본값이 아니라 모수를 겨냥합니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "신뢰수준 95%는 '이 절차로 만든 구간이 장기적으로 95%의 경우 참값을 포함한다'는 뜻입니다. 계산된 특정 구간에 대해 '참값이 있을 확률 95%'라고 말하는 것은 엄밀한 빈도주의 해석이 아닙니다.",
+      "explanation_full": "실무 보고서에서는 '정확도는 0.89이며, 95% 신뢰구간은 0.86~0.92이다'처럼 쓰면 충분합니다. 해석을 확률 진술로 바꾸고 싶다면 베이지안 방법으로 신용구간을 구해야 합니다. 신뢰구간은 표본오차만 반영하므로, 라벨 오류나 추출 편향 같은 비표본오차가 있으면 구간이 참값을 놓칠 수 있습니다.",
+      "tags": [
+        "estimation",
+        "confidence-interval",
+        "interpretation"
+      ],
+      "terms": [
+        "confidence-interval"
+      ],
+      "source_ref": "추정 일반 (OpenIntro Statistics 5장)",
+      "status": "draft"
+    },
+    {
+      "id": "A-EST-008",
+      "type": "mcq",
+      "chapter": "A.est",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "다른 조건은 그대로 두고 (가) 신뢰수준만 95%에서 99%로 올릴 때, (나) 신뢰수준은 그대로 두고 표본 크기만 4배로 늘릴 때, 신뢰구간의 폭은 각각 어떻게 되는가?",
+      "choices": [
+        {
+          "text": "(가) 좁아진다, (나) 약 절반이 된다",
+          "rationale": "신뢰수준을 높이면 더 자주 참값을 포함해야 하므로 임계값이 1.96에서 약 2.58로 커져 구간이 넓어집니다."
+        },
+        {
+          "text": "(가) 넓어진다, (나) 약 1/4이 된다",
+          "rationale": "폭은 표준오차 σ/√n에 비례하므로 n이 4배가 되면 √4 = 2배로 나누어져 절반이 됩니다. 1/4은 분산의 변화입니다."
+        },
+        {
+          "text": "(가) 넓어진다, (나) 약 절반이 된다",
+          "rationale": null
+        },
+        {
+          "text": "(가) 변하지 않는다, (나) 약 절반이 된다",
+          "rationale": "신뢰수준은 임계값(z)을 바꾸므로 폭에 직접 영향을 줍니다. 95%와 99%의 임계값은 1.96과 약 2.58입니다."
+        },
+        {
+          "text": "(가) 좁아진다, (나) 약 1/4이 된다",
+          "rationale": "두 방향 모두 틀렸습니다. 신뢰수준을 올리면 넓어지고, n이 4배면 폭은 1/√4 = 1/2이 됩니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "구간 폭은 '임계값 × 표준오차'에 비례합니다. 99%의 임계값(약 2.58)이 95%(1.96)보다 커서 (가)는 넓어지고, 표준오차가 1/√n에 비례하므로 n이 4배면 (나)는 절반이 됩니다.",
+      "explanation_full": "폭 비율: 2.576/1.960 ≈ 1.31배로 넓어집니다. 표본을 4배로 늘려야 폭이 절반이 된다는 것은 '정확도를 ±2%p에서 ±1%p로 좁히려면 검증 포인트를 4배 모아야 한다'는 뜻이라, 현장 검증 예산을 짤 때 자주 쓰는 계산입니다.",
+      "tags": [
+        "estimation",
+        "confidence-interval",
+        "standard-error"
+      ],
+      "terms": [
+        "confidence-interval",
+        "standard-error"
+      ],
+      "source_ref": "추정 일반 (OpenIntro Statistics 5장)",
+      "status": "draft"
+    },
+    {
+      "id": "A-EST-009",
+      "type": "mcq",
+      "chapter": "A.est",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "검증 포인트 500개 중 450개가 정답이었으므로 '지도의 전체 정확도는 0.90'이라고 하나의 값으로 추정했다. 이처럼 모수를 하나의 값으로 추정하는 방식을 무엇이라 하는가?",
+      "choices": [
+        {
+          "text": "구간추정",
+          "rationale": "구간추정은 '0.87~0.93'처럼 모수가 있을 법한 범위를 신뢰수준과 함께 제시하는 방식입니다."
+        },
+        {
+          "text": "점추정",
+          "rationale": null
+        },
+        {
+          "text": "가설검정",
+          "rationale": "가설검정은 '정확도가 0.85 이상인가'처럼 모수에 대한 주장을 자료로 판단하는 절차이며, 값을 추정하는 것과 목적이 다릅니다."
+        },
+        {
+          "text": "부트스트랩",
+          "rationale": "부트스트랩은 재표본으로 추정량의 분포(표준오차·구간)를 근사하는 방법입니다. 하나의 값을 내는 추정 방식의 이름이 아닙니다."
+        },
+        {
+          "text": "교차검증",
+          "rationale": "교차검증은 자료를 나눠 모델 성능을 반복 평가하는 모델 평가 절차입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "점추정(Point Estimation)은 표본 통계량(여기서는 표본 정확도 450/500)을 모수의 단일 추정치로 쓰는 방식입니다.",
+      "explanation_full": "점추정치만으로는 얼마나 믿을 만한지 알 수 없으므로 표준오차나 신뢰구간(구간추정)을 함께 적습니다. 여기서 SE = √(0.9 × 0.1 / 500) ≈ 0.013이므로 95% 신뢰구간은 약 0.90 ± 0.026입니다. 추정량(estimator)은 계산 규칙(예: 정답 수 ÷ 포인트 수), 추정치(estimate)는 그 규칙으로 얻은 구체적 값(0.90)을 말합니다.",
+      "tags": [
+        "estimation",
+        "point-estimation"
+      ],
+      "terms": [
+        "point-estimation"
+      ],
+      "source_ref": "추정 일반 (OpenIntro Statistics 5장)",
+      "status": "draft"
+    },
+    {
+      "id": "A-EST-010",
+      "type": "mcq",
+      "chapter": "A.est",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "표본분산을 구할 때 편차 제곱합을 n이 아니라 n−1로 나누는 이유로 옳은 것은?",
+      "choices": [
+        {
+          "text": "표본표준편차 s도 모표준편차의 불편추정량이 되게 하려고",
+          "rationale": "n−1로 나눈 표본분산 s²은 불편이지만, 제곱근은 비선형이라 s는 모표준편차를 평균적으로 약간 작게 추정합니다(편향이 남음)."
+        },
+        {
+          "text": "극단값의 영향을 줄여 로버스트한 추정량이 되게 하려고",
+          "rationale": "분모를 바꿔도 편차를 제곱해 더하는 구조는 그대로라 극단값 민감성은 같습니다. 로버스트 산포는 IQR, MAD 등을 씁니다."
+        },
+        {
+          "text": "표본분산을 표본평균의 표준오차로 바꾸려고",
+          "rationale": "표준오차는 s/√n으로 따로 계산합니다. n−1 보정은 분산 자체를 편향 없이 추정하기 위한 것입니다."
+        },
+        {
+          "text": "n이 작을 때만 쓰는 근사이며, n이 크면 n−1로 나누면 오히려 편향이 생기기 때문에",
+          "rationale": "n−1로 나눈 표본분산은 표본 크기와 관계없이 불편입니다. n이 크면 n과 n−1의 차이가 작아 실무상 차이가 거의 없을 뿐입니다."
+        },
+        {
+          "text": "모분산의 불편추정량(기댓값이 모분산과 같은 추정량)이 되게 하려고",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "표본평균을 기준으로 편차를 재면 모평균 기준보다 편차 제곱합이 작아지는 경향이 있어, n으로 나누면 모분산을 체계적으로 과소추정합니다. n−1로 나누면 기댓값이 정확히 모분산과 같아집니다(베셀 보정).",
+      "explanation_full": "E[Σ(xᵢ − x̄)²] = (n−1)σ²이므로 n−1로 나눠야 E[s²] = σ²입니다. 좋은 점추정량의 기준으로는 불편성(unbiasedness) 외에도 분산이 작을 것(효율성), n이 커지면 모수에 수렴할 것(일치성) 등이 있습니다. 라이브러리마다 표준편차 함수의 기본 분모(n 또는 n−1)가 다를 수 있으니(ddof 옵션 등) 확인이 필요합니다.",
+      "tags": [
+        "estimation",
+        "point-estimation",
+        "unbiased"
+      ],
+      "terms": [
+        "point-estimation"
+      ],
+      "source_ref": "추정 일반 (OpenIntro Statistics 5장)",
+      "status": "draft"
+    },
+    {
+      "id": "A-EST-011",
+      "type": "mcq",
+      "chapter": "A.est",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "독립적으로 무작위 추출한 검증 포인트 400개 중 360개가 정답이었다. 정규근사를 이용한 전체 정확도의 95% 신뢰구간으로 가장 가까운 것은?",
+      "choices": [
+        {
+          "text": "0.90 ± 0.015",
+          "rationale": "±0.015는 표준오차 1배(약 68% 수준)입니다. 95% 구간은 1.96을 곱해야 합니다."
+        },
+        {
+          "text": "0.90 ± 0.588",
+          "rationale": "1.96 × 0.3으로, 포인트 하나의 표준편차 √(0.9 × 0.1) = 0.3을 표준오차 대신 쓴 결과입니다. √n으로 나누지 않았습니다."
+        },
+        {
+          "text": "0.90 ± 0.029",
+          "rationale": null
+        },
+        {
+          "text": "0.90 ± 0.0015",
+          "rationale": "√n 대신 n = 400으로 나눈 결과(1.96 × 0.3/400)입니다. 표준오차는 √(p̂(1−p̂)/n)입니다."
+        },
+        {
+          "text": "0.90 ± 0.059",
+          "rationale": "0.059는 구간의 전체 폭(2 × 0.029)입니다. ± 뒤에는 폭의 절반을 적습니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "p̂ = 360/400 = 0.90, SE = √(0.90 × 0.10 / 400) = √0.000225 = 0.015, 95% 구간은 0.90 ± 1.96 × 0.015 = 0.90 ± 0.029, 즉 약 [0.871, 0.929]입니다.",
+      "explanation_full": "이 정규근사(Wald) 구간은 np̂와 n(1−p̂)가 충분히 클 때(여기서는 360, 40) 잘 맞습니다. 정확도가 1에 매우 가깝거나 표본이 작으면 Wilson 구간 등을 씁니다. 실무에서는 층화 추출을 했다면 층별 가중치를 반영한 분산식을 써야 하며, 포인트끼리 공간적으로 붙어 있으면 독립 가정이 깨져 구간이 너무 좁아집니다.",
+      "tags": [
+        "estimation",
+        "confidence-interval",
+        "accuracy-assessment",
+        "calculation"
+      ],
+      "terms": [
+        "confidence-interval",
+        "point-estimation"
+      ],
+      "source_ref": "Olofsson et al. (2014), Good practices for estimating area and assessing accuracy of land change; OpenIntro Statistics 5·6장",
+      "status": "draft"
+    },
+    {
+      "id": "A-EST-012",
+      "type": "short",
+      "chapter": "A.est",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "가지고 있는 표본에서 복원추출로 같은 크기의 재표본을 수백~수천 번 만들고, 매번 추정량을 다시 계산해 그 분포로 표준오차나 신뢰구간을 구하는 방법은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Bootstrap",
+          "Bootstrapping",
+          "Bootstrap resampling"
+        ],
+        "ko": [
+          "부트스트랩",
+          "부트스트래핑",
+          "붓스트랩"
+        ]
+      },
+      "primary": "Bootstrap",
+      "explanation_short": "부트스트랩(Bootstrap)은 표본을 모집단의 대용으로 보고 복원추출을 반복해 추정량의 표본분포를 근사하는 재표본(resampling) 방법입니다. 공식이 없는 지표에도 구간을 붙일 수 있습니다.",
+      "explanation_full": "mAP, F1, IoU 평균처럼 표준오차 공식이 복잡하거나 없는 지표에 특히 유용합니다. 가장 단순한 백분위수(percentile) 방법은 B개의 재표본 추정치를 정렬해 2.5%·97.5% 지점을 95% 구간으로 씁니다. 재표본의 단위는 서로 독립인 단위(이미지, 필지, 공간 블록)로 잡아야 합니다.",
+      "tags": [
+        "estimation",
+        "bootstrap",
+        "resampling"
+      ],
+      "terms": [
+        "bootstrap"
+      ],
+      "source_ref": "Efron & Tibshirani (1993), An Introduction to the Bootstrap",
+      "status": "draft"
+    },
+    {
+      "id": "A-EST-013",
+      "type": "mcq",
+      "chapter": "A.est",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "크기 n인 표본으로 부트스트랩을 할 때, 재표본 하나를 만드는 표준적인 방법은?",
+      "choices": [
+        {
+          "text": "원표본에서 비복원추출로 n개를 뽑는다",
+          "rationale": "비복원으로 n개를 모두 뽑으면 순서만 바뀐 원표본과 똑같아져 추정치가 매번 같습니다. 흔들림을 흉내 낼 수 없습니다."
+        },
+        {
+          "text": "원표본에서 비복원추출로 n/2개를 뽑는다",
+          "rationale": "이는 서브샘플링(subsampling) 계열 방법입니다. 표본 크기가 달라 표준오차 규모도 달라지므로 표준 부트스트랩이 아닙니다."
+        },
+        {
+          "text": "원표본을 k개 조각으로 나눠 한 조각씩 빼 가며 계산한다",
+          "rationale": "한 부분씩 빼 가며 반복하는 것은 잭나이프(jackknife)나 k-겹 교차검증의 방식입니다."
+        },
+        {
+          "text": "원표본에서 복원추출로 n개를 뽑는다",
+          "rationale": null
+        },
+        {
+          "text": "모집단에서 크기 n인 새 표본을 추가로 뽑는다",
+          "rationale": "모집단에서 새로 뽑을 수 있다면 부트스트랩이 필요 없습니다. 부트스트랩은 이것이 불가능할 때 원표본을 모집단 대용으로 쓰는 방법입니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "부트스트랩은 원표본에서 같은 크기 n을 복원추출해 재표본을 만듭니다. 복원추출이라 어떤 관측치는 여러 번, 어떤 관측치는 한 번도 뽑히지 않아 표본마다 추정치가 달라집니다.",
+      "explanation_full": "복원추출로 n개를 뽑으면 원 관측치 중 평균적으로 약 63.2%(1 − 1/e)만 적어도 한 번 포함됩니다. 이 차이가 '표본을 다시 뽑았을 때의 흔들림'을 흉내 냅니다. 보통 B = 1,000~10,000회 반복합니다.",
+      "tags": [
+        "estimation",
+        "bootstrap",
+        "resampling"
+      ],
+      "terms": [
+        "bootstrap"
+      ],
+      "source_ref": "Efron & Tibshirani (1993), An Introduction to the Bootstrap",
+      "status": "draft"
+    },
+    {
+      "id": "A-EST-014",
+      "type": "scenario",
+      "chapter": "A.est",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"선박 탐지 테스트셋 mAP@0.5가 0.71 나왔는데 구간 없이 보고하지 마. 테스트 이미지 단위로 부트스트랩 1,000번 돌려서 95% 구간 붙여.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "테스트 이미지 N장에서 복원추출로 N장을 뽑아 mAP를 다시 계산하길 1,000번 반복하고, 2.5·97.5 퍼센타일을 구간으로 적는다",
+          "rationale": null
+        },
+        {
+          "text": "모든 예측 박스를 한 목록으로 합쳐 박스 단위로 복원추출하고, mAP를 1,000번 다시 계산해 퍼센타일 구간을 적는다",
+          "rationale": "지시는 이미지 단위입니다. 같은 이미지의 박스들은 촬영 조건을 공유해 서로 독립이 아니므로, 박스 단위로 뽑으면 구간이 실제보다 좁아지고 정답 박스와의 짝도 흐트러집니다."
+        },
+        {
+          "text": "학습 데이터를 복원추출해 모델을 1,000번 다시 학습하고, 같은 테스트셋에서 잰 mAP의 퍼센타일 구간을 적는다",
+          "rationale": "이는 학습 데이터 변동에 따른 모델의 흔들림입니다. 지시는 '테스트셋이 유한해서 생기는' 평가 불확실성을 구하라는 것이고, 비용도 비현실적입니다."
+        },
+        {
+          "text": "테스트 이미지를 1,000개 부분집합으로 나눠 각각 mAP를 구하고, 그 최솟값~최댓값을 구간으로 적는다",
+          "rationale": "비복원 분할은 부트스트랩이 아니며, 부분집합이 작아 mAP가 과하게 흔들립니다. 최솟값~최댓값은 95% 구간도 아닙니다."
+        },
+        {
+          "text": "이미지별 AP를 구해 평균 ± 1.96 × (이미지별 AP의 표준편차)를 95% 구간으로 적는다",
+          "rationale": "mAP는 이미지별 AP의 평균이 아니라 전체 예측을 모아 계산하는 지표이고, 평균의 구간이라면 표준편차가 아니라 표준오차(÷√N)를 써야 합니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "부트스트랩의 재표본 단위는 서로 독립인 단위(여기서는 테스트 이미지)여야 합니다. 이미지를 복원추출해 mAP를 1,000번 다시 계산하고, 그 분포의 2.5·97.5 퍼센타일을 95% 구간으로 적는 백분위수 방법이 지시에 맞습니다.",
+      "explanation_full": "보고 예: 'mAP@0.5 = 0.71 (95% 부트스트랩 CI 0.66–0.75, 이미지 단위 B = 1,000)'. 테스트 이미지가 같은 장면에서 잘라낸 타일들이라면 타일끼리도 독립이 아니므로, 장면(scene)이나 공간 블록 단위로 재표본하는 것이 더 정직합니다. 두 모델을 비교할 때는 같은 재표본 이미지 세트에서 두 모델의 차이를 계산하는 쌍체 부트스트랩을 씁니다.",
+      "tags": [
+        "estimation",
+        "bootstrap",
+        "detection-metric"
+      ],
+      "terms": [
+        "bootstrap",
+        "confidence-interval",
+        "map"
+      ],
+      "source_ref": "Efron & Tibshirani (1993), An Introduction to the Bootstrap",
+      "status": "draft"
+    },
+    {
+      "id": "A-EST-015",
+      "type": "scenario",
+      "chapter": "A.est",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"A 모델 정확도 0.91, B 모델 0.90이라고 A가 낫다고 쓰지 마. 검증 포인트가 200개뿐이니 신뢰구간부터 확인해.\"\n\n이 지시의 의도로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "0.91과 0.90은 모수이므로 신뢰구간 없이 점추정치만 비교해도 충분하다는 뜻이다",
+          "rationale": "0.91과 0.90은 표본에서 계산한 추정치이지 모수가 아닙니다. 지시는 오히려 추정치의 불확실성을 확인하라는 것입니다."
+        },
+        {
+          "text": "n = 200이면 95% 구간이 약 ±0.04라, 차이 0.01은 표본오차 범위 안이므로 우열을 단정하지 말라는 뜻이다",
+          "rationale": null
+        },
+        {
+          "text": "신뢰구간을 구해 보면 실제로는 B 모델이 더 낫다는 것이 드러날 것이라는 뜻이다",
+          "rationale": "신뢰구간은 어느 모델이 낫다고 뒤집어 주는 도구가 아닙니다. 차이가 표본오차 범위 안이면 어느 쪽도 우월하다고 말할 근거가 부족할 뿐입니다."
+        },
+        {
+          "text": "포인트 하나의 표준편차 0.3이 차이 0.01보다 훨씬 크므로 두 모델 성능이 정확히 같다는 뜻이다",
+          "rationale": "추정치 비교에는 표준편차가 아니라 표준오차를 써야 하며, 차이가 유의하지 않다고 해서 성능이 '같다'고 결론 내릴 수도 없습니다."
+        },
+        {
+          "text": "신뢰수준을 50%로 낮춰 구간을 좁히면 A가 낫다고 보고해도 된다는 뜻이다",
+          "rationale": "결론에 맞춰 신뢰수준을 낮추는 것은 불확실성을 숨기는 것입니다. 지시의 의도와 정반대입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "SE = √(0.9 × 0.1 / 200) ≈ 0.021, 95% 구간 반폭 ≈ 1.96 × 0.021 ≈ 0.042입니다. 두 모델 차이 0.01은 이 표본오차 범위에 충분히 들어가므로 'A가 낫다'고 단정할 근거가 없다는 것이 지시의 요지입니다.",
+      "explanation_full": "같은 200개 포인트로 두 모델을 평가했다면 McNemar 검정이나 쌍체 부트스트랩처럼 짝지은 비교를 쓰는 것이 더 검정력이 높습니다. 0.01 차이를 확실히 가려내려면 검증 포인트를 크게 늘려야 합니다(구간 폭은 1/√n으로 줄어듦). 보고서에는 '두 모델의 정확도 차이는 표본오차 범위 안'이라고 쓰는 것이 정직합니다.",
+      "tags": [
+        "estimation",
+        "confidence-interval",
+        "model-comparison"
+      ],
+      "terms": [
+        "confidence-interval",
+        "sampling-error",
+        "standard-error"
+      ],
+      "source_ref": "Olofsson et al. (2014), Good practices for estimating area and assessing accuracy of land change; OpenIntro Statistics 5·6장",
+      "status": "draft"
+    }
+  ]
+}

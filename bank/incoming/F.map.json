@@ -1,0 +1,820 @@
+{
+  "format": "visiondrill-bank-exchange",
+  "format_version": 1,
+  "terms": [
+    {
+      "id": "average-precision",
+      "term_en": "Average Precision",
+      "term_ko": "평균 정밀도",
+      "abbreviation": "AP",
+      "definition": "한 클래스에 대해 예측을 점수순으로 훑어 만든 정밀도-재현율 곡선 아래 면적(보간 적용). 클래스별 탐지 성능을 하나의 수로 요약",
+      "usage_example": "부표 클래스 AP만 유독 낮으니 클래스별 AP 표부터 뽑아봐.",
+      "origin": "standard",
+      "track": "F"
+    },
+    {
+      "id": "precision-interpolation",
+      "term_en": "Precision Interpolation",
+      "term_ko": "정밀도 보간",
+      "abbreviation": null,
+      "definition": "재현율 r에서의 정밀도를 '재현율이 r 이상인 모든 지점의 정밀도 중 최댓값'으로 바꿔 PR 곡선의 톱니를 없애는 처리. VOC2007은 11점, VOC2010 이후는 모든 점, COCO는 101점에서 적용",
+      "usage_example": "우리 평가 스크립트가 11점 보간인지 101점 보간인지 확인하고 표에 적어둬.",
+      "origin": "standard",
+      "track": "F"
+    },
+    {
+      "id": "coco-evaluation",
+      "term_en": "COCO Evaluation Protocol",
+      "term_ko": "COCO 평가 프로토콜",
+      "abbreviation": null,
+      "definition": "MS COCO의 탐지 평가 방식. IoU 0.50~0.95(0.05 간격) 평균 AP를 주 지표로 하고 AP50·AP75, 크기별 AP, AR@1/10/100을 함께 보고하며 재현율 101점 보간을 사용",
+      "usage_example": "GeoJSON 결과를 COCO 포맷으로 바꿔서 pycocotools로 COCO 평가 돌려줘.",
+      "origin": "standard",
+      "track": "F"
+    },
+    {
+      "id": "max-detections",
+      "term_en": "Maximum Detections per Image",
+      "term_ko": "이미지당 최대 탐지 수",
+      "abbreviation": "maxDets",
+      "definition": "평가할 때 이미지 한 장에서 점수 상위 몇 개 예측까지만 쓸지 정한 상한. COCO 기본 AP는 100",
+      "usage_example": "한 타일에 부표가 수백 개라 maxDets 100이면 재현율이 잘려. 상한 늘려서 다시 평가해.",
+      "origin": "standard",
+      "track": "F"
+    },
+    {
+      "id": "ap-by-object-size",
+      "term_en": "AP by Object Size",
+      "term_ko": "객체 크기별 AP",
+      "abbreviation": "AP_S / AP_M / AP_L",
+      "definition": "객체 면적 구간별로 따로 계산한 AP. COCO 기준 small < 32², medium 32²~96², large > 96² 픽셀",
+      "usage_example": "GSD 낮춘 뒤로 AP_small이 반토막 났어. 크기별 AP 표 같이 붙여서 보고해.",
+      "origin": "standard",
+      "track": "F"
+    },
+    {
+      "id": "macro-average",
+      "term_en": "Macro Average",
+      "term_ko": "매크로 평균",
+      "abbreviation": null,
+      "definition": "클래스별로 지표를 따로 구한 뒤 표본 수와 무관하게 클래스 수로 단순 평균하는 방식. mAP·mIoU가 이 방식을 씀",
+      "usage_example": "mAP는 매크로 평균이라 소수 클래스 하나가 전체를 끌어내려. 클래스별 값도 같이 봐.",
+      "origin": "standard",
+      "track": "F"
+    }
+  ],
+  "questions": [
+    {
+      "id": "F-MAP-003",
+      "type": "short",
+      "chapter": "F.map",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "한 클래스의 예측을 점수순으로 정렬해 만든 정밀도-재현율 곡선 아래 면적(보간 적용)으로, 그 클래스의 탐지 성능을 하나의 수로 요약한 지표의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Average Precision (AP)"
+        ],
+        "ko": [
+          "평균 정밀도"
+        ]
+      },
+      "primary": "Average Precision (AP)",
+      "explanation_short": "평균 정밀도(Average Precision, AP)입니다. 모든 재현율 수준에서의 정밀도를 평균한 값이라 'PR 곡선 아래 면적'으로 이해하면 됩니다.",
+      "explanation_full": "AP는 한 클래스에 대한 값이고, 이를 클래스 평균한 것이 mAP입니다. COCO 문서에서는 AP와 mAP를 구분하지 않고 'AP'라고만 적기도 하므로, 표를 읽을 때 클래스 평균인지 확인해야 합니다.",
+      "tags": [
+        "detection",
+        "metric"
+      ],
+      "terms": [
+        "average-precision"
+      ],
+      "source_ref": "Everingham et al. 2010, The PASCAL VOC Challenge; VOC2010 devkit (all-point AP)",
+      "status": "draft"
+    },
+    {
+      "id": "F-MAP-004",
+      "type": "mcq",
+      "chapter": "F.map",
+      "cognitive_level": 2,
+      "difficulty": 4,
+      "stem": "한 클래스의 정답이 4개다. 점수 내림차순으로 정렬한 예측 6개의 판정이 TP, FP, FP, TP, TP, FP 순서일 때, 모든 점 보간(all-point interpolation, VOC2010 이후 방식)으로 계산한 AP는?",
+      "choices": [
+        {
+          "text": "0.50",
+          "rationale": "전체 정밀도(TP 3 / 예측 6)입니다. AP는 재현율 구간별 정밀도를 적분한 값입니다."
+        },
+        {
+          "text": "0.525",
+          "rationale": "보간 없이 각 TP 지점의 정밀도(1.0, 0.5, 0.6)를 재현율 증가분 0.25씩 곱해 더한 값입니다. 보간을 하면 재현율 0.25~0.5 구간 정밀도가 0.5에서 0.6으로 올라갑니다."
+        },
+        {
+          "text": "0.55",
+          "rationale": null
+        },
+        {
+          "text": "0.60",
+          "rationale": "0.6은 재현율 0.25~0.75 구간의 보간 정밀도일 뿐입니다. AP는 구간별 보간 정밀도에 재현율 폭을 곱해 더한 값입니다."
+        },
+        {
+          "text": "0.75",
+          "rationale": "최대 재현율(3/4)입니다. AP는 정밀도가 1보다 낮은 구간만큼 이보다 작아집니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "누적 (P, R): (1.0, 0.25), (0.5, 0.25), (0.33, 0.25), (0.5, 0.5), (0.6, 0.75), (0.5, 0.75). 보간 정밀도는 R≤0.25에서 1.0, 0.25<R≤0.75에서 0.6이므로 AP = 0.25×1.0 + 0.5×0.6 = 0.55입니다.",
+      "explanation_full": "보간 정밀도 p_interp(r) = max{p(r') : r' ≥ r}입니다. 재현율 0.5 지점의 원래 정밀도는 0.5지만, 그보다 오른쪽(재현율 0.75)에 정밀도 0.6이 있으므로 0.6으로 올라갑니다. 재현율 0.75 이후로는 예측이 없으므로 0입니다. 같은 데이터를 COCO 101점 방식으로 계산하면 (26×1.0 + 50×0.6)/101 ≈ 0.554, VOC2007 11점 방식이면 (3×1.0 + 5×0.6)/11 ≈ 0.545로 보간 방식에 따라 조금씩 다릅니다.",
+      "tags": [
+        "detection",
+        "metric",
+        "calculation"
+      ],
+      "terms": [
+        "average-precision",
+        "precision-interpolation"
+      ],
+      "source_ref": "Everingham et al. 2010, The PASCAL VOC Challenge; VOC2010 devkit (all-point AP)",
+      "status": "draft"
+    },
+    {
+      "id": "F-MAP-005",
+      "type": "mcq",
+      "chapter": "F.map",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "AP 계산에서 쓰는 보간 정밀도 p_interp(r)의 정의로 옳은 것은?",
+      "choices": [
+        {
+          "text": "재현율이 r 이상인 모든 지점의 정밀도 중 최댓값",
+          "rationale": null
+        },
+        {
+          "text": "재현율이 r 이하인 모든 지점의 정밀도 중 최댓값",
+          "rationale": "방향이 반대입니다. 왼쪽(낮은 재현율)의 높은 정밀도를 끌어오면 곡선이 과대평가됩니다."
+        },
+        {
+          "text": "재현율 r 앞뒤 두 측정점의 정밀도를 직선으로 이은 값",
+          "rationale": "선형 보간은 PR 곡선에서 쓰지 않습니다. 탐지 AP의 보간은 오른쪽 최댓값으로 톱니를 평평하게 만드는 방식입니다."
+        },
+        {
+          "text": "재현율이 r 이상인 모든 지점의 정밀도 평균",
+          "rationale": "평균이 아니라 최댓값입니다. 최댓값을 쓰기 때문에 보간 곡선이 단조 감소하게 됩니다."
+        },
+        {
+          "text": "재현율이 정확히 r인 지점들의 정밀도 중 최솟값",
+          "rationale": "같은 재현율에서 FP가 쌓이며 내려간 가장 낮은 정밀도를 쓰는 것이 아닙니다. 보간은 오른쪽 구간의 최댓값을 씁니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "보간 정밀도는 '재현율을 r 이상으로 유지하면서 얻을 수 있는 최고 정밀도'입니다. 오른쪽 최댓값을 쓰므로 PR 곡선의 톱니가 사라지고 단조 감소하는 계단 모양이 됩니다.",
+      "explanation_full": "톱니는 FP가 나오면 정밀도가 떨어지고 TP가 나오면 다시 올라가서 생깁니다. 보간은 이 작은 흔들림 때문에 순위가 조금 바뀌는 것만으로 AP가 요동치는 것을 줄입니다. VOC2007은 재현율 11점, VOC2010 이후는 모든 점, COCO는 101점에서 이 값을 읽습니다.",
+      "tags": [
+        "detection",
+        "metric"
+      ],
+      "terms": [
+        "precision-interpolation"
+      ],
+      "source_ref": "Everingham et al. 2010, The PASCAL VOC Challenge; VOC2010 devkit (all-point AP)",
+      "status": "draft"
+    },
+    {
+      "id": "F-MAP-006",
+      "type": "short",
+      "chapter": "F.map",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "COCO 평가에서 AP를 계산할 때 재현율 0부터 1까지를 0.01 간격으로 나눠 보간 정밀도를 읽는다. 사용하는 재현율 점은 모두 몇 개인가? (숫자)",
+      "accepted_answers": {
+        "en": [
+          "101"
+        ],
+        "ko": [
+          "101개",
+          "101점"
+        ]
+      },
+      "primary": "101",
+      "explanation_short": "0, 0.01, 0.02, …, 1.00이므로 101개 점입니다. 각 점의 보간 정밀도를 평균해 AP를 구합니다.",
+      "explanation_full": "PASCAL VOC2007은 0, 0.1, …, 1.0의 11점을 썼고, VOC2010 이후는 재현율이 바뀌는 모든 점을 써서 곡선 아래 면적을 정확히 계산합니다. 같은 예측이라도 보간 방식에 따라 AP가 조금 달라지므로 보고서에 방식을 적어 두는 것이 좋습니다.",
+      "tags": [
+        "detection",
+        "metric"
+      ],
+      "terms": [
+        "precision-interpolation",
+        "coco-evaluation"
+      ],
+      "source_ref": "COCO detection evaluation (cocodataset.org/#detection-eval), pycocotools COCOeval",
+      "status": "draft"
+    },
+    {
+      "id": "F-MAP-007",
+      "type": "mcq",
+      "chapter": "F.map",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "PASCAL VOC 방식과 COCO 방식의 탐지 평가를 비교한 설명으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "VOC는 IoU 0.75 한 기준, COCO는 IoU 0.5 한 기준의 AP를 주 지표로 쓴다",
+          "rationale": "VOC의 기준은 IoU 0.5입니다. COCO의 주 지표는 한 기준이 아니라 0.50~0.95 10개 기준의 평균입니다."
+        },
+        {
+          "text": "COCO는 재현율 11점 보간을, VOC2010 이후는 101점 보간을 쓴다",
+          "rationale": "뒤바뀌었습니다. 11점은 VOC2007, 101점은 COCO이며 VOC2010 이후는 모든 점을 씁니다."
+        },
+        {
+          "text": "COCO의 mAP는 클래스별 AP를 각 클래스 정답 수로 가중 평균한 값이다",
+          "rationale": "COCO도 VOC와 같이 클래스별 AP를 단순 평균(매크로 평균)합니다."
+        },
+        {
+          "text": "VOC는 IoU 0.5 한 기준 AP, COCO는 IoU 0.50~0.95 10단계 평균 AP가 주 지표다",
+          "rationale": null
+        },
+        {
+          "text": "VOC는 difficult 표시가 붙은 객체를 못 찾으면 FN으로 세어 재현율을 낮추고, 찾으면 TP로 인정한다",
+          "rationale": "VOC는 difficult 객체를 평가에서 제외합니다. 찾아도 TP가 아니고 못 찾아도 FN이 아닙니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "PASCAL VOC는 IoU 0.5 단일 기준 AP(보통 mAP@0.5), COCO는 IoU 0.50~0.95를 0.05 간격 10단계로 바꿔 구한 AP의 평균을 주 지표로 씁니다. 두 수치는 정의가 달라 직접 비교할 수 없습니다.",
+      "explanation_full": "COCO는 여기에 AP50·AP75, 크기별 AP(small/medium/large), 이미지당 최대 탐지 수별 AR(AR@1/10/100)을 함께 보고합니다. 논문 표에서 'mAP'만 적혀 있으면 어느 방식인지 먼저 확인해야 합니다. Ultralytics 등에서 보는 'mAP50'은 VOC식 IoU 기준과 같지만 보간은 구현마다 다를 수 있습니다.",
+      "tags": [
+        "detection",
+        "metric"
+      ],
+      "terms": [
+        "coco-evaluation",
+        "precision-interpolation"
+      ],
+      "source_ref": "COCO detection evaluation (cocodataset.org/#detection-eval), pycocotools COCOeval",
+      "status": "draft"
+    },
+    {
+      "id": "F-MAP-008",
+      "type": "mcq",
+      "chapter": "F.map",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "COCO 평가 도구(pycocotools)의 기본 요약 결과에 포함되지 **않는** 지표는?",
+      "choices": [
+        {
+          "text": "AP@[.50:.95] (IoU 0.50~0.95 평균 AP)",
+          "rationale": "COCO의 주 지표로 요약 결과 첫 줄에 나옵니다."
+        },
+        {
+          "text": "AP50과 AP75",
+          "rationale": "IoU 0.5와 0.75 한 기준에서의 AP로 기본 요약에 포함됩니다."
+        },
+        {
+          "text": "AP_small, AP_medium, AP_large",
+          "rationale": "객체 면적 구간별 AP로 기본 요약에 포함됩니다."
+        },
+        {
+          "text": "AR@1, AR@10, AR@100",
+          "rationale": "이미지당 최대 탐지 수를 1·10·100개로 제한했을 때의 평균 재현율로 기본 요약에 포함됩니다."
+        },
+        {
+          "text": "신뢰도 0.5에서의 F1 점수",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "COCO 요약은 AP 6개(AP, AP50, AP75, AP_S, AP_M, AP_L)와 AR 6개(AR@1, AR@10, AR@100, AR_S, AR_M, AR_L)로 구성됩니다. 특정 신뢰도 임계값에서의 P·R·F1은 임계값에 의존하므로 포함되지 않습니다.",
+      "explanation_full": "COCO 지표는 모두 신뢰도 임계값 전 구간을 훑어 계산하는 '임계값 무관' 지표입니다. 배포할 임계값(운영점)에서의 정밀도·재현율·F1은 별도로 계산해 함께 보고해야 합니다.",
+      "tags": [
+        "detection",
+        "metric"
+      ],
+      "terms": [
+        "coco-evaluation"
+      ],
+      "source_ref": "COCO detection evaluation (cocodataset.org/#detection-eval), pycocotools COCOeval",
+      "status": "draft"
+    },
+    {
+      "id": "F-MAP-009",
+      "type": "short",
+      "chapter": "F.map",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "COCO 평가의 기본 AP 계산에서 이미지 한 장당 점수 상위 몇 개의 예측까지만 평가에 쓰는가? (숫자)",
+      "accepted_answers": {
+        "en": [
+          "100"
+        ],
+        "ko": [
+          "100개"
+        ]
+      },
+      "primary": "100",
+      "explanation_short": "COCO 기본 AP는 이미지당 최대 100개(maxDets=100)의 예측만 씁니다. 그보다 점수가 낮은 예측은 평가에서 버려집니다.",
+      "explanation_full": "COCO 데이터셋은 이미지당 객체가 평균 7개 정도라 100이면 충분하지만, 양식장 부표나 주차장 차량처럼 한 타일에 수백 개가 있는 원격탐사 데이터에서는 이 상한 때문에 재현율과 AP가 낮게 잘릴 수 있습니다. 참고로 pycocotools 구현은 이 상한을 이미지·클래스 조합마다 적용합니다(클래스가 하나면 이미지당 상한과 같음). COCO 챌린지 제출 규정은 이미지당 전체 100개입니다.",
+      "tags": [
+        "detection",
+        "metric"
+      ],
+      "terms": [
+        "max-detections"
+      ],
+      "source_ref": "COCO detection evaluation (cocodataset.org/#detection-eval), pycocotools COCOeval",
+      "status": "draft"
+    },
+    {
+      "id": "F-MAP-010",
+      "type": "mcq",
+      "chapter": "F.map",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "COCO 평가 결과의 AR@1, AR@10, AR@100에서 1, 10, 100이 뜻하는 것은?",
+      "choices": [
+        {
+          "text": "평가에 사용하는 IoU 기준 0.01, 0.10, 1.00",
+          "rationale": "COCO의 IoU 기준은 0.50~0.95 범위입니다. AR@ 뒤의 숫자는 IoU가 아닙니다."
+        },
+        {
+          "text": "이미지 한 장에서 평가에 쓰는 점수 상위 예측 수(1개·10개·100개)의 상한",
+          "rationale": null
+        },
+        {
+          "text": "점수 상위 1%·10%·100% 이미지만 골라 계산한 재현율",
+          "rationale": "이미지를 고르는 비율이 아니라 이미지 한 장 안에서 허용하는 예측 개수입니다."
+        },
+        {
+          "text": "면적이 1·10·100 픽셀² 이상인 객체만 대상으로 한 재현율",
+          "rationale": "크기 구간은 AR_small/medium/large로 따로 표기합니다."
+        },
+        {
+          "text": "재현율 1%·10%·100%를 목표로 했을 때 달성한 평균 정밀도",
+          "rationale": "AR은 정밀도가 아니라 재현율 지표이며, 뒤의 숫자는 목표 재현율이 아닙니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "AR@k는 이미지당 점수 상위 k개 예측만 허용했을 때의 평균 재현율(IoU 0.50~0.95와 클래스에 걸친 평균)입니다. k가 곧 maxDets 값이며, 이미지에 객체가 여러 개면 AR@1은 구조적으로 낮을 수밖에 없으므로 k와 이미지당 객체 수를 함께 보고 해석합니다.",
+      "explanation_full": "AR@100도 낮다면 '예측을 충분히 허용해도 정답을 못 찾는' 상태이므로 모델 자체의 탐지 능력(또는 위치 정확도) 문제입니다. 반대로 이미지당 객체가 k개보다 많은 장면에서는 k 자체가 재현율의 상한이 되므로 maxDets를 늘려 다시 평가해 봐야 합니다.",
+      "tags": [
+        "detection",
+        "metric"
+      ],
+      "terms": [
+        "max-detections",
+        "coco-evaluation"
+      ],
+      "source_ref": "COCO detection evaluation (cocodataset.org/#detection-eval), pycocotools COCOeval",
+      "status": "draft"
+    },
+    {
+      "id": "F-MAP-011",
+      "type": "short",
+      "chapter": "F.map",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "COCO 평가에서 면적이 32×32 픽셀보다 작은 객체만 대상으로 계산한 AP를 무엇이라 표기하는가? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "AP_small",
+          "AP_S"
+        ],
+        "ko": [
+          "소형 객체 AP",
+          "작은 객체 AP"
+        ]
+      },
+      "primary": "AP_small",
+      "explanation_short": "AP_small(AP_S)입니다. COCO는 면적 32² 미만을 small, 32²~96²를 medium, 96² 초과를 large로 나눠 크기별 AP를 따로 보고합니다.",
+      "explanation_full": "원격탐사에서는 GSD에 따라 같은 차량·선박도 크기 구간이 달라집니다. 예를 들어 길이 5m 차량은 GSD 10cm에서 약 50픽셀이지만 GSD 50cm에서는 약 10픽셀이 됩니다. AP_small이 낮다면 해상도·타일링·특징맵 stride를 먼저 의심합니다.",
+      "tags": [
+        "detection",
+        "metric",
+        "small-object"
+      ],
+      "terms": [
+        "ap-by-object-size"
+      ],
+      "source_ref": "COCO detection evaluation (cocodataset.org/#detection-eval), pycocotools COCOeval",
+      "status": "draft"
+    },
+    {
+      "id": "F-MAP-012",
+      "type": "mcq",
+      "chapter": "F.map",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "면적을 '가로 × 세로 픽셀'로 계산한다고 할 때, COCO 크기 구간에서 medium(32² 이상 96² 미만)에 해당하는 객체는?",
+      "choices": [
+        {
+          "text": "30 × 30 픽셀 차량",
+          "rationale": "면적 900으로 32² = 1,024보다 작아 small입니다."
+        },
+        {
+          "text": "16 × 60 픽셀 부잔교",
+          "rationale": "한 변이 32보다 길지만 면적 960이 1,024보다 작아 small입니다. 구간은 변 길이가 아니라 면적으로 나눕니다."
+        },
+        {
+          "text": "28 × 40 픽셀 선박",
+          "rationale": null
+        },
+        {
+          "text": "100 × 95 픽셀 저장탱크",
+          "rationale": "한 변이 96보다 짧지만 면적 9,500이 96² = 9,216보다 커서 large입니다."
+        },
+        {
+          "text": "64 × 150 픽셀 건물",
+          "rationale": "면적 9,600으로 9,216보다 커서 large입니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "28 × 40 = 1,120으로 1,024(32²) 이상 9,216(96²) 미만이므로 medium입니다. 한 변이 32보다 짧아도 면적 기준으로는 medium일 수 있습니다.",
+      "explanation_full": "COCO는 구간을 면적(area)으로 나눕니다. COCO 원본 주석의 area는 박스가 아니라 분할 마스크 면적이므로, 직접 만든 데이터셋을 COCO 포맷으로 변환할 때 area를 무엇으로 채웠는지(박스 w×h인지 폴리곤 면적인지) 확인해야 크기별 AP가 의도대로 나옵니다.",
+      "tags": [
+        "detection",
+        "metric",
+        "calculation"
+      ],
+      "terms": [
+        "ap-by-object-size"
+      ],
+      "source_ref": "COCO detection evaluation (cocodataset.org/#detection-eval), pycocotools COCOeval",
+      "status": "draft"
+    },
+    {
+      "id": "F-MAP-013",
+      "type": "short",
+      "chapter": "F.map",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "클래스별로 지표를 따로 구한 뒤, 클래스마다 표본 수가 달라도 똑같은 비중으로 단순 평균하는 방식을 무엇이라 하는가? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Macro average",
+          "Macro averaging"
+        ],
+        "ko": [
+          "매크로 평균",
+          "거시 평균"
+        ]
+      },
+      "primary": "Macro average",
+      "explanation_short": "매크로 평균(macro average)입니다. 표본이 30개인 클래스와 3만 개인 클래스가 같은 비중으로 평균에 들어갑니다.",
+      "explanation_full": "반대로 모든 클래스의 TP·FP·FN을 먼저 합친 뒤 지표를 계산하는 방식을 마이크로 평균(micro average)이라 합니다. mAP와 mIoU는 매크로 평균이므로 소수 클래스의 성능 변화가 전체 값에 크게 드러납니다.",
+      "tags": [
+        "metric"
+      ],
+      "terms": [
+        "macro-average"
+      ],
+      "source_ref": "scikit-learn 문서 Model evaluation (average='macro'); COCO detection evaluation",
+      "status": "draft"
+    },
+    {
+      "id": "F-MAP-014",
+      "type": "mcq",
+      "chapter": "F.map",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "클래스가 두 개인 탐지 모델의 결과가 '선박 AP 0.90(정답 900개), 부표 AP 0.30(정답 100개)'이다. 표준적인 방식으로 계산한 mAP는?",
+      "choices": [
+        {
+          "text": "0.60",
+          "rationale": null
+        },
+        {
+          "text": "0.84",
+          "rationale": "정답 수로 가중 평균한 값((0.9×900 + 0.3×100)/1000)입니다. mAP는 클래스 수로 단순 평균합니다."
+        },
+        {
+          "text": "0.90",
+          "rationale": "가장 좋은 클래스의 AP입니다."
+        },
+        {
+          "text": "약 0.52",
+          "rationale": "두 AP의 기하평균(√0.27)입니다. mAP는 산술평균입니다."
+        },
+        {
+          "text": "0.30",
+          "rationale": "가장 나쁜 클래스의 AP입니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "mAP는 클래스별 AP의 매크로 평균이므로 (0.90 + 0.30) / 2 = 0.60입니다. 정답이 10배 많은 선박 클래스도 평균에서는 부표와 같은 비중입니다.",
+      "explanation_full": "그래서 표본이 적은 클래스 하나만 개선해도 mAP가 크게 오르고, 반대로 어려운 클래스를 추가하면 다른 클래스가 그대로여도 mAP가 떨어집니다. mAP만 보고하지 말고 클래스별 AP 표를 함께 붙이는 습관을 들이세요.",
+      "tags": [
+        "detection",
+        "metric",
+        "calculation"
+      ],
+      "terms": [
+        "macro-average",
+        "map"
+      ],
+      "source_ref": "COCO detection evaluation (cocodataset.org/#detection-eval), pycocotools COCOeval",
+      "status": "draft"
+    },
+    {
+      "id": "F-MAP-015",
+      "type": "mcq",
+      "chapter": "F.map",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "같은 검증셋에서 모델 A는 mAP50 0.80 / mAP50-95 0.60, 모델 B는 mAP50 0.85 / mAP50-95 0.48을 기록했다. 가장 타당한 해석은?",
+      "choices": [
+        {
+          "text": "B가 두 지표 중 하나라도 더 높으므로 B가 모든 면에서 우수한 모델이다",
+          "rationale": "mAP50-95에서는 A가 0.12 높습니다. 높은 IoU 기준에서 A가 더 많이 맞힌다는 뜻입니다."
+        },
+        {
+          "text": "mAP50-95는 원래 mAP50보다 커야 정상인데 두 모델 모두 반대라서 평가 설정에 오류가 있다",
+          "rationale": "mAP50-95는 더 엄격한 IoU 기준까지 평균하므로 보통 mAP50보다 작습니다."
+        },
+        {
+          "text": "A가 B보다 더 많은 객체를 찾아내고 있다는 뜻이다",
+          "rationale": "느슨한 기준(IoU 0.5)에서는 오히려 B가 높습니다. '더 많이 찾는다'는 결론은 이 수치로 내릴 수 없습니다."
+        },
+        {
+          "text": "두 모델의 차이는 평가할 때 적용한 신뢰도 임계값 차이 때문이다",
+          "rationale": "mAP는 신뢰도 임계값 전 구간을 훑어 계산하므로 특정 임계값에 따라 달라지지 않습니다."
+        },
+        {
+          "text": "엄격한 IoU까지 평균하면 A가 앞서므로, 박스 위치는 A가 더 정밀할 가능성이 크다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "mAP50은 박스가 대략 맞으면 인정하고, mAP50-95는 IoU 0.95까지 엄격한 기준을 평균합니다. A는 느슨한 기준에서 조금 뒤지지만 엄격한 기준에서 앞서므로 박스를 더 정확히 맞춘다고 해석합니다.",
+      "explanation_full": "어느 모델을 고를지는 용도에 따라 다릅니다. 객체 수를 세는 것이 목적이면 mAP50이 높은 B가, 건물 윤곽이나 선박 길이처럼 박스 크기로 측정값을 내야 하면 A가 적합할 수 있습니다. 판단을 위해 AP75 같은 중간 기준 값도 함께 보면 좋습니다.",
+      "tags": [
+        "detection",
+        "metric"
+      ],
+      "terms": [
+        "map",
+        "iou"
+      ],
+      "source_ref": "COCO detection evaluation (cocodataset.org/#detection-eval), pycocotools COCOeval",
+      "status": "draft"
+    },
+    {
+      "id": "F-MAP-016",
+      "type": "mcq",
+      "chapter": "F.map",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "mAP(또는 AP)의 성질과 해석으로 옳은 것은?",
+      "choices": [
+        {
+          "text": "mAP가 0.8이면 신뢰도 임계값 0.5에서 정밀도가 0.8이라는 뜻이다",
+          "rationale": "mAP는 임계값 전 구간을 요약한 값입니다. 특정 임계값에서의 정밀도는 별도로 계산해야 합니다."
+        },
+        {
+          "text": "예측은 그대로 두고 점수를 순서만 유지되게 바꾸면 AP는 그대로이므로, 높은 AP가 잘 보정된 점수를 뜻하지는 않는다",
+          "rationale": null
+        },
+        {
+          "text": "mAP가 이전 버전보다 올랐다면 모든 클래스의 AP가 함께 오른 것이다",
+          "rationale": "mAP는 클래스 평균이라 일부 클래스가 크게 오르고 다른 클래스는 떨어져도 평균은 오를 수 있습니다."
+        },
+        {
+          "text": "같은 모델이라면 테스트셋 구성이 달라도 mAP를 그대로 비교할 수 있다",
+          "rationale": "mAP는 데이터셋의 난이도·클래스 구성·객체 크기 분포에 크게 좌우되므로 같은 평가셋에서만 비교할 수 있습니다."
+        },
+        {
+          "text": "mAP는 이미지 한 장당 평균 오탐 수를 나타내므로, 판독자가 걸러내야 할 오탐 건수를 바로 추정할 수 있다",
+          "rationale": "이미지당 오탐 수는 FPPI입니다. mAP는 순위 기반 요약 지표라 오탐 건수를 직접 알려 주지 않습니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "AP는 예측을 점수순으로 정렬한 '순위'만 사용합니다. 그래서 점수에 0.5를 곱하는 식으로 순서를 유지한 변환을 해도 AP는 그대로이고, 점수 0.7이 '70% 확률로 맞다'는 뜻인지는 AP로 알 수 없습니다.",
+      "explanation_full": "점수가 실제 적중 확률과 맞는지는 보정(calibration) 문제로, 신뢰도 구간별 실제 정밀도를 그려 보는 신뢰도 곡선(reliability diagram)으로 확인합니다. 운영점을 고정해 쓰는 원격탐사 서비스에서는 AP가 같아도 점수 분포가 모델마다 달라 같은 conf 0.5가 전혀 다른 P·R을 낼 수 있습니다.",
+      "tags": [
+        "detection",
+        "metric"
+      ],
+      "terms": [
+        "average-precision",
+        "map",
+        "confidence-threshold"
+      ],
+      "source_ref": "Padilla et al. 2020, A Survey on Performance Metrics for Object-Detection Algorithms",
+      "status": "draft"
+    },
+    {
+      "id": "F-MAP-017",
+      "type": "scenario",
+      "chapter": "F.map",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"드론 정사영상 차량 탐지에서 AP_medium은 0.72인데 AP_small이 0.18이야. 저장 용량 때문에 GSD 5cm 영상을 10cm로 리샘플링해서 학습했거든. 뭐부터 바꿔볼까?\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "신뢰도 임계값을 0.25에서 0.05로 낮춰 작은 차량 예측이 더 많이 남게 한다",
+          "rationale": "AP는 매우 낮은 신뢰도 하한으로 임계값 전 구간을 훑어 계산하므로, 운영 임계값을 낮춰도 AP_small은 거의 변하지 않습니다."
+        },
+        {
+          "text": "면적이 32² 미만인 차량을 라벨에서 지워 AP_small 구간의 정답 수를 줄인다",
+          "rationale": "평가 대상을 없애 지표를 꾸미는 것이며, 실제로는 작은 차량을 여전히 놓칩니다."
+        },
+        {
+          "text": "COCO 평가의 maxDets를 100에서 300으로 늘려 작은 차량도 평가에 들어가게 한다",
+          "rationale": "maxDets는 크기가 아니라 점수 순위로 예측을 자르므로 작은 차량만 골라 평가에 넣는 설정이 아닙니다. 중형은 괜찮고 소형만 낮은 크기 편향은 해상도 저하를 가리킵니다."
+        },
+        {
+          "text": "원 해상도(GSD 5cm) 영상을 타일로 잘라 학습·추론해 작은 차량의 픽셀 수를 확보한다",
+          "rationale": null
+        },
+        {
+          "text": "NMS IoU 임계값을 0.7에서 0.9로 올려 가까이 붙은 작은 차량이 지워지지 않게 한다",
+          "rationale": "밀집 주차 구간의 일부 미탐은 줄 수 있어도 중복 박스가 늘어나고, 해상도 저하로 특징이 사라진 근본 원인은 그대로입니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "GSD를 5cm→10cm로 낮추면 차량의 가로·세로 픽셀이 절반, 면적은 1/4이 되어 많은 차량이 small 구간으로 떨어지고 특징도 뭉개집니다. 원 해상도를 유지한 채 타일링하는 것이 가장 직접적인 대책입니다.",
+      "explanation_full": "4.5m × 1.8m 승용차는 GSD 5cm에서 90×36픽셀(면적 3,240, medium)이지만 10cm에서는 45×18픽셀(면적 810, small)입니다. 버스·트럭처럼 큰 차량만 10cm에서도 medium에 남으므로 AP_medium은 높고 AP_small만 낮은 결과와 맞아떨어집니다. 저장 용량이 문제라면 원본은 유지하되 학습용 타일만 잘라 두거나, 추론 시 슬라이싱(타일 overlap 포함) 후 결과를 병합하는 방식을 씁니다. 개선 후에는 크기별 AP 표를 전후로 비교해 보고합니다.",
+      "tags": [
+        "detection",
+        "metric",
+        "small-object",
+        "remote-sensing"
+      ],
+      "terms": [
+        "ap-by-object-size"
+      ],
+      "source_ref": "COCO detection evaluation (cocodataset.org/#detection-eval), pycocotools COCOeval",
+      "status": "draft"
+    },
+    {
+      "id": "F-MAP-018",
+      "type": "scenario",
+      "chapter": "F.map",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"양식장 부표 탐지, 타일 한 장에 부표가 200~400개씩 있어. 결과 영상 보면 잘 잡는데 COCO mAP가 0.3대로 너무 낮게 나와. 평가 쪽부터 확인해봐.\"\n\n가장 먼저 확인할 것은?",
+      "choices": [
+        {
+          "text": "이미지당 최대 탐지 수(maxDets, 기본 100) 설정",
+          "rationale": null
+        },
+        {
+          "text": "IoU 매칭 기준을 0.3으로 낮춰 다시 평가할 수 있는지",
+          "rationale": "기준을 바꾸면 표준 COCO mAP와 비교할 수 없게 됩니다. 또 부표가 '잘 잡힌다'는 관찰과 달리 위치 문제라는 근거도 없습니다."
+        },
+        {
+          "text": "신뢰도 임계값이 너무 높게 설정됐는지",
+          "rationale": "COCO mAP는 임계값 전 구간을 훑어 계산하므로 운영 임계값과 무관합니다."
+        },
+        {
+          "text": "AP_small 값이 AP_large보다 낮은지",
+          "rationale": "부표는 대개 작은 객체라 AP_small이 낮을 수 있지만, 한 타일 수백 개라는 핵심 조건을 설명하지 못합니다."
+        },
+        {
+          "text": "클래스별 AP를 정답 수로 가중 평균했는지",
+          "rationale": "COCO mAP는 매크로 평균이고, 부표 단일 클래스라면 평균 방식은 결과에 영향이 없습니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "COCO 기본 AP는 이미지당 점수 상위 100개 예측만 씁니다. 정답이 300개인 타일에서는 모델이 완벽해도 최대 100개만 TP가 되어 재현율 상한이 약 0.33이 되므로, 탐지가 좋아도 mAP가 낮게 나옵니다.",
+      "explanation_full": "대책은 maxDets를 정답 수보다 크게 늘려 평가하거나(설정을 보고서에 명시), 타일을 작게 잘라 한 장당 객체 수를 줄이는 것입니다. 모델 쪽 추론 설정에도 이미지당 최대 출력 수 상한이 있는 경우가 많으므로(구현마다 기본값이 다름) 함께 확인합니다.",
+      "tags": [
+        "detection",
+        "metric",
+        "remote-sensing"
+      ],
+      "terms": [
+        "max-detections",
+        "coco-evaluation"
+      ],
+      "source_ref": "COCO detection evaluation (cocodataset.org/#detection-eval), pycocotools COCOeval",
+      "status": "draft"
+    },
+    {
+      "id": "F-MAP-019",
+      "type": "scenario",
+      "chapter": "F.map",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"이번 버전에서 탐지 클래스를 5개에서 7개로 늘렸더니 mAP가 0.71에서 0.64로 떨어졌어. 모델이 나빠진 건지 확인해봐.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "mAP가 떨어졌으므로 이전 버전 체크포인트로 롤백한다",
+          "rationale": "새 클래스가 추가되면 평균 대상이 바뀌므로 mAP만으로는 모델이 나빠졌는지 판단할 수 없습니다."
+        },
+        {
+          "text": "새로 추가한 2개 클래스를 평가에서 빼고 0.71 이상이 나오면 그 값을 최종 mAP로 보고한다",
+          "rationale": "공통 5개 클래스로 비교해 보는 것은 분석의 일부일 수 있지만, 그 값을 7개 클래스 모델의 최종 mAP로 보고하는 것은 결과를 왜곡합니다."
+        },
+        {
+          "text": "이전·현재 버전의 클래스별 AP를 나란히 놓고, 기존 5개 클래스 AP 변화와 새 2개 클래스 AP를 나눠 본다",
+          "rationale": null
+        },
+        {
+          "text": "학습률을 낮추고 에폭을 늘려 mAP가 0.71로 돌아올 때까지 다시 학습한다",
+          "rationale": "원인을 확인하기 전에 재학습부터 하는 것은 순서가 틀렸습니다. 기존 클래스가 그대로라면 재학습이 필요 없을 수도 있습니다."
+        },
+        {
+          "text": "클래스별 AP를 정답 수로 가중 평균하도록 계산식을 바꿔 새 클래스의 영향을 줄인다",
+          "rationale": "표준 정의(매크로 평균)를 바꾸면 이전 결과·다른 모델과 비교할 수 없게 됩니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "mAP는 클래스별 AP의 단순 평균이라, 기존 클래스 성능이 그대로여도 AP가 낮은 새 클래스가 들어오면 평균이 떨어집니다. 클래스별 표로 '기존 클래스 하락'과 '새 클래스 영향'을 분리하는 것이 먼저입니다.",
+      "explanation_full": "예: 기존 5개 평균이 0.71로 그대로이고 새 2개가 0.47이라면 (0.71×5 + 0.47×2)/7 ≈ 0.64로, 모델이 나빠진 것이 아니라 어려운 클래스가 추가된 것입니다. 보고할 때는 '공통 5개 클래스 mAP'와 '전체 7개 클래스 mAP'를 함께 적으면 오해가 없습니다.",
+      "tags": [
+        "detection",
+        "metric"
+      ],
+      "terms": [
+        "macro-average",
+        "map"
+      ],
+      "source_ref": "COCO detection evaluation (cocodataset.org/#detection-eval), pycocotools COCOeval",
+      "status": "draft"
+    },
+    {
+      "id": "F-MAP-020",
+      "type": "scenario",
+      "chapter": "F.map",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"논문 표에 경쟁 모델이 mAP 0.78(VOC 방식)이고, 우리 모델은 mAP 0.52(COCO mAP50-95)야. 우리가 한참 뒤진다고 보고서에 정리해.\"\n\n가장 적절한 대응은?",
+      "choices": [
+        {
+          "text": "지시대로 0.26 차이로 크게 뒤진다고 정리한다",
+          "rationale": "VOC 방식(IoU 0.5 한 기준)과 COCO mAP50-95는 정의가 달라 숫자를 그대로 빼서 비교할 수 없습니다."
+        },
+        {
+          "text": "COCO 값이 보통 VOC 값의 절반 정도이므로 0.52에 2를 곱해 1.04로 환산하면 우리가 앞선다고 정리한다",
+          "rationale": "두 지표 사이에 고정된 환산 비율은 없습니다. 모델·데이터에 따라 차이가 크게 달라집니다."
+        },
+        {
+          "text": "우리 지표가 더 엄격한 기준이므로 우리 모델이 더 우수하다고 정리한다",
+          "rationale": "기준이 엄격하다는 것만으로 우열을 판단할 수 없습니다. 같은 기준으로 계산해야 비교가 됩니다."
+        },
+        {
+          "text": "우리 mAP50-95를 101점 보간 대신 11점 보간으로 다시 계산해 VOC 방식에 맞춘다",
+          "rationale": "보간 방식을 바꿔도 IoU 기준(0.5 한 기준 vs 0.50~0.95 평균)이 다르면 여전히 비교할 수 없습니다."
+        },
+        {
+          "text": "정의가 다른 지표라 직접 비교할 수 없으니, 같은 데이터·같은 방식(예: IoU 0.5 AP)으로 다시 계산해 비교하자고 한다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "VOC 방식 mAP는 IoU 0.5 한 기준, COCO mAP50-95는 0.50~0.95 평균이라 같은 모델에서도 보통 VOC 쪽이 훨씬 높게 나옵니다. 평가셋이 같은지도 확인하고, 같은 지표로 다시 계산한 뒤에 결론을 내려야 합니다.",
+      "explanation_full": "가능하면 경쟁 모델을 같은 평가셋·같은 평가 코드로 직접 돌리는 것이 가장 공정합니다. 불가능하다면 최소한 우리 모델의 mAP50을 함께 보고하고, 평가셋이 다르면 그 사실을 표에 명시합니다.",
+      "tags": [
+        "detection",
+        "metric"
+      ],
+      "terms": [
+        "coco-evaluation",
+        "map"
+      ],
+      "source_ref": "COCO detection evaluation (cocodataset.org/#detection-eval), pycocotools COCOeval",
+      "status": "draft"
+    },
+    {
+      "id": "F-MAP-021",
+      "type": "scenario",
+      "chapter": "F.map",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"배포 설정(conf 0.5) 그대로 뽑은 예측 파일로 test mAP 계산해서 올려줘.\"\n\n가장 적절한 대응은?",
+      "choices": [
+        {
+          "text": "지시대로 conf 0.5 예측 파일로 mAP를 계산해 그대로 올린다",
+          "rationale": "0.5 미만 예측이 잘려 PR 곡선이 중간에 끊기므로 AP가 실제보다 같거나 낮게 나옵니다."
+        },
+        {
+          "text": "mAP는 신뢰도 하한을 매우 낮게 둔 전체 예측으로 계산하고, conf 0.5의 P·R은 따로 보고한다",
+          "rationale": null
+        },
+        {
+          "text": "mAP를 높이기 위해 conf를 0.9로 올린 예측 파일로 계산한다",
+          "rationale": "임계값을 올릴수록 더 많은 예측이 잘려 PR 곡선이 더 짧아지므로 AP는 같거나 낮아집니다."
+        },
+        {
+          "text": "NMS를 끈 예측 파일로 계산해 가능한 모든 박스를 평가에 넣는다",
+          "rationale": "중복 박스가 모두 FP로 잡혀 정밀도가 무너집니다. 필요한 것은 NMS 제거가 아니라 낮은 신뢰도 하한입니다."
+        },
+        {
+          "text": "conf 0.5 예측으로 mAP50만 계산하면 임계값의 영향이 사라지므로, 그 값 하나만 보고서에 올린다",
+          "rationale": "mAP50도 PR 곡선 아래 면적이라 예측이 잘리면 똑같이 과소평가됩니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "mAP는 임계값을 훑으며 PR 곡선 전체를 요약하는 지표라, 미리 conf 0.5로 자른 예측을 쓰면 곡선의 오른쪽(높은 재현율 구간)이 사라져 과소평가됩니다. 운영 성능은 운영점의 P·R로 따로 보고합니다.",
+      "explanation_full": "일반적으로 평가 도구들은 mAP 계산 시 매우 낮은 신뢰도 하한을 씁니다. 보고서에는 '모델 비교용 mAP(전체 예측)'와 '배포 설정(conf 0.5)에서의 P·R·F1·FPPI'를 나란히 적어, 순위 성능과 운영 성능을 구분해 보여 주는 것이 좋습니다.",
+      "tags": [
+        "detection",
+        "metric",
+        "deployment"
+      ],
+      "terms": [
+        "average-precision",
+        "confidence-threshold"
+      ],
+      "source_ref": "COCO detection evaluation (cocodataset.org/#detection-eval), pycocotools COCOeval",
+      "status": "draft"
+    }
+  ]
+}

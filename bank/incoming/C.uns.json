@@ -1,0 +1,838 @@
+{
+  "format": "visiondrill-bank-exchange",
+  "format_version": 1,
+  "terms": [
+    {
+      "id": "k-means",
+      "term_en": "K-Means Clustering",
+      "term_ko": "K-평균 군집",
+      "abbreviation": null,
+      "definition": "군집 수 k를 정한 뒤 각 점을 가장 가까운 중심에 할당하고 중심을 소속 점들의 평균으로 다시 계산하는 과정을 반복해 군집 내 제곱거리 합을 줄이는 군집 알고리즘",
+      "usage_example": "라벨이 없으니까 일단 k-means로 해수 스펙트럼 6개 군집 나눠서 분포 보자.",
+      "origin": "standard",
+      "track": "C"
+    },
+    {
+      "id": "hierarchical-clustering",
+      "term_en": "Hierarchical Clustering",
+      "term_ko": "계층적 군집",
+      "abbreviation": null,
+      "definition": "가까운 군집끼리 차례로 합치거나(응집형) 큰 군집을 차례로 나눠(분할형) 군집의 계층 구조를 만들고, 덴드로그램을 잘라 군집을 정하는 방법",
+      "usage_example": "관측소 30곳 수질 패턴은 계층 군집으로 덴드로그램 그려서 몇 그룹인지 봐.",
+      "origin": "standard",
+      "track": "C"
+    },
+    {
+      "id": "dbscan",
+      "term_en": "Density-Based Spatial Clustering of Applications with Noise",
+      "term_ko": "밀도 기반 공간 군집",
+      "abbreviation": "DBSCAN",
+      "definition": "반경 ε 안에 이웃이 minPts개 이상인 핵심점을 밀도로 연결해 군집을 만들고, 어느 군집에도 속하지 않는 점은 노이즈로 두는 군집 알고리즘",
+      "usage_example": "선박 정박 위치는 DBSCAN으로 묶고, 노이즈로 빠진 점은 항해 중인 걸로 보자.",
+      "origin": "standard",
+      "track": "C"
+    },
+    {
+      "id": "principal-component-analysis",
+      "term_en": "Principal Component Analysis",
+      "term_ko": "주성분 분석",
+      "abbreviation": "PCA",
+      "definition": "데이터의 분산이 가장 큰 방향부터 서로 직교하는 새 축(주성분)을 찾아, 적은 수의 성분으로 데이터를 요약하는 선형 차원축소",
+      "usage_example": "초분광 밴드가 200개 넘으니까 PCA로 20개 성분까지 줄여서 넣어봐.",
+      "origin": "standard",
+      "track": "C"
+    },
+    {
+      "id": "explained-variance-ratio",
+      "term_en": "Explained Variance Ratio",
+      "term_ko": "설명분산비율",
+      "abbreviation": null,
+      "definition": "각 주성분의 분산(고유값)이 전체 분산(고유값의 합)에서 차지하는 비율. 누적값으로 남길 성분 수를 정한다",
+      "usage_example": "누적 설명분산 95% 넘는 지점까지만 성분 남겨.",
+      "origin": "standard",
+      "track": "C"
+    },
+    {
+      "id": "t-sne",
+      "term_en": "t-Distributed Stochastic Neighbor Embedding",
+      "term_ko": "t-SNE",
+      "abbreviation": "t-SNE",
+      "definition": "고차원에서 가까운 점들의 이웃 관계가 저차원(2·3차원)에서도 유지되도록 점을 배치하는 비선형 차원축소로, 주로 시각화에 쓴다",
+      "usage_example": "백본 특징 뽑아서 t-SNE로 찍어 봐. 양식장이랑 부표가 섞이는지 보게.",
+      "origin": "standard",
+      "track": "C"
+    },
+    {
+      "id": "umap",
+      "term_en": "Uniform Manifold Approximation and Projection",
+      "term_ko": "UMAP",
+      "abbreviation": "UMAP",
+      "definition": "고차원 이웃 그래프를 만들고 저차원에서 비슷한 그래프 구조가 되도록 점을 배치하는 비선형 차원축소. t-SNE처럼 시각화에 주로 쓰며 대규모 데이터에서 비교적 빠르다",
+      "usage_example": "샘플이 50만 개라 t-SNE는 오래 걸려. UMAP으로 먼저 보자.",
+      "origin": "standard",
+      "track": "C"
+    },
+    {
+      "id": "isodata",
+      "term_en": "ISODATA (Iterative Self-Organizing Data Analysis Technique)",
+      "term_ko": "ISODATA 군집",
+      "abbreviation": "ISODATA",
+      "definition": "k-means처럼 중심을 반복 갱신하면서 분산이 큰 군집은 나누고 가까운 군집은 합치며 작은 군집은 없애 군집 수를 스스로 조정하는 비지도 분류 알고리즘. 원격탐사 소프트웨어에서 널리 쓰인다",
+      "usage_example": "라벨 없는 지역이라 ISODATA로 비지도 분류 먼저 돌리고 군집마다 클래스 붙여.",
+      "origin": "standard",
+      "track": "C"
+    }
+  ],
+  "questions": [
+    {
+      "id": "C-UNS-001",
+      "type": "short",
+      "chapter": "C.uns",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "군집 수 k를 먼저 정하고, 각 점을 가장 가까운 군집 중심에 할당한 뒤 중심을 소속 점들의 평균으로 다시 계산하는 과정을 반복하는 군집 알고리즘의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "K-means",
+          "K-means Clustering",
+          "Lloyd's Algorithm"
+        ],
+        "ko": [
+          "K-평균",
+          "K-평균 군집",
+          "K-평균 군집화",
+          "케이민즈"
+        ]
+      },
+      "primary": "K-means",
+      "explanation_short": "k-means는 점과 소속 중심 사이 제곱거리의 합(군집 내 제곱합, inertia)이 줄어들도록 할당과 중심 갱신을 번갈아 반복합니다. k는 사람이 미리 정해야 합니다.",
+      "explanation_full": "초기 중심에 따라 결과가 달라지는 지역 최적해 문제가 있어 k-means++ 초기화와 여러 번 반복 실행을 씁니다. 유클리드 거리를 쓰므로 특징 스케일을 맞춰야 하고, 비슷한 크기의 둥근 군집은 잘 찾지만 길쭉하거나 밀도가 다른 군집에는 약합니다. 원격탐사 비지도 분류의 ISODATA는 k-means를 확장한 방법입니다.",
+      "tags": [
+        "clustering"
+      ],
+      "terms": [
+        "k-means"
+      ],
+      "source_ref": "ISLR 2판 12장 (Unsupervised Learning); scikit-learn 문서 KMeans",
+      "status": "draft"
+    },
+    {
+      "id": "C-UNS-002",
+      "type": "short",
+      "chapter": "C.uns",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "반경 ε 안에 최소 이웃 수(minPts) 이상을 가진 점을 핵심점으로 삼아 밀도가 이어진 영역을 군집으로 묶고, 어느 군집에도 속하지 않는 점은 노이즈로 분류하는 군집 알고리즘의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "DBSCAN",
+          "Density-Based Spatial Clustering of Applications with Noise"
+        ],
+        "ko": [
+          "밀도 기반 공간 군집",
+          "밀도 기반 공간 군집화",
+          "디비스캔"
+        ]
+      },
+      "primary": "DBSCAN",
+      "explanation_short": "DBSCAN은 밀도가 높은 영역을 이어 붙여 군집을 만들므로 군집 수를 미리 정하지 않아도 되고, 임의 모양의 군집을 찾으며 외딴 점은 노이즈로 남깁니다.",
+      "explanation_full": "주요 파라미터는 ε(이웃 반경)과 minPts(핵심점이 되기 위한 최소 이웃 수)입니다. ε은 각 점의 k번째 이웃까지 거리를 정렬해 그린 k-거리 그래프의 꺾이는 지점으로 정하는 방법이 흔합니다. 밀도가 서로 크게 다른 군집이 섞여 있으면 ε 하나로 모두 잡기 어려워 HDBSCAN 같은 변형을 씁니다.",
+      "tags": [
+        "clustering",
+        "density"
+      ],
+      "terms": [
+        "dbscan"
+      ],
+      "source_ref": "Ester et al. (1996) KDD; scikit-learn 문서 DBSCAN",
+      "status": "draft"
+    },
+    {
+      "id": "C-UNS-003",
+      "type": "short",
+      "chapter": "C.uns",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "데이터의 분산이 가장 큰 방향부터 차례로 서로 직교하는 새 축을 찾아, 소수의 축으로 데이터를 요약하는 선형 차원축소 기법의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Principal Component Analysis (PCA)",
+          "Principal Component Transformation",
+          "Karhunen-Loeve Transform"
+        ],
+        "ko": [
+          "주성분 분석",
+          "주성분 변환"
+        ]
+      },
+      "primary": "Principal Component Analysis (PCA)",
+      "explanation_short": "주성분 분석(PCA)은 공분산(또는 상관) 행렬의 고유벡터를 새 축으로 삼아 데이터를 회전시키며, 제1주성분이 가장 많은 분산을 담습니다. 뒤쪽 성분을 버리면 정보 손실을 최소화하며 차원을 줄일 수 있습니다.",
+      "explanation_full": "원격탐사에서는 다중분광·초분광 밴드 간 상관이 높아 PCA로 소수 성분에 정보를 모으는 일이 흔하고(주성분 변환), 다시기 영상 변화탐지에도 씁니다. 선형 기법이라 비선형 구조는 잘 펼치지 못하며, 주성분은 원래 밴드의 조합이라 물리적 해석이 어려울 수 있습니다.",
+      "tags": [
+        "dimensionality-reduction"
+      ],
+      "terms": [
+        "principal-component-analysis"
+      ],
+      "source_ref": "ISLR 2판 12장 (Unsupervised Learning); Richards, Remote Sensing Digital Image Analysis (비지도 분류)",
+      "status": "draft"
+    },
+    {
+      "id": "C-UNS-004",
+      "type": "short",
+      "chapter": "C.uns",
+      "cognitive_level": 1,
+      "difficulty": 3,
+      "stem": "원격탐사 비지도 분류에서 널리 쓰이며, k-means처럼 중심을 반복 갱신하되 분산이 큰 군집은 나누고 중심이 가까운 군집은 합치며 너무 작은 군집은 없애 군집 수를 스스로 조정하는 알고리즘의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "ISODATA",
+          "Iterative Self-Organizing Data Analysis Technique"
+        ],
+        "ko": [
+          "아이소데이터",
+          "ISODATA 군집"
+        ]
+      },
+      "primary": "ISODATA",
+      "explanation_short": "ISODATA(Iterative Self-Organizing Data Analysis Technique)는 k-means에 군집 분할·병합·제거 규칙을 더해, 처음 정한 군집 수에서 출발하되 데이터에 맞게 군집 수를 조정합니다.",
+      "explanation_full": "분할 기준(군집 내 표준편차 임계값), 병합 기준(중심 간 최소 거리), 최소 군집 크기, 최대 반복 횟수 등을 사용자가 정합니다. 결과로 나온 스펙트럼 군집은 아직 '토지피복 클래스'가 아니므로, 분석가가 참조 자료를 보고 군집마다 클래스를 붙이고 같은 클래스 군집을 합치는 과정이 뒤따릅니다.",
+      "tags": [
+        "clustering",
+        "remote-sensing"
+      ],
+      "terms": [
+        "isodata"
+      ],
+      "source_ref": "Ball & Hall (1965) ISODATA; Richards, Remote Sensing Digital Image Analysis (비지도 분류)",
+      "status": "draft"
+    },
+    {
+      "id": "C-UNS-005",
+      "type": "short",
+      "chapter": "C.uns",
+      "cognitive_level": 1,
+      "difficulty": 3,
+      "stem": "고차원 이웃 그래프를 만들고 저차원에서 비슷한 그래프 구조가 되도록 점을 배치하는 비선형 차원축소 기법으로, t-SNE와 함께 특징 시각화에 쓰이며 대규모 데이터에서 비교적 빠른 것의 이름(약어)은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "UMAP",
+          "Uniform Manifold Approximation and Projection"
+        ],
+        "ko": [
+          "유맵",
+          "균일 매니폴드 근사 및 투영"
+        ]
+      },
+      "primary": "UMAP",
+      "explanation_short": "UMAP(Uniform Manifold Approximation and Projection)은 매니폴드 학습과 위상적 데이터 분석 이론에 기반한 비선형 차원축소입니다. t-SNE처럼 군집 구조를 눈으로 확인하는 시각화에 주로 쓰입니다.",
+      "explanation_full": "n_neighbors(국소 구조와 전역 구조 사이의 균형)와 min_dist(점들이 얼마나 촘촘히 모이는지)가 주요 파라미터입니다. t-SNE와 마찬가지로 축의 값이나 군집 간 거리를 정량적으로 해석하면 안 되며, 파라미터·난수 시드에 따라 모양이 달라집니다. 새 데이터를 기존 임베딩에 투영하는 transform 기능을 제공하는 구현도 있습니다.",
+      "tags": [
+        "dimensionality-reduction",
+        "visualization"
+      ],
+      "terms": [
+        "umap"
+      ],
+      "source_ref": "McInnes, Healy & Melville (2018) UMAP, arXiv:1802.03426",
+      "status": "draft"
+    },
+    {
+      "id": "C-UNS-006",
+      "type": "mcq",
+      "chapter": "C.uns",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "PCA 결과에서 제1주성분의 설명분산비율(explained variance ratio)이 0.62라는 것은 무엇을 뜻하는가?",
+      "choices": [
+        {
+          "text": "제1주성분과 원래 첫 번째 밴드의 상관계수가 0.62이다",
+          "rationale": "주성분과 원 변수의 상관은 적재값(loading)과 관련된 값입니다. 설명분산비율은 분산의 비중입니다."
+        },
+        {
+          "text": "전체 입력 밴드 중 62%가 제1주성분 계산에 사용되었다",
+          "rationale": "모든 주성분은 모든 밴드의 선형결합이며, 설명분산비율은 사용된 밴드 수의 비율이 아닙니다."
+        },
+        {
+          "text": "제1주성분 하나만으로 분류하면 정확도가 62%가 된다",
+          "rationale": "PCA는 라벨을 쓰지 않는 비지도 기법이라 분류 정확도와 직접 관계가 없습니다. 분산이 크다고 클래스 구분에 유용하다는 보장도 없습니다."
+        },
+        {
+          "text": "제1주성분의 분산이 전체 분산의 62%를 차지한다",
+          "rationale": null
+        },
+        {
+          "text": "제1주성분을 버리면 전체 분산의 38%가 함께 사라진다",
+          "rationale": "제1주성분을 버리면 그 성분이 가진 62%가 사라집니다. 38%는 나머지 성분들이 가진 분산의 합입니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "설명분산비율은 각 주성분의 분산(공분산 행렬의 고유값)을 전체 분산(고유값의 합)으로 나눈 값입니다. 0.62면 데이터 변동의 62%를 제1주성분 하나가 담고 있다는 뜻입니다.",
+      "explanation_full": "다중분광 영상에서는 밴드들이 전반적인 밝기를 공유해 제1주성분이 밝기 성분이 되고 비율이 높게 나오는 경우가 많습니다. 성분별·누적 설명분산을 그린 스크리 플롯(scree plot)으로 몇 개 성분을 남길지 정합니다.",
+      "tags": [
+        "dimensionality-reduction"
+      ],
+      "terms": [
+        "explained-variance-ratio",
+        "principal-component-analysis"
+      ],
+      "source_ref": "ISLR 2판 12장 (Unsupervised Learning)",
+      "status": "draft"
+    },
+    {
+      "id": "C-UNS-007",
+      "type": "mcq",
+      "chapter": "C.uns",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "t-SNE를 실무에서 주로 쓰는 용도로 가장 알맞은 것은?",
+      "choices": [
+        {
+          "text": "고차원 특징(예: CNN 임베딩)을 2차원에 찍어 군집 구조를 눈으로 확인하는 시각화",
+          "rationale": null
+        },
+        {
+          "text": "분류기 입력 차원을 줄이는 전처리로 쓰고, 학습·추론 데이터에 같은 변환을 적용하는 것",
+          "rationale": "표준 t-SNE는 새 데이터에 같은 변환을 적용하는 함수를 만들지 않고 결과가 파라미터·시드에 민감해 전처리로 쓰기 어렵습니다. 이런 용도에는 PCA가 적합합니다."
+        },
+        {
+          "text": "주성분별 설명분산을 계산해 남길 차원 수를 정하는 근거로 쓰는 것",
+          "rationale": "설명분산비율은 PCA의 개념입니다. t-SNE의 축에는 분산 비율 같은 의미가 없습니다."
+        },
+        {
+          "text": "영상 픽셀마다 군집 번호를 매겨 비지도 토지피복 지도를 만드는 것",
+          "rationale": "t-SNE는 군집 알고리즘이 아니라 배치(임베딩) 기법입니다. 비지도 분류에는 k-means·ISODATA 등을 씁니다."
+        },
+        {
+          "text": "두 밴드 사이의 선형 상관관계가 유의한지 통계적으로 검정하는 것",
+          "rationale": "상관 검정은 피어슨·스피어만 상관계수의 영역으로 t-SNE와 무관합니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "t-SNE는 고차원에서 가까운 점들이 저차원에서도 가깝게 놓이도록 배치하는 비선형 기법으로, 주로 2·3차원 시각화에 씁니다. 예를 들어 선박·부표·양식장 패치의 특징이 잘 분리되는지 확인할 때 유용합니다.",
+      "explanation_full": "t-SNE는 데이터마다 최적화를 새로 돌리는 방법이라 새 샘플을 같은 좌표계에 넣기 어렵고, perplexity·시드에 따라 모양이 달라집니다. 그래서 모델 입력 전처리가 아니라 탐색·설명용 그림에 씁니다.",
+      "tags": [
+        "dimensionality-reduction",
+        "visualization"
+      ],
+      "terms": [
+        "t-sne"
+      ],
+      "source_ref": "van der Maaten & Hinton (2008) Visualizing Data using t-SNE, JMLR",
+      "status": "draft"
+    },
+    {
+      "id": "C-UNS-008",
+      "type": "mcq",
+      "chapter": "C.uns",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "각 점을 하나의 군집으로 시작해 가장 가까운 두 군집을 반복해서 합치고, 그 병합 과정을 덴드로그램으로 나타내는 군집 방법은?",
+      "choices": [
+        {
+          "text": "분할형 계층 군집(divisive clustering)",
+          "rationale": "분할형은 전체를 하나의 군집으로 시작해 차례로 나누는, 반대 방향의 계층 군집입니다."
+        },
+        {
+          "text": "K-평균 군집(k-means clustering)",
+          "rationale": "k-means는 k개 중심을 두고 할당·갱신을 반복하는 방법으로, 병합 계층이나 덴드로그램을 만들지 않습니다."
+        },
+        {
+          "text": "응집형 계층 군집(agglomerative clustering)",
+          "rationale": null
+        },
+        {
+          "text": "밀도 기반 군집(DBSCAN)",
+          "rationale": "DBSCAN은 밀도 연결로 군집을 만들며 병합 순서의 계층을 만들지 않습니다."
+        },
+        {
+          "text": "가우시안 혼합 모형(Gaussian mixture model, GMM)",
+          "rationale": "GMM은 데이터를 여러 정규분포의 혼합으로 보고 EM 알고리즘으로 추정하는 확률적 군집입니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "응집형(agglomerative) 계층 군집은 바닥(개별 점)에서 시작해 가까운 군집을 하나씩 합쳐 올라가는 방식입니다. 병합 순서와 거리를 그린 덴드로그램을 원하는 높이에서 자르면 군집 수가 정해집니다.",
+      "explanation_full": "군집 사이 거리를 정하는 연결법(linkage)에 따라 결과가 크게 달라집니다: 단일(single), 완전(complete), 평균(average), Ward 연결 등. 모든 점 쌍의 거리를 다루므로 계산량·메모리가 커서 수백만 픽셀에 직접 쓰기 어렵고, 관측소·폴리곤처럼 수가 적은 대상이나 k-means로 먼저 줄인 중심들에 적용합니다.",
+      "tags": [
+        "clustering",
+        "hierarchical"
+      ],
+      "terms": [
+        "hierarchical-clustering"
+      ],
+      "source_ref": "ISLR 2판 12장 (Unsupervised Learning)",
+      "status": "draft"
+    },
+    {
+      "id": "C-UNS-009",
+      "type": "mcq",
+      "chapter": "C.uns",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "특징 공간에서 점들이 초승달 모양으로 맞물린 두 무리와 흩어진 외딴 점들로 이루어져 있다. 군집 수를 미리 정하지 않고 두 무리를 분리하면서 외딴 점은 노이즈로 따로 표시하려면 가장 알맞은 방법은?",
+      "choices": [
+        {
+          "text": "k-means (k = 2)",
+          "rationale": "k-means는 중심까지 거리로 나누므로 둥근 군집을 가정합니다. 맞물린 초승달은 중간에서 잘리고, 외딴 점도 억지로 어느 군집에 배정됩니다."
+        },
+        {
+          "text": "PCA 1차원 투영 후 중앙값으로 분할",
+          "rationale": "PCA는 군집 알고리즘이 아니며, 선형 투영으로는 맞물린 비선형 모양을 분리하기 어렵습니다."
+        },
+        {
+          "text": "ISODATA",
+          "rationale": "ISODATA는 k-means를 확장한 방법이라 역시 중심 기준의 둥근 군집을 가정해 맞물린 초승달을 분리하기 어렵고, 외딴 점을 노이즈로 따로 표시하는 개념도 기본적으로 없습니다."
+        },
+        {
+          "text": "완전 연결(complete linkage) 계층 군집",
+          "rationale": "완전 연결은 군집 내 최대 거리를 기준으로 해 둥글고 조밀한 군집을 선호하므로 긴 초승달을 쪼개기 쉽고, 노이즈를 따로 표시하지 않습니다."
+        },
+        {
+          "text": "DBSCAN",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "DBSCAN은 밀도가 이어진 점들을 하나의 군집으로 묶으므로 초승달처럼 휘어진 모양도 따라가고, 군집 수를 지정할 필요가 없으며, 밀도가 낮은 외딴 점은 노이즈(scikit-learn 레이블 −1)로 남깁니다.",
+      "explanation_full": "k-means·ISODATA·GMM처럼 중심이나 타원 분포를 가정하는 방법은 볼록한 군집에 적합합니다. 반대로 DBSCAN은 밀도가 크게 다른 군집이 섞이면 ε 하나로 모두 잡기 어렵다는 약점이 있습니다. 데이터 모양에 맞는 가정을 가진 알고리즘을 고르는 것이 핵심입니다.",
+      "tags": [
+        "clustering",
+        "density"
+      ],
+      "terms": [
+        "dbscan",
+        "k-means"
+      ],
+      "source_ref": "Ester et al. (1996); scikit-learn 문서 'Comparing different clustering algorithms on toy datasets'",
+      "status": "draft"
+    },
+    {
+      "id": "C-UNS-010",
+      "type": "mcq",
+      "chapter": "C.uns",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "6개 밴드 영상에 PCA를 적용해 고유값을 큰 순서대로 6.0, 2.0, 1.0, 0.6, 0.3, 0.1로 얻었다. 누적 설명분산비율이 90% 이상이 되려면 최소 몇 개의 주성분이 필요한가?",
+      "choices": [
+        {
+          "text": "1개",
+          "rationale": "제1주성분 하나의 설명분산비율은 6.0/10 = 60%로 90%에 못 미칩니다."
+        },
+        {
+          "text": "3개",
+          "rationale": null
+        },
+        {
+          "text": "2개",
+          "rationale": "두 성분의 누적은 (6.0 + 2.0)/10 = 80%입니다."
+        },
+        {
+          "text": "4개",
+          "rationale": "네 성분이면 96%로 조건을 만족하지만, 세 성분에서 이미 90%에 도달하므로 최소 개수가 아닙니다."
+        },
+        {
+          "text": "6개",
+          "rationale": "모든 성분을 쓰면 100%지만 차원 축소 효과가 없습니다. 문항은 최소 개수를 묻습니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "고유값 합은 6.0 + 2.0 + 1.0 + 0.6 + 0.3 + 0.1 = 10이므로 비율은 0.60, 0.20, 0.10, 0.06, 0.03, 0.01입니다. 누적하면 1개 60%, 2개 80%, 3개 90%이므로 최소 3개가 필요합니다.",
+      "explanation_full": "기준(90%, 95%, 99%)은 목적에 따라 정합니다. 시각화·잡음 제거라면 낮게, 분류기 입력으로 정보 손실을 줄이려면 높게 잡습니다. 초분광 영상에서는 뒤쪽 성분이 주로 잡음을 담는 경우가 많지만, 작은 표적의 신호가 뒤쪽 성분에 남기도 하므로 무조건 버리기 전에 확인합니다.",
+      "tags": [
+        "dimensionality-reduction",
+        "calculation"
+      ],
+      "terms": [
+        "explained-variance-ratio",
+        "principal-component-analysis"
+      ],
+      "source_ref": "ISLR 2판 12장 (Unsupervised Learning)",
+      "status": "draft"
+    },
+    {
+      "id": "C-UNS-011",
+      "type": "mcq",
+      "chapter": "C.uns",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "반사율 밴드(0~1)와 DEM 고도(0~1,500 m)를 합친 특징으로 표준화 없이 공분산 행렬 기반 PCA를 수행했다. 가장 예상되는 결과는?",
+      "choices": [
+        {
+          "text": "PCA는 단위·스케일에 무관하므로 표준화한 경우와 똑같은 주성분과 설명분산비율이 그대로 나온다",
+          "rationale": "PCA는 분산이 큰 방향을 찾으므로 단위·스케일에 민감합니다. 스케일에 무관한 것은 트리 기반 모델의 분할입니다."
+        },
+        {
+          "text": "고도 값이 너무 커서 고유값 분해가 수렴하지 않고 계산 오류가 발생한다",
+          "rationale": "PCA는 고유값 분해·SVD로 계산되어 이런 수렴 문제가 생기지 않습니다. 결과가 왜곡될 뿐 오류는 나지 않습니다."
+        },
+        {
+          "text": "반사율 밴드들이 제1주성분을 차지하고 고도는 마지막 성분으로 밀려난다",
+          "rationale": "반대입니다. 값의 범위가 큰 고도의 분산이 훨씬 커서 앞쪽 성분을 차지합니다."
+        },
+        {
+          "text": "분산이 큰 고도가 제1주성분을 거의 독차지해 반사율 정보가 앞쪽 성분에 잘 드러나지 않는다",
+          "rationale": null
+        },
+        {
+          "text": "주성분의 개수가 원래 특징 수보다 많아져 차원이 오히려 늘어난다",
+          "rationale": "주성분 수는 원래 특징 수(또는 샘플 수 − 1) 이하로 제한됩니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "공분산 기반 PCA는 분산이 큰 변수 방향을 우선하므로, 단위가 달라 분산이 수백만 배 큰 고도가 제1주성분을 거의 혼자 차지합니다. 단위가 다른 특징을 섞을 때는 먼저 표준화(z-score, 즉 상관 행렬 기반 PCA)합니다.",
+      "explanation_full": "같은 단위의 반사율 밴드끼리라면 표준화 없이 공분산 PCA를 쓰기도 하는데, 이 경우 분산이 큰 밴드의 정보가 우선된다는 점을 알고 선택합니다. 표준화 통계(평균·표준편차)도 학습 데이터에서만 계산해 다른 데이터에 적용해야 누수가 없습니다.",
+      "tags": [
+        "dimensionality-reduction",
+        "preprocessing"
+      ],
+      "terms": [
+        "principal-component-analysis"
+      ],
+      "source_ref": "ISLR 2판 12장 (Unsupervised Learning)",
+      "status": "draft"
+    },
+    {
+      "id": "C-UNS-012",
+      "type": "mcq",
+      "chapter": "C.uns",
+      "cognitive_level": 2,
+      "difficulty": 4,
+      "stem": "CNN 특징을 t-SNE로 2차원에 찍었더니 '양식장' 무리가 '부표' 무리보다 훨씬 넓게 퍼져 있고, '선박' 무리와는 멀리 떨어져 있었다. 이 그림으로 말할 수 있는 것으로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "클래스끼리 뭉치는지는 볼 수 있지만, 무리의 크기·간격은 정량적으로 해석할 수 없다",
+          "rationale": null
+        },
+        {
+          "text": "양식장 특징의 원래 공간 분산이 부표보다 크다는 것을 그림의 퍼짐으로 확인할 수 있다",
+          "rationale": "t-SNE는 밀도가 다른 영역의 크기를 비슷하게 맞추는 경향이 있어, 그림 속 무리의 크기가 원래 분산을 반영하지 않습니다."
+        },
+        {
+          "text": "선박과 양식장의 특징 거리가 모든 클래스 쌍 중 가장 멀다고 결론 내릴 수 있다",
+          "rationale": "t-SNE는 국소 이웃 관계 보존에 집중하므로 멀리 떨어진 무리 사이 거리는 신뢰하기 어렵습니다."
+        },
+        {
+          "text": "UMAP으로 다시 그리면 무리 사이 거리를 정량적으로 비교할 수 있게 된다",
+          "rationale": "UMAP도 국소 구조 위주의 비선형 임베딩이라 무리 간 거리·크기를 정량 해석하기 어렵다는 점은 같습니다."
+        },
+        {
+          "text": "perplexity를 바꿔도 그림은 같으므로 이 그림 하나를 그대로 근거로 쓸 수 있다",
+          "rationale": "perplexity(유효 이웃 수)에 따라 모양이 크게 달라지므로 여러 값으로 그려 일관된 패턴만 해석해야 합니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "t-SNE는 가까운 이웃 관계를 보존하도록 최적화하므로 '어떤 점들이 함께 모이는가'는 비교적 믿을 만하지만, 무리의 크기와 무리 사이 거리는 알고리즘 특성상 왜곡됩니다.",
+      "explanation_full": "정량 비교가 필요하면 원래 특징 공간에서 클래스 중심 간 거리, 군집 내 분산, 실루엣 계수 등을 계산합니다. t-SNE·UMAP 그림은 여러 perplexity(또는 n_neighbors)와 시드로 그려 일관되게 나타나는 패턴만 해석합니다.",
+      "tags": [
+        "dimensionality-reduction",
+        "visualization"
+      ],
+      "terms": [
+        "t-sne",
+        "umap"
+      ],
+      "source_ref": "Wattenberg, Viégas & Johnson (2016) How to Use t-SNE Effectively, Distill",
+      "status": "draft"
+    },
+    {
+      "id": "C-UNS-013",
+      "type": "mcq",
+      "chapter": "C.uns",
+      "cognitive_level": 2,
+      "difficulty": 4,
+      "stem": "계층 군집에서 단일 연결(single linkage)을 쓸 때 나타나기 쉬운 현상은?",
+      "choices": [
+        {
+          "text": "모든 군집이 비슷한 크기의 둥글고 조밀한 모양으로 만들어진다",
+          "rationale": "둥글고 조밀한 군집을 선호하는 것은 완전 연결이나 Ward 연결의 경향입니다."
+        },
+        {
+          "text": "병합할 때마다 군집 내 분산의 증가가 가장 작은 두 군집을 고른다",
+          "rationale": "이것은 Ward 연결의 정의입니다. 단일 연결은 두 군집의 가장 가까운 점 사이 거리를 씁니다."
+        },
+        {
+          "text": "두 군집에서 가장 멀리 떨어진 두 점 사이 거리를 군집 간 거리로 쓴다",
+          "rationale": "가장 먼 점 사이 거리를 쓰는 것은 완전 연결(complete linkage)입니다."
+        },
+        {
+          "text": "군집 수 k를 미리 정해 주어야만 병합 과정을 시작할 수 있다",
+          "rationale": "계층 군집은 k 없이 전체 병합 계층을 만든 뒤 덴드로그램을 잘라 k를 정합니다."
+        },
+        {
+          "text": "점들이 사슬처럼 이어져 길게 늘어진 군집이 생기는 체이닝(chaining)",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "단일 연결은 두 군집의 가장 가까운 점 쌍 사이 거리로 군집 간 거리를 정하므로, 중간에 다리 역할을 하는 점만 있어도 멀리 떨어진 무리가 합쳐져 길게 늘어진 군집이 생깁니다.",
+      "explanation_full": "대신 단일 연결은 길쭉하거나 불규칙한 모양의 군집을 따라가는 데 유리할 수 있습니다. 고른 크기의 군집이 필요하면 평균 연결이나 Ward 연결을 먼저 시도하고, 연결법에 따라 덴드로그램이 어떻게 달라지는지 비교해 봅니다.",
+      "tags": [
+        "clustering",
+        "hierarchical"
+      ],
+      "terms": [
+        "hierarchical-clustering"
+      ],
+      "source_ref": "ISLR 2판 12장 (Unsupervised Learning)",
+      "status": "draft"
+    },
+    {
+      "id": "C-UNS-014",
+      "type": "mcq",
+      "chapter": "C.uns",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "원격탐사 비지도 분류에서 ISODATA가 기본 k-means와 다른 핵심 차이는?",
+      "choices": [
+        {
+          "text": "라벨이 붙은 학습 샘플의 클래스 평균으로 군집 중심을 초기화한다",
+          "rationale": "라벨로 클래스 통계를 만드는 것은 최대우도 분류 같은 감독 분류입니다. ISODATA는 라벨 없이 동작합니다."
+        },
+        {
+          "text": "중심까지의 거리 대신 밀도 연결로 군집을 정의하고 노이즈를 따로 분리한다",
+          "rationale": "밀도 연결과 노이즈 분리는 DBSCAN의 특징입니다. ISODATA는 k-means처럼 중심까지의 거리로 할당합니다."
+        },
+        {
+          "text": "반복 중 군집을 분할·병합·제거해 군집 수가 처음 지정한 값에서 바뀔 수 있다",
+          "rationale": null
+        },
+        {
+          "text": "병합 순서를 덴드로그램으로 기록해 두고 원하는 높이에서 잘라 군집을 정한다",
+          "rationale": "덴드로그램은 계층 군집의 결과물입니다. ISODATA는 평평한(flat) 군집을 만듭니다."
+        },
+        {
+          "text": "반복 없이 한 번의 할당으로 결과를 확정하므로 k-means보다 계산이 빠르다",
+          "rationale": "ISODATA는 이름(Iterative) 그대로 수렴 조건이나 최대 반복 수까지 반복합니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "ISODATA는 k-means의 '할당–중심 갱신' 반복에, 표준편차가 큰 군집은 둘로 나누고 중심이 가까운 군집은 합치며 구성원이 너무 적은 군집은 없애는 규칙을 더합니다. 그래서 최종 군집 수가 데이터에 맞게 조정됩니다.",
+      "explanation_full": "k-means는 k가 고정이라 잘못 정하면 서로 다른 지표가 한 군집에 섞이거나 한 지표가 여러 군집으로 쪼개집니다. ISODATA도 분할·병합 임계값 같은 파라미터에 결과가 좌우되므로, 보통 목표 클래스 수보다 넉넉히 군집을 만든 뒤 분석가가 라벨을 붙이며 합칩니다.",
+      "tags": [
+        "clustering",
+        "remote-sensing"
+      ],
+      "terms": [
+        "isodata",
+        "k-means"
+      ],
+      "source_ref": "Ball & Hall (1965); Richards, Remote Sensing Digital Image Analysis (비지도 분류)",
+      "status": "draft"
+    },
+    {
+      "id": "C-UNS-015",
+      "type": "scenario",
+      "chapter": "C.uns",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"라벨 없는 산간 지역 Landsat 9 영상이야. ISODATA로 30개 스펙트럼 군집까지는 뽑았으니, 이걸 토지피복 지도로 마무리해.\"\n\n다음 단계로 가장 적절한 것은?",
+      "choices": [
+        {
+          "text": "군집 번호 1~30을 그대로 토지피복 클래스 코드로 지정해 지도 범례를 만든다",
+          "rationale": "군집 번호는 분광적으로 비슷한 픽셀 묶음일 뿐 의미 있는 클래스가 아닙니다. 한 클래스가 여러 군집으로, 여러 클래스가 한 군집으로 나타날 수 있습니다."
+        },
+        {
+          "text": "고해상도 영상·현장 자료와 대조해 군집마다 토지피복 클래스를 붙이고 같은 클래스 군집을 합친다",
+          "rationale": null
+        },
+        {
+          "text": "군집 수가 너무 많으니 같은 영상에 k-means(k = 30)를 다시 돌려 기존 결과를 대체한다",
+          "rationale": "k-means로 바꿔도 결과는 여전히 라벨 없는 스펙트럼 군집입니다. 필요한 것은 군집에 의미를 부여하는 단계입니다."
+        },
+        {
+          "text": "각 군집의 평균 NDVI 순서대로 1~30위를 매겨 식생 밀도 지도로 바꿔 제출한다",
+          "rationale": "NDVI 순위는 식생만 반영하고 수계·나지·시가지 같은 클래스를 구분하지 못하며, 토지피복 지도 요구와 다릅니다."
+        },
+        {
+          "text": "30개 군집 결과를 PCA로 3차원까지 줄여 RGB 합성 영상으로 만들어 제출한다",
+          "rationale": "군집 레이블은 범주형이라 PCA 대상이 아니며, RGB 합성 영상은 토지피복 분류 결과가 아닙니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "비지도 분류가 만드는 것은 '스펙트럼 군집'이지 '정보 클래스(토지피복)'가 아닙니다. 분석가가 참조 자료로 군집마다 클래스를 붙이고(라벨링) 같은 클래스 군집을 병합해야 토지피복 지도가 됩니다.",
+      "explanation_full": "산간 지역은 지형 음영 때문에 같은 산림이 밝은 사면·어두운 사면 군집으로 나뉘는 일이 흔합니다. 이런 군집은 같은 클래스로 합치고, 한 군집에 여러 클래스가 섞였다면 그 군집만 다시 군집화하거나 DEM 같은 보조 자료를 씁니다. 마지막에 독립 검증 샘플로 오차행렬을 만들어 정확도를 평가합니다.",
+      "tags": [
+        "clustering",
+        "remote-sensing",
+        "unsupervised-classification"
+      ],
+      "terms": [
+        "isodata"
+      ],
+      "source_ref": "Richards, Remote Sensing Digital Image Analysis (비지도 분류); Lillesand, Kiefer & Chipman, Remote Sensing and Image Interpretation",
+      "status": "draft"
+    },
+    {
+      "id": "C-UNS-016",
+      "type": "scenario",
+      "chapter": "C.uns",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"초분광 224밴드를 PCA로 줄여서 분류기에 넣어. 누적 설명분산 99% 기준으로 성분 수 정하고, 검증 점수가 새지 않게 해.\"\n\n가장 적절한 구현은?",
+      "choices": [
+        {
+          "text": "학습·검증·테스트 픽셀을 모두 합쳐 PCA를 적합하고 성분 수를 정한 뒤 세트를 나눈다",
+          "rationale": "검증·테스트 데이터의 분포 정보가 변환에 들어가 누수가 생깁니다. 비지도 전처리라도 적합은 학습 데이터로만 해야 합니다."
+        },
+        {
+          "text": "학습·검증·테스트 세트마다 PCA를 따로 적합해 각 세트에서 99% 기준으로 차원을 줄인다",
+          "rationale": "세트마다 주성분 축이 달라져 같은 '제1성분'이 서로 다른 의미가 되므로 분류기가 올바르게 동작하지 않습니다."
+        },
+        {
+          "text": "성분 수를 1~224까지 바꿔 보며 테스트셋 정확도가 가장 높은 값으로 정한다",
+          "rationale": "테스트셋으로 하이퍼파라미터를 고르면 테스트 성능이 낙관적으로 부풀어 오릅니다. 지시도 설명분산 99% 기준으로 정하라고 했습니다."
+        },
+        {
+          "text": "PCA 대신 t-SNE로 224차원을 3차원으로 줄여 분류기 입력 특징으로 사용한다",
+          "rationale": "t-SNE는 시각화용으로, 새 데이터에 같은 변환을 적용하기 어렵고 결과가 불안정해 분류기 입력 전처리로 부적합합니다."
+        },
+        {
+          "text": "학습 픽셀로만 PCA를 적합해 성분 수를 정하고, 그 변환(평균·고유벡터)을 검증·테스트에 그대로 적용한다",
+          "rationale": null
+        }
+      ],
+      "answer": 5,
+      "explanation_short": "PCA의 평균·고유벡터도 데이터로부터 '학습'되는 값이므로, 학습 데이터로만 적합하고 같은 변환을 검증·테스트에 적용해야 누수가 없습니다. scikit-learn Pipeline에 PCA와 분류기를 함께 넣으면 교차검증에서도 이 순서가 지켜집니다.",
+      "explanation_full": "성분 수는 학습 데이터의 누적 설명분산으로 정합니다(scikit-learn PCA에서는 n_components에 0.99처럼 비율을 줄 수 있습니다). 초분광에서는 수분 흡수 대역 같은 잡음 밴드를 먼저 제거하면 PCA 결과가 더 안정적입니다.",
+      "tags": [
+        "dimensionality-reduction",
+        "validation",
+        "hyperspectral"
+      ],
+      "terms": [
+        "principal-component-analysis",
+        "explained-variance-ratio"
+      ],
+      "source_ref": "scikit-learn 문서 PCA, Pipeline",
+      "status": "draft"
+    },
+    {
+      "id": "C-UNS-017",
+      "type": "scenario",
+      "chapter": "C.uns",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"해수 반사율 스펙트럼을 k-means로 군집해서 수괴 유형 지도 만들 거야. k를 몇으로 할지 근거를 가져와.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "k별 inertia의 꺾이는 지점과 실루엣 계수를 비교하고, 군집이 해양학적으로 해석되는지도 함께 본다",
+          "rationale": null
+        },
+        {
+          "text": "k를 바꿔 가며 inertia를 계산하고, inertia가 가장 작게 나오는 k를 그대로 고른다",
+          "rationale": "inertia는 k가 커질수록 항상 줄어들어 최솟값 기준이면 가장 큰 k가 선택됩니다. 감소 폭이 꺾이는 지점(엘보)을 봐야 합니다."
+        },
+        {
+          "text": "k를 전체 픽셀 수의 제곱근으로 정해 데이터 크기에 비례하는 군집 수를 쓴다",
+          "rationale": "근거 없는 경험식으로, 수백만 픽셀이면 수천 개 군집이 되어 해석이 불가능합니다."
+        },
+        {
+          "text": "DBSCAN을 먼저 돌려 노이즈 비율이 가장 낮게 나오는 설정의 값을 k로 쓴다",
+          "rationale": "DBSCAN에는 k가 없으며 노이즈 비율은 k-means의 k 선택 근거가 되지 않습니다."
+        },
+        {
+          "text": "k를 2부터 늘려 가며 반복 횟수가 가장 적게 걸려 수렴하는 k를 고른다",
+          "rationale": "수렴 속도는 초기화·데이터 모양에 따라 달라질 뿐 군집 품질의 기준이 아닙니다."
+        }
+      ],
+      "answer": 1,
+      "explanation_short": "군집 수 선택에는 정답이 없으므로 여러 근거를 함께 봅니다. inertia가 급격히 줄다 완만해지는 엘보 지점, 실루엣 계수가 높은 k, 그리고 군집이 실제 수괴 유형으로 해석되는지가 핵심 근거입니다.",
+      "explanation_full": "실루엣 계수는 각 점이 자기 군집에 얼마나 잘 붙어 있고 이웃 군집과 얼마나 떨어져 있는지를 −1~1로 나타내며, 픽셀이 많으면 표본을 뽑아 계산합니다. k-means는 초기값에 민감하므로 k마다 여러 번(n_init) 돌려 안정성도 확인하고, 스펙트럼 정규화 방식에 따라 결과가 달라진다는 점도 보고서에 적습니다.",
+      "tags": [
+        "clustering",
+        "model-selection"
+      ],
+      "terms": [
+        "k-means"
+      ],
+      "source_ref": "scikit-learn 문서 'Selecting the number of clusters with silhouette analysis on KMeans clustering'",
+      "status": "draft"
+    },
+    {
+      "id": "C-UNS-018",
+      "type": "scenario",
+      "chapter": "C.uns",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"AIS 선박 위치 점들 DBSCAN으로 묶어서 정박지 후보 찾아. ε은 200 m로 하고.\" 받은 좌표는 EPSG:4326(경위도, 도 단위)이다.\n\n실행 전에 가장 먼저 확인·조치할 것은?",
+      "choices": [
+        {
+          "text": "좌표는 그대로 두고 지시대로 ε 값에 200을 넣어 바로 실행한다",
+          "rationale": "경위도 좌표에서 거리 단위는 도(°)이므로 ε=200은 200도라는 뜻이 되어 모든 점이 한 군집이 됩니다."
+        },
+        {
+          "text": "DBSCAN은 군집 수가 필요하므로 예상 정박지 수를 조사해 k로 입력한다",
+          "rationale": "DBSCAN은 군집 수를 입력받지 않습니다. k를 넣는 것은 k-means의 방식입니다."
+        },
+        {
+          "text": "위도·경도를 각각 z-score로 표준화한 뒤 ε을 200으로 두고 실행한다",
+          "rationale": "표준화하면 단위가 사라져 ε=200 m의 의미가 없어지고, 위도·경도 방향의 거리 비율도 왜곡됩니다."
+        },
+        {
+          "text": "ε을 미터로 쓸 수 있게 좌표를 투영 좌표계(예: EPSG:5186)로 바꾸거나 하버사인 거리를 쓴다",
+          "rationale": null
+        },
+        {
+          "text": "항해 중인 점도 모두 군집에 넣기 위해 minPts를 1로 설정하고 실행한다",
+          "rationale": "minPts=1이면 모든 점이 핵심점이 되어 노이즈 개념이 사라지고 흩어진 점까지 군집에 포함됩니다. 먼저 해결할 것은 거리 단위입니다."
+        }
+      ],
+      "answer": 4,
+      "explanation_short": "DBSCAN의 ε은 입력 좌표의 거리 단위로 해석되므로, 도 단위 경위도에 200을 넣으면 의도한 200 m가 되지 않습니다. 미터 단위 투영 좌표계(한반도 중부라면 EPSG:5186 등)로 변환하거나, 라디안 좌표에 하버사인 거리를 쓰고 ε을 200/6,371,000(지구 반지름으로 나눈 라디안 값)으로 줍니다.",
+      "explanation_full": "위도 1도는 약 111 km지만 경도 1도의 길이는 위도에 따라 달라지므로(북위 35°에서 약 91 km), 경위도에 유클리드 거리를 그대로 쓰면 방향에 따라 거리가 왜곡됩니다. 정박지 탐지에서는 속도가 낮은 점만 먼저 걸러 DBSCAN을 돌리면 항해 중인 점에 의한 잡음이 줄어듭니다.",
+      "tags": [
+        "clustering",
+        "density",
+        "gis",
+        "crs"
+      ],
+      "terms": [
+        "dbscan"
+      ],
+      "source_ref": "scikit-learn 문서 DBSCAN (metric='haversine'); EPSG Geodetic Parameter Dataset",
+      "status": "draft"
+    },
+    {
+      "id": "C-UNS-019",
+      "type": "scenario",
+      "chapter": "C.uns",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"연안 수질 관측소 25곳을 월별 클로로필·탁도 패턴으로 묶어 봐. 몇 그룹인지는 정해진 게 없고, 어떤 관측소끼리 어떤 순서로 묶이는지 보고서에 그림으로 보여줘야 해.\"\n\n가장 적절한 방법은?",
+      "choices": [
+        {
+          "text": "k-means를 k = 25로 돌려 관측소마다 군집을 하나씩 배정하고 지도에 표시한다",
+          "rationale": "k를 관측소 수와 같게 하면 군집화의 의미가 없고, 묶이는 순서도 보여 줄 수 없습니다."
+        },
+        {
+          "text": "특징을 표준화한 뒤 응집형 계층 군집(예: Ward 연결)을 하고 덴드로그램을 그려 자를 높이를 정한다",
+          "rationale": null
+        },
+        {
+          "text": "t-SNE로 25개 관측소를 2차원에 찍은 산점도를 그대로 군집 결과로 제출한다",
+          "rationale": "t-SNE는 시각화용 배치 기법으로 군집 레이블이나 병합 순서를 주지 않습니다."
+        },
+        {
+          "text": "DBSCAN으로 군집을 구하고 노이즈로 분류된 관측소는 보고서에서 제외한다",
+          "rationale": "DBSCAN은 병합 순서(계층)를 보여 주지 않고, 25개처럼 점이 적으면 ε 설정에 따라 상당수가 노이즈가 되기 쉽습니다."
+        },
+        {
+          "text": "PCA로 제1주성분 점수를 구해 크기순으로 정렬한 표를 군집 결과로 제출한다",
+          "rationale": "PCA는 차원축소일 뿐 군집을 만들지 않으며, 1차원 정렬로는 다변량 패턴의 묶임을 보여 주지 못합니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "군집 수가 정해져 있지 않고 '어떤 순서로 묶이는지'를 보여 줘야 하므로, 병합 과정을 덴드로그램으로 제공하는 응집형 계층 군집이 가장 알맞습니다. 25곳 정도면 계산량도 문제없습니다.",
+      "explanation_full": "클로로필과 탁도는 단위·범위가 달라 표준화가 필요하며, 월별 패턴이면 관측소마다 클로로필·탁도의 12개월 값(모두 24개)을 이어 붙여 특징 벡터로 씁니다. Ward 연결은 병합 시 군집 내 분산 증가가 가장 작은 쌍을 합쳐 비교적 고른 크기의 군집을 만듭니다. 자를 높이는 덴드로그램에서 병합 거리가 크게 뛰는 지점을 참고하고, 결과 군집을 지도에 색으로 표시하면 공간 패턴도 함께 보입니다.",
+      "tags": [
+        "clustering",
+        "hierarchical"
+      ],
+      "terms": [
+        "hierarchical-clustering"
+      ],
+      "source_ref": "ISLR 2판 12장 (Unsupervised Learning); SciPy 문서 scipy.cluster.hierarchy",
+      "status": "draft"
+    }
+  ]
+}
