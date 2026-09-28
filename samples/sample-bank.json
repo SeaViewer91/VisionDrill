@@ -1,0 +1,1198 @@
+{
+  "format": "visiondrill-bank-exchange",
+  "format_version": 1,
+  "chapters": [
+    {
+      "id": "B.ols",
+      "track": "B",
+      "code": "OLS",
+      "name_ko": "최소제곱 회귀와 적합도",
+      "name_en": "OLS & Goodness of Fit",
+      "sort_order": 1
+    },
+    {
+      "id": "B.res",
+      "track": "B",
+      "code": "RES",
+      "name_ko": "잔차 진단",
+      "name_en": "Residual Diagnostics",
+      "sort_order": 2
+    },
+    {
+      "id": "B.vif",
+      "track": "B",
+      "code": "VIF",
+      "name_ko": "다중공선성",
+      "name_en": "Multicollinearity",
+      "sort_order": 3
+    },
+    {
+      "id": "B.inf",
+      "track": "B",
+      "code": "INF",
+      "name_ko": "영향점 진단",
+      "name_en": "Influence Diagnostics",
+      "sort_order": 4
+    },
+    {
+      "id": "B.dw",
+      "track": "B",
+      "code": "DW",
+      "name_ko": "자기상관",
+      "name_en": "Autocorrelation",
+      "sort_order": 5
+    },
+    {
+      "id": "F.iou",
+      "track": "F",
+      "code": "IOU",
+      "name_ko": "IoU",
+      "name_en": "Intersection over Union",
+      "sort_order": 1
+    },
+    {
+      "id": "F.nms",
+      "track": "F",
+      "code": "NMS",
+      "name_ko": "NMS 후처리",
+      "name_en": "Non-Maximum Suppression",
+      "sort_order": 2
+    },
+    {
+      "id": "F.pr",
+      "track": "F",
+      "code": "PR",
+      "name_ko": "정밀도와 재현율",
+      "name_en": "Precision & Recall",
+      "sort_order": 3
+    },
+    {
+      "id": "F.map",
+      "track": "F",
+      "code": "MAP",
+      "name_ko": "mAP",
+      "name_en": "Mean Average Precision",
+      "sort_order": 4
+    },
+    {
+      "id": "H.ed",
+      "track": "H",
+      "code": "ED",
+      "name_ko": "오차 분해",
+      "name_en": "Error Decomposition",
+      "sort_order": 1,
+      "stage": 1,
+      "source_ref": "Diagnostics/research/note/01_error_decomposition"
+    }
+  ],
+  "terms": [
+    {
+      "id": "ols",
+      "term_en": "Ordinary Least Squares",
+      "term_ko": "최소제곱법",
+      "abbreviation": "OLS",
+      "definition": "잔차제곱합을 최소화하도록 회귀계수를 추정하는 방법",
+      "usage_example": "일단 OLS로 베이스라인 잡고 잔차부터 보자.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "r-squared",
+      "term_en": "Coefficient of Determination",
+      "term_ko": "결정계수",
+      "abbreviation": "R²",
+      "definition": "종속변수 분산 중 모형이 설명하는 비율",
+      "usage_example": "R²만 보고 좋은 모델이라고 하면 안 돼. 잔차 플롯도 같이 봐.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "residual",
+      "term_en": "Residual",
+      "term_ko": "잔차",
+      "abbreviation": null,
+      "definition": "관측값에서 모형의 적합값을 뺀 값",
+      "usage_example": "잔차에 패턴이 남아 있으면 모형이 뭔가 놓치고 있다는 뜻이야.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "heteroscedasticity",
+      "term_en": "Heteroscedasticity",
+      "term_ko": "이분산성",
+      "abbreviation": null,
+      "definition": "잔차의 분산이 적합값이나 설명변수 수준에 따라 달라지는 현상",
+      "usage_example": "잔차가 깔때기 모양으로 퍼지네. 이분산이니 로그 변환이나 가중회귀 검토해봐.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "qq-plot",
+      "term_en": "Quantile-Quantile Plot",
+      "term_ko": "분위수-분위수 그림",
+      "abbreviation": "Q-Q plot",
+      "definition": "표본 분위수를 이론 분포(주로 정규분포) 분위수와 비교해 분포 적합을 보는 그림",
+      "usage_example": "Q-Q 플롯 꼬리가 휘었어. 잔차 정규성 가정은 약하다고 봐야 해.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "multicollinearity",
+      "term_en": "Multicollinearity",
+      "term_ko": "다중공선성",
+      "abbreviation": null,
+      "definition": "설명변수들끼리 강한 선형관계가 있어 개별 계수 추정이 불안정해지는 현상",
+      "usage_example": "계수 부호가 직관이랑 반대야. 다중공선성부터 의심해봐.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "vif",
+      "term_en": "Variance Inflation Factor",
+      "term_ko": "분산팽창계수",
+      "abbreviation": "VIF",
+      "definition": "다중공선성 때문에 회귀계수 추정 분산이 얼마나 커졌는지 나타내는 지표, 1/(1−R_j²)",
+      "usage_example": "VIF 10 넘는 변수 목록 뽑아서 가져와.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "ridge-regression",
+      "term_en": "Ridge Regression",
+      "term_ko": "능형회귀",
+      "abbreviation": null,
+      "definition": "회귀계수 제곱합(L2) 패널티를 더해 계수를 줄이고 다중공선성에 의한 불안정을 완화하는 회귀",
+      "usage_example": "변수를 못 빼는 상황이면 Ridge로 계수 안정화시키자.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "leverage",
+      "term_en": "Leverage",
+      "term_ko": "레버리지",
+      "abbreviation": "h_ii",
+      "definition": "관측치가 설명변수 공간에서 중심으로부터 얼마나 떨어져 있는지 나타내는 값(햇 행렬 대각원소)",
+      "usage_example": "레버리지 높은 점은 x값이 튀는 거지, 그 자체로 잘못된 건 아니야.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "cooks-distance",
+      "term_en": "Cook's Distance",
+      "term_ko": "쿡의 거리",
+      "abbreviation": "Cook's D",
+      "definition": "특정 관측치를 제거했을 때 전체 적합값이 얼마나 변하는지로 측정한 영향력",
+      "usage_example": "Cook's D 상위 5개 샘플 원본 데이터 확인해봐. 입력 오류일 수도 있어.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "autocorrelation",
+      "term_en": "Autocorrelation",
+      "term_ko": "자기상관",
+      "abbreviation": null,
+      "definition": "순서(시간·공간)상 인접한 잔차끼리 상관되어 있는 현상",
+      "usage_example": "시계열이라 잔차 자기상관 확인 안 하면 표준오차 과소추정돼.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "durbin-watson",
+      "term_en": "Durbin-Watson Statistic",
+      "term_ko": "더빈-왓슨 통계량",
+      "abbreviation": "DW",
+      "definition": "잔차의 1차 자기상관을 검정하는 통계량으로 0~4 값을 가지며 2 근처면 자기상관 없음",
+      "usage_example": "DW가 0.8이면 양의 자기상관이 꽤 강한 거야.",
+      "origin": "standard",
+      "track": "B"
+    },
+    {
+      "id": "iou",
+      "term_en": "Intersection over Union",
+      "term_ko": "교집합 대 합집합 비",
+      "abbreviation": "IoU",
+      "definition": "두 영역의 교집합 면적을 합집합 면적으로 나눈 겹침 정도(0~1)",
+      "usage_example": "매칭 기준 IoU 0.5로 두고 TP/FP 다시 세봐.",
+      "origin": "standard",
+      "track": "F"
+    },
+    {
+      "id": "nms",
+      "term_en": "Non-Maximum Suppression",
+      "term_ko": "비최대 억제",
+      "abbreviation": "NMS",
+      "definition": "많이 겹치는 예측 박스 중 신뢰도가 가장 높은 것만 남기고 나머지를 제거하는 후처리",
+      "usage_example": "밀집 구간에서 박스가 먹히는 것 같아. NMS IoU 임계값 올려서 다시 돌려봐.",
+      "origin": "standard",
+      "track": "F"
+    },
+    {
+      "id": "soft-nms",
+      "term_en": "Soft-NMS",
+      "term_ko": "소프트 NMS",
+      "abbreviation": null,
+      "definition": "겹치는 박스를 바로 제거하지 않고 겹침 정도에 따라 점수를 낮추는 NMS 변형",
+      "usage_example": "겹친 객체가 많으니 Greedy NMS 대신 Soft-NMS로 비교해봐.",
+      "origin": "standard",
+      "track": "F"
+    },
+    {
+      "id": "precision",
+      "term_en": "Precision",
+      "term_ko": "정밀도",
+      "abbreviation": null,
+      "definition": "모델이 양성이라고 예측한 것 중 실제 양성의 비율, TP/(TP+FP)",
+      "usage_example": "오탐이 많다는 민원이 있으니 precision 기준으로 임계값 잡자.",
+      "origin": "standard",
+      "track": "F"
+    },
+    {
+      "id": "recall",
+      "term_en": "Recall",
+      "term_ko": "재현율",
+      "abbreviation": null,
+      "definition": "실제 양성 중 모델이 찾아낸 비율, TP/(TP+FN)",
+      "usage_example": "놓치면 안 되는 과제라 recall 0.95 이상이 목표야.",
+      "origin": "standard",
+      "track": "F"
+    },
+    {
+      "id": "confidence-threshold",
+      "term_en": "Confidence Threshold",
+      "term_ko": "신뢰도 임계값",
+      "abbreviation": "conf",
+      "definition": "이 값보다 점수가 낮은 예측은 결과에서 버리는 기준값",
+      "usage_example": "conf 0.25에서 0.1로 내리고 recall 얼마나 오르는지 봐.",
+      "origin": "standard",
+      "track": "F"
+    },
+    {
+      "id": "map",
+      "term_en": "Mean Average Precision",
+      "term_ko": "평균 정밀도 평균",
+      "abbreviation": "mAP",
+      "definition": "클래스별 AP(정밀도-재현율 곡선 아래 면적)를 평균한 탐지 성능 지표",
+      "usage_example": "val mAP50-95 기준으로 체크포인트 골라.",
+      "origin": "standard",
+      "track": "F"
+    },
+    {
+      "id": "tide",
+      "term_en": "TIDE (Toolkit for Identifying Detection and segmentation Errors)",
+      "term_ko": "TIDE",
+      "abbreviation": "TIDE",
+      "definition": "탐지 오차를 분류·위치·중복·배경·미탐 등으로 나누고 각 오차가 mAP에 미친 영향을 산출하는 분석 도구",
+      "usage_example": "mAP만 보지 말고 TIDE로 오차 유형부터 쪼개봐.",
+      "origin": "standard",
+      "track": "H"
+    },
+    {
+      "id": "e-loc",
+      "term_en": "Localization Error",
+      "term_ko": "위치 오차",
+      "abbreviation": "E_loc",
+      "definition": "클래스는 맞혔지만 IoU가 배경 임계값 이상·전경 임계값 미만인 예측",
+      "usage_example": "E_loc 비중이 크네. 박스 회귀 쪽을 봐야겠어.",
+      "origin": "standard",
+      "track": "H"
+    },
+    {
+      "id": "e-nms-kill",
+      "term_en": "NMS-induced Miss",
+      "term_ko": "NMS 과잉 억제 오차",
+      "abbreviation": "E_nms_kill",
+      "definition": "신경망은 정답 객체를 검출했지만 인접 객체의 고신뢰 박스와 겹쳐 NMS에서 제거된 미탐",
+      "usage_example": "미탐 중 E_nms_kill 비율부터 뽑아봐. 높으면 백본 말고 NMS를 바꿔야 해.",
+      "origin": "project",
+      "track": "H"
+    },
+    {
+      "id": "vdr",
+      "term_en": "Vision Diagnostic Routine",
+      "term_ko": "비전 진단 루틴",
+      "abbreviation": "VDR",
+      "definition": "회귀 진단 통계량을 객체 검출에 대응시켜 라벨 감사부터 처방까지 5단계로 원인을 격리하는 표준 진단 절차",
+      "usage_example": "VDR 순서대로 라벨 이상치부터 확인하고 올라가자.",
+      "origin": "project",
+      "track": "H"
+    }
+  ],
+  "questions": [
+    {
+      "id": "B-OLS-001",
+      "type": "mcq",
+      "chapter": "B.ols",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "최소제곱법(OLS)으로 선형회귀 계수를 추정할 때 최소화하는 값은?",
+      "choices": [
+        {
+          "text": "잔차의 절댓값 합",
+          "rationale": "절댓값 합을 최소화하는 것은 최소절대편차(LAD) 회귀입니다. 이상치에 덜 민감하지만 OLS와는 다른 방법입니다."
+        },
+        {
+          "text": "잔차의 제곱합",
+          "rationale": null
+        },
+        {
+          "text": "잔차의 합",
+          "rationale": "절편이 있는 OLS에서 잔차의 합은 항상 0이 되는 결과일 뿐, 최소화 대상이 아닙니다. 양수·음수 잔차가 상쇄되어 기준으로 쓸 수 없습니다."
+        },
+        {
+          "text": "회귀계수의 제곱합",
+          "rationale": "계수 제곱합은 Ridge 회귀가 잔차제곱합에 더하는 L2 패널티 항입니다. OLS에는 패널티가 없습니다."
+        },
+        {
+          "text": "적합값의 분산",
+          "rationale": "적합값의 분산은 모형이 설명하는 변동(SSR)과 관련된 양으로, 줄이는 대상이 아닙니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "OLS(Ordinary Least Squares)는 관측값과 적합값의 차이인 잔차를 제곱해 더한 값(SSE)이 가장 작아지도록 계수를 정합니다.",
+      "explanation_full": "제곱을 쓰기 때문에 부호 상쇄가 없고, 미분으로 닫힌 해 β = (XᵀX)⁻¹Xᵀy를 얻을 수 있습니다. 대신 큰 잔차에 제곱 가중이 걸려 이상치에 민감합니다. 이 민감성이 뒤에 나오는 영향점 진단(레버리지, Cook's D)이 필요한 이유입니다.",
+      "tags": [
+        "regression",
+        "basics"
+      ],
+      "terms": [
+        "ols",
+        "residual"
+      ],
+      "source_ref": "회귀분석 일반",
+      "status": "reviewed",
+      "reviewed_by": "Claude(샘플·수호 검수 필요)"
+    },
+    {
+      "id": "B-OLS-002",
+      "type": "short",
+      "chapter": "B.ols",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "종속변수의 전체 변동 중 회귀모형이 설명하는 비율을 나타내는 지표의 이름은? (영문 또는 한글)",
+      "accepted_answers": {
+        "en": [
+          "Coefficient of Determination",
+          "R-squared",
+          "R2"
+        ],
+        "ko": [
+          "결정계수",
+          "설명력"
+        ]
+      },
+      "primary": "Coefficient of Determination",
+      "explanation_short": "결정계수(R²)는 1 − SSE/SST로 계산하며, 0~1 사이에서 클수록 모형이 변동을 많이 설명합니다.",
+      "explanation_full": "설명변수를 추가하면 R²는 줄지 않고 계속 오르기 때문에 변수 수가 다른 모형 비교에는 수정 결정계수(adjusted R²)를 씁니다. R²가 높아도 잔차에 패턴이 있으면 가정 위반일 수 있으니 잔차 진단을 함께 봐야 합니다.",
+      "tags": [
+        "regression",
+        "metric"
+      ],
+      "terms": [
+        "r-squared"
+      ],
+      "source_ref": "회귀분석 일반",
+      "status": "reviewed",
+      "reviewed_by": "Claude(샘플·수호 검수 필요)"
+    },
+    {
+      "id": "B-RES-001",
+      "type": "mcq",
+      "chapter": "B.res",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "잔차 대 적합값(Residual vs Fitted) 플롯에서 적합값이 커질수록 잔차가 깔때기 모양으로 넓게 퍼진다. 가장 먼저 의심할 문제는?",
+      "choices": [
+        {
+          "text": "다중공선성",
+          "rationale": "다중공선성은 설명변수끼리의 상관 문제로 VIF로 진단합니다. 잔차 대 적합값 플롯의 퍼짐 형태로는 드러나지 않습니다."
+        },
+        {
+          "text": "잔차의 자기상관",
+          "rationale": "자기상관은 관측 순서(시간·공간)에 따른 잔차 패턴으로, 순서 대비 잔차 플롯이나 Durbin-Watson으로 봅니다."
+        },
+        {
+          "text": "이분산성",
+          "rationale": null
+        },
+        {
+          "text": "비선형 관계 누락",
+          "rationale": "비선형성은 잔차가 U자·곡선 형태로 휘는 패턴으로 나타납니다. 퍼짐 폭이 변하는 것과는 다릅니다."
+        },
+        {
+          "text": "표본 수 부족",
+          "rationale": "표본 수 부족은 추정 불확실성을 키우지만 특정한 깔때기 모양을 만들지 않습니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "잔차 분산이 적합값 크기에 따라 달라지는 깔때기 모양은 등분산 가정이 깨진 이분산성의 전형적인 징후입니다.",
+      "explanation_full": "이분산이 있으면 계수 추정치 자체는 불편이어도 표준오차가 틀려 검정·신뢰구간을 믿기 어렵습니다. 처방으로는 종속변수 로그/Box-Cox 변환, 가중최소제곱(WLS), 이분산-강건 표준오차(HC)가 있습니다. Breusch-Pagan 검정으로 수치 확인도 가능합니다.",
+      "tags": [
+        "regression",
+        "diagnostics",
+        "residual-plot"
+      ],
+      "terms": [
+        "residual",
+        "heteroscedasticity"
+      ],
+      "source_ref": "회귀분석 일반",
+      "status": "reviewed",
+      "reviewed_by": "Claude(샘플·수호 검수 필요)"
+    },
+    {
+      "id": "B-RES-002",
+      "type": "short",
+      "chapter": "B.res",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "잔차가 정규분포를 따르는지 보기 위해, 표본 분위수를 정규분포 이론 분위수와 대응시켜 그리는 진단 그림의 이름은?",
+      "accepted_answers": {
+        "en": [
+          "Q-Q plot",
+          "Quantile-Quantile plot",
+          "Normal Q-Q plot"
+        ],
+        "ko": [
+          "분위수-분위수 그림",
+          "분위수 대조도",
+          "정규 확률 그림",
+          "큐큐 플롯"
+        ]
+      },
+      "primary": "Q-Q plot",
+      "explanation_short": "Q-Q 플롯에서 점들이 대각선 위에 놓이면 정규성에 가깝고, 양 끝이 휘면 꼬리가 두껍거나 치우친 분포입니다.",
+      "explanation_full": "정규성은 소표본에서 t·F 검정의 타당성에 영향을 줍니다. 수치 검정으로는 Shapiro-Wilk가 있지만 표본이 크면 사소한 이탈도 유의하게 나오므로 그림과 함께 판단합니다.",
+      "tags": [
+        "regression",
+        "diagnostics"
+      ],
+      "terms": [
+        "qq-plot",
+        "residual"
+      ],
+      "source_ref": "회귀분석 일반",
+      "status": "reviewed",
+      "reviewed_by": "Claude(샘플·수호 검수 필요)"
+    },
+    {
+      "id": "B-VIF-001",
+      "type": "short",
+      "chapter": "B.vif",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "설명변수 간 다중공선성 때문에 회귀계수 추정 분산이 몇 배 커졌는지 나타내는 지표의 이름은?",
+      "accepted_answers": {
+        "en": [
+          "Variance Inflation Factor",
+          "VIF"
+        ],
+        "ko": [
+          "분산팽창계수",
+          "분산팽창인자",
+          "분산 팽창 요인"
+        ]
+      },
+      "primary": "Variance Inflation Factor",
+      "explanation_short": "VIF(분산팽창계수)는 변수별로 1/(1−R_j²)로 계산하며, 흔히 10(보수적으로 5) 이상이면 다중공선성을 의심합니다.",
+      "explanation_full": "VIF = 1이면 다른 설명변수와 선형관계가 전혀 없다는 뜻입니다. 기준값 10은 관행일 뿐이므로 계수 해석이 목적인지, 예측이 목적인지에 따라 대응 강도를 정합니다.",
+      "tags": [
+        "regression",
+        "diagnostics"
+      ],
+      "terms": [
+        "vif",
+        "multicollinearity"
+      ],
+      "source_ref": "회귀분석 일반",
+      "status": "reviewed",
+      "reviewed_by": "Claude(샘플·수호 검수 필요)"
+    },
+    {
+      "id": "B-VIF-002",
+      "type": "mcq",
+      "chapter": "B.vif",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "VIF_j = 1 / (1 − R_j²) 에서 R_j²는 무엇인가?",
+      "choices": [
+        {
+          "text": "종속변수를 모든 설명변수로 회귀한 전체 모형의 결정계수",
+          "rationale": "전체 모형의 R²는 모형 설명력이지 변수 간 공선성을 나타내지 않습니다. VIF는 변수마다 값이 다르다는 점을 떠올려 보세요."
+        },
+        {
+          "text": "j번째 설명변수를 나머지 설명변수들로 회귀했을 때의 결정계수",
+          "rationale": null
+        },
+        {
+          "text": "종속변수와 j번째 설명변수 사이 상관계수의 제곱",
+          "rationale": "종속변수와의 상관은 설명력과 관련된 값입니다. 다중공선성은 설명변수들끼리의 관계에서 생깁니다."
+        },
+        {
+          "text": "j번째 변수를 제거했을 때 전체 모형 R²의 감소량",
+          "rationale": "그 값은 부분 결정계수(부분 R²) 개념에 가깝습니다. VIF 계산에는 종속변수가 등장하지 않습니다."
+        },
+        {
+          "text": "j번째 변수로 잔차를 회귀했을 때의 결정계수",
+          "rationale": "잔차를 설명변수로 회귀하면 OLS 성질상 R²가 0에 가깝게 나옵니다. VIF와 무관합니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "R_j²는 j번째 설명변수를 종속변수 자리에 두고 나머지 설명변수로 회귀한 결정계수입니다. 다른 변수들로 잘 설명될수록 R_j²→1, VIF→∞가 됩니다.",
+      "explanation_full": "예: R_j² = 0.9 → VIF = 10, 즉 계수 분산이 공선성이 없을 때보다 10배 커졌다는 뜻입니다. 표준오차는 √10 ≈ 3.16배 커집니다.",
+      "tags": [
+        "regression",
+        "diagnostics",
+        "formula"
+      ],
+      "terms": [
+        "vif",
+        "r-squared"
+      ],
+      "source_ref": "회귀분석 일반",
+      "status": "reviewed",
+      "reviewed_by": "Claude(샘플·수호 검수 필요)"
+    },
+    {
+      "id": "B-VIF-003",
+      "type": "scenario",
+      "chapter": "B.vif",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"수온이랑 계절 변수 VIF가 둘 다 20 넘게 나왔어. 계수 해석은 보류하고 모형부터 정리해봐.\"\n\n가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "종속변수를 로그 변환한다",
+          "rationale": "로그 변환은 이분산·비선형 처방입니다. 설명변수들끼리의 선형관계는 그대로 남습니다."
+        },
+        {
+          "text": "Durbin-Watson 검정을 먼저 수행한다",
+          "rationale": "DW는 잔차 자기상관 검정입니다. 지시의 핵심인 다중공선성과 다른 문제입니다."
+        },
+        {
+          "text": "두 변수 중 하나를 빼거나 하나로 합치고, 둘 다 필요하면 Ridge 회귀를 적용한다",
+          "rationale": null
+        },
+        {
+          "text": "p값이 큰 변수를 모두 제거한다",
+          "rationale": "공선성이 있으면 표준오차가 부풀어 중요한 변수도 p값이 커 보입니다. p값만 보고 일괄 제거하면 필요한 변수를 잃습니다."
+        },
+        {
+          "text": "표본을 절반으로 나눠 따로 적합한다",
+          "rationale": "표본을 줄이면 추정이 더 불안정해질 뿐 변수 간 상관은 해소되지 않습니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "높은 VIF는 두 변수가 사실상 같은 정보를 담고 있다는 뜻이므로, 변수 제거·결합(예: 주성분)이나 L2 패널티(Ridge)로 계수 불안정을 줄이는 것이 정석입니다.",
+      "explanation_full": "지시문의 \"계수 해석은 보류\"는 공선성 때문에 개별 계수를 믿을 수 없다는 판단입니다. 예측만이 목적이라면 공선성은 성능에 큰 해가 없을 수 있지만, 해석이 필요하면 도메인 지식으로 대표 변수를 고르는 것이 가장 설명하기 쉽습니다.",
+      "tags": [
+        "regression",
+        "diagnostics",
+        "prescription"
+      ],
+      "terms": [
+        "vif",
+        "multicollinearity",
+        "ridge-regression"
+      ],
+      "source_ref": "회귀분석 일반",
+      "status": "reviewed",
+      "reviewed_by": "Claude(샘플·수호 검수 필요)"
+    },
+    {
+      "id": "B-INF-001",
+      "type": "mcq",
+      "chapter": "B.inf",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "레버리지(leverage)와 Cook's distance의 차이를 가장 정확하게 설명한 것은?",
+      "choices": [
+        {
+          "text": "레버리지는 잔차 크기만으로, Cook's D는 설명변수 위치만으로 계산한다",
+          "rationale": "반대이면서 부정확합니다. 레버리지는 설명변수(X)만으로 정해지고, Cook's D는 잔차와 레버리지를 함께 씁니다."
+        },
+        {
+          "text": "둘은 같은 값을 다른 척도로 나타낸 것이다",
+          "rationale": "레버리지가 높아도 잔차가 작으면 Cook's D는 작을 수 있습니다. 둘은 다른 정보를 담습니다."
+        },
+        {
+          "text": "레버리지는 설명변수 공간에서 얼마나 떨어져 있는지, Cook's D는 그 점을 뺐을 때 적합 결과가 얼마나 바뀌는지를 본다",
+          "rationale": null
+        },
+        {
+          "text": "레버리지는 종속변수의 이상치를, Cook's D는 설명변수의 이상치를 찾는다",
+          "rationale": "종속변수 방향으로 튀는 점은 잔차(표준화·스튜던트화 잔차)로 봅니다. 레버리지는 X 방향입니다."
+        },
+        {
+          "text": "Cook's D는 시계열 자료에만 쓸 수 있다",
+          "rationale": "Cook's D는 자료 형태와 무관하게 쓰는 영향력 지표입니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "레버리지(h_ii)는 X값이 얼마나 극단적인지(잠재적 영향력)이고, Cook's D는 잔차와 레버리지를 결합해 그 관측치가 실제로 적합을 얼마나 흔드는지(실제 영향력)입니다.",
+      "explanation_full": "레버리지가 높아도 회귀선 위에 잘 놓이면 영향력이 작습니다. 반대로 레버리지와 잔차가 모두 크면 Cook's D가 커져 회귀선을 끌어당깁니다. 흔한 경험 기준은 Cook's D > 4/n 또는 > 1입니다.",
+      "tags": [
+        "regression",
+        "diagnostics",
+        "outlier"
+      ],
+      "terms": [
+        "leverage",
+        "cooks-distance"
+      ],
+      "source_ref": "회귀분석 일반",
+      "status": "reviewed",
+      "reviewed_by": "Claude(샘플·수호 검수 필요)"
+    },
+    {
+      "id": "B-INF-002",
+      "type": "short",
+      "chapter": "B.inf",
+      "cognitive_level": 1,
+      "difficulty": 2,
+      "stem": "i번째 관측치를 제거하고 다시 적합했을 때 전체 적합값이 얼마나 변하는지로 그 관측치의 영향력을 재는 지표의 이름은?",
+      "accepted_answers": {
+        "en": [
+          "Cook's distance",
+          "Cook's D",
+          "Cook distance"
+        ],
+        "ko": [
+          "쿡의 거리",
+          "쿡 거리",
+          "쿡스 디스턴스"
+        ]
+      },
+      "primary": "Cook's distance",
+      "explanation_short": "Cook's distance는 관측치 하나를 뺐을 때 모든 적합값의 변화량을 요약한 영향력 지표로, 잔차와 레버리지가 함께 클 때 커집니다.",
+      "explanation_full": "Diagnostics의 VDR에서는 이 개념을 객체 검출의 라벨 이상치 진단에 대응시킵니다. 한 샘플이 학습 결과를 과하게 흔든다면 라벨 오류를 먼저 의심하는 식입니다.",
+      "tags": [
+        "regression",
+        "diagnostics",
+        "outlier"
+      ],
+      "terms": [
+        "cooks-distance"
+      ],
+      "source_ref": "회귀분석 일반",
+      "status": "reviewed",
+      "reviewed_by": "Claude(샘플·수호 검수 필요)"
+    },
+    {
+      "id": "B-DW-001",
+      "type": "mcq",
+      "chapter": "B.dw",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "Durbin-Watson 통계량이 0.6으로 나왔다. 올바른 해석은?",
+      "choices": [
+        {
+          "text": "잔차에 자기상관이 없다",
+          "rationale": "자기상관이 없으면 DW는 2 근처입니다."
+        },
+        {
+          "text": "잔차에 강한 양의 1차 자기상관이 있다",
+          "rationale": null
+        },
+        {
+          "text": "잔차에 강한 음의 1차 자기상관이 있다",
+          "rationale": "음의 자기상관은 DW가 4에 가까울 때입니다."
+        },
+        {
+          "text": "설명변수 간 다중공선성이 심하다",
+          "rationale": "DW는 잔차의 순서상 상관을 보는 통계량입니다. 다중공선성은 VIF로 봅니다."
+        },
+        {
+          "text": "잔차가 정규분포를 따르지 않는다",
+          "rationale": "정규성은 Q-Q 플롯이나 Shapiro-Wilk로 봅니다. DW와 무관합니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "DW ≈ 2(1 − ρ)이므로 0에 가까울수록 양의 자기상관, 4에 가까울수록 음의 자기상관입니다. 0.6이면 ρ ≈ 0.7로 양의 자기상관이 강합니다.",
+      "explanation_full": "양의 자기상관이 있으면 표준오차가 과소추정되어 유의하지 않은 변수가 유의해 보일 수 있습니다. 시차 변수 추가, 일반화최소제곱(GLS), Newey-West 표준오차 등으로 대응합니다. VDR에서는 이 개념을 인접 객체 간 간섭(밀집) 진단에 대응시킵니다.",
+      "tags": [
+        "regression",
+        "diagnostics"
+      ],
+      "terms": [
+        "durbin-watson",
+        "autocorrelation"
+      ],
+      "source_ref": "회귀분석 일반",
+      "status": "reviewed",
+      "reviewed_by": "Claude(샘플·수호 검수 필요)"
+    },
+    {
+      "id": "F-IOU-001",
+      "type": "short",
+      "chapter": "F.iou",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "예측 박스와 정답 박스의 겹침 정도를 '교집합 면적 ÷ 합집합 면적'으로 나타낸 지표의 이름은?",
+      "accepted_answers": {
+        "en": [
+          "Intersection over Union",
+          "IoU",
+          "Jaccard index"
+        ],
+        "ko": [
+          "교집합 대 합집합 비",
+          "자카드 지수",
+          "아이오유"
+        ]
+      },
+      "primary": "Intersection over Union",
+      "explanation_short": "IoU(Intersection over Union)는 0(전혀 안 겹침)~1(완전히 일치) 값을 가지며, 탐지에서 TP/FP를 가르는 매칭 기준으로 쓰입니다.",
+      "explanation_full": "집합론의 자카드 지수(Jaccard index)와 같은 개념입니다. 분할(segmentation)에서는 픽셀 단위로 계산해 mIoU를 만듭니다.",
+      "tags": [
+        "detection",
+        "metric"
+      ],
+      "terms": [
+        "iou"
+      ],
+      "source_ref": "객체 탐지 일반",
+      "status": "reviewed",
+      "reviewed_by": "Claude(샘플·수호 검수 필요)"
+    },
+    {
+      "id": "F-IOU-002",
+      "type": "mcq",
+      "chapter": "F.iou",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "예측 박스와 정답 박스의 면적이 각각 100px²이고, 두 박스의 교집합 면적이 50px²이다. IoU는?",
+      "choices": [
+        {
+          "text": "0.25",
+          "rationale": "교집합을 두 면적의 합(200)으로 나누면 0.25가 되지만, 합집합은 겹친 부분을 한 번만 셉니다."
+        },
+        {
+          "text": "약 0.33",
+          "rationale": null
+        },
+        {
+          "text": "0.5",
+          "rationale": "교집합 50을 한 박스 면적 100으로 나눈 값입니다. IoU의 분모는 합집합입니다."
+        },
+        {
+          "text": "약 0.67",
+          "rationale": "합집합 150을 분자로 쓴 것처럼 뒤집힌 계산입니다."
+        },
+        {
+          "text": "1.0",
+          "rationale": "두 박스가 완전히 일치할 때만 1입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "합집합 = 100 + 100 − 50 = 150이므로 IoU = 50 / 150 ≈ 0.33입니다.",
+      "explanation_full": "크기가 같은 두 박스가 절반씩 겹쳐도 IoU는 0.5가 아니라 0.33입니다. 흔히 쓰는 매칭 기준 0.5를 넘으려면 생각보다 많이 겹쳐야 한다는 감각을 익혀 두면 좋습니다.",
+      "tags": [
+        "detection",
+        "metric",
+        "calculation"
+      ],
+      "terms": [
+        "iou"
+      ],
+      "source_ref": "객체 탐지 일반",
+      "status": "reviewed",
+      "reviewed_by": "Claude(샘플·수호 검수 필요)"
+    },
+    {
+      "id": "F-NMS-001",
+      "type": "mcq",
+      "chapter": "F.nms",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "객체 탐지에서 NMS(Non-Maximum Suppression)의 역할은?",
+      "choices": [
+        {
+          "text": "학습 중 손실이 가장 큰 샘플을 제거한다",
+          "rationale": "그것은 하드 샘플 처리와 관련된 학습 기법입니다. NMS는 추론 후처리입니다."
+        },
+        {
+          "text": "특징 맵에서 최댓값만 남겨 해상도를 줄인다",
+          "rationale": "Max Pooling에 대한 설명입니다. 이름이 비슷해 헷갈리기 쉽습니다."
+        },
+        {
+          "text": "같은 객체를 가리키는 겹친 예측 박스 중 신뢰도가 가장 높은 것만 남긴다",
+          "rationale": null
+        },
+        {
+          "text": "신뢰도가 임계값보다 낮은 박스를 모두 제거한다",
+          "rationale": "신뢰도 임계값(conf threshold) 필터링입니다. NMS는 박스 간 IoU를 기준으로 중복을 제거합니다."
+        },
+        {
+          "text": "정답 박스와 IoU가 가장 높은 예측만 평가에 사용한다",
+          "rationale": "평가 시 매칭 규칙에 대한 설명입니다. NMS는 정답 없이 예측끼리만 비교합니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "탐지기는 한 객체 주변에 비슷한 박스를 여러 개 냅니다. NMS는 점수가 가장 높은 박스를 고르고, 그 박스와 IoU가 임계값 이상인 박스를 제거하는 과정을 반복합니다.",
+      "explanation_full": "이 기본 방식을 Greedy NMS라고 합니다. 밀집 객체에서는 서로 다른 객체의 박스가 겹쳐 정답이 제거될 수 있어 Soft-NMS, Adaptive NMS, 또는 NMS가 필요 없는 구조(DETR 계열, 원-투-원 할당)를 씁니다.",
+      "tags": [
+        "detection",
+        "post-processing"
+      ],
+      "terms": [
+        "nms",
+        "iou"
+      ],
+      "source_ref": "객체 탐지 일반",
+      "status": "reviewed",
+      "reviewed_by": "Claude(샘플·수호 검수 필요)"
+    },
+    {
+      "id": "F-NMS-002",
+      "type": "mcq",
+      "chapter": "F.nms",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "NMS의 IoU 임계값을 0.7에서 0.3으로 낮추면 일반적으로 어떤 변화가 생기는가?",
+      "choices": [
+        {
+          "text": "중복 박스는 늘고 밀집 객체 미탐은 줄어든다",
+          "rationale": "반대입니다. 임계값을 낮추면 조금만 겹쳐도 제거되므로 중복은 줄고 미탐이 늘어납니다."
+        },
+        {
+          "text": "중복 박스는 줄지만 서로 붙어 있는 객체가 함께 제거되어 미탐이 늘 수 있다",
+          "rationale": null
+        },
+        {
+          "text": "신뢰도가 낮은 박스가 더 많이 남는다",
+          "rationale": "신뢰도 필터링은 conf threshold가 담당합니다. NMS IoU 임계값과는 별개입니다."
+        },
+        {
+          "text": "박스 좌표가 더 정확해진다",
+          "rationale": "NMS는 박스를 고르기만 할 뿐 좌표를 수정하지 않습니다(Weighted Boxes Fusion 같은 방법은 예외)."
+        },
+        {
+          "text": "변화가 없다. NMS 임계값은 학습에만 영향을 준다",
+          "rationale": "NMS 임계값은 추론 결과에 직접 영향을 주는 후처리 파라미터입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "NMS IoU 임계값이 낮을수록 억제가 공격적이 됩니다. 중복은 줄지만, 인접한 서로 다른 객체의 박스까지 중복으로 보고 제거할 위험이 커집니다.",
+      "explanation_full": "Diagnostics에서는 이 trade-off를 중복 오차(E_dupe)와 미탐(E_miss)의 교환 관계로 보고, 클래스별로 최적 임계값이 크게 다르면 클래스별 임계값을 쓰라고 처방합니다. 큰 객체는 낮은 임계값, 밀집한 작은 객체는 높은 임계값이 유리한 경향이 있습니다.",
+      "tags": [
+        "detection",
+        "post-processing",
+        "tuning"
+      ],
+      "terms": [
+        "nms",
+        "iou"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/05_nms_diagnostics.md#3",
+      "status": "reviewed",
+      "reviewed_by": "Claude(샘플·수호 검수 필요)"
+    },
+    {
+      "id": "F-PR-001",
+      "type": "mcq",
+      "chapter": "F.pr",
+      "cognitive_level": 1,
+      "difficulty": 1,
+      "stem": "재현율(Recall)의 정의로 옳은 것은?",
+      "choices": [
+        {
+          "text": "TP / (TP + FP)",
+          "rationale": "정밀도(Precision)의 정의입니다. 모델이 양성이라고 한 것 중 맞은 비율입니다."
+        },
+        {
+          "text": "TP / (TP + FN)",
+          "rationale": null
+        },
+        {
+          "text": "(TP + TN) / 전체",
+          "rationale": "정확도(Accuracy)입니다. 탐지에서는 TN을 정의하기 어려워 거의 쓰지 않습니다."
+        },
+        {
+          "text": "FP / (FP + TN)",
+          "rationale": "거짓 양성률(FPR)입니다. ROC 곡선의 가로축입니다."
+        },
+        {
+          "text": "2 × P × R / (P + R)",
+          "rationale": "정밀도와 재현율의 조화평균인 F1 점수입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "재현율은 실제 정답 중 모델이 찾아낸 비율, TP / (TP + FN)입니다. 놓친 것(FN)이 많을수록 낮아집니다.",
+      "explanation_full": "암기 요령: Precision은 '내가 낸 답(예측) 중 몇 개가 맞았나', Recall은 '찾아야 할 것(정답) 중 몇 개를 찾았나'입니다.",
+      "tags": [
+        "detection",
+        "metric"
+      ],
+      "terms": [
+        "recall",
+        "precision"
+      ],
+      "source_ref": "객체 탐지 일반",
+      "status": "reviewed",
+      "reviewed_by": "Claude(샘플·수호 검수 필요)"
+    },
+    {
+      "id": "F-PR-002",
+      "type": "scenario",
+      "chapter": "F.pr",
+      "cognitive_level": 3,
+      "difficulty": 2,
+      "stem": "지시: \"이번 검사 라인은 불량을 하나라도 놓치면 안 돼. 오탐은 작업자가 걸러낼 테니까 놓치는 것부터 줄여봐.\"\n\n추가 학습 없이 바로 할 수 있는 가장 적절한 조치는?",
+      "choices": [
+        {
+          "text": "신뢰도 임계값(conf threshold)을 높인다",
+          "rationale": "임계값을 높이면 확실한 예측만 남아 정밀도는 오르지만 놓치는 것이 늘어 재현율이 떨어집니다. 지시와 반대입니다."
+        },
+        {
+          "text": "신뢰도 임계값을 낮춰 재현율을 높이고, 늘어나는 오탐 수를 함께 보고한다",
+          "rationale": null
+        },
+        {
+          "text": "NMS IoU 임계값을 낮춘다",
+          "rationale": "억제가 공격적이 되어 붙어 있는 불량이 함께 제거될 수 있습니다. 미탐을 늘리는 방향입니다."
+        },
+        {
+          "text": "정밀도가 가장 높은 체크포인트로 교체한다",
+          "rationale": "지시의 우선순위는 재현율입니다. 정밀도 기준 선택은 목표와 맞지 않습니다."
+        },
+        {
+          "text": "입력 이미지 해상도를 낮춰 추론 속도를 올린다",
+          "rationale": "속도는 지시와 무관하고, 해상도를 낮추면 작은 불량을 더 놓치기 쉽습니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "\"놓치지 마라, 오탐은 감수한다\"는 재현율 우선 지시입니다. 추가 학습 없이 할 수 있는 조치는 신뢰도 임계값을 낮추는 것이고, 그 대가인 오탐 증가를 수치로 함께 보고하는 것이 좋습니다.",
+      "explanation_full": "PR 곡선에서 목표 재현율(예: 0.95)을 만족하는 가장 높은 임계값을 고르면 오탐 증가를 최소화할 수 있습니다. 보고할 때는 \"conf 0.25→0.1, recall 0.88→0.95, 이미지당 오탐 0.3→1.1건\"처럼 trade-off를 숫자로 제시하면 지시자가 바로 판단할 수 있습니다.",
+      "tags": [
+        "detection",
+        "metric",
+        "tuning"
+      ],
+      "terms": [
+        "recall",
+        "precision",
+        "confidence-threshold"
+      ],
+      "source_ref": "객체 탐지 일반",
+      "status": "reviewed",
+      "reviewed_by": "Claude(샘플·수호 검수 필요)"
+    },
+    {
+      "id": "F-MAP-001",
+      "type": "mcq",
+      "chapter": "F.map",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "COCO 기준 mAP50-95(mAP@[.5:.95])의 의미로 옳은 것은?",
+      "choices": [
+        {
+          "text": "신뢰도 임계값 0.50~0.95 구간에서 계산한 AP의 평균",
+          "rationale": "AP는 신뢰도 임계값을 훑어 PR 곡선을 만들어 계산하므로 특정 신뢰도 구간을 지정하지 않습니다. 50~95는 IoU 임계값입니다."
+        },
+        {
+          "text": "IoU 임계값 0.50~0.95를 0.05 간격 10개로 나눠 각각 AP를 구하고 평균한 값을 다시 클래스 평균한 것",
+          "rationale": null
+        },
+        {
+          "text": "학습 50~95 에폭 구간의 mAP 평균",
+          "rationale": "에폭과는 무관한 평가 지표 정의입니다."
+        },
+        {
+          "text": "이미지당 상위 50~95개 예측만 사용한 mAP",
+          "rationale": "COCO는 이미지당 최대 100개 예측을 쓰지만 50-95라는 표기는 IoU 임계값 범위를 뜻합니다."
+        },
+        {
+          "text": "정답 박스 크기 50~95px 객체만 대상으로 한 mAP",
+          "rationale": "크기별 지표는 AP_small/medium/large로 따로 표기합니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "mAP50-95는 IoU 기준을 0.50부터 0.95까지 0.05씩 10단계로 바꿔 가며 구한 AP의 평균입니다. 느슨한 기준(0.5)과 엄격한 기준(0.95)을 모두 반영해 박스 위치 정밀도까지 평가합니다.",
+      "explanation_full": "mAP50은 박스가 대략 맞으면 점수를 주지만, mAP50-95는 높은 IoU에서도 맞아야 점수가 오릅니다. 그래서 두 값의 차이가 크면 '찾기는 하는데 박스가 헐겁다'는 신호로 읽습니다.",
+      "tags": [
+        "detection",
+        "metric"
+      ],
+      "terms": [
+        "map",
+        "iou"
+      ],
+      "source_ref": "객체 탐지 일반",
+      "status": "reviewed",
+      "reviewed_by": "Claude(샘플·수호 검수 필요)"
+    },
+    {
+      "id": "F-MAP-002",
+      "type": "scenario",
+      "chapter": "F.map",
+      "cognitive_level": 3,
+      "difficulty": 3,
+      "stem": "지시: \"val mAP50은 0.85인데 mAP50-95가 0.41밖에 안 돼. 박스 정밀도 쪽 봐줘.\"\n\n가장 먼저 검토할 항목은?",
+      "choices": [
+        {
+          "text": "클래스별 손실 가중치를 조정해 소수 클래스를 강화한다",
+          "rationale": "클래스 불균형은 분류 성능 문제입니다. 지시는 박스 위치 정밀도를 가리킵니다."
+        },
+        {
+          "text": "신뢰도 임계값을 낮춘다",
+          "rationale": "mAP는 신뢰도 임계값 전 구간을 훑어 계산하므로 임계값 조정으로 이 격차가 해소되지 않습니다."
+        },
+        {
+          "text": "박스 회귀 손실(CIoU·DFL 등) 가중치와 입력 해상도를 검토하고, 라벨 박스 경계가 일관적인지 확인한다",
+          "rationale": null
+        },
+        {
+          "text": "NMS를 끄고 모든 박스를 출력한다",
+          "rationale": "중복 박스가 폭증해 정밀도가 무너집니다. 박스 위치 정밀도와 무관합니다."
+        },
+        {
+          "text": "학습 데이터 수를 줄여 과적합을 막는다",
+          "rationale": "데이터를 줄이는 것은 과적합 대책이 아니며, 지시의 문제(박스가 헐거움)와도 맞지 않습니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "mAP50은 높고 mAP50-95가 낮으면 객체는 찾지만 박스가 정확히 맞지 않는다는 뜻입니다. 박스 회귀 손실, 해상도(작은 객체일수록 영향 큼), 라벨 경계 품질을 먼저 봅니다.",
+      "explanation_full": "Diagnostics 관점에서는 위치 오차(E_loc)를 다시 중심점 편향과 스케일 편차로 나눠 봅니다. 중심점 편향이 크면 stride·수용영역 정렬 문제, 스케일 편차가 크면 앵커·FPN 레벨 할당 문제를 의심합니다. 라벨러마다 박스를 여유 있게/빡빡하게 그리는 습관 차이도 흔한 원인입니다.",
+      "tags": [
+        "detection",
+        "metric",
+        "tuning"
+      ],
+      "terms": [
+        "map",
+        "iou",
+        "e-loc"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/01_detection_error.md#3.1",
+      "status": "reviewed",
+      "reviewed_by": "Claude(샘플·수호 검수 필요)"
+    },
+    {
+      "id": "H-ED-001",
+      "type": "mcq",
+      "chapter": "H.ed",
+      "cognitive_level": 2,
+      "difficulty": 2,
+      "stem": "TIDE 오차 분류에서 '예측 클래스는 정답과 같지만 IoU가 배경 임계값(0.1) 이상, 전경 임계값(0.5) 미만'인 예측은 어떤 오차인가?",
+      "choices": [
+        {
+          "text": "분류 오차 (E_cls)",
+          "rationale": "분류 오차는 IoU는 전경 임계값 이상인데 클래스가 틀린 경우입니다."
+        },
+        {
+          "text": "위치 오차 (E_loc)",
+          "rationale": null
+        },
+        {
+          "text": "중복 오차 (E_dupe)",
+          "rationale": "중복 오차는 IoU·클래스가 모두 맞지만 그 정답이 이미 더 높은 점수의 예측과 매칭된 경우입니다."
+        },
+        {
+          "text": "배경 오차 (E_bkg)",
+          "rationale": "배경 오차는 모든 정답과의 IoU가 배경 임계값(0.1) 미만인 예측입니다."
+        },
+        {
+          "text": "미탐 (E_miss)",
+          "rationale": "미탐은 예측이 아니라 어떤 예측과도 매칭되지 않은 정답 객체에 붙는 오차입니다."
+        }
+      ],
+      "answer": 2,
+      "explanation_short": "클래스는 맞고 박스가 어느 정도 겹치지만(0.1 ≤ IoU < 0.5) 매칭 기준에 못 미치면 위치 오차(E_loc)입니다.",
+      "explanation_full": "클래스도 틀리고 IoU도 같은 구간이면 E_both입니다. Diagnostics에서는 E_loc를 다시 중심점 편향(Δcenter)과 스케일 편차(Δscale)로 분해해 처방을 달리합니다.",
+      "tags": [
+        "diagnostics",
+        "error-decomposition"
+      ],
+      "terms": [
+        "tide",
+        "e-loc",
+        "iou"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/01_detection_error.md#2.2",
+      "status": "reviewed",
+      "reviewed_by": "Claude(샘플·수호 검수 필요)"
+    },
+    {
+      "id": "H-ED-002",
+      "type": "scenario",
+      "chapter": "H.ed",
+      "cognitive_level": 3,
+      "difficulty": 4,
+      "stem": "지시: \"밀집 구간 미탐을 Pre-NMS랑 대조해봤더니, 대부분 NMS 전에는 정답을 잡은 박스가 있었어. 뭘 바꿔야 할지 정리해줘.\"\n\n가장 적절한 처방은?",
+      "choices": [
+        {
+          "text": "더 큰 백본으로 교체해 특징 추출 능력을 높인다",
+          "rationale": "Pre-NMS에서 이미 정답을 잡았으므로 신경망의 탐지 능력은 문제가 아닙니다. 백본 교체는 원인과 맞지 않습니다."
+        },
+        {
+          "text": "학습 에폭을 늘린다",
+          "rationale": "신경망은 이미 객체를 찾고 있습니다. 후처리에서 사라지는 문제는 학습을 더 해도 해결되지 않습니다."
+        },
+        {
+          "text": "Soft-NMS·적응형(Adaptive) NMS 또는 NMS-Free 구조로 억제 방식을 바꾼다",
+          "rationale": null
+        },
+        {
+          "text": "신뢰도 임계값을 높인다",
+          "rationale": "억제로 사라진 박스는 신뢰도와 무관하게 제거된 것입니다. 임계값을 높이면 미탐만 더 늘어납니다."
+        },
+        {
+          "text": "라벨을 전수 재검수한다",
+          "rationale": "라벨 문제라면 Pre-NMS에서도 정답과 맞는 박스가 없어야 합니다. 이 징후는 후처리 결함을 가리킵니다."
+        }
+      ],
+      "answer": 3,
+      "explanation_short": "신경망은 정답을 검출했는데 NMS에서 인접 객체 박스에 밀려 사라진 미탐을 NMS 과잉 억제 오차(E_nms_kill)라고 합니다. 이 비율이 높으면 신경망이 아니라 NMS 방식을 바꾸는 것이 해법입니다.",
+      "explanation_full": "E_nms_kill은 Diagnostics에서 정의한 지표입니다(업계 표준 용어가 아님). 외부와 소통할 때는 \"NMS 단계에서 억제된 true positive 비율\"처럼 풀어서 말하는 것이 안전합니다. 우선 NMS IoU 임계값을 올려 보는 것이 가장 빠른 확인 방법이고, 근본 대책은 Soft-NMS, 밀도 기반 Adaptive NMS, Hungarian 매칭 기반 NMS-Free 구조입니다.",
+      "tags": [
+        "diagnostics",
+        "error-decomposition",
+        "nms",
+        "prescription"
+      ],
+      "terms": [
+        "e-nms-kill",
+        "nms",
+        "soft-nms"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/05_nms_diagnostics.md#2.1",
+      "status": "reviewed",
+      "reviewed_by": "Claude(샘플·수호 검수 필요)"
+    },
+    {
+      "id": "H-ED-003",
+      "type": "short",
+      "chapter": "H.ed",
+      "cognitive_level": 2,
+      "difficulty": 3,
+      "stem": "Diagnostics의 VDR(Vision Diagnostic Routine)에서 회귀 진단의 Cook's distance / Leverage에 대응시킨 객체 검출 진단은 무엇인가? (한글 또는 영문)",
+      "accepted_answers": {
+        "en": [
+          "label outlier diagnosis",
+          "label outlier detection",
+          "label anomaly diagnosis"
+        ],
+        "ko": [
+          "라벨 이상치 진단",
+          "라벨 이상치 탐지",
+          "레이블 이상치 진단"
+        ]
+      },
+      "primary": "라벨 이상치 진단",
+      "explanation_short": "VDR은 Cook's D·Leverage를 라벨 이상치 진단에 대응시킵니다. 회귀에서 영향력 큰 관측치를 먼저 의심하듯, 검출에서는 학습을 과하게 흔드는 라벨 오류를 먼저 격리합니다.",
+      "explanation_full": "VDR의 대응 관계: Cook's D/Leverage → 라벨 이상치, Partial Residual/t-검정 → 물리·기하 속성 유의성, Durbin-Watson → 객체 간 간섭(밀집), Residual vs Fitted → 결정 경계 불확실성. VDR과 이 대응 관계는 Diagnostics에서 정의한 것입니다.",
+      "tags": [
+        "diagnostics",
+        "vdr",
+        "bridge"
+      ],
+      "terms": [
+        "vdr",
+        "cooks-distance"
+      ],
+      "source_ref": "Diagnostics/research/note/01_error_decomposition/04_diagnostic_routines_and_guidelines.md#2.1",
+      "status": "reviewed",
+      "reviewed_by": "Claude(샘플·수호 검수 필요)"
+    }
+  ]
+}

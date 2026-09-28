@@ -1,0 +1,636 @@
+{
+  "format": "visiondrill-bank-exchange",
+  "format_version": 1,
+  "chapters": [
+    {
+      "id": "A.desc",
+      "track": "A",
+      "code": "DESC",
+      "name_ko": "기술통계",
+      "name_en": "Descriptive Statistics",
+      "sort_order": 1,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "A.prob",
+      "track": "A",
+      "code": "PROB",
+      "name_ko": "확률·분포",
+      "name_en": "Probability & Distributions",
+      "sort_order": 2,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "A.est",
+      "track": "A",
+      "code": "EST",
+      "name_ko": "추정",
+      "name_en": "Estimation",
+      "sort_order": 3,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "A.test",
+      "track": "A",
+      "code": "TEST",
+      "name_ko": "가설검정",
+      "name_en": "Hypothesis Testing",
+      "sort_order": 4,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "A.mult",
+      "track": "A",
+      "code": "MULT",
+      "name_ko": "다중검정",
+      "name_en": "Multiple Testing",
+      "sort_order": 5,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "A.corr",
+      "track": "A",
+      "code": "CORR",
+      "name_ko": "상관",
+      "name_en": "Correlation",
+      "sort_order": 6,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "B.ols",
+      "track": "B",
+      "code": "OLS",
+      "name_ko": "최소제곱 회귀와 적합도",
+      "name_en": "OLS & Goodness of Fit",
+      "sort_order": 1,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "B.res",
+      "track": "B",
+      "code": "RES",
+      "name_ko": "잔차 진단",
+      "name_en": "Residual Diagnostics",
+      "sort_order": 2,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "B.vif",
+      "track": "B",
+      "code": "VIF",
+      "name_ko": "다중공선성",
+      "name_en": "Multicollinearity",
+      "sort_order": 3,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "B.inf",
+      "track": "B",
+      "code": "INF",
+      "name_ko": "영향점 진단",
+      "name_en": "Influence Diagnostics",
+      "sort_order": 4,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "B.dw",
+      "track": "B",
+      "code": "DW",
+      "name_ko": "자기상관",
+      "name_en": "Autocorrelation",
+      "sort_order": 5,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "B.trf",
+      "track": "B",
+      "code": "TRF",
+      "name_ko": "변수 변환",
+      "name_en": "Variable Transformation",
+      "sort_order": 6,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "B.reg",
+      "track": "B",
+      "code": "REG",
+      "name_ko": "규제 회귀",
+      "name_en": "Regularized Regression",
+      "sort_order": 7,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "B.sel",
+      "track": "B",
+      "code": "SEL",
+      "name_ko": "모형 선택",
+      "name_en": "Model Selection",
+      "sort_order": 8,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "B.log",
+      "track": "B",
+      "code": "LOG",
+      "name_ko": "로지스틱 회귀",
+      "name_en": "Logistic Regression",
+      "sort_order": 9,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "C.base",
+      "track": "C",
+      "code": "BASE",
+      "name_ko": "학습 개념",
+      "name_en": "Learning Basics",
+      "sort_order": 1,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "C.bv",
+      "track": "C",
+      "code": "BV",
+      "name_ko": "편향-분산",
+      "name_en": "Bias-Variance",
+      "sort_order": 2,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "C.cv",
+      "track": "C",
+      "code": "CV",
+      "name_ko": "검증과 데이터 분할",
+      "name_en": "Validation & Data Splitting",
+      "sort_order": 3,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "C.tree",
+      "track": "C",
+      "code": "TREE",
+      "name_ko": "트리·앙상블",
+      "name_en": "Trees & Ensembles",
+      "sort_order": 4,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "C.met",
+      "track": "C",
+      "code": "MET",
+      "name_ko": "분류 지표",
+      "name_en": "Classification Metrics",
+      "sort_order": 5,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "C.imb",
+      "track": "C",
+      "code": "IMB",
+      "name_ko": "클래스 불균형",
+      "name_en": "Class Imbalance",
+      "sort_order": 6,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "C.uns",
+      "track": "C",
+      "code": "UNS",
+      "name_ko": "비지도 학습",
+      "name_en": "Unsupervised Learning",
+      "sort_order": 7,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "D.pix",
+      "track": "D",
+      "code": "PIX",
+      "name_ko": "디지털 영상",
+      "name_en": "Digital Imagery",
+      "sort_order": 1,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "D.col",
+      "track": "D",
+      "code": "COL",
+      "name_ko": "색공간",
+      "name_en": "Color Spaces",
+      "sort_order": 2,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "D.filt",
+      "track": "D",
+      "code": "FILT",
+      "name_ko": "필터",
+      "name_en": "Filtering",
+      "sort_order": 3,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "D.mor",
+      "track": "D",
+      "code": "MOR",
+      "name_ko": "형태학 연산",
+      "name_en": "Morphology",
+      "sort_order": 4,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "D.feat",
+      "track": "D",
+      "code": "FEAT",
+      "name_ko": "엣지·특징점",
+      "name_en": "Edges & Features",
+      "sort_order": 5,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "D.geo",
+      "track": "D",
+      "code": "GEO",
+      "name_ko": "기하변환",
+      "name_en": "Geometric Transforms",
+      "sort_order": 6,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "D.cam",
+      "track": "D",
+      "code": "CAM",
+      "name_ko": "카메라 모델",
+      "name_en": "Camera Models",
+      "sort_order": 7,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "D.str",
+      "track": "D",
+      "code": "STR",
+      "name_ko": "스테레오",
+      "name_en": "Stereo Vision",
+      "sort_order": 8,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "E.nn",
+      "track": "E",
+      "code": "NN",
+      "name_ko": "신경망 기초",
+      "name_en": "Neural Network Basics",
+      "sort_order": 1,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "E.opt",
+      "track": "E",
+      "code": "OPT",
+      "name_ko": "손실·최적화",
+      "name_en": "Loss & Optimization",
+      "sort_order": 2,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "E.reg",
+      "track": "E",
+      "code": "REG",
+      "name_ko": "정규화",
+      "name_en": "Normalization & Regularization",
+      "sort_order": 3,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "E.cnn",
+      "track": "E",
+      "code": "CNN",
+      "name_ko": "CNN 구성요소",
+      "name_en": "CNN Building Blocks",
+      "sort_order": 4,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "E.bb",
+      "track": "E",
+      "code": "BB",
+      "name_ko": "백본",
+      "name_en": "Backbones",
+      "sort_order": 5,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "E.att",
+      "track": "E",
+      "code": "ATT",
+      "name_ko": "어텐션·트랜스포머",
+      "name_en": "Attention & Transformers",
+      "sort_order": 6,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "E.det",
+      "track": "E",
+      "code": "DET",
+      "name_ko": "탐지·분할 구조",
+      "name_en": "Detection & Segmentation Architectures",
+      "sort_order": 7,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "F.task",
+      "track": "F",
+      "code": "TASK",
+      "name_ko": "비전 태스크",
+      "name_en": "Vision Tasks",
+      "sort_order": 1,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "F.iou",
+      "track": "F",
+      "code": "IOU",
+      "name_ko": "IoU",
+      "name_en": "Intersection over Union",
+      "sort_order": 2,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "F.anc",
+      "track": "F",
+      "code": "ANC",
+      "name_ko": "앵커와 라벨 할당",
+      "name_en": "Anchors & Label Assignment",
+      "sort_order": 3,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "F.nms",
+      "track": "F",
+      "code": "NMS",
+      "name_ko": "NMS 후처리",
+      "name_en": "Non-Maximum Suppression",
+      "sort_order": 4,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "F.pr",
+      "track": "F",
+      "code": "PR",
+      "name_ko": "정밀도와 재현율",
+      "name_en": "Precision & Recall",
+      "sort_order": 5,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "F.map",
+      "track": "F",
+      "code": "MAP",
+      "name_ko": "mAP",
+      "name_en": "Mean Average Precision",
+      "sort_order": 6,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "F.seg",
+      "track": "F",
+      "code": "SEG",
+      "name_ko": "분할 지표",
+      "name_en": "Segmentation Metrics",
+      "sort_order": 7,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "F.mot",
+      "track": "F",
+      "code": "MOT",
+      "name_ko": "다중 객체 추적",
+      "name_en": "Multi-Object Tracking",
+      "sort_order": 8,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "F.obb",
+      "track": "F",
+      "code": "OBB",
+      "name_ko": "회전 박스 탐지",
+      "name_en": "Oriented Object Detection",
+      "sort_order": 9,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "G.data",
+      "track": "G",
+      "code": "DATA",
+      "name_ko": "데이터셋 구성",
+      "name_en": "Dataset Construction",
+      "sort_order": 1,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "G.lbl",
+      "track": "G",
+      "code": "LBL",
+      "name_ko": "라벨링",
+      "name_en": "Labeling",
+      "sort_order": 2,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "G.aug",
+      "track": "G",
+      "code": "AUG",
+      "name_ko": "데이터 증강",
+      "name_en": "Data Augmentation",
+      "sort_order": 3,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "G.lr",
+      "track": "G",
+      "code": "LR",
+      "name_ko": "학습률",
+      "name_en": "Learning Rate",
+      "sort_order": 4,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "G.batch",
+      "track": "G",
+      "code": "BATCH",
+      "name_ko": "배치·자원",
+      "name_en": "Batch & Compute",
+      "sort_order": 5,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "G.tl",
+      "track": "G",
+      "code": "TL",
+      "name_ko": "전이학습",
+      "name_en": "Transfer Learning",
+      "sort_order": 6,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "G.exp",
+      "track": "G",
+      "code": "EXP",
+      "name_ko": "실험 관리",
+      "name_en": "Experiment Management",
+      "sort_order": 7,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "G.export",
+      "track": "G",
+      "code": "EXPORT",
+      "name_ko": "배포 기초",
+      "name_en": "Deployment Basics",
+      "sort_order": 8,
+      "stage": 1,
+      "source_ref": null
+    },
+    {
+      "id": "H.ed",
+      "track": "H",
+      "code": "ED",
+      "name_ko": "오차 분해",
+      "name_en": "Error Decomposition",
+      "sort_order": 1,
+      "stage": 1,
+      "source_ref": "Diagnostics/research/note/01_error_decomposition"
+    },
+    {
+      "id": "H.slc",
+      "track": "H",
+      "code": "SLC",
+      "name_ko": "데이터·취약 슬라이스",
+      "name_en": "Data & Slice Diagnostics",
+      "sort_order": 2,
+      "stage": 1,
+      "source_ref": "Diagnostics/research/note/02_data_slice_diagnostics"
+    },
+    {
+      "id": "H.rel",
+      "track": "H",
+      "code": "REL",
+      "name_ko": "표현·신뢰도",
+      "name_en": "Representation & Reliability",
+      "sort_order": 3,
+      "stage": 1,
+      "source_ref": "Diagnostics/research/note/03_representation_reliability_diagnostics"
+    },
+    {
+      "id": "H.prx",
+      "track": "H",
+      "code": "PRX",
+      "name_ko": "처방 프레임워크",
+      "name_en": "Prescriptive Framework",
+      "sort_order": 4,
+      "stage": 1,
+      "source_ref": "Diagnostics/research/note/05_prescriptive_framework_architecture"
+    },
+    {
+      "id": "H.env",
+      "track": "H",
+      "code": "ENV",
+      "name_ko": "환경 강건성",
+      "name_en": "Environmental Robustness",
+      "sort_order": 5,
+      "stage": 2,
+      "source_ref": "Diagnostics/research/note/04_environmental_robustness_diagnostics"
+    },
+    {
+      "id": "H.mm",
+      "track": "H",
+      "code": "MM",
+      "name_ko": "다종 센서 정렬",
+      "name_en": "Multi-Modal Alignment",
+      "sort_order": 6,
+      "stage": 2,
+      "source_ref": "Diagnostics/research/note/07_multimodal_alignment_diagnostics"
+    },
+    {
+      "id": "H.cau",
+      "track": "H",
+      "code": "CAU",
+      "name_ko": "인과·반사실",
+      "name_en": "Causal & Counterfactual",
+      "sort_order": 7,
+      "stage": 2,
+      "source_ref": "Diagnostics/research/note/08_causal_counterfactual_diagnostics"
+    },
+    {
+      "id": "H.hw",
+      "track": "H",
+      "code": "HW",
+      "name_ko": "하드웨어·양자화",
+      "name_en": "Hardware & Quantization",
+      "sort_order": 8,
+      "stage": 3,
+      "source_ref": "Diagnostics/research/note/06_hardware_quantization_diagnostics"
+    },
+    {
+      "id": "H.ops",
+      "track": "H",
+      "code": "OPS",
+      "name_ko": "MLOps 배포 게이트",
+      "name_en": "MLOps Deployment Gate",
+      "sort_order": 9,
+      "stage": 3,
+      "source_ref": "Diagnostics/research/note/09_mlops_deployment_gatekeeper"
+    }
+  ]
+}

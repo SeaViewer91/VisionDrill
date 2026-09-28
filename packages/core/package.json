@@ -1,0 +1,19 @@
+{
+  "name": "@visiondrill/core",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "test": "node scripts/gen-schema.mjs && vitest run",
+    "gen": "node scripts/gen-schema.mjs"
+  },
+  "dependencies": {
+    "sql.js": "^1.14.2"
+  },
+  "devDependencies": {
+    "@types/sql.js": "^1.4.11",
+    "vitest": "^5.0.2"
+  }
+}

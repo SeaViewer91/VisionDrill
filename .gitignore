@@ -1,0 +1,11 @@
+node_modules/
+dist/
+target/
+apps/*/src-tauri/gen/
+*.tmp
+.DS_Store
+# 문제은행 원본·백업은 저장소에 넣지 않음 (배포는 Releases의 .vdpack)
+bank/
+backups/
+*.db
+!packages/**/fixtures/*.db

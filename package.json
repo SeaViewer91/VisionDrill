@@ -1,0 +1,37 @@
+{
+  "name": "visiondrill",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Computer vision terminology & concept drill app (learner + question bank studio)",
+  "license": "MIT",
+  "scripts": {
+    "test": "npm run test -w @visiondrill/core",
+    "dev:studio": "npm run dev -w @visiondrill/studio",
+    "dev:drill": "npm run dev -w @visiondrill/drill",
+    "build:web": "npm run build -w @visiondrill/studio && npm run build -w @visiondrill/drill",
+    "tauri:studio": "npm run tauri -w @visiondrill/studio --",
+    "tauri:drill": "npm run tauri -w @visiondrill/drill --",
+    "sample-pack": "tsx tools/build-sample-pack.ts",
+    "format": "prettier --write \"{apps,packages,tools}/**/*.{ts,tsx,css}\"",
+    "lint:drafts": "tsx tools/lint-drafts.ts",
+    "merge:drafts": "tsx tools/merge-drafts.ts --preview-pack"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.3",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@types/sql.js": "^1.4.11",
+    "prettier": "^3.9.9",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.1"
+  },
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "engines": {
+    "node": ">=22"
+  }
+}
