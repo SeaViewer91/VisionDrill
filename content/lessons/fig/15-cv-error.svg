@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 680 250" role="img" aria-label="교차검증 방식별 오류율(1 − 정확도)과 새 폴리곤 시험 오류율">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<line x1="120.0" y1="24.0" x2="120.0" y2="182.0" class="s-mu" stroke-width="1.2"/>
+<line x1="120.0" y1="190.0" x2="520.0" y2="190.0" class="s-mu" stroke-width="1.2"/>
+<line x1="120.0" y1="190.0" x2="120.0" y2="194.0" class="s-mu" stroke-width="1.2"/>
+<text x="120.0" y="208.0" class="f-mu" font-size="11" text-anchor="middle">0%</text>
+<line x1="200.0" y1="190.0" x2="200.0" y2="194.0" class="s-mu" stroke-width="1.2"/>
+<text x="200.0" y="208.0" class="f-mu" font-size="11" text-anchor="middle">2%</text>
+<line x1="280.0" y1="190.0" x2="280.0" y2="194.0" class="s-mu" stroke-width="1.2"/>
+<text x="280.0" y="208.0" class="f-mu" font-size="11" text-anchor="middle">4%</text>
+<line x1="360.0" y1="190.0" x2="360.0" y2="194.0" class="s-mu" stroke-width="1.2"/>
+<text x="360.0" y="208.0" class="f-mu" font-size="11" text-anchor="middle">6%</text>
+<line x1="440.0" y1="190.0" x2="440.0" y2="194.0" class="s-mu" stroke-width="1.2"/>
+<text x="440.0" y="208.0" class="f-mu" font-size="11" text-anchor="middle">8%</text>
+<line x1="520.0" y1="190.0" x2="520.0" y2="194.0" class="s-mu" stroke-width="1.2"/>
+<text x="520.0" y="208.0" class="f-mu" font-size="11" text-anchor="middle">10%</text>
+<text x="320.0" y="228.0" class="f-mu" font-size="11" text-anchor="middle">교차검증 오류율 (1 − 정확도, 겹 배정 5가지의 평균과 범위)</text>
+<rect x="349.1" y="20.0" width="55.7" height="166.0" rx="0" class="f-acs" stroke-width="0"/>
+<rect x="120.0" y="30.0" width="68.5" height="34.0" rx="0" class="f-bd" stroke-width="0"/>
+<line x1="182.4" y1="47.0" x2="194.9" y2="47.0" class="s-fg" stroke-width="1.5"/>
+<line x1="182.4" y1="41.0" x2="182.4" y2="53.0" class="s-fg" stroke-width="1.5"/>
+<line x1="194.9" y1="41.0" x2="194.9" y2="53.0" class="s-fg" stroke-width="1.5"/>
+<text x="110.0" y="52.0" class="f-fg" font-size="13" text-anchor="end" font-weight="600">무작위 5겹</text>
+<text x="202.9" y="52.0" class="f-fg" font-size="12" text-anchor="start">1.7% (정확도 0.983)</text>
+<rect x="120.0" y="86.0" width="309.3" height="34.0" rx="0" class="f-ac" stroke-width="0"/>
+<line x1="392.8" y1="103.0" x2="464.5" y2="103.0" class="s-fg" stroke-width="1.5"/>
+<line x1="392.8" y1="97.0" x2="392.8" y2="109.0" class="s-fg" stroke-width="1.5"/>
+<line x1="464.5" y1="97.0" x2="464.5" y2="109.0" class="s-fg" stroke-width="1.5"/>
+<text x="110.0" y="108.0" class="f-fg" font-size="13" text-anchor="end" font-weight="600">폴리곤 단위</text>
+<text x="472.5" y="108.0" class="f-fg" font-size="12" text-anchor="start">7.7% (정확도 0.923)</text>
+<rect x="120.0" y="142.0" width="306.2" height="34.0" rx="0" class="f-ac" stroke-width="0"/>
+<line x1="346.0" y1="159.0" x2="511.3" y2="159.0" class="s-fg" stroke-width="1.5"/>
+<line x1="346.0" y1="153.0" x2="346.0" y2="165.0" class="s-fg" stroke-width="1.5"/>
+<line x1="511.3" y1="153.0" x2="511.3" y2="165.0" class="s-fg" stroke-width="1.5"/>
+<text x="110.0" y="164.0" class="f-fg" font-size="13" text-anchor="end" font-weight="600">10 km 블록</text>
+<text x="519.3" y="164.0" class="f-fg" font-size="12" text-anchor="start">7.7% (정확도 0.923)</text>
+<text x="410.7" y="18.0" class="f-ac" font-size="11" text-anchor="start" font-weight="600">새 폴리곤 시험 5.7~7.1%</text>
+</svg>

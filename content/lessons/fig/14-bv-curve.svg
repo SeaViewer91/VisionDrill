@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 680 300" role="img" aria-label="다항식 차수에 따른 편향 제곱, 분산, 잡음, 시험 오차, 학습 오차">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<line x1="64.0" y1="250.0" x2="600.0" y2="250.0" class="s-mu" stroke-width="1.2"/>
+<line x1="64.0" y1="20.0" x2="64.0" y2="250.0" class="s-mu" stroke-width="1.2"/>
+<line x1="64.0" y1="250.0" x2="64.0" y2="255.0" class="s-mu" stroke-width="1.2"/>
+<text x="64.0" y="269.0" class="f-mu" font-size="11" text-anchor="middle">0</text>
+<line x1="153.3" y1="250.0" x2="153.3" y2="255.0" class="s-mu" stroke-width="1.2"/>
+<text x="153.3" y="269.0" class="f-mu" font-size="11" text-anchor="middle">2</text>
+<line x1="242.7" y1="250.0" x2="242.7" y2="255.0" class="s-mu" stroke-width="1.2"/>
+<text x="242.7" y="269.0" class="f-mu" font-size="11" text-anchor="middle">4</text>
+<line x1="332.0" y1="250.0" x2="332.0" y2="255.0" class="s-mu" stroke-width="1.2"/>
+<text x="332.0" y="269.0" class="f-mu" font-size="11" text-anchor="middle">6</text>
+<line x1="421.3" y1="250.0" x2="421.3" y2="255.0" class="s-mu" stroke-width="1.2"/>
+<text x="421.3" y="269.0" class="f-mu" font-size="11" text-anchor="middle">8</text>
+<line x1="510.7" y1="250.0" x2="510.7" y2="255.0" class="s-mu" stroke-width="1.2"/>
+<text x="510.7" y="269.0" class="f-mu" font-size="11" text-anchor="middle">10</text>
+<line x1="600.0" y1="250.0" x2="600.0" y2="255.0" class="s-mu" stroke-width="1.2"/>
+<text x="600.0" y="269.0" class="f-mu" font-size="11" text-anchor="middle">12</text>
+<line x1="59.0" y1="250.0" x2="64.0" y2="250.0" class="s-mu" stroke-width="1.2"/>
+<text x="55.0" y="254.0" class="f-mu" font-size="11" text-anchor="end">0</text>
+<line x1="59.0" y1="218.1" x2="64.0" y2="218.1" class="s-mu" stroke-width="1.2"/>
+<text x="55.0" y="222.1" class="f-mu" font-size="11" text-anchor="end">1</text>
+<line x1="59.0" y1="186.1" x2="64.0" y2="186.1" class="s-mu" stroke-width="1.2"/>
+<text x="55.0" y="190.1" class="f-mu" font-size="11" text-anchor="end">2</text>
+<line x1="59.0" y1="154.2" x2="64.0" y2="154.2" class="s-mu" stroke-width="1.2"/>
+<text x="55.0" y="158.2" class="f-mu" font-size="11" text-anchor="end">3</text>
+<line x1="59.0" y1="122.2" x2="64.0" y2="122.2" class="s-mu" stroke-width="1.2"/>
+<text x="55.0" y="126.2" class="f-mu" font-size="11" text-anchor="end">4</text>
+<line x1="59.0" y1="90.3" x2="64.0" y2="90.3" class="s-mu" stroke-width="1.2"/>
+<text x="55.0" y="94.3" class="f-mu" font-size="11" text-anchor="end">5</text>
+<line x1="59.0" y1="58.3" x2="64.0" y2="58.3" class="s-mu" stroke-width="1.2"/>
+<text x="55.0" y="62.3" class="f-mu" font-size="11" text-anchor="end">6</text>
+<line x1="59.0" y1="26.4" x2="64.0" y2="26.4" class="s-mu" stroke-width="1.2"/>
+<text x="55.0" y="30.4" class="f-mu" font-size="11" text-anchor="end">7</text>
+<text x="332.0" y="290.0" class="f-fg" font-size="12" text-anchor="middle">다항식 차수(모델 복잡도) →</text>
+<path d="M 64.0 218.1 L 600.0 218.1" class="s-mu" stroke-width="1.6" fill="none" stroke-dasharray="2 3"/>
+<path d="M 64.0 40.6 L 108.7 39.9 L 153.3 129.6 L 198.0 165.6 L 242.7 181.9 L 287.3 200.3 L 332.0 199.4 L 376.7 201.7 L 421.3 197.6 L 466.0 193.1 L 510.7 180.4 L 555.3 144.8 L 600.0 28.4" class="s-fg" stroke-width="2.8" fill="none"/>
+<path d="M 64.0 74.1 L 108.7 75.0 L 153.3 166.5 L 198.0 204.0 L 242.7 221.9 L 287.3 242.4 L 332.0 243.6 L 376.7 248.9 L 421.3 248.7 L 466.0 249.7 L 510.7 249.6 L 555.3 249.5 L 600.0 249.8" class="s-bd" stroke-width="2.0" fill="none"/>
+<path d="M 64.0 248.4 L 108.7 246.8 L 153.3 245.0 L 198.0 243.6 L 242.7 241.9 L 287.3 239.8 L 332.0 237.7 L 376.7 234.7 L 421.3 230.9 L 466.0 225.4 L 510.7 212.7 L 555.3 177.2 L 600.0 60.5" class="s-ac" stroke-width="2.0" fill="none"/>
+<path d="M 64.0 43.2 L 108.7 46.4 L 153.3 139.6 L 198.0 179.9 L 242.7 198.8 L 287.3 221.3 L 332.0 223.7 L 376.7 230.3 L 421.3 231.7 L 466.0 233.8 L 510.7 236.0 L 555.3 237.1 L 600.0 239.1" class="s-ok" stroke-width="1.8" fill="none" stroke-dasharray="5 3"/>
+<path d="M 211.4 35.2 L 241.4 35.2" class="s-fg" stroke-width="3.1999999999999997" fill="none"/>
+<text x="251.4" y="39.2" class="f-fg" font-size="12" text-anchor="start" font-weight="600">시험 오차 = 편향² + 분산 + 잡음</text>
+<path d="M 211.4 54.2 L 241.4 54.2" class="s-bd" stroke-width="2.4" fill="none"/>
+<text x="251.4" y="58.2" class="f-bd" font-size="12" text-anchor="start">편향²</text>
+<path d="M 211.4 73.2 L 241.4 73.2" class="s-ac" stroke-width="2.4" fill="none"/>
+<text x="251.4" y="77.2" class="f-ac" font-size="12" text-anchor="start">분산</text>
+<path d="M 211.4 92.2 L 241.4 92.2" class="s-ok" stroke-width="2.2" fill="none" stroke-dasharray="5 3"/>
+<text x="251.4" y="96.2" class="f-ok" font-size="12" text-anchor="start">학습 오차</text>
+<path d="M 211.4 111.2 L 241.4 111.2" class="s-mu" stroke-width="2.0" fill="none" stroke-dasharray="2 3"/>
+<text x="251.4" y="115.2" class="f-mu" font-size="12" text-anchor="start">잡음 σ² = 1 (줄일 수 없는 오차)</text>
+<circle cx="376.7" cy="201.7" r="4.5" class="f-fg"/>
+<text x="376.7" y="189.7" class="f-fg" font-size="12" text-anchor="middle">최소 1.51</text>
+<text x="104.2" y="208.8" class="f-bd" font-size="12" text-anchor="middle">과소적합</text>
+<text x="568.7" y="208.8" class="f-ac" font-size="12" text-anchor="middle">과적합</text>
+</svg>

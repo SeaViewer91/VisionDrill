@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 680 275" role="img" aria-label="레이블이 얼마나 있느냐에 따라 나눈 지도학습, 준지도학습, 비지도학습, 자기지도학습">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<text x="85.0" y="24.0" class="f-fg" font-size="14" text-anchor="middle" font-weight="700">지도학습</text>
+<text x="85.0" y="44.0" class="f-mu" font-size="12" text-anchor="middle">레이블 전부</text>
+<rect x="5.0" y="60.0" width="160.0" height="118.0" rx="6" class="s-mu f-sf" stroke-width="1"/>
+<rect x="26.0" y="76.0" width="22.0" height="22.0" rx="3" class="s-mu f-ok" stroke-width="1"/>
+<rect x="58.0" y="76.0" width="22.0" height="22.0" rx="3" class="s-mu f-ok" stroke-width="1"/>
+<rect x="90.0" y="76.0" width="22.0" height="22.0" rx="3" class="s-mu f-ac" stroke-width="1"/>
+<rect x="122.0" y="76.0" width="22.0" height="22.0" rx="3" class="s-mu f-ac" stroke-width="1"/>
+<rect x="26.0" y="108.0" width="22.0" height="22.0" rx="3" class="s-mu f-ok" stroke-width="1"/>
+<rect x="58.0" y="108.0" width="22.0" height="22.0" rx="3" class="s-mu f-ok" stroke-width="1"/>
+<rect x="90.0" y="108.0" width="22.0" height="22.0" rx="3" class="s-mu f-ac" stroke-width="1"/>
+<rect x="122.0" y="108.0" width="22.0" height="22.0" rx="3" class="s-mu f-ac" stroke-width="1"/>
+<rect x="26.0" y="140.0" width="22.0" height="22.0" rx="3" class="s-mu f-bd" stroke-width="1"/>
+<rect x="58.0" y="140.0" width="22.0" height="22.0" rx="3" class="s-mu f-bd" stroke-width="1"/>
+<rect x="90.0" y="140.0" width="22.0" height="22.0" rx="3" class="s-mu f-bd" stroke-width="1"/>
+<rect x="122.0" y="140.0" width="22.0" height="22.0" rx="3" class="s-mu f-bd" stroke-width="1"/>
+<text x="85.0" y="200.0" class="f-fg" font-size="12" text-anchor="middle">입력 → 정답 맞히기</text>
+<text x="85.0" y="218.0" class="f-mu" font-size="11.5" text-anchor="middle">예: 토지피복 분류</text>
+<text x="255.0" y="24.0" class="f-fg" font-size="14" text-anchor="middle" font-weight="700">준지도학습</text>
+<text x="255.0" y="44.0" class="f-mu" font-size="12" text-anchor="middle">레이블 일부</text>
+<rect x="175.0" y="60.0" width="160.0" height="118.0" rx="6" class="s-mu f-sf" stroke-width="1"/>
+<rect x="196.0" y="76.0" width="22.0" height="22.0" rx="3" class="s-mu f-ok" stroke-width="1"/>
+<rect x="228.0" y="76.0" width="22.0" height="22.0" rx="3" class="s-mu f-bg" stroke-width="1"/>
+<rect x="260.0" y="76.0" width="22.0" height="22.0" rx="3" class="s-mu f-bg" stroke-width="1"/>
+<rect x="292.0" y="76.0" width="22.0" height="22.0" rx="3" class="s-mu f-bg" stroke-width="1"/>
+<rect x="196.0" y="108.0" width="22.0" height="22.0" rx="3" class="s-mu f-bg" stroke-width="1"/>
+<rect x="228.0" y="108.0" width="22.0" height="22.0" rx="3" class="s-mu f-bg" stroke-width="1"/>
+<rect x="260.0" y="108.0" width="22.0" height="22.0" rx="3" class="s-mu f-bg" stroke-width="1"/>
+<rect x="292.0" y="108.0" width="22.0" height="22.0" rx="3" class="s-mu f-ac" stroke-width="1"/>
+<rect x="196.0" y="140.0" width="22.0" height="22.0" rx="3" class="s-mu f-bg" stroke-width="1"/>
+<rect x="228.0" y="140.0" width="22.0" height="22.0" rx="3" class="s-mu f-bd" stroke-width="1"/>
+<rect x="260.0" y="140.0" width="22.0" height="22.0" rx="3" class="s-mu f-bg" stroke-width="1"/>
+<rect x="292.0" y="140.0" width="22.0" height="22.0" rx="3" class="s-mu f-bg" stroke-width="1"/>
+<text x="255.0" y="200.0" class="f-fg" font-size="12" text-anchor="middle">소수 정답 + 무라벨</text>
+<text x="255.0" y="218.0" class="f-mu" font-size="11.5" text-anchor="middle">예: 일부 폴리곤만 조사</text>
+<text x="425.0" y="24.0" class="f-fg" font-size="14" text-anchor="middle" font-weight="700">비지도학습</text>
+<text x="425.0" y="44.0" class="f-mu" font-size="12" text-anchor="middle">레이블 없음</text>
+<rect x="345.0" y="60.0" width="160.0" height="118.0" rx="6" class="s-mu f-sf" stroke-width="1"/>
+<rect x="366.0" y="76.0" width="22.0" height="22.0" rx="3" class="s-mu f-bg" stroke-width="1"/>
+<rect x="398.0" y="76.0" width="22.0" height="22.0" rx="3" class="s-mu f-bg" stroke-width="1"/>
+<rect x="430.0" y="76.0" width="22.0" height="22.0" rx="3" class="s-mu f-bg" stroke-width="1"/>
+<rect x="462.0" y="76.0" width="22.0" height="22.0" rx="3" class="s-mu f-bg" stroke-width="1"/>
+<rect x="366.0" y="108.0" width="22.0" height="22.0" rx="3" class="s-mu f-bg" stroke-width="1"/>
+<rect x="398.0" y="108.0" width="22.0" height="22.0" rx="3" class="s-mu f-bg" stroke-width="1"/>
+<rect x="430.0" y="108.0" width="22.0" height="22.0" rx="3" class="s-mu f-bg" stroke-width="1"/>
+<rect x="462.0" y="108.0" width="22.0" height="22.0" rx="3" class="s-mu f-bg" stroke-width="1"/>
+<rect x="366.0" y="140.0" width="22.0" height="22.0" rx="3" class="s-mu f-bg" stroke-width="1"/>
+<rect x="398.0" y="140.0" width="22.0" height="22.0" rx="3" class="s-mu f-bg" stroke-width="1"/>
+<rect x="430.0" y="140.0" width="22.0" height="22.0" rx="3" class="s-mu f-bg" stroke-width="1"/>
+<rect x="462.0" y="140.0" width="22.0" height="22.0" rx="3" class="s-mu f-bg" stroke-width="1"/>
+<rect x="362.5" y="72.5" width="61.0" height="61.0" rx="8" class="s-fg" fill="none" stroke-width="1.2" stroke-dasharray="4 3"/>
+<rect x="426.5" y="72.5" width="61.0" height="61.0" rx="8" class="s-fg" fill="none" stroke-width="1.2" stroke-dasharray="4 3"/>
+<rect x="362.5" y="136.5" width="125.0" height="29.0" rx="8" class="s-fg" fill="none" stroke-width="1.2" stroke-dasharray="4 3"/>
+<text x="425.0" y="200.0" class="f-fg" font-size="12" text-anchor="middle">비슷한 것끼리 묶기</text>
+<text x="425.0" y="218.0" class="f-mu" font-size="11.5" text-anchor="middle">예: K-평균 군집</text>
+<text x="595.0" y="24.0" class="f-fg" font-size="14" text-anchor="middle" font-weight="700">자기지도학습</text>
+<text x="595.0" y="44.0" class="f-mu" font-size="12" text-anchor="middle">자료가 정답을 만듦</text>
+<rect x="515.0" y="60.0" width="160.0" height="118.0" rx="6" class="s-mu f-sf" stroke-width="1"/>
+<rect x="539.0" y="77.0" width="28.0" height="28.0" rx="0" class="s-mu f-acs" stroke-width="1"/>
+<rect x="567.0" y="77.0" width="28.0" height="28.0" rx="0" class="s-mu f-mu" stroke-width="1"/>
+<text x="581.0" y="96.0" class="f-bg" font-size="14" text-anchor="middle" font-weight="700">?</text>
+<rect x="595.0" y="77.0" width="28.0" height="28.0" rx="0" class="s-mu f-acs" stroke-width="1"/>
+<rect x="623.0" y="77.0" width="28.0" height="28.0" rx="0" class="s-mu f-acs" stroke-width="1"/>
+<rect x="539.0" y="105.0" width="28.0" height="28.0" rx="0" class="s-mu f-acs" stroke-width="1"/>
+<rect x="567.0" y="105.0" width="28.0" height="28.0" rx="0" class="s-mu f-acs" stroke-width="1"/>
+<rect x="595.0" y="105.0" width="28.0" height="28.0" rx="0" class="s-mu f-acs" stroke-width="1"/>
+<rect x="623.0" y="105.0" width="28.0" height="28.0" rx="0" class="s-mu f-mu" stroke-width="1"/>
+<text x="637.0" y="124.0" class="f-bg" font-size="14" text-anchor="middle" font-weight="700">?</text>
+<rect x="539.0" y="133.0" width="28.0" height="28.0" rx="0" class="s-mu f-mu" stroke-width="1"/>
+<text x="553.0" y="152.0" class="f-bg" font-size="14" text-anchor="middle" font-weight="700">?</text>
+<rect x="567.0" y="133.0" width="28.0" height="28.0" rx="0" class="s-mu f-acs" stroke-width="1"/>
+<rect x="595.0" y="133.0" width="28.0" height="28.0" rx="0" class="s-mu f-mu" stroke-width="1"/>
+<text x="609.0" y="152.0" class="f-bg" font-size="14" text-anchor="middle" font-weight="700">?</text>
+<rect x="623.0" y="133.0" width="28.0" height="28.0" rx="0" class="s-mu f-acs" stroke-width="1"/>
+<rect x="539.0" y="77.0" width="112.0" height="84.0" rx="0" class="s-fg" fill="none" stroke-width="1.4"/>
+<text x="595.0" y="200.0" class="f-fg" font-size="12" text-anchor="middle">가린 부분 복원 등</text>
+<text x="595.0" y="218.0" class="f-mu" font-size="11.5" text-anchor="middle">예: 기초모델 사전학습</text>
+<line x1="60.0" y1="252.0" x2="613.0" y2="252.0" class="s-mu" stroke-width="1.4"/>
+<path d="M 620.0 252.0 L 613.0 255.5 L 613.0 248.5 Z" class="f-mu" stroke-width="0"/>
+<text x="60.0" y="269.0" class="f-mu" font-size="11.5" text-anchor="start">사람이 붙인 레이블 많음</text>
+<text x="620.0" y="269.0" class="f-mu" font-size="11.5" text-anchor="end">없음</text>
+</svg>

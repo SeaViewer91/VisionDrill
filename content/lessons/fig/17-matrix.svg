@@ -1,0 +1,159 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 680 350" role="img" aria-label="토지피복 6개 클래스의 혼동행렬. 행은 참 클래스, 열은 예측 클래스이며, 행을 따라 생산자 정확도, 열을 따라 사용자 정확도를 읽음">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<text x="294.0" y="20.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="600">예측 클래스 (열)</text>
+<text x="149.0" y="48.0" class="f-mu" font-size="12" text-anchor="middle">산림</text>
+<text x="207.0" y="48.0" class="f-mu" font-size="12" text-anchor="middle">농경지</text>
+<text x="265.0" y="48.0" class="f-mu" font-size="12" text-anchor="middle">시가지</text>
+<text x="323.0" y="48.0" class="f-mu" font-size="12" text-anchor="middle">수계</text>
+<text x="381.0" y="48.0" class="f-mu" font-size="12" text-anchor="middle">나지</text>
+<text x="439.0" y="48.0" class="f-mu" font-size="12" text-anchor="middle">갯벌</text>
+<text x="497.0" y="48.0" class="f-mu" font-size="12" text-anchor="middle">행 합계</text>
+<text x="565.0" y="48.0" class="f-ac" font-size="12" text-anchor="middle" font-weight="600">생산자 정확도</text>
+<text x="110.0" y="76.0" class="f-mu" font-size="12" text-anchor="end">산림</text>
+<text x="110.0" y="104.0" class="f-mu" font-size="12" text-anchor="end">농경지</text>
+<text x="110.0" y="132.0" class="f-mu" font-size="12" text-anchor="end">시가지</text>
+<text x="110.0" y="160.0" class="f-mu" font-size="12" text-anchor="end">수계</text>
+<text x="110.0" y="188.0" class="f-mu" font-size="12" text-anchor="end">나지</text>
+<text x="110.0" y="216.0" class="f-mu" font-size="12" text-anchor="end">갯벌</text>
+<text x="110.0" y="244.0" class="f-mu" font-size="12" text-anchor="end">열 합계</text>
+<text x="110.0" y="272.0" class="f-bd" font-size="12" text-anchor="end" font-weight="600">사용자 정확도</text>
+<text transform="rotate(-90 34 142.0)" x="34.0" y="142.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="600">참 클래스 (행)</text>
+<rect x="120.0" y="58.0" width="58.0" height="28.0" rx="0" class="s-mu f-acs" stroke-width="0.8"/>
+<text x="149.0" y="76.0" class="f-fg" font-size="12" text-anchor="middle" font-weight="600">874</text>
+<rect x="178.0" y="58.0" width="58.0" height="28.0" rx="0" class="s-mu f-bg" stroke-width="0.8"/>
+<text x="207.0" y="76.0" class="f-fg" font-size="12" text-anchor="middle">1</text>
+<rect x="236.0" y="58.0" width="58.0" height="28.0" rx="0" class="s-mu f-bg" stroke-width="0.8"/>
+<text x="265.0" y="76.0" class="f-mu" font-size="12" text-anchor="middle">0</text>
+<rect x="294.0" y="58.0" width="58.0" height="28.0" rx="0" class="s-mu f-bg" stroke-width="0.8"/>
+<text x="323.0" y="76.0" class="f-mu" font-size="12" text-anchor="middle">0</text>
+<rect x="352.0" y="58.0" width="58.0" height="28.0" rx="0" class="s-mu f-bg" stroke-width="0.8"/>
+<text x="381.0" y="76.0" class="f-mu" font-size="12" text-anchor="middle">0</text>
+<rect x="410.0" y="58.0" width="58.0" height="28.0" rx="0" class="s-mu f-bg" stroke-width="0.8"/>
+<text x="439.0" y="76.0" class="f-mu" font-size="12" text-anchor="middle">0</text>
+<rect x="468.0" y="58.0" width="58.0" height="28.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<text x="497.0" y="76.0" class="f-fg" font-size="12" text-anchor="middle">875</text>
+<rect x="526.0" y="58.0" width="78.0" height="28.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<text x="565.0" y="76.0" class="f-ac" font-size="12" text-anchor="middle" font-weight="600">0.999</text>
+<rect x="120.0" y="86.0" width="58.0" height="28.0" rx="0" class="s-mu f-bg" stroke-width="0.8"/>
+<text x="149.0" y="104.0" class="f-fg" font-size="12" text-anchor="middle">1</text>
+<rect x="178.0" y="86.0" width="58.0" height="28.0" rx="0" class="s-mu f-acs" stroke-width="0.8"/>
+<text x="207.0" y="104.0" class="f-fg" font-size="12" text-anchor="middle" font-weight="600">869</text>
+<rect x="236.0" y="86.0" width="58.0" height="28.0" rx="0" class="s-mu f-bg" stroke-width="0.8"/>
+<text x="265.0" y="104.0" class="f-fg" font-size="12" text-anchor="middle">27</text>
+<rect x="294.0" y="86.0" width="58.0" height="28.0" rx="0" class="s-mu f-bg" stroke-width="0.8"/>
+<text x="323.0" y="104.0" class="f-mu" font-size="12" text-anchor="middle">0</text>
+<rect x="352.0" y="86.0" width="58.0" height="28.0" rx="0" class="s-mu f-bg" stroke-width="0.8"/>
+<text x="381.0" y="104.0" class="f-fg" font-size="12" text-anchor="middle">1</text>
+<rect x="410.0" y="86.0" width="58.0" height="28.0" rx="0" class="s-mu f-bg" stroke-width="0.8"/>
+<text x="439.0" y="104.0" class="f-mu" font-size="12" text-anchor="middle">0</text>
+<rect x="468.0" y="86.0" width="58.0" height="28.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<text x="497.0" y="104.0" class="f-fg" font-size="12" text-anchor="middle">898</text>
+<rect x="526.0" y="86.0" width="78.0" height="28.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<text x="565.0" y="104.0" class="f-ac" font-size="12" text-anchor="middle" font-weight="600">0.968</text>
+<rect x="120.0" y="114.0" width="58.0" height="28.0" rx="0" class="s-mu f-bg" stroke-width="0.8"/>
+<text x="149.0" y="132.0" class="f-mu" font-size="12" text-anchor="middle">0</text>
+<rect x="178.0" y="114.0" width="58.0" height="28.0" rx="0" class="s-mu f-bds" stroke-width="0.8"/>
+<text x="207.0" y="132.0" class="f-fg" font-size="12" text-anchor="middle" font-weight="600">56</text>
+<rect x="236.0" y="114.0" width="58.0" height="28.0" rx="0" class="s-mu f-acs" stroke-width="0.8"/>
+<text x="265.0" y="132.0" class="f-fg" font-size="12" text-anchor="middle" font-weight="600">300</text>
+<rect x="294.0" y="114.0" width="58.0" height="28.0" rx="0" class="s-mu f-bg" stroke-width="0.8"/>
+<text x="323.0" y="132.0" class="f-mu" font-size="12" text-anchor="middle">0</text>
+<rect x="352.0" y="114.0" width="58.0" height="28.0" rx="0" class="s-mu f-bds" stroke-width="0.8"/>
+<text x="381.0" y="132.0" class="f-fg" font-size="12" text-anchor="middle" font-weight="600">65</text>
+<rect x="410.0" y="114.0" width="58.0" height="28.0" rx="0" class="s-mu f-bg" stroke-width="0.8"/>
+<text x="439.0" y="132.0" class="f-mu" font-size="12" text-anchor="middle">0</text>
+<rect x="468.0" y="114.0" width="58.0" height="28.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<text x="497.0" y="132.0" class="f-fg" font-size="12" text-anchor="middle">421</text>
+<rect x="526.0" y="114.0" width="78.0" height="28.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<text x="565.0" y="132.0" class="f-ac" font-size="12" text-anchor="middle" font-weight="600">0.713</text>
+<rect x="120.0" y="142.0" width="58.0" height="28.0" rx="0" class="s-mu f-bg" stroke-width="0.8"/>
+<text x="149.0" y="160.0" class="f-mu" font-size="12" text-anchor="middle">0</text>
+<rect x="178.0" y="142.0" width="58.0" height="28.0" rx="0" class="s-mu f-bg" stroke-width="0.8"/>
+<text x="207.0" y="160.0" class="f-mu" font-size="12" text-anchor="middle">0</text>
+<rect x="236.0" y="142.0" width="58.0" height="28.0" rx="0" class="s-mu f-bg" stroke-width="0.8"/>
+<text x="265.0" y="160.0" class="f-mu" font-size="12" text-anchor="middle">0</text>
+<rect x="294.0" y="142.0" width="58.0" height="28.0" rx="0" class="s-mu f-acs" stroke-width="0.8"/>
+<text x="323.0" y="160.0" class="f-fg" font-size="12" text-anchor="middle" font-weight="600">362</text>
+<rect x="352.0" y="142.0" width="58.0" height="28.0" rx="0" class="s-mu f-bg" stroke-width="0.8"/>
+<text x="381.0" y="160.0" class="f-mu" font-size="12" text-anchor="middle">0</text>
+<rect x="410.0" y="142.0" width="58.0" height="28.0" rx="0" class="s-mu f-bg" stroke-width="0.8"/>
+<text x="439.0" y="160.0" class="f-mu" font-size="12" text-anchor="middle">0</text>
+<rect x="468.0" y="142.0" width="58.0" height="28.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<text x="497.0" y="160.0" class="f-fg" font-size="12" text-anchor="middle">362</text>
+<rect x="526.0" y="142.0" width="78.0" height="28.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<text x="565.0" y="160.0" class="f-ac" font-size="12" text-anchor="middle" font-weight="600">1.000</text>
+<rect x="120.0" y="170.0" width="58.0" height="28.0" rx="0" class="s-mu f-bg" stroke-width="0.8"/>
+<text x="149.0" y="188.0" class="f-mu" font-size="12" text-anchor="middle">0</text>
+<rect x="178.0" y="170.0" width="58.0" height="28.0" rx="0" class="s-mu f-bg" stroke-width="0.8"/>
+<text x="207.0" y="188.0" class="f-fg" font-size="12" text-anchor="middle">1</text>
+<rect x="236.0" y="170.0" width="58.0" height="28.0" rx="0" class="s-mu f-bds" stroke-width="0.8"/>
+<text x="265.0" y="188.0" class="f-fg" font-size="12" text-anchor="middle" font-weight="600">65</text>
+<rect x="294.0" y="170.0" width="58.0" height="28.0" rx="0" class="s-mu f-bg" stroke-width="0.8"/>
+<text x="323.0" y="188.0" class="f-mu" font-size="12" text-anchor="middle">0</text>
+<rect x="352.0" y="170.0" width="58.0" height="28.0" rx="0" class="s-mu f-acs" stroke-width="0.8"/>
+<text x="381.0" y="188.0" class="f-fg" font-size="12" text-anchor="middle" font-weight="600">153</text>
+<rect x="410.0" y="170.0" width="58.0" height="28.0" rx="0" class="s-mu f-bg" stroke-width="0.8"/>
+<text x="439.0" y="188.0" class="f-mu" font-size="12" text-anchor="middle">0</text>
+<rect x="468.0" y="170.0" width="58.0" height="28.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<text x="497.0" y="188.0" class="f-fg" font-size="12" text-anchor="middle">219</text>
+<rect x="526.0" y="170.0" width="78.0" height="28.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<text x="565.0" y="188.0" class="f-ac" font-size="12" text-anchor="middle" font-weight="600">0.699</text>
+<rect x="120.0" y="198.0" width="58.0" height="28.0" rx="0" class="s-mu f-bg" stroke-width="0.8"/>
+<text x="149.0" y="216.0" class="f-mu" font-size="12" text-anchor="middle">0</text>
+<rect x="178.0" y="198.0" width="58.0" height="28.0" rx="0" class="s-mu f-bg" stroke-width="0.8"/>
+<text x="207.0" y="216.0" class="f-fg" font-size="12" text-anchor="middle">12</text>
+<rect x="236.0" y="198.0" width="58.0" height="28.0" rx="0" class="s-mu f-bg" stroke-width="0.8"/>
+<text x="265.0" y="216.0" class="f-mu" font-size="12" text-anchor="middle">0</text>
+<rect x="294.0" y="198.0" width="58.0" height="28.0" rx="0" class="s-mu f-bg" stroke-width="0.8"/>
+<text x="323.0" y="216.0" class="f-mu" font-size="12" text-anchor="middle">0</text>
+<rect x="352.0" y="198.0" width="58.0" height="28.0" rx="0" class="s-mu f-bg" stroke-width="0.8"/>
+<text x="381.0" y="216.0" class="f-mu" font-size="12" text-anchor="middle">0</text>
+<rect x="410.0" y="198.0" width="58.0" height="28.0" rx="0" class="s-mu f-acs" stroke-width="0.8"/>
+<text x="439.0" y="216.0" class="f-fg" font-size="12" text-anchor="middle" font-weight="600">96</text>
+<rect x="468.0" y="198.0" width="58.0" height="28.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<text x="497.0" y="216.0" class="f-fg" font-size="12" text-anchor="middle">108</text>
+<rect x="526.0" y="198.0" width="78.0" height="28.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<text x="565.0" y="216.0" class="f-ac" font-size="12" text-anchor="middle" font-weight="600">0.889</text>
+<rect x="120.0" y="226.0" width="58.0" height="28.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<text x="149.0" y="244.0" class="f-fg" font-size="12" text-anchor="middle">875</text>
+<rect x="120.0" y="254.0" width="58.0" height="28.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<text x="149.0" y="272.0" class="f-bd" font-size="12" text-anchor="middle" font-weight="600">0.999</text>
+<rect x="178.0" y="226.0" width="58.0" height="28.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<text x="207.0" y="244.0" class="f-fg" font-size="12" text-anchor="middle">939</text>
+<rect x="178.0" y="254.0" width="58.0" height="28.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<text x="207.0" y="272.0" class="f-bd" font-size="12" text-anchor="middle" font-weight="600">0.925</text>
+<rect x="236.0" y="226.0" width="58.0" height="28.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<text x="265.0" y="244.0" class="f-fg" font-size="12" text-anchor="middle">392</text>
+<rect x="236.0" y="254.0" width="58.0" height="28.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<text x="265.0" y="272.0" class="f-bd" font-size="12" text-anchor="middle" font-weight="600">0.765</text>
+<rect x="294.0" y="226.0" width="58.0" height="28.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<text x="323.0" y="244.0" class="f-fg" font-size="12" text-anchor="middle">362</text>
+<rect x="294.0" y="254.0" width="58.0" height="28.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<text x="323.0" y="272.0" class="f-bd" font-size="12" text-anchor="middle" font-weight="600">1.000</text>
+<rect x="352.0" y="226.0" width="58.0" height="28.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<text x="381.0" y="244.0" class="f-fg" font-size="12" text-anchor="middle">219</text>
+<rect x="352.0" y="254.0" width="58.0" height="28.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<text x="381.0" y="272.0" class="f-bd" font-size="12" text-anchor="middle" font-weight="600">0.699</text>
+<rect x="410.0" y="226.0" width="58.0" height="28.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<text x="439.0" y="244.0" class="f-fg" font-size="12" text-anchor="middle">96</text>
+<rect x="410.0" y="254.0" width="58.0" height="28.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<text x="439.0" y="272.0" class="f-bd" font-size="12" text-anchor="middle" font-weight="600">1.000</text>
+<rect x="468.0" y="226.0" width="58.0" height="28.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<text x="497.0" y="244.0" class="f-fg" font-size="12" text-anchor="middle">2883</text>
+<rect x="526.0" y="226.0" width="78.0" height="56.0" rx="0" class="s-mu f-acs" stroke-width="0.8"/>
+<text x="565.0" y="251.0" class="f-fg" font-size="11" text-anchor="middle">전체 정확도</text>
+<text x="565.0" y="269.0" class="f-fg" font-size="12" text-anchor="middle" font-weight="600">0.921</text>
+<path d="M 118 112 H 606 V 144 H 118 Z" class="s-ac" stroke-width="2.4" fill="none"/>
+<path d="M 233 55 H 297 V 285 H 233 Z" class="s-bd" stroke-width="2.4" fill="none"/>
+<text x="120.0" y="312.0" class="f-ac" font-size="12" text-anchor="start">파란 틀: 시가지 행 → 참 시가지 421개 중 300개를 맞힘 → 생산자 정확도(재현율)</text>
+<text x="120.0" y="334.0" class="f-bd" font-size="12" text-anchor="start">주황 틀: 시가지 열 → 시가지로 예측한 392개 중 300개가 맞음 → 사용자 정확도(정밀도)</text>
+</svg>

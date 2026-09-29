@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 680 270" role="img" aria-label="결정트리 깊이 3과 깊이 제한 없음의 학습곡선: 학습 폴리곤 수에 따른 학습·검증 정확도">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<line x1="55.0" y1="214.0" x2="315.0" y2="214.0" class="s-mu" stroke-width="1.2"/>
+<line x1="55.0" y1="36.0" x2="55.0" y2="214.0" class="s-mu" stroke-width="1.2"/>
+<line x1="55.0" y1="214.0" x2="55.0" y2="218.0" class="s-mu" stroke-width="1.2"/>
+<text x="55.0" y="231.0" class="f-mu" font-size="11" text-anchor="middle">0</text>
+<line x1="112.8" y1="214.0" x2="112.8" y2="218.0" class="s-mu" stroke-width="1.2"/>
+<text x="112.8" y="231.0" class="f-mu" font-size="11" text-anchor="middle">20</text>
+<line x1="170.6" y1="214.0" x2="170.6" y2="218.0" class="s-mu" stroke-width="1.2"/>
+<text x="170.6" y="231.0" class="f-mu" font-size="11" text-anchor="middle">40</text>
+<line x1="228.3" y1="214.0" x2="228.3" y2="218.0" class="s-mu" stroke-width="1.2"/>
+<text x="228.3" y="231.0" class="f-mu" font-size="11" text-anchor="middle">60</text>
+<line x1="286.1" y1="214.0" x2="286.1" y2="218.0" class="s-mu" stroke-width="1.2"/>
+<text x="286.1" y="231.0" class="f-mu" font-size="11" text-anchor="middle">80</text>
+<line x1="51.0" y1="214.0" x2="55.0" y2="214.0" class="s-mu" stroke-width="1.2"/>
+<text x="48.0" y="218.0" class="f-mu" font-size="11" text-anchor="end">0.6</text>
+<line x1="51.0" y1="169.5" x2="55.0" y2="169.5" class="s-mu" stroke-width="1.2"/>
+<text x="48.0" y="173.5" class="f-mu" font-size="11" text-anchor="end">0.7</text>
+<line x1="51.0" y1="125.0" x2="55.0" y2="125.0" class="s-mu" stroke-width="1.2"/>
+<text x="48.0" y="129.0" class="f-mu" font-size="11" text-anchor="end">0.8</text>
+<line x1="51.0" y1="80.5" x2="55.0" y2="80.5" class="s-mu" stroke-width="1.2"/>
+<text x="48.0" y="84.5" class="f-mu" font-size="11" text-anchor="end">0.9</text>
+<line x1="51.0" y1="36.0" x2="55.0" y2="36.0" class="s-mu" stroke-width="1.2"/>
+<text x="48.0" y="40.0" class="f-mu" font-size="11" text-anchor="end">1.0</text>
+<text x="185.0" y="20.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="600">깊이 3 (단순)</text>
+<path d="M 78.1 46.5 L 104.1 66.5 L 127.2 84.1 L 150.9 93.7 L 176.3 99.3 L 199.4 103.0 L 223.1 107.5 L 246.2 110.1 L 272.2 111.1 L 295.4 113.1" class="s-ac" stroke-width="2.2" fill="none"/>
+<path d="M 78.1 192.9 L 104.1 151.8 L 127.2 152.0 L 150.9 143.2 L 176.3 138.5 L 199.4 131.4 L 223.1 130.9 L 246.2 128.0 L 272.2 128.7 L 295.4 136.5" class="s-bd" stroke-width="2.2" fill="none"/>
+<circle cx="78.1" cy="46.5" r="3" class="f-ac"/>
+<circle cx="78.1" cy="192.9" r="3" class="f-bd"/>
+<circle cx="104.1" cy="66.5" r="3" class="f-ac"/>
+<circle cx="104.1" cy="151.8" r="3" class="f-bd"/>
+<circle cx="127.2" cy="84.1" r="3" class="f-ac"/>
+<circle cx="127.2" cy="152.0" r="3" class="f-bd"/>
+<circle cx="150.9" cy="93.7" r="3" class="f-ac"/>
+<circle cx="150.9" cy="143.2" r="3" class="f-bd"/>
+<circle cx="176.3" cy="99.3" r="3" class="f-ac"/>
+<circle cx="176.3" cy="138.5" r="3" class="f-bd"/>
+<circle cx="199.4" cy="103.0" r="3" class="f-ac"/>
+<circle cx="199.4" cy="131.4" r="3" class="f-bd"/>
+<circle cx="223.1" cy="107.5" r="3" class="f-ac"/>
+<circle cx="223.1" cy="130.9" r="3" class="f-bd"/>
+<circle cx="246.2" cy="110.1" r="3" class="f-ac"/>
+<circle cx="246.2" cy="128.0" r="3" class="f-bd"/>
+<circle cx="272.2" cy="111.1" r="3" class="f-ac"/>
+<circle cx="272.2" cy="128.7" r="3" class="f-bd"/>
+<circle cx="295.4" cy="113.1" r="3" class="f-ac"/>
+<circle cx="295.4" cy="136.5" r="3" class="f-bd"/>
+<line x1="307.4" y1="113.1" x2="307.4" y2="136.5" class="s-mu" stroke-width="1.2"/>
+<line x1="303.4" y1="113.1" x2="307.4" y2="113.1" class="s-mu" stroke-width="1.2"/>
+<line x1="303.4" y1="136.5" x2="307.4" y2="136.5" class="s-mu" stroke-width="1.2"/>
+<text x="312.4" y="128.8" class="f-mu" font-size="11" text-anchor="start">0.05</text>
+<text x="141.7" y="67.1" class="f-ac" font-size="12" text-anchor="middle" font-weight="600">학습</text>
+<text x="141.7" y="169.5" class="f-bd" font-size="12" text-anchor="middle" font-weight="600">검증</text>
+<line x1="381.0" y1="214.0" x2="641.0" y2="214.0" class="s-mu" stroke-width="1.2"/>
+<line x1="381.0" y1="36.0" x2="381.0" y2="214.0" class="s-mu" stroke-width="1.2"/>
+<line x1="381.0" y1="214.0" x2="381.0" y2="218.0" class="s-mu" stroke-width="1.2"/>
+<text x="381.0" y="231.0" class="f-mu" font-size="11" text-anchor="middle">0</text>
+<line x1="438.8" y1="214.0" x2="438.8" y2="218.0" class="s-mu" stroke-width="1.2"/>
+<text x="438.8" y="231.0" class="f-mu" font-size="11" text-anchor="middle">20</text>
+<line x1="496.6" y1="214.0" x2="496.6" y2="218.0" class="s-mu" stroke-width="1.2"/>
+<text x="496.6" y="231.0" class="f-mu" font-size="11" text-anchor="middle">40</text>
+<line x1="554.3" y1="214.0" x2="554.3" y2="218.0" class="s-mu" stroke-width="1.2"/>
+<text x="554.3" y="231.0" class="f-mu" font-size="11" text-anchor="middle">60</text>
+<line x1="612.1" y1="214.0" x2="612.1" y2="218.0" class="s-mu" stroke-width="1.2"/>
+<text x="612.1" y="231.0" class="f-mu" font-size="11" text-anchor="middle">80</text>
+<line x1="377.0" y1="214.0" x2="381.0" y2="214.0" class="s-mu" stroke-width="1.2"/>
+<text x="374.0" y="218.0" class="f-mu" font-size="11" text-anchor="end">0.6</text>
+<line x1="377.0" y1="169.5" x2="381.0" y2="169.5" class="s-mu" stroke-width="1.2"/>
+<text x="374.0" y="173.5" class="f-mu" font-size="11" text-anchor="end">0.7</text>
+<line x1="377.0" y1="125.0" x2="381.0" y2="125.0" class="s-mu" stroke-width="1.2"/>
+<text x="374.0" y="129.0" class="f-mu" font-size="11" text-anchor="end">0.8</text>
+<line x1="377.0" y1="80.5" x2="381.0" y2="80.5" class="s-mu" stroke-width="1.2"/>
+<text x="374.0" y="84.5" class="f-mu" font-size="11" text-anchor="end">0.9</text>
+<line x1="377.0" y1="36.0" x2="381.0" y2="36.0" class="s-mu" stroke-width="1.2"/>
+<text x="374.0" y="40.0" class="f-mu" font-size="11" text-anchor="end">1.0</text>
+<text x="511.0" y="20.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="600">깊이 제한 없음 (복잡)</text>
+<path d="M 404.1 36.0 L 430.1 36.0 L 453.2 36.0 L 476.9 36.0 L 502.3 36.0 L 525.4 36.0 L 549.1 36.0 L 572.2 36.0 L 598.2 36.0 L 621.4 36.0" class="s-ac" stroke-width="2.2" fill="none"/>
+<path d="M 404.1 188.0 L 430.1 144.9 L 453.2 126.5 L 476.9 116.0 L 502.3 107.9 L 525.4 101.3 L 549.1 100.1 L 572.2 96.2 L 598.2 95.5 L 621.4 92.9" class="s-bd" stroke-width="2.2" fill="none"/>
+<circle cx="404.1" cy="36.0" r="3" class="f-ac"/>
+<circle cx="404.1" cy="188.0" r="3" class="f-bd"/>
+<circle cx="430.1" cy="36.0" r="3" class="f-ac"/>
+<circle cx="430.1" cy="144.9" r="3" class="f-bd"/>
+<circle cx="453.2" cy="36.0" r="3" class="f-ac"/>
+<circle cx="453.2" cy="126.5" r="3" class="f-bd"/>
+<circle cx="476.9" cy="36.0" r="3" class="f-ac"/>
+<circle cx="476.9" cy="116.0" r="3" class="f-bd"/>
+<circle cx="502.3" cy="36.0" r="3" class="f-ac"/>
+<circle cx="502.3" cy="107.9" r="3" class="f-bd"/>
+<circle cx="525.4" cy="36.0" r="3" class="f-ac"/>
+<circle cx="525.4" cy="101.3" r="3" class="f-bd"/>
+<circle cx="549.1" cy="36.0" r="3" class="f-ac"/>
+<circle cx="549.1" cy="100.1" r="3" class="f-bd"/>
+<circle cx="572.2" cy="36.0" r="3" class="f-ac"/>
+<circle cx="572.2" cy="96.2" r="3" class="f-bd"/>
+<circle cx="598.2" cy="36.0" r="3" class="f-ac"/>
+<circle cx="598.2" cy="95.5" r="3" class="f-bd"/>
+<circle cx="621.4" cy="36.0" r="3" class="f-ac"/>
+<circle cx="621.4" cy="92.9" r="3" class="f-bd"/>
+<line x1="633.4" y1="36.0" x2="633.4" y2="92.9" class="s-mu" stroke-width="1.2"/>
+<line x1="629.4" y1="36.0" x2="633.4" y2="36.0" class="s-mu" stroke-width="1.2"/>
+<line x1="629.4" y1="92.9" x2="633.4" y2="92.9" class="s-mu" stroke-width="1.2"/>
+<text x="638.4" y="68.5" class="f-mu" font-size="11" text-anchor="start">0.13</text>
+<text x="467.7" y="47.1" class="f-ac" font-size="12" text-anchor="middle" font-weight="600">학습</text>
+<text x="467.7" y="149.5" class="f-bd" font-size="12" text-anchor="middle" font-weight="600">검증</text>
+<text x="348.0" y="256.0" class="f-mu" font-size="12" text-anchor="middle">학습에 쓴 폴리곤 수 (검증은 폴리곤 단위 5겹)   ·   세로축 정확도</text>
+</svg>

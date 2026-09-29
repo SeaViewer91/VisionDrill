@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 680 290" role="img" aria-label="k를 2에서 10까지 바꾸며 잰 군집 내 제곱합(엘보 도표)과 평균 실루엣 계수">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<line x1="80.0" y1="220.0" x2="330.0" y2="220.0" class="s-mu" stroke-width="1.2"/>
+<line x1="80.0" y1="30.0" x2="80.0" y2="220.0" class="s-mu" stroke-width="1.2"/>
+<line x1="76.0" y1="220.0" x2="80.0" y2="220.0" class="s-mu" stroke-width="1.2"/>
+<text x="72.0" y="224.0" class="f-mu" font-size="11" text-anchor="end">0</text>
+<line x1="76.0" y1="156.7" x2="80.0" y2="156.7" class="s-mu" stroke-width="1.2"/>
+<text x="72.0" y="160.7" class="f-mu" font-size="11" text-anchor="end">3,000</text>
+<line x1="76.0" y1="93.3" x2="80.0" y2="93.3" class="s-mu" stroke-width="1.2"/>
+<text x="72.0" y="97.3" class="f-mu" font-size="11" text-anchor="end">6,000</text>
+<line x1="76.0" y1="30.0" x2="80.0" y2="30.0" class="s-mu" stroke-width="1.2"/>
+<text x="72.0" y="34.0" class="f-mu" font-size="11" text-anchor="end">9,000</text>
+<line x1="80.0" y1="220.0" x2="80.0" y2="224.0" class="s-mu" stroke-width="1.2"/>
+<text x="80.0" y="237.0" class="f-mu" font-size="11" text-anchor="middle">2</text>
+<line x1="111.2" y1="220.0" x2="111.2" y2="224.0" class="s-mu" stroke-width="1.2"/>
+<text x="111.2" y="237.0" class="f-mu" font-size="11" text-anchor="middle">3</text>
+<line x1="142.5" y1="220.0" x2="142.5" y2="224.0" class="s-mu" stroke-width="1.2"/>
+<text x="142.5" y="237.0" class="f-mu" font-size="11" text-anchor="middle">4</text>
+<line x1="173.8" y1="220.0" x2="173.8" y2="224.0" class="s-mu" stroke-width="1.2"/>
+<text x="173.8" y="237.0" class="f-mu" font-size="11" text-anchor="middle">5</text>
+<line x1="205.0" y1="220.0" x2="205.0" y2="224.0" class="s-mu" stroke-width="1.2"/>
+<text x="205.0" y="237.0" class="f-mu" font-size="11" text-anchor="middle">6</text>
+<line x1="236.2" y1="220.0" x2="236.2" y2="224.0" class="s-mu" stroke-width="1.2"/>
+<text x="236.2" y="237.0" class="f-mu" font-size="11" text-anchor="middle">7</text>
+<line x1="267.5" y1="220.0" x2="267.5" y2="224.0" class="s-mu" stroke-width="1.2"/>
+<text x="267.5" y="237.0" class="f-mu" font-size="11" text-anchor="middle">8</text>
+<line x1="298.8" y1="220.0" x2="298.8" y2="224.0" class="s-mu" stroke-width="1.2"/>
+<text x="298.8" y="237.0" class="f-mu" font-size="11" text-anchor="middle">9</text>
+<line x1="330.0" y1="220.0" x2="330.0" y2="224.0" class="s-mu" stroke-width="1.2"/>
+<text x="330.0" y="237.0" class="f-mu" font-size="11" text-anchor="middle">10</text>
+<text x="205.0" y="256.0" class="f-mu" font-size="12" text-anchor="middle">군집 수 k</text>
+<text x="205.0" y="18.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="600">군집 내 제곱합</text>
+<line x1="111.2" y1="30.0" x2="111.2" y2="220.0" class="s-bd" stroke-width="1" stroke-dasharray="4 4"/>
+<line x1="205.0" y1="30.0" x2="205.0" y2="220.0" class="s-mu" stroke-width="1" stroke-dasharray="4 4"/>
+<path d="M 80.0 34.8 L 111.2 119.5 L 142.5 149.9 L 173.8 161.8 L 205.0 168.0 L 236.2 173.0 L 267.5 175.9 L 298.8 180.0 L 330.0 182.5" class="s-ac" stroke-width="2" fill="none"/>
+<circle cx="80.0" cy="34.8" r="3.5" class="f-ac"/>
+<circle cx="111.2" cy="119.5" r="3.5" class="f-bd"/>
+<circle cx="142.5" cy="149.9" r="3.5" class="f-ac"/>
+<circle cx="173.8" cy="161.8" r="3.5" class="f-ac"/>
+<circle cx="205.0" cy="168.0" r="3.5" class="f-ac"/>
+<circle cx="236.2" cy="173.0" r="3.5" class="f-ac"/>
+<circle cx="267.5" cy="175.9" r="3.5" class="f-ac"/>
+<circle cx="298.8" cy="180.0" r="3.5" class="f-ac"/>
+<circle cx="330.0" cy="182.5" r="3.5" class="f-ac"/>
+<line x1="400.0" y1="220.0" x2="650.0" y2="220.0" class="s-mu" stroke-width="1.2"/>
+<line x1="400.0" y1="30.0" x2="400.0" y2="220.0" class="s-mu" stroke-width="1.2"/>
+<line x1="396.0" y1="188.3" x2="400.0" y2="188.3" class="s-mu" stroke-width="1.2"/>
+<text x="392.0" y="192.3" class="f-mu" font-size="11" text-anchor="end">0.3</text>
+<line x1="396.0" y1="125.0" x2="400.0" y2="125.0" class="s-mu" stroke-width="1.2"/>
+<text x="392.0" y="129.0" class="f-mu" font-size="11" text-anchor="end">0.4</text>
+<line x1="396.0" y1="61.7" x2="400.0" y2="61.7" class="s-mu" stroke-width="1.2"/>
+<text x="392.0" y="65.7" class="f-mu" font-size="11" text-anchor="end">0.5</text>
+<line x1="400.0" y1="220.0" x2="400.0" y2="224.0" class="s-mu" stroke-width="1.2"/>
+<text x="400.0" y="237.0" class="f-mu" font-size="11" text-anchor="middle">2</text>
+<line x1="431.2" y1="220.0" x2="431.2" y2="224.0" class="s-mu" stroke-width="1.2"/>
+<text x="431.2" y="237.0" class="f-mu" font-size="11" text-anchor="middle">3</text>
+<line x1="462.5" y1="220.0" x2="462.5" y2="224.0" class="s-mu" stroke-width="1.2"/>
+<text x="462.5" y="237.0" class="f-mu" font-size="11" text-anchor="middle">4</text>
+<line x1="493.8" y1="220.0" x2="493.8" y2="224.0" class="s-mu" stroke-width="1.2"/>
+<text x="493.8" y="237.0" class="f-mu" font-size="11" text-anchor="middle">5</text>
+<line x1="525.0" y1="220.0" x2="525.0" y2="224.0" class="s-mu" stroke-width="1.2"/>
+<text x="525.0" y="237.0" class="f-mu" font-size="11" text-anchor="middle">6</text>
+<line x1="556.2" y1="220.0" x2="556.2" y2="224.0" class="s-mu" stroke-width="1.2"/>
+<text x="556.2" y="237.0" class="f-mu" font-size="11" text-anchor="middle">7</text>
+<line x1="587.5" y1="220.0" x2="587.5" y2="224.0" class="s-mu" stroke-width="1.2"/>
+<text x="587.5" y="237.0" class="f-mu" font-size="11" text-anchor="middle">8</text>
+<line x1="618.8" y1="220.0" x2="618.8" y2="224.0" class="s-mu" stroke-width="1.2"/>
+<text x="618.8" y="237.0" class="f-mu" font-size="11" text-anchor="middle">9</text>
+<line x1="650.0" y1="220.0" x2="650.0" y2="224.0" class="s-mu" stroke-width="1.2"/>
+<text x="650.0" y="237.0" class="f-mu" font-size="11" text-anchor="middle">10</text>
+<text x="525.0" y="256.0" class="f-mu" font-size="12" text-anchor="middle">군집 수 k</text>
+<text x="525.0" y="18.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="600">평균 실루엣 계수</text>
+<line x1="431.2" y1="30.0" x2="431.2" y2="220.0" class="s-bd" stroke-width="1" stroke-dasharray="4 4"/>
+<line x1="525.0" y1="30.0" x2="525.0" y2="220.0" class="s-mu" stroke-width="1" stroke-dasharray="4 4"/>
+<path d="M 400.0 88.2 L 431.2 49.3 L 462.5 81.9 L 493.8 92.2 L 525.0 93.0 L 556.2 96.8 L 587.5 110.7 L 618.8 156.4 L 650.0 183.2" class="s-ac" stroke-width="2" fill="none"/>
+<circle cx="400.0" cy="88.2" r="3.5" class="f-ac"/>
+<circle cx="431.2" cy="49.3" r="3.5" class="f-bd"/>
+<circle cx="462.5" cy="81.9" r="3.5" class="f-ac"/>
+<circle cx="493.8" cy="92.2" r="3.5" class="f-ac"/>
+<circle cx="525.0" cy="93.0" r="3.5" class="f-ac"/>
+<circle cx="556.2" cy="96.8" r="3.5" class="f-ac"/>
+<circle cx="587.5" cy="110.7" r="3.5" class="f-ac"/>
+<circle cx="618.8" cy="156.4" r="3.5" class="f-ac"/>
+<circle cx="650.0" cy="183.2" r="3.5" class="f-ac"/>
+<text x="117.2" y="60.0" class="f-bd" font-size="12" text-anchor="start" font-weight="600">k = 3</text>
+<text x="211.0" y="60.0" class="f-mu" font-size="11" text-anchor="start">k = 6 (실제 클래스 수)</text>
+</svg>

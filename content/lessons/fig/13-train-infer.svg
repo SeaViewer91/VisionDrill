@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 680 305" role="img" aria-label="학습 단계(레이블과 손실로 파라미터를 갱신)와 추론 단계(고정된 모델로 새 장면을 예측)의 흐름">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<text x="20.0" y="22.0" class="f-fg" font-size="13" text-anchor="start" font-weight="700">학습 (training)</text>
+<rect x="20.0" y="62.0" width="130.0" height="54.0" rx="6" class="s-fg f-acs" stroke-width="1.4"/>
+<text x="85.0" y="86.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="600">학습 자료</text>
+<text x="85.0" y="103.0" class="f-mu" font-size="11.5" text-anchor="middle">픽셀 + 레이블</text>
+<rect x="200.0" y="62.0" width="110.0" height="54.0" rx="6" class="s-fg f-acs" stroke-width="1.4"/>
+<text x="255.0" y="86.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="600">모델</text>
+<text x="255.0" y="103.0" class="f-mu" font-size="11.5" text-anchor="middle">파라미터 조정 중</text>
+<rect x="360.0" y="62.0" width="100.0" height="54.0" rx="6" class="s-fg f-bg" stroke-width="1.4"/>
+<text x="410.0" y="86.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="600">예측</text>
+<text x="410.0" y="103.0" class="f-mu" font-size="11.5" text-anchor="middle">클래스 확률</text>
+<rect x="510.0" y="62.0" width="150.0" height="54.0" rx="6" class="s-bd f-bds" stroke-width="1.4"/>
+<text x="585.0" y="86.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="600">손실함수</text>
+<text x="585.0" y="103.0" class="f-mu" font-size="11.5" text-anchor="middle">예측과 레이블 비교</text>
+<line x1="150.0" y1="89.0" x2="193.0" y2="89.0" class="s-fg" stroke-width="1.6"/>
+<path d="M 200.0 89.0 L 193.0 92.5 L 193.0 85.5 Z" class="f-fg" stroke-width="0"/>
+<line x1="310.0" y1="89.0" x2="353.0" y2="89.0" class="s-fg" stroke-width="1.6"/>
+<path d="M 360.0 89.0 L 353.0 92.5 L 353.0 85.5 Z" class="f-fg" stroke-width="0"/>
+<line x1="460.0" y1="89.0" x2="503.0" y2="89.0" class="s-fg" stroke-width="1.6"/>
+<path d="M 510.0 89.0 L 503.0 92.5 L 503.0 85.5 Z" class="f-fg" stroke-width="0"/>
+<path d="M 120 62 L 120 42 L 600 42" class="s-mu" fill="none" stroke-width="1.3" stroke-dasharray="4 3"/>
+<line x1="600.0" y1="42.0" x2="600.0" y2="55.0" class="s-mu" stroke-width="1.3" stroke-dasharray="4 3"/>
+<path d="M 600.0 62.0 L 596.5 55.0 L 603.5 55.0 Z" class="f-mu" stroke-width="0"/>
+<text x="360.0" y="36.0" class="f-mu" font-size="11.5" text-anchor="middle">레이블</text>
+<path d="M 585 116 L 585 144 L 285 144" class="s-bd" stroke-width="1.6" fill="none"/>
+<line x1="285.0" y1="144.0" x2="285.0" y2="123.0" class="s-bd" stroke-width="1.6"/>
+<path d="M 285.0 116.0 L 288.5 123.0 L 281.5 123.0 Z" class="f-bd" stroke-width="0"/>
+<text x="435.0" y="162.0" class="f-bd" font-size="12" text-anchor="middle" font-weight="600">손실이 줄도록 파라미터 갱신 (반복)</text>
+<line x1="20.0" y1="185.0" x2="660.0" y2="185.0" class="s-mu" stroke-width="1" stroke-dasharray="2 4"/>
+<text x="20.0" y="212.0" class="f-fg" font-size="13" text-anchor="start" font-weight="700">추론 (inference)</text>
+<rect x="20.0" y="235.0" width="130.0" height="54.0" rx="6" class="s-fg f-acs" stroke-width="1.4"/>
+<text x="85.0" y="259.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="600">새 장면</text>
+<text x="85.0" y="276.0" class="f-mu" font-size="11.5" text-anchor="middle">레이블 없음</text>
+<rect x="200.0" y="235.0" width="110.0" height="54.0" rx="6" class="s-fg f-acs" stroke-width="1.4"/>
+<text x="255.0" y="259.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="600">학습된 모델</text>
+<text x="255.0" y="276.0" class="f-mu" font-size="11.5" text-anchor="middle">파라미터 고정</text>
+<rect x="360.0" y="235.0" width="150.0" height="54.0" rx="6" class="s-ok f-bg" stroke-width="1.4"/>
+<text x="435.0" y="259.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="600">토지피복도</text>
+<text x="435.0" y="276.0" class="f-mu" font-size="11.5" text-anchor="middle">픽셀마다 예측</text>
+<line x1="150.0" y1="262.0" x2="193.0" y2="262.0" class="s-fg" stroke-width="1.6"/>
+<path d="M 200.0 262.0 L 193.0 265.5 L 193.0 258.5 Z" class="f-fg" stroke-width="0"/>
+<line x1="310.0" y1="262.0" x2="353.0" y2="262.0" class="s-fg" stroke-width="1.6"/>
+<path d="M 360.0 262.0 L 353.0 265.5 L 353.0 258.5 Z" class="f-fg" stroke-width="0"/>
+<line x1="230.0" y1="116.0" x2="230.0" y2="228.0" class="s-ac" stroke-width="1.6" stroke-dasharray="5 3"/>
+<path d="M 230.0 235.0 L 226.5 228.0 L 233.5 228.0 Z" class="f-ac" stroke-width="0"/>
+<text x="222.0" y="160.0" class="f-ac" font-size="11.5" text-anchor="end" font-weight="600">저장·불러오기</text>
+<text x="530.0" y="259.0" class="f-mu" font-size="11.5" text-anchor="start">손실 계산 없음</text>
+<text x="530.0" y="276.0" class="f-mu" font-size="11.5" text-anchor="start">전처리는 학습과 같게</text>
+</svg>

@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 680 300" role="img" aria-label="주성분 6개의 설명분산비율 막대와 누적 설명분산비율 꺾은선">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<line x1="70.0" y1="240.0" x2="620.0" y2="240.0" class="s-mu" stroke-width="1.2"/>
+<line x1="70.0" y1="30.0" x2="70.0" y2="240.0" class="s-mu" stroke-width="1.2"/>
+<line x1="66.0" y1="240.0" x2="70.0" y2="240.0" class="s-mu" stroke-width="1.2"/>
+<text x="62.0" y="244.0" class="f-mu" font-size="12" text-anchor="end">0%</text>
+<line x1="66.0" y1="187.5" x2="70.0" y2="187.5" class="s-mu" stroke-width="1.2"/>
+<text x="62.0" y="191.5" class="f-mu" font-size="12" text-anchor="end">25%</text>
+<line x1="70.0" y1="187.5" x2="620.0" y2="187.5" class="s-mu" stroke-width="0.6" stroke-dasharray="2 4"/>
+<line x1="66.0" y1="135.0" x2="70.0" y2="135.0" class="s-mu" stroke-width="1.2"/>
+<text x="62.0" y="139.0" class="f-mu" font-size="12" text-anchor="end">50%</text>
+<line x1="70.0" y1="135.0" x2="620.0" y2="135.0" class="s-mu" stroke-width="0.6" stroke-dasharray="2 4"/>
+<line x1="66.0" y1="82.5" x2="70.0" y2="82.5" class="s-mu" stroke-width="1.2"/>
+<text x="62.0" y="86.5" class="f-mu" font-size="12" text-anchor="end">75%</text>
+<line x1="70.0" y1="82.5" x2="620.0" y2="82.5" class="s-mu" stroke-width="0.6" stroke-dasharray="2 4"/>
+<line x1="66.0" y1="30.0" x2="70.0" y2="30.0" class="s-mu" stroke-width="1.2"/>
+<text x="62.0" y="34.0" class="f-mu" font-size="12" text-anchor="end">100%</text>
+<line x1="70.0" y1="30.0" x2="620.0" y2="30.0" class="s-mu" stroke-width="0.6" stroke-dasharray="2 4"/>
+<rect x="86.8" y="104.2" width="58.0" height="135.8" rx="0" class="s-ac f-acs" stroke-width="1.5"/>
+<text x="115.8" y="258.0" class="f-mu" font-size="12" text-anchor="middle">PC1</text>
+<text x="115.8" y="122.2" class="f-ac" font-size="12" text-anchor="middle" font-weight="600">64.7%</text>
+<rect x="178.5" y="187.8" width="58.0" height="52.2" rx="0" class="s-ac f-acs" stroke-width="1.5"/>
+<text x="207.5" y="258.0" class="f-mu" font-size="12" text-anchor="middle">PC2</text>
+<text x="207.5" y="205.8" class="f-ac" font-size="12" text-anchor="middle" font-weight="600">24.9%</text>
+<rect x="270.2" y="232.2" width="58.0" height="7.8" rx="0" class="s-ac f-acs" stroke-width="1.5"/>
+<text x="299.2" y="258.0" class="f-mu" font-size="12" text-anchor="middle">PC3</text>
+<text x="299.2" y="226.2" class="f-ac" font-size="12" text-anchor="middle" font-weight="600">3.7%</text>
+<rect x="361.8" y="232.9" width="58.0" height="7.1" rx="0" class="s-ac f-acs" stroke-width="1.5"/>
+<text x="390.8" y="258.0" class="f-mu" font-size="12" text-anchor="middle">PC4</text>
+<text x="390.8" y="226.9" class="f-ac" font-size="12" text-anchor="middle" font-weight="600">3.4%</text>
+<rect x="453.5" y="236.1" width="58.0" height="3.9" rx="0" class="s-ac f-acs" stroke-width="1.5"/>
+<text x="482.5" y="258.0" class="f-mu" font-size="12" text-anchor="middle">PC5</text>
+<text x="482.5" y="230.1" class="f-ac" font-size="12" text-anchor="middle" font-weight="600">1.8%</text>
+<rect x="545.2" y="236.8" width="58.0" height="3.2" rx="0" class="s-ac f-acs" stroke-width="1.5"/>
+<text x="574.2" y="258.0" class="f-mu" font-size="12" text-anchor="middle">PC6</text>
+<text x="574.2" y="230.8" class="f-ac" font-size="12" text-anchor="middle" font-weight="600">1.5%</text>
+<path d="M 115.8 104.2 L 207.5 52.0 L 299.2 44.2 L 390.8 37.1 L 482.5 33.2 L 574.2 30.0" class="s-bd" stroke-width="2" fill="none"/>
+<circle cx="115.8" cy="104.2" r="4" class="f-bd"/>
+<circle cx="207.5" cy="52.0" r="4" class="f-bd"/>
+<circle cx="299.2" cy="44.2" r="4" class="f-bd"/>
+<circle cx="390.8" cy="37.1" r="4" class="f-bd"/>
+<circle cx="482.5" cy="33.2" r="4" class="f-bd"/>
+<circle cx="574.2" cy="30.0" r="4" class="f-bd"/>
+<text x="207.5" y="42.0" class="f-bd" font-size="12" text-anchor="middle" font-weight="600">89.5%</text>
+<text x="299.2" y="34.2" class="f-bd" font-size="12" text-anchor="middle" font-weight="600">93.2%</text>
+<text x="149.8" y="108.2" class="f-bd" font-size="12" text-anchor="start" font-weight="600">누적</text>
+<text x="345.0" y="280.0" class="f-mu" font-size="12" text-anchor="middle">주성분 (설명하는 분산이 큰 순서)</text>
+</svg>

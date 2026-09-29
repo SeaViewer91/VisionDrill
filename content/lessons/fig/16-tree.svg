@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 680 360" role="img" aria-label="NDVI와 NDWI 두 특징으로 토지피복 6개 클래스를 가르는 잎 4개짜리 결정트리">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<line x1="400.0" y1="64.0" x2="250.0" y2="106.0" class="s-mu" stroke-width="1.4"/>
+<text x="317.0" y="89.0" class="f-mu" font-size="12" text-anchor="end">예</text>
+<line x1="400.0" y1="64.0" x2="565.0" y2="106.0" class="s-mu" stroke-width="1.4"/>
+<text x="490.5" y="89.0" class="f-mu" font-size="12" text-anchor="start">아니오</text>
+<line x1="250.0" y1="156.0" x2="150.0" y2="198.0" class="s-mu" stroke-width="1.4"/>
+<text x="192.0" y="181.0" class="f-mu" font-size="12" text-anchor="end">예</text>
+<line x1="250.0" y1="156.0" x2="380.0" y2="198.0" class="s-mu" stroke-width="1.4"/>
+<text x="323.0" y="181.0" class="f-mu" font-size="12" text-anchor="start">아니오</text>
+<line x1="150.0" y1="248.0" x2="85.0" y2="290.0" class="s-mu" stroke-width="1.4"/>
+<text x="109.5" y="273.0" class="f-mu" font-size="12" text-anchor="end">예</text>
+<line x1="150.0" y1="248.0" x2="255.0" y2="290.0" class="s-mu" stroke-width="1.4"/>
+<text x="210.5" y="273.0" class="f-mu" font-size="12" text-anchor="start">아니오</text>
+<rect x="325.0" y="14.0" width="150.0" height="50.0" rx="4" class="s-fg f-sf" stroke-width="1.5"/>
+<text x="400.0" y="35.0" class="f-fg" font-size="14" text-anchor="middle" font-weight="700">NDVI ≤ 0.741 ?</text>
+<text x="400.0" y="54.0" class="f-mu" font-size="11" text-anchor="middle">2,883개 · 지니 0.77</text>
+<rect x="175.0" y="106.0" width="150.0" height="50.0" rx="4" class="s-fg f-sf" stroke-width="1.5"/>
+<text x="250.0" y="127.0" class="f-fg" font-size="14" text-anchor="middle" font-weight="700">NDVI ≤ 0.404 ?</text>
+<text x="250.0" y="146.0" class="f-mu" font-size="11" text-anchor="middle">2,011개 · 지니 0.71</text>
+<rect x="490.0" y="106.0" width="150.0" height="50.0" rx="8" class="s-ac f-acs" stroke-width="1.5"/>
+<text x="565.0" y="127.0" class="f-ac" font-size="14" text-anchor="middle" font-weight="700">산림</text>
+<text x="565.0" y="146.0" class="f-mu" font-size="11" text-anchor="middle">872개 중 860개 · 지니 0.03</text>
+<rect x="75.0" y="198.0" width="150.0" height="50.0" rx="4" class="s-fg f-sf" stroke-width="1.5"/>
+<text x="150.0" y="219.0" class="f-fg" font-size="14" text-anchor="middle" font-weight="700">NDWI ≤ 0.105 ?</text>
+<text x="150.0" y="238.0" class="f-mu" font-size="11" text-anchor="middle">1,167개 · 지니 0.75</text>
+<rect x="305.0" y="198.0" width="150.0" height="50.0" rx="8" class="s-ac f-acs" stroke-width="1.5"/>
+<text x="380.0" y="219.0" class="f-ac" font-size="14" text-anchor="middle" font-weight="700">농경지</text>
+<text x="380.0" y="238.0" class="f-mu" font-size="11" text-anchor="middle">844개 중 766개 · 지니 0.17</text>
+<rect x="10.0" y="290.0" width="150.0" height="50.0" rx="8" class="s-ac f-acs" stroke-width="1.5"/>
+<text x="85.0" y="311.0" class="f-ac" font-size="14" text-anchor="middle" font-weight="700">시가지</text>
+<text x="85.0" y="330.0" class="f-mu" font-size="11" text-anchor="middle">806개 중 365개 · 지니 0.68</text>
+<rect x="180.0" y="290.0" width="150.0" height="50.0" rx="8" class="s-ac f-acs" stroke-width="1.5"/>
+<text x="255.0" y="311.0" class="f-ac" font-size="14" text-anchor="middle" font-weight="700">수계</text>
+<text x="255.0" y="330.0" class="f-mu" font-size="11" text-anchor="middle">361개 중 361개 · 지니 0.00</text>
+</svg>
