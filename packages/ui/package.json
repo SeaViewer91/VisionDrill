@@ -6,9 +6,17 @@
   "main": "src/index.ts",
   "types": "src/index.ts",
   "dependencies": {
-    "@visiondrill/core": "*"
+    "@visiondrill/core": "*",
+    "katex": "^0.18.9",
+    "markdown-it": "^15.0.2",
+    "markdown-it-cjk-friendly": "^3.0.0",
+    "markdown-it-texmath": "^1.0.0"
   },
   "peerDependencies": {
     "react": "^19.3.0"
+  },
+  "devDependencies": {
+    "@types/katex": "^0.16.8",
+    "@types/markdown-it": "^14.2.0"
   }
 }

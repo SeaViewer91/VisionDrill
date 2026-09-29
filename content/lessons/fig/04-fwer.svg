@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 680 250" role="img" aria-label="검정 횟수 m에 따라 거짓 양성이 하나 이상 나올 확률 1−(1−α)^m이 커지는 곡선">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<line x1="70.0" y1="205.0" x2="640.0" y2="205.0" class="s-mu" stroke-width="0.6"/>
+<text x="62.0" y="209.0" class="f-mu" font-size="12" text-anchor="end">0</text>
+<line x1="70.0" y1="160.0" x2="640.0" y2="160.0" class="s-mu" stroke-width="0.6" stroke-dasharray="2 4"/>
+<text x="62.0" y="164.0" class="f-mu" font-size="12" text-anchor="end">0.25</text>
+<line x1="70.0" y1="115.0" x2="640.0" y2="115.0" class="s-mu" stroke-width="0.6" stroke-dasharray="2 4"/>
+<text x="62.0" y="119.0" class="f-mu" font-size="12" text-anchor="end">0.5</text>
+<line x1="70.0" y1="70.0" x2="640.0" y2="70.0" class="s-mu" stroke-width="0.6" stroke-dasharray="2 4"/>
+<text x="62.0" y="74.0" class="f-mu" font-size="12" text-anchor="end">0.75</text>
+<line x1="70.0" y1="25.0" x2="640.0" y2="25.0" class="s-mu" stroke-width="0.6" stroke-dasharray="2 4"/>
+<text x="62.0" y="29.0" class="f-mu" font-size="12" text-anchor="end">1</text>
+<text x="70.0" y="223.0" class="f-mu" font-size="12" text-anchor="middle">1</text>
+<text x="179.4" y="223.0" class="f-mu" font-size="12" text-anchor="middle">20</text>
+<text x="294.5" y="223.0" class="f-mu" font-size="12" text-anchor="middle">40</text>
+<text x="409.7" y="223.0" class="f-mu" font-size="12" text-anchor="middle">60</text>
+<text x="524.8" y="223.0" class="f-mu" font-size="12" text-anchor="middle">80</text>
+<text x="640.0" y="223.0" class="f-mu" font-size="12" text-anchor="middle">100</text>
+<text x="355.0" y="243.0" class="f-mu" font-size="12" text-anchor="middle">검정 횟수 m (α = 0.05, 서로 독립)</text>
+<path d="M 70.0 196.0 L 75.8 187.4 L 81.5 179.3 L 87.3 171.6 L 93.0 164.3 L 98.8 157.3 L 104.5 150.7 L 110.3 144.4 L 116.1 138.4 L 121.8 132.8 L 127.6 127.4 L 133.3 122.3 L 139.1 117.4 L 144.8 112.8 L 150.6 108.4 L 156.4 104.2 L 162.1 100.3 L 167.9 96.5 L 173.6 92.9 L 179.4 89.5 L 185.2 86.3 L 190.9 83.2 L 196.7 80.3 L 202.4 77.6 L 208.2 74.9 L 213.9 72.4 L 219.7 70.1 L 225.5 67.8 L 231.2 65.7 L 237.0 63.6 L 242.7 61.7 L 248.5 59.9 L 254.2 58.1 L 260.0 56.5 L 265.8 54.9 L 271.5 53.4 L 277.3 52.0 L 283.0 50.6 L 288.8 49.3 L 294.5 48.1 L 300.3 47.0 L 306.1 45.9 L 311.8 44.8 L 317.6 43.8 L 323.3 42.9 L 329.1 42.0 L 334.8 41.2 L 340.6 40.3 L 346.4 39.6 L 352.1 38.9 L 357.9 38.2 L 363.6 37.5 L 369.4 36.9 L 375.2 36.3 L 380.9 35.7 L 386.7 35.2 L 392.4 34.7 L 398.2 34.2 L 403.9 33.7 L 409.7 33.3 L 415.5 32.9 L 421.2 32.5 L 427.0 32.1 L 432.7 31.8 L 438.5 31.4 L 444.2 31.1 L 450.0 30.8 L 455.8 30.5 L 461.5 30.2 L 467.3 30.0 L 473.0 29.7 L 478.8 29.5 L 484.5 29.3 L 490.3 29.0 L 496.1 28.8 L 501.8 28.6 L 507.6 28.5 L 513.3 28.3 L 519.1 28.1 L 524.8 28.0 L 530.6 27.8 L 536.4 27.7 L 542.1 27.5 L 547.9 27.4 L 553.6 27.3 L 559.4 27.2 L 565.2 27.1 L 570.9 27.0 L 576.7 26.9 L 582.4 26.8 L 588.2 26.7 L 593.9 26.6 L 599.7 26.5 L 605.5 26.4 L 611.2 26.4 L 617.0 26.3 L 622.7 26.2 L 628.5 26.2 L 634.2 26.1 L 640.0 26.1" class="s-ac" stroke-width="2.5" fill="none"/>
+<circle cx="70.0" cy="196.0" r="4.5" class="f-bd"/>
+<text x="86.0" y="190.0" class="f-bd" font-size="12" text-anchor="start">m=1: 0.05</text>
+<circle cx="121.8" cy="132.8" r="4.5" class="f-bd"/>
+<text x="133.8" y="146.8" class="f-bd" font-size="12" text-anchor="start">m=10: 0.40</text>
+<circle cx="144.8" cy="112.8" r="4.5" class="f-bd"/>
+<text x="156.8" y="126.8" class="f-bd" font-size="12" text-anchor="start">m=14: 0.51</text>
+<circle cx="352.1" cy="38.9" r="4.5" class="f-bd"/>
+<text x="352.1" y="60.9" class="f-bd" font-size="12" text-anchor="middle">m=50: 0.92</text>
+</svg>

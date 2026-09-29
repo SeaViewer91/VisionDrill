@@ -118,6 +118,22 @@ export class Learner {
     return next;
   }
 
+  // ------------------------------------------------------------------ 자습서 읽음 표시 (문제풀이 기록과 무관)
+  lessonsRead(): Record<string, string> {
+    const raw = this.db.value<string>(`SELECT value FROM learner_meta WHERE key='lessons_read'`);
+    return raw ? JSON.parse(raw) : {};
+  }
+
+  setLessonRead(id: string, read: boolean): Record<string, string> {
+    const m = this.lessonsRead();
+    if (read) m[id] = nowIso();
+    else delete m[id];
+    this.db.run(`INSERT INTO learner_meta(key,value) VALUES('lessons_read',?) ON CONFLICT(key) DO UPDATE SET value=excluded.value`, [
+      JSON.stringify(m),
+    ]);
+    return m;
+  }
+
   // ------------------------------------------------------------------ 팩
   packInfo(): PackManifest | undefined {
     try {

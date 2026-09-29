@@ -32,7 +32,7 @@ export function GlossaryPage() {
         </select>
       </div>
       <p className="vd-muted" style={{ marginTop: -8, fontSize: '0.88rem' }}>
-        <span className="vd-chip vd-chip-project">프로젝트 정의</span> 표시는 사내(Diagnostics)에서 정의한 용어입니다. 외부와 이야기할 때는
+        <span className="vd-chip vd-chip-project">프로젝트 정의</span> 표시는 Diagnostics 프로젝트에서 새로 정의한 용어입니다. 외부와 이야기할 때는
         풀어서 설명하세요.
       </p>
       <div style={{ display: 'grid', gap: 8 }}>

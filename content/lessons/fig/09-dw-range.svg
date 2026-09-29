@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 680 190" role="img" aria-label="더빈-왓슨 통계량의 범위: 0 근처는 양의 자기상관, 2 근처는 자기상관 없음, 4 근처는 음의 자기상관">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<rect x="50.0" y="76.0" width="217.5" height="32.0" rx="0" class="s-mu f-bds" stroke-width="1"/>
+<rect x="267.5" y="76.0" width="145.0" height="32.0" rx="0" class="s-mu f-sf" stroke-width="1"/>
+<rect x="412.5" y="76.0" width="217.5" height="32.0" rx="0" class="s-mu f-acs" stroke-width="1"/>
+<line x1="50.0" y1="108.0" x2="50.0" y2="114.0" class="s-fg" stroke-width="1.2"/>
+<text x="50.0" y="130.0" class="f-fg" font-size="13" text-anchor="middle">0</text>
+<line x1="195.0" y1="108.0" x2="195.0" y2="114.0" class="s-fg" stroke-width="1.2"/>
+<text x="195.0" y="130.0" class="f-fg" font-size="13" text-anchor="middle">1</text>
+<line x1="340.0" y1="108.0" x2="340.0" y2="114.0" class="s-fg" stroke-width="1.2"/>
+<text x="340.0" y="130.0" class="f-fg" font-size="13" text-anchor="middle">2</text>
+<line x1="485.0" y1="108.0" x2="485.0" y2="114.0" class="s-fg" stroke-width="1.2"/>
+<text x="485.0" y="130.0" class="f-fg" font-size="13" text-anchor="middle">3</text>
+<line x1="630.0" y1="108.0" x2="630.0" y2="114.0" class="s-fg" stroke-width="1.2"/>
+<text x="630.0" y="130.0" class="f-fg" font-size="13" text-anchor="middle">4</text>
+<text x="158.8" y="97.0" class="f-bd" font-size="13" text-anchor="middle" font-weight="600">양의 자기상관</text>
+<text x="340.0" y="97.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="600">거의 없음</text>
+<text x="521.2" y="97.0" class="f-ac" font-size="13" text-anchor="middle" font-weight="600">음의 자기상관</text>
+<text x="158.8" y="154.0" class="f-mu" font-size="12" text-anchor="middle">잔차가 이웃 달과 닮음 (r &gt; 0)</text>
+<text x="340.0" y="154.0" class="f-mu" font-size="12" text-anchor="middle">r ≈ 0</text>
+<text x="521.2" y="154.0" class="f-mu" font-size="12" text-anchor="middle">부호가 번갈아 바뀜 (r &lt; 0)</text>
+<path d="M 138.4 72.0 L 132.4 62.0 L 144.4 62.0 Z" class="f-bd" stroke-width="0"/>
+<text x="138.4" y="54.0" class="f-bd" font-size="12" text-anchor="middle" font-weight="600">정적 모형 0.61</text>
+<path d="M 322.1 72.0 L 316.1 62.0 L 328.1 62.0 Z" class="f-ac" stroke-width="0"/>
+<text x="322.1" y="54.0" class="f-ac" font-size="12" text-anchor="middle" font-weight="600">시차 변수 모형 1.88</text>
+<text x="340.0" y="24.0" class="f-fg" font-size="13" text-anchor="middle">DW ≈ 2(1 − r),  r = 이웃한 두 시점 잔차의 상관</text>
+</svg>

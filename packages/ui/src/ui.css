@@ -710,3 +710,125 @@ h3 {
     grid-template-columns: 1fr;
   }
 }
+
+/* ------------------------------------------------------------ 자습서 */
+.lesson {
+  max-width: 760px;
+  line-height: 1.75;
+  font-size: 1rem;
+  color: var(--text);
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+.lesson h1 {
+  font-size: 1.6rem;
+  margin: 0 0 0.6em;
+  line-height: 1.35;
+}
+.lesson h2 {
+  font-size: 1.22rem;
+  margin: 2em 0 0.6em;
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid var(--border);
+}
+.lesson h3 {
+  font-size: 1.05rem;
+  margin: 1.6em 0 0.5em;
+}
+.lesson p,
+.lesson ul,
+.lesson ol {
+  margin: 0.6em 0;
+}
+.lesson li + li {
+  margin-top: 0.25em;
+}
+.lesson code {
+  font-family: var(--mono);
+  font-size: 0.9em;
+  background: var(--surface-2);
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+}
+.lesson blockquote {
+  margin: 1em 0;
+  padding: 0.7em 1em;
+  border-left: 3px solid var(--accent);
+  background: var(--accent-soft);
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+.lesson blockquote p {
+  margin: 0.3em 0;
+}
+.lesson-table {
+  overflow-x: auto;
+  margin: 1em 0;
+}
+.lesson table {
+  border-collapse: collapse;
+  font-size: 0.93rem;
+  min-width: 60%;
+}
+.lesson th,
+.lesson td {
+  border: 1px solid var(--border);
+  padding: 0.4em 0.7em;
+  text-align: left;
+  vertical-align: top;
+}
+.lesson th {
+  background: var(--surface-2);
+}
+.lesson .katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.3em 0;
+}
+.lesson .katex {
+  font-size: 1.08em;
+}
+.lesson-math-error {
+  font-family: var(--mono);
+  color: var(--bad);
+  background: var(--bad-soft);
+}
+.lesson-fig {
+  margin: 1.4em 0;
+  text-align: center;
+}
+.lesson-fig img {
+  max-width: 100%;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+.lesson-svg {
+  max-width: 680px;
+  margin: 0 auto;
+}
+.lesson-fig figcaption {
+  font-size: 0.88rem;
+  color: var(--text-2);
+  margin-top: 0.5em;
+}
+.lesson-fig-missing {
+  padding: 1em;
+  border: 1px dashed var(--bad);
+}
+/* 그림(SVG) 색: 그림 파일 안의 기본색(밝은 배경용)을 앱 테마 색으로 덮어씀 */
+.lesson .vdfig text {
+  font-family: var(--font);
+}
+.lesson .vdfig .s-fg { stroke: var(--text); }
+.lesson .vdfig .s-mu { stroke: var(--text-3); }
+.lesson .vdfig .s-ac { stroke: var(--accent); }
+.lesson .vdfig .s-bd { stroke: var(--bad); }
+.lesson .vdfig .s-ok { stroke: var(--ok); }
+.lesson .vdfig .f-fg { fill: var(--text); }
+.lesson .vdfig .f-mu { fill: var(--text-2); }
+.lesson .vdfig .f-ac { fill: var(--accent); }
+.lesson .vdfig .f-acs { fill: var(--accent-soft); }
+.lesson .vdfig .f-bd { fill: var(--bad); }
+.lesson .vdfig .f-bds { fill: var(--bad-soft); }
+.lesson .vdfig .f-ok { fill: var(--ok); }
+.lesson .vdfig .f-sf { fill: var(--surface-2); }
+.lesson .vdfig .f-bg { fill: var(--surface); }

@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 680 270" role="img" aria-label="피어슨 r이 모두 0.80으로 같지만 모양이 다른 산점도 세 개와 각각의 스피어만 ρ">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<line x1="25.0" y1="200.0" x2="215.0" y2="200.0" class="s-mu" stroke-width="1.2"/>
+<line x1="25.0" y1="40.0" x2="25.0" y2="200.0" class="s-mu" stroke-width="1.2"/>
+<circle cx="35.0" cy="127.7" r="4.5" class="f-ac"/>
+<circle cx="47.1" cy="190.0" r="4.5" class="f-ac"/>
+<circle cx="59.3" cy="139.0" r="4.5" class="f-ac"/>
+<circle cx="71.4" cy="147.2" r="4.5" class="f-ac"/>
+<circle cx="83.6" cy="139.0" r="4.5" class="f-ac"/>
+<circle cx="95.7" cy="129.0" r="4.5" class="f-ac"/>
+<circle cx="107.9" cy="149.5" r="4.5" class="f-ac"/>
+<circle cx="120.0" cy="116.2" r="4.5" class="f-ac"/>
+<circle cx="132.1" cy="119.2" r="4.5" class="f-ac"/>
+<circle cx="144.3" cy="50.0" r="4.5" class="f-ac"/>
+<circle cx="156.4" cy="89.8" r="4.5" class="f-ac"/>
+<circle cx="168.6" cy="92.0" r="4.5" class="f-ac"/>
+<circle cx="180.7" cy="84.4" r="4.5" class="f-ac"/>
+<circle cx="192.9" cy="83.7" r="4.5" class="f-ac"/>
+<circle cx="205.0" cy="83.0" r="4.5" class="f-ac"/>
+<text x="120.0" y="24.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="600">직선 + 잡음</text>
+<text x="120.0" y="230.0" class="f-fg" font-size="13" text-anchor="middle">피어슨 r = 0.80</text>
+<text x="120.0" y="252.0" class="f-bd" font-size="13" text-anchor="middle" font-weight="600">스피어만 ρ = 0.82</text>
+<line x1="250.0" y1="200.0" x2="440.0" y2="200.0" class="s-mu" stroke-width="1.2"/>
+<line x1="250.0" y1="40.0" x2="250.0" y2="200.0" class="s-mu" stroke-width="1.2"/>
+<circle cx="260.0" cy="190.0" r="4.5" class="f-ac"/>
+<circle cx="272.1" cy="190.0" r="4.5" class="f-ac"/>
+<circle cx="284.3" cy="190.0" r="4.5" class="f-ac"/>
+<circle cx="296.4" cy="190.0" r="4.5" class="f-ac"/>
+<circle cx="308.6" cy="189.8" r="4.5" class="f-ac"/>
+<circle cx="320.7" cy="189.4" r="4.5" class="f-ac"/>
+<circle cx="332.9" cy="188.5" r="4.5" class="f-ac"/>
+<circle cx="345.0" cy="186.6" r="4.5" class="f-ac"/>
+<circle cx="357.1" cy="183.0" r="4.5" class="f-ac"/>
+<circle cx="369.3" cy="176.9" r="4.5" class="f-ac"/>
+<circle cx="381.4" cy="167.0" r="4.5" class="f-ac"/>
+<circle cx="393.6" cy="151.6" r="4.5" class="f-ac"/>
+<circle cx="405.7" cy="128.7" r="4.5" class="f-ac"/>
+<circle cx="417.9" cy="95.9" r="4.5" class="f-ac"/>
+<circle cx="430.0" cy="50.0" r="4.5" class="f-ac"/>
+<text x="345.0" y="24.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="600">휘어진 단조 관계</text>
+<text x="345.0" y="230.0" class="f-fg" font-size="13" text-anchor="middle">피어슨 r = 0.80</text>
+<text x="345.0" y="252.0" class="f-bd" font-size="13" text-anchor="middle" font-weight="600">스피어만 ρ = 1.00</text>
+<line x1="475.0" y1="200.0" x2="665.0" y2="200.0" class="s-mu" stroke-width="1.2"/>
+<line x1="475.0" y1="40.0" x2="475.0" y2="200.0" class="s-mu" stroke-width="1.2"/>
+<circle cx="534.0" cy="175.8" r="4.5" class="f-ac"/>
+<circle cx="529.9" cy="171.5" r="4.5" class="f-ac"/>
+<circle cx="490.0" cy="164.1" r="4.5" class="f-ac"/>
+<circle cx="488.9" cy="157.1" r="4.5" class="f-ac"/>
+<circle cx="530.8" cy="159.9" r="4.5" class="f-ac"/>
+<circle cx="546.4" cy="154.2" r="4.5" class="f-ac"/>
+<circle cx="495.7" cy="189.7" r="4.5" class="f-ac"/>
+<circle cx="497.0" cy="158.5" r="4.5" class="f-ac"/>
+<circle cx="535.8" cy="164.0" r="4.5" class="f-ac"/>
+<circle cx="516.6" cy="148.8" r="4.5" class="f-ac"/>
+<circle cx="512.3" cy="144.5" r="4.5" class="f-ac"/>
+<circle cx="507.2" cy="190.0" r="4.5" class="f-ac"/>
+<circle cx="485.0" cy="149.9" r="4.5" class="f-ac"/>
+<circle cx="515.4" cy="178.2" r="4.5" class="f-ac"/>
+<circle cx="655.0" cy="50.0" r="4.5" class="f-ac"/>
+<text x="570.0" y="24.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="600">무관한 점 + 이상치 1개</text>
+<text x="570.0" y="230.0" class="f-fg" font-size="13" text-anchor="middle">피어슨 r = 0.80</text>
+<text x="570.0" y="252.0" class="f-bd" font-size="13" text-anchor="middle" font-weight="600">스피어만 ρ = 0.16</text>
+</svg>

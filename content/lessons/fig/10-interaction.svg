@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 680 300" role="img" aria-label="상호작용항이 없으면 두 직선이 평행하고, 있으면 기울기가 달라짐">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<line x1="60.0" y1="220.0" x2="330.0" y2="220.0" class="s-mu" stroke-width="1.2"/>
+<line x1="60.0" y1="220.0" x2="60.0" y2="60.0" class="s-mu" stroke-width="1.2"/>
+<line x1="91.8" y1="220.0" x2="91.8" y2="225.0" class="s-mu" stroke-width="1.2"/>
+<text x="91.8" y="238.0" class="f-mu" font-size="11" text-anchor="middle">20</text>
+<line x1="155.3" y1="220.0" x2="155.3" y2="225.0" class="s-mu" stroke-width="1.2"/>
+<text x="155.3" y="238.0" class="f-mu" font-size="11" text-anchor="middle">40</text>
+<line x1="218.8" y1="220.0" x2="218.8" y2="225.0" class="s-mu" stroke-width="1.2"/>
+<text x="218.8" y="238.0" class="f-mu" font-size="11" text-anchor="middle">60</text>
+<line x1="282.4" y1="220.0" x2="282.4" y2="225.0" class="s-mu" stroke-width="1.2"/>
+<text x="282.4" y="238.0" class="f-mu" font-size="11" text-anchor="middle">80</text>
+<line x1="55.0" y1="220.0" x2="60.0" y2="220.0" class="s-mu" stroke-width="1.2"/>
+<text x="51.0" y="224.0" class="f-mu" font-size="11" text-anchor="end">20</text>
+<line x1="55.0" y1="175.6" x2="60.0" y2="175.6" class="s-mu" stroke-width="1.2"/>
+<text x="51.0" y="179.6" class="f-mu" font-size="11" text-anchor="end">25</text>
+<line x1="55.0" y1="131.1" x2="60.0" y2="131.1" class="s-mu" stroke-width="1.2"/>
+<text x="51.0" y="135.1" class="f-mu" font-size="11" text-anchor="end">30</text>
+<line x1="55.0" y1="86.7" x2="60.0" y2="86.7" class="s-mu" stroke-width="1.2"/>
+<text x="51.0" y="90.7" class="f-mu" font-size="11" text-anchor="end">35</text>
+<text x="195.0" y="260.0" class="f-mu" font-size="12" text-anchor="middle">불투수면 비율 (%)</text>
+<text x="195.0" y="30.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="600">상호작용항 없음</text>
+<text x="30.0" y="50.0" class="f-mu" font-size="11" text-anchor="start">LST (℃)</text>
+<line x1="60.0" y1="201.3" x2="330.0" y2="105.7" class="s-ac" stroke-width="2.5"/>
+<line x1="60.0" y1="187.3" x2="330.0" y2="91.7" class="s-bd" stroke-width="2.5"/>
+<text x="66.4" y="76.0" class="f-fg" font-size="12" text-anchor="start">두 선 기울기 모두 0.127</text>
+<text x="66.4" y="93.8" class="f-mu" font-size="12" text-anchor="start">해안 거리는 높이만 바꿈</text>
+<line x1="390.0" y1="220.0" x2="660.0" y2="220.0" class="s-mu" stroke-width="1.2"/>
+<line x1="390.0" y1="220.0" x2="390.0" y2="60.0" class="s-mu" stroke-width="1.2"/>
+<line x1="421.8" y1="220.0" x2="421.8" y2="225.0" class="s-mu" stroke-width="1.2"/>
+<text x="421.8" y="238.0" class="f-mu" font-size="11" text-anchor="middle">20</text>
+<line x1="485.3" y1="220.0" x2="485.3" y2="225.0" class="s-mu" stroke-width="1.2"/>
+<text x="485.3" y="238.0" class="f-mu" font-size="11" text-anchor="middle">40</text>
+<line x1="548.8" y1="220.0" x2="548.8" y2="225.0" class="s-mu" stroke-width="1.2"/>
+<text x="548.8" y="238.0" class="f-mu" font-size="11" text-anchor="middle">60</text>
+<line x1="612.4" y1="220.0" x2="612.4" y2="225.0" class="s-mu" stroke-width="1.2"/>
+<text x="612.4" y="238.0" class="f-mu" font-size="11" text-anchor="middle">80</text>
+<line x1="385.0" y1="220.0" x2="390.0" y2="220.0" class="s-mu" stroke-width="1.2"/>
+<text x="381.0" y="224.0" class="f-mu" font-size="11" text-anchor="end">20</text>
+<line x1="385.0" y1="175.6" x2="390.0" y2="175.6" class="s-mu" stroke-width="1.2"/>
+<text x="381.0" y="179.6" class="f-mu" font-size="11" text-anchor="end">25</text>
+<line x1="385.0" y1="131.1" x2="390.0" y2="131.1" class="s-mu" stroke-width="1.2"/>
+<text x="381.0" y="135.1" class="f-mu" font-size="11" text-anchor="end">30</text>
+<line x1="385.0" y1="86.7" x2="390.0" y2="86.7" class="s-mu" stroke-width="1.2"/>
+<text x="381.0" y="90.7" class="f-mu" font-size="11" text-anchor="end">35</text>
+<text x="525.0" y="260.0" class="f-mu" font-size="12" text-anchor="middle">불투수면 비율 (%)</text>
+<text x="525.0" y="30.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="600">상호작용항 있음</text>
+<text x="360.0" y="50.0" class="f-mu" font-size="11" text-anchor="start">LST (℃)</text>
+<line x1="390.0" y1="197.1" x2="660.0" y2="114.2" class="s-ac" stroke-width="2.5"/>
+<line x1="390.0" y1="201.1" x2="660.0" y2="72.6" class="s-bd" stroke-width="2.5"/>
+<text x="396.4" y="76.0" class="f-fg" font-size="12" text-anchor="start">기울기 0.110 → 0.170</text>
+<text x="396.4" y="93.8" class="f-mu" font-size="12" text-anchor="start">해안에서 멀수록 가팔라짐</text>
+<line x1="250.0" y1="288.0" x2="274.0" y2="288.0" class="s-ac" stroke-width="2.5"/>
+<text x="280.0" y="292.0" class="f-ac" font-size="12" text-anchor="start">해안 5 km</text>
+<line x1="360.0" y1="288.0" x2="384.0" y2="288.0" class="s-bd" stroke-width="2.5"/>
+<text x="390.0" y="292.0" class="f-bd" font-size="12" text-anchor="start">해안 35 km</text>
+</svg>

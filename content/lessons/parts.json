@@ -1,0 +1,15 @@
+{
+  "title": "VisionDrill 자습서",
+  "parts": [
+    { "part": 0, "title": "시작하기" },
+    { "part": 1, "title": "데이터를 숫자로 읽기", "subtitle": "통계 기초" },
+    { "part": 2, "title": "관계를 모형으로", "subtitle": "회귀분석과 회귀진단" },
+    { "part": 3, "title": "머신러닝의 기본기" },
+    { "part": 4, "title": "영상과 기하", "subtitle": "고전 CV·원격탐사 기초" },
+    { "part": 5, "title": "딥러닝" },
+    { "part": 6, "title": "태스크와 평가" },
+    { "part": 7, "title": "학습 실무" },
+    { "part": 8, "title": "모델 진단", "subtitle": "Diagnostics" },
+    { "part": 9, "title": "부록" }
+  ]
+}

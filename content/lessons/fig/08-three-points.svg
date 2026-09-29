@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 680 250" role="img" aria-label="튀는 점 세 종류: y 방향 이상치, 레버리지가 큰 점, 영향점이 회귀선에 주는 영향">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<line x1="22.0" y1="200.0" x2="218.0" y2="200.0" class="s-mu" stroke-width="1.2"/>
+<line x1="22.0" y1="200.0" x2="22.0" y2="38.0" class="s-mu" stroke-width="1.2"/>
+<line x1="22.0" y1="191.2" x2="218.0" y2="31.7" class="s-mu" stroke-width="1.6" stroke-dasharray="5 4"/>
+<line x1="22.0" y1="186.5" x2="218.0" y2="27.0" class="s-bd" stroke-width="2"/>
+<circle cx="38.3" cy="177.8" r="3.6" class="f-mu"/>
+<circle cx="45.8" cy="171.0" r="3.6" class="f-mu"/>
+<circle cx="53.2" cy="166.4" r="3.6" class="f-mu"/>
+<circle cx="60.6" cy="156.4" r="3.6" class="f-mu"/>
+<circle cx="68.0" cy="161.9" r="3.6" class="f-mu"/>
+<circle cx="75.5" cy="146.1" r="3.6" class="f-mu"/>
+<circle cx="82.9" cy="145.4" r="3.6" class="f-mu"/>
+<circle cx="90.3" cy="131.1" r="3.6" class="f-mu"/>
+<circle cx="97.7" cy="126.0" r="3.6" class="f-mu"/>
+<circle cx="105.2" cy="119.0" r="3.6" class="f-mu"/>
+<circle cx="112.6" cy="117.5" r="3.6" class="f-mu"/>
+<circle cx="120.0" cy="117.1" r="3.6" class="f-mu"/>
+<circle cx="79.2" cy="83.5" r="6" class="f-bd"/>
+<text x="120.0" y="24.0" class="f-fg" font-size="14" text-anchor="middle" font-weight="600">이상치</text>
+<text x="120.0" y="222.0" class="f-mu" font-size="12" text-anchor="middle">h = 0.08, D = 0.44</text>
+<text x="120.0" y="240.0" class="f-bd" font-size="12" text-anchor="middle">기울기 0.64 → 0.64</text>
+<line x1="248.0" y1="200.0" x2="444.0" y2="200.0" class="s-mu" stroke-width="1.2"/>
+<line x1="248.0" y1="200.0" x2="248.0" y2="38.0" class="s-mu" stroke-width="1.2"/>
+<line x1="248.0" y1="191.2" x2="444.0" y2="31.7" class="s-mu" stroke-width="1.6" stroke-dasharray="5 4"/>
+<line x1="248.0" y1="191.4" x2="444.0" y2="31.0" class="s-bd" stroke-width="2"/>
+<circle cx="264.3" cy="177.8" r="3.6" class="f-mu"/>
+<circle cx="271.8" cy="171.0" r="3.6" class="f-mu"/>
+<circle cx="279.2" cy="166.4" r="3.6" class="f-mu"/>
+<circle cx="286.6" cy="156.4" r="3.6" class="f-mu"/>
+<circle cx="294.0" cy="161.9" r="3.6" class="f-mu"/>
+<circle cx="301.5" cy="146.1" r="3.6" class="f-mu"/>
+<circle cx="308.9" cy="145.4" r="3.6" class="f-mu"/>
+<circle cx="316.3" cy="131.1" r="3.6" class="f-mu"/>
+<circle cx="323.7" cy="126.0" r="3.6" class="f-mu"/>
+<circle cx="331.2" cy="119.0" r="3.6" class="f-mu"/>
+<circle cx="338.6" cy="117.5" r="3.6" class="f-mu"/>
+<circle cx="346.0" cy="117.1" r="3.6" class="f-mu"/>
+<circle cx="427.7" cy="44.0" r="6" class="f-bd"/>
+<text x="346.0" y="24.0" class="f-fg" font-size="14" text-anchor="middle" font-weight="600">레버리지 큼</text>
+<text x="346.0" y="222.0" class="f-mu" font-size="12" text-anchor="middle">h = 0.67, D = 0.02</text>
+<text x="346.0" y="240.0" class="f-bd" font-size="12" text-anchor="middle">기울기 0.64 → 0.64</text>
+<line x1="474.0" y1="200.0" x2="670.0" y2="200.0" class="s-mu" stroke-width="1.2"/>
+<line x1="474.0" y1="200.0" x2="474.0" y2="38.0" class="s-mu" stroke-width="1.2"/>
+<line x1="474.0" y1="191.2" x2="670.0" y2="31.7" class="s-mu" stroke-width="1.6" stroke-dasharray="5 4"/>
+<line x1="474.0" y1="164.0" x2="670.0" y2="107.4" class="s-bd" stroke-width="2"/>
+<circle cx="490.3" cy="177.8" r="3.6" class="f-mu"/>
+<circle cx="497.8" cy="171.0" r="3.6" class="f-mu"/>
+<circle cx="505.2" cy="166.4" r="3.6" class="f-mu"/>
+<circle cx="512.6" cy="156.4" r="3.6" class="f-mu"/>
+<circle cx="520.0" cy="161.9" r="3.6" class="f-mu"/>
+<circle cx="527.5" cy="146.1" r="3.6" class="f-mu"/>
+<circle cx="534.9" cy="145.4" r="3.6" class="f-mu"/>
+<circle cx="542.3" cy="131.1" r="3.6" class="f-mu"/>
+<circle cx="549.7" cy="126.0" r="3.6" class="f-mu"/>
+<circle cx="557.2" cy="119.0" r="3.6" class="f-mu"/>
+<circle cx="564.6" cy="117.5" r="3.6" class="f-mu"/>
+<circle cx="572.0" cy="117.1" r="3.6" class="f-mu"/>
+<circle cx="653.7" cy="145.9" r="6" class="f-bd"/>
+<text x="572.0" y="24.0" class="f-fg" font-size="14" text-anchor="middle" font-weight="600">영향점</text>
+<text x="572.0" y="222.0" class="f-mu" font-size="12" text-anchor="middle">h = 0.67, D = 10.38</text>
+<text x="572.0" y="240.0" class="f-bd" font-size="12" text-anchor="middle">기울기 0.64 → 0.23</text>
+</svg>

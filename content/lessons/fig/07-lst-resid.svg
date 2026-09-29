@@ -1,0 +1,214 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 680 290" role="img" aria-label="공통 자료 기본 모형의 잔차 대 적합값 플롯(오른쪽으로 갈수록 퍼짐)과 정규 Q-Q 플롯(D43 한 점이 크게 벗어남)">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<line x1="60.0" y1="240.0" x2="320.0" y2="240.0" class="s-mu" stroke-width="1.2"/>
+<line x1="60.0" y1="240.0" x2="60.0" y2="30.0" class="s-mu" stroke-width="1.2"/>
+<line x1="60.0" y1="170.0" x2="320.0" y2="170.0" class="s-mu" stroke-width="1.2" stroke-dasharray="4 3"/>
+<line x1="60.0" y1="240.0" x2="60.0" y2="245.0" class="s-mu" stroke-width="1.2"/>
+<text x="60.0" y="259.0" class="f-mu" font-size="11" text-anchor="middle">22</text>
+<line x1="134.3" y1="240.0" x2="134.3" y2="245.0" class="s-mu" stroke-width="1.2"/>
+<text x="134.3" y="259.0" class="f-mu" font-size="11" text-anchor="middle">26</text>
+<line x1="208.6" y1="240.0" x2="208.6" y2="245.0" class="s-mu" stroke-width="1.2"/>
+<text x="208.6" y="259.0" class="f-mu" font-size="11" text-anchor="middle">30</text>
+<line x1="282.9" y1="240.0" x2="282.9" y2="245.0" class="s-mu" stroke-width="1.2"/>
+<text x="282.9" y="259.0" class="f-mu" font-size="11" text-anchor="middle">34</text>
+<line x1="55.0" y1="240.0" x2="60.0" y2="240.0" class="s-mu" stroke-width="1.2"/>
+<text x="51.0" y="244.0" class="f-mu" font-size="11" text-anchor="end">−4</text>
+<line x1="55.0" y1="170.0" x2="60.0" y2="170.0" class="s-mu" stroke-width="1.2"/>
+<text x="51.0" y="174.0" class="f-mu" font-size="11" text-anchor="end">0</text>
+<line x1="55.0" y1="100.0" x2="60.0" y2="100.0" class="s-mu" stroke-width="1.2"/>
+<text x="51.0" y="104.0" class="f-mu" font-size="11" text-anchor="end">4</text>
+<line x1="55.0" y1="30.0" x2="60.0" y2="30.0" class="s-mu" stroke-width="1.2"/>
+<text x="51.0" y="34.0" class="f-mu" font-size="11" text-anchor="end">8</text>
+<circle cx="135.1" cy="166.3" r="3.4" class="f-ac"/>
+<circle cx="193.8" cy="163.0" r="3.4" class="f-ac"/>
+<circle cx="207.0" cy="172.3" r="3.4" class="f-ac"/>
+<circle cx="146.9" cy="154.7" r="3.4" class="f-ac"/>
+<circle cx="182.2" cy="178.3" r="3.4" class="f-ac"/>
+<circle cx="170.0" cy="120.6" r="3.4" class="f-ac"/>
+<circle cx="174.6" cy="156.7" r="3.4" class="f-ac"/>
+<circle cx="212.6" cy="180.2" r="3.4" class="f-ac"/>
+<circle cx="241.1" cy="132.2" r="3.4" class="f-ac"/>
+<circle cx="261.7" cy="202.5" r="3.4" class="f-ac"/>
+<circle cx="135.0" cy="191.3" r="3.4" class="f-ac"/>
+<circle cx="106.9" cy="168.3" r="3.4" class="f-ac"/>
+<circle cx="194.6" cy="189.1" r="3.4" class="f-ac"/>
+<circle cx="194.0" cy="183.6" r="3.4" class="f-ac"/>
+<circle cx="244.2" cy="184.2" r="3.4" class="f-ac"/>
+<circle cx="91.0" cy="177.8" r="3.4" class="f-ac"/>
+<circle cx="159.8" cy="169.2" r="3.4" class="f-ac"/>
+<circle cx="225.6" cy="173.5" r="3.4" class="f-ac"/>
+<circle cx="85.1" cy="187.7" r="3.4" class="f-ac"/>
+<circle cx="202.0" cy="166.3" r="3.4" class="f-ac"/>
+<circle cx="171.4" cy="154.0" r="3.4" class="f-ac"/>
+<circle cx="150.5" cy="157.6" r="3.4" class="f-ac"/>
+<circle cx="92.1" cy="159.0" r="3.4" class="f-ac"/>
+<circle cx="179.7" cy="192.1" r="3.4" class="f-ac"/>
+<circle cx="169.4" cy="167.5" r="3.4" class="f-ac"/>
+<circle cx="252.2" cy="164.7" r="3.4" class="f-ac"/>
+<circle cx="130.6" cy="173.7" r="3.4" class="f-ac"/>
+<circle cx="137.1" cy="153.6" r="3.4" class="f-ac"/>
+<circle cx="269.0" cy="108.0" r="3.4" class="f-ac"/>
+<circle cx="195.7" cy="140.2" r="3.4" class="f-ac"/>
+<circle cx="240.3" cy="215.2" r="3.4" class="f-ac"/>
+<circle cx="217.6" cy="158.6" r="3.4" class="f-ac"/>
+<circle cx="222.8" cy="152.1" r="3.4" class="f-ac"/>
+<circle cx="169.4" cy="198.7" r="3.4" class="f-ac"/>
+<circle cx="131.3" cy="175.3" r="3.4" class="f-ac"/>
+<circle cx="144.9" cy="199.6" r="3.4" class="f-ac"/>
+<circle cx="131.8" cy="170.1" r="3.4" class="f-ac"/>
+<circle cx="214.3" cy="189.0" r="3.4" class="f-ac"/>
+<circle cx="217.0" cy="117.1" r="3.4" class="f-ac"/>
+<circle cx="123.4" cy="151.5" r="3.4" class="f-ac"/>
+<circle cx="177.7" cy="176.1" r="3.4" class="f-ac"/>
+<circle cx="199.2" cy="195.8" r="3.4" class="f-ac"/>
+<circle cx="206.2" cy="133.8" r="3.4" class="f-ac"/>
+<circle cx="119.1" cy="138.0" r="3.4" class="f-ac"/>
+<circle cx="200.3" cy="184.3" r="3.4" class="f-ac"/>
+<circle cx="115.3" cy="168.9" r="3.4" class="f-ac"/>
+<circle cx="136.7" cy="173.2" r="3.4" class="f-ac"/>
+<circle cx="113.5" cy="150.0" r="3.4" class="f-ac"/>
+<circle cx="235.3" cy="204.3" r="3.4" class="f-ac"/>
+<circle cx="79.6" cy="154.2" r="3.4" class="f-ac"/>
+<circle cx="254.0" cy="198.0" r="3.4" class="f-ac"/>
+<circle cx="139.2" cy="180.9" r="3.4" class="f-ac"/>
+<circle cx="141.6" cy="175.0" r="3.4" class="f-ac"/>
+<circle cx="170.1" cy="153.7" r="3.4" class="f-ac"/>
+<circle cx="180.7" cy="163.5" r="3.4" class="f-ac"/>
+<circle cx="134.7" cy="157.5" r="3.4" class="f-ac"/>
+<circle cx="201.7" cy="230.2" r="3.4" class="f-ac"/>
+<circle cx="238.0" cy="223.9" r="3.4" class="f-ac"/>
+<circle cx="172.4" cy="180.9" r="3.4" class="f-ac"/>
+<circle cx="135.3" cy="162.3" r="3.4" class="f-ac"/>
+<circle cx="148.0" cy="176.0" r="3.4" class="f-ac"/>
+<circle cx="282.6" cy="119.3" r="3.4" class="f-ac"/>
+<circle cx="241.2" cy="123.2" r="3.4" class="f-ac"/>
+<circle cx="173.9" cy="192.8" r="3.4" class="f-ac"/>
+<circle cx="257.5" cy="215.1" r="3.4" class="f-ac"/>
+<circle cx="220.3" cy="232.3" r="3.4" class="f-ac"/>
+<circle cx="254.8" cy="137.3" r="3.4" class="f-ac"/>
+<circle cx="162.3" cy="180.5" r="3.4" class="f-ac"/>
+<circle cx="98.1" cy="159.0" r="3.4" class="f-ac"/>
+<circle cx="234.0" cy="169.3" r="3.4" class="f-ac"/>
+<circle cx="222.8" cy="174.3" r="3.4" class="f-ac"/>
+<circle cx="127.2" cy="159.8" r="3.4" class="f-ac"/>
+<circle cx="121.3" cy="180.5" r="3.4" class="f-ac"/>
+<circle cx="108.5" cy="167.2" r="3.4" class="f-ac"/>
+<circle cx="171.2" cy="171.8" r="3.4" class="f-ac"/>
+<circle cx="149.1" cy="142.7" r="3.4" class="f-ac"/>
+<circle cx="230.2" cy="213.4" r="3.4" class="f-ac"/>
+<circle cx="268.5" cy="193.0" r="3.4" class="f-ac"/>
+<circle cx="243.5" cy="220.4" r="3.4" class="f-ac"/>
+<circle cx="292.5" cy="52.4" r="4.8" class="f-bd"/>
+<text x="282.5" y="56.4" class="f-bd" font-size="12" text-anchor="end" font-weight="600">D43</text>
+<text x="190.0" y="280.0" class="f-mu" font-size="12" text-anchor="middle">적합값(℃)</text>
+<text x="20.0" y="20.0" class="f-mu" font-size="12" text-anchor="start">잔차(℃)</text>
+<line x1="410.0" y1="240.0" x2="660.0" y2="240.0" class="s-mu" stroke-width="1.2"/>
+<line x1="410.0" y1="240.0" x2="410.0" y2="30.0" class="s-mu" stroke-width="1.2"/>
+<line x1="410.0" y1="240.0" x2="660.0" y2="82.5" class="s-fg" stroke-width="1.3" stroke-dasharray="5 4"/>
+<line x1="451.7" y1="240.0" x2="451.7" y2="245.0" class="s-mu" stroke-width="1.2"/>
+<text x="451.7" y="259.0" class="f-mu" font-size="11" text-anchor="middle">−2</text>
+<line x1="535.0" y1="240.0" x2="535.0" y2="245.0" class="s-mu" stroke-width="1.2"/>
+<text x="535.0" y="259.0" class="f-mu" font-size="11" text-anchor="middle">0</text>
+<line x1="618.3" y1="240.0" x2="618.3" y2="245.0" class="s-mu" stroke-width="1.2"/>
+<text x="618.3" y="259.0" class="f-mu" font-size="11" text-anchor="middle">2</text>
+<line x1="405.0" y1="213.8" x2="410.0" y2="213.8" class="s-mu" stroke-width="1.2"/>
+<text x="401.0" y="217.8" class="f-mu" font-size="11" text-anchor="end">−2</text>
+<line x1="405.0" y1="161.2" x2="410.0" y2="161.2" class="s-mu" stroke-width="1.2"/>
+<text x="401.0" y="165.2" class="f-mu" font-size="11" text-anchor="end">0</text>
+<line x1="405.0" y1="108.8" x2="410.0" y2="108.8" class="s-mu" stroke-width="1.2"/>
+<text x="401.0" y="112.8" class="f-mu" font-size="11" text-anchor="end">2</text>
+<line x1="405.0" y1="56.2" x2="410.0" y2="56.2" class="s-mu" stroke-width="1.2"/>
+<text x="401.0" y="60.2" class="f-mu" font-size="11" text-anchor="end">4</text>
+<circle cx="435.8" cy="217.3" r="3.4" class="f-ac"/>
+<circle cx="450.2" cy="214.8" r="3.4" class="f-ac"/>
+<circle cx="458.6" cy="209.7" r="3.4" class="f-ac"/>
+<circle cx="464.7" cy="208.1" r="3.4" class="f-ac"/>
+<circle cx="469.6" cy="201.8" r="3.4" class="f-ac"/>
+<circle cx="473.7" cy="201.7" r="3.4" class="f-ac"/>
+<circle cx="477.3" cy="200.5" r="3.4" class="f-ac"/>
+<circle cx="480.5" cy="192.0" r="3.4" class="f-ac"/>
+<circle cx="483.5" cy="190.8" r="3.4" class="f-ac"/>
+<circle cx="486.1" cy="188.4" r="3.4" class="f-ac"/>
+<circle cx="488.6" cy="186.8" r="3.4" class="f-ac"/>
+<circle cx="491.0" cy="186.5" r="3.4" class="f-ac"/>
+<circle cx="493.2" cy="184.4" r="3.4" class="f-ac"/>
+<circle cx="495.3" cy="182.1" r="3.4" class="f-ac"/>
+<circle cx="497.3" cy="182.0" r="3.4" class="f-ac"/>
+<circle cx="499.2" cy="182.0" r="3.4" class="f-ac"/>
+<circle cx="501.0" cy="180.6" r="3.4" class="f-ac"/>
+<circle cx="502.8" cy="178.7" r="3.4" class="f-ac"/>
+<circle cx="504.6" cy="178.3" r="3.4" class="f-ac"/>
+<circle cx="506.2" cy="177.5" r="3.4" class="f-ac"/>
+<circle cx="507.9" cy="174.2" r="3.4" class="f-ac"/>
+<circle cx="509.4" cy="173.9" r="3.4" class="f-ac"/>
+<circle cx="511.0" cy="173.6" r="3.4" class="f-ac"/>
+<circle cx="512.5" cy="171.4" r="3.4" class="f-ac"/>
+<circle cx="514.0" cy="171.0" r="3.4" class="f-ac"/>
+<circle cx="515.5" cy="170.9" r="3.4" class="f-ac"/>
+<circle cx="516.9" cy="170.7" r="3.4" class="f-ac"/>
+<circle cx="518.3" cy="170.7" r="3.4" class="f-ac"/>
+<circle cx="519.7" cy="168.7" r="3.4" class="f-ac"/>
+<circle cx="521.1" cy="168.5" r="3.4" class="f-ac"/>
+<circle cx="522.5" cy="166.7" r="3.4" class="f-ac"/>
+<circle cx="523.8" cy="166.7" r="3.4" class="f-ac"/>
+<circle cx="525.2" cy="166.1" r="3.4" class="f-ac"/>
+<circle cx="526.5" cy="165.7" r="3.4" class="f-ac"/>
+<circle cx="527.8" cy="165.1" r="3.4" class="f-ac"/>
+<circle cx="529.1" cy="164.7" r="3.4" class="f-ac"/>
+<circle cx="530.4" cy="164.3" r="3.4" class="f-ac"/>
+<circle cx="531.7" cy="164.1" r="3.4" class="f-ac"/>
+<circle cx="533.0" cy="163.4" r="3.4" class="f-ac"/>
+<circle cx="534.4" cy="162.9" r="3.4" class="f-ac"/>
+<circle cx="535.6" cy="161.3" r="3.4" class="f-ac"/>
+<circle cx="537.0" cy="160.6" r="3.4" class="f-ac"/>
+<circle cx="538.3" cy="160.5" r="3.4" class="f-ac"/>
+<circle cx="539.6" cy="160.2" r="3.4" class="f-ac"/>
+<circle cx="540.9" cy="159.7" r="3.4" class="f-ac"/>
+<circle cx="542.2" cy="159.0" r="3.4" class="f-ac"/>
+<circle cx="543.5" cy="158.7" r="3.4" class="f-ac"/>
+<circle cx="544.8" cy="157.9" r="3.4" class="f-ac"/>
+<circle cx="546.2" cy="157.6" r="3.4" class="f-ac"/>
+<circle cx="547.5" cy="156.4" r="3.4" class="f-ac"/>
+<circle cx="548.9" cy="155.5" r="3.4" class="f-ac"/>
+<circle cx="550.3" cy="155.0" r="3.4" class="f-ac"/>
+<circle cx="551.7" cy="154.0" r="3.4" class="f-ac"/>
+<circle cx="553.1" cy="151.9" r="3.4" class="f-ac"/>
+<circle cx="554.5" cy="151.1" r="3.4" class="f-ac"/>
+<circle cx="556.0" cy="151.1" r="3.4" class="f-ac"/>
+<circle cx="557.5" cy="151.0" r="3.4" class="f-ac"/>
+<circle cx="559.0" cy="150.1" r="3.4" class="f-ac"/>
+<circle cx="560.6" cy="149.8" r="3.4" class="f-ac"/>
+<circle cx="562.1" cy="149.3" r="3.4" class="f-ac"/>
+<circle cx="563.8" cy="147.4" r="3.4" class="f-ac"/>
+<circle cx="565.4" cy="146.4" r="3.4" class="f-ac"/>
+<circle cx="567.2" cy="146.4" r="3.4" class="f-ac"/>
+<circle cx="569.0" cy="146.4" r="3.4" class="f-ac"/>
+<circle cx="570.8" cy="146.4" r="3.4" class="f-ac"/>
+<circle cx="572.7" cy="145.1" r="3.4" class="f-ac"/>
+<circle cx="574.7" cy="144.4" r="3.4" class="f-ac"/>
+<circle cx="576.8" cy="142.6" r="3.4" class="f-ac"/>
+<circle cx="579.0" cy="136.7" r="3.4" class="f-ac"/>
+<circle cx="581.4" cy="134.6" r="3.4" class="f-ac"/>
+<circle cx="583.9" cy="131.9" r="3.4" class="f-ac"/>
+<circle cx="586.5" cy="131.6" r="3.4" class="f-ac"/>
+<circle cx="589.5" cy="128.8" r="3.4" class="f-ac"/>
+<circle cx="592.7" cy="127.1" r="3.4" class="f-ac"/>
+<circle cx="596.3" cy="117.6" r="3.4" class="f-ac"/>
+<circle cx="600.4" cy="115.0" r="3.4" class="f-ac"/>
+<circle cx="605.3" cy="114.7" r="3.4" class="f-ac"/>
+<circle cx="611.4" cy="113.0" r="3.4" class="f-ac"/>
+<circle cx="619.8" cy="104.1" r="3.4" class="f-ac"/>
+<circle cx="634.2" cy="44.1" r="4.8" class="f-bd"/>
+<text x="624.2" y="48.1" class="f-bd" font-size="12" text-anchor="end" font-weight="600">D43</text>
+<text x="535.0" y="280.0" class="f-mu" font-size="12" text-anchor="middle">정규분포 이론 분위수</text>
+<text x="370.0" y="20.0" class="f-mu" font-size="12" text-anchor="start">내적 스튜던트화 잔차</text>
+</svg>

@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 680 195" role="img" aria-label="박스플롯 해부도: 사분위수, IQR, 수염, 울타리, 이상치">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<rect x="240.0" y="82.0" width="125.0" height="56.0" rx="3" class="s-fg f-acs" stroke-width="1.8"/>
+<line x1="290.0" y1="82.0" x2="290.0" y2="138.0" class="s-ac" stroke-width="3"/>
+<line x1="100.0" y1="110.0" x2="240.0" y2="110.0" class="s-fg" stroke-width="1.5"/>
+<line x1="365.0" y1="110.0" x2="510.0" y2="110.0" class="s-fg" stroke-width="1.5"/>
+<line x1="100.0" y1="96.0" x2="100.0" y2="124.0" class="s-fg" stroke-width="1.5"/>
+<line x1="510.0" y1="96.0" x2="510.0" y2="124.0" class="s-fg" stroke-width="1.5"/>
+<line x1="52.5" y1="50.0" x2="52.5" y2="170.0" class="s-bd" stroke-width="1.4" stroke-dasharray="5 4"/>
+<line x1="552.5" y1="50.0" x2="552.5" y2="170.0" class="s-bd" stroke-width="1.4" stroke-dasharray="5 4"/>
+<circle cx="605.0" cy="110.0" r="6" class="f-bd"/>
+<text x="240.0" y="66.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="600">Q1</text>
+<text x="290.0" y="66.0" class="f-ac" font-size="13" text-anchor="middle" font-weight="600">중앙값</text>
+<text x="365.0" y="66.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="600">Q3</text>
+<line x1="240.0" y1="152.0" x2="365.0" y2="152.0" class="s-mu" stroke-width="1.2"/>
+<line x1="240.0" y1="146.0" x2="240.0" y2="158.0" class="s-mu" stroke-width="1.2"/>
+<line x1="365.0" y1="146.0" x2="365.0" y2="158.0" class="s-mu" stroke-width="1.2"/>
+<text x="302.5" y="174.0" class="f-mu" font-size="12" text-anchor="middle">IQR = Q3 − Q1 (가운데 50%)</text>
+<text x="170.0" y="100.0" class="f-mu" font-size="12" text-anchor="middle">수염</text>
+<text x="437.5" y="100.0" class="f-mu" font-size="12" text-anchor="middle">수염</text>
+<text x="52.5" y="42.0" class="f-bd" font-size="12" text-anchor="middle">Q1 − 1.5×IQR</text>
+<text x="552.5" y="42.0" class="f-bd" font-size="12" text-anchor="middle">Q3 + 1.5×IQR</text>
+<text x="605.0" y="138.0" class="f-bd" font-size="12" text-anchor="middle">이상치 후보</text>
+</svg>

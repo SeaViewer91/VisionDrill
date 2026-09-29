@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 680 250" role="img" aria-label="인구밀도의 로그 변환 전후 분포: 오른쪽 꼬리가 긴 분포가 거의 대칭이 됨">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<rect x="40.0" y="85.7" width="23.3" height="114.3" rx="0" class="f-acs s-mu" stroke-width="1"/>
+<rect x="63.3" y="80.0" width="23.3" height="120.0" rx="0" class="f-acs s-mu" stroke-width="1"/>
+<rect x="86.7" y="131.4" width="23.3" height="68.6" rx="0" class="f-acs s-mu" stroke-width="1"/>
+<rect x="110.0" y="131.4" width="23.3" height="68.6" rx="0" class="f-acs s-mu" stroke-width="1"/>
+<rect x="133.3" y="182.9" width="23.3" height="17.1" rx="0" class="f-acs s-mu" stroke-width="1"/>
+<rect x="156.7" y="171.4" width="23.3" height="28.6" rx="0" class="f-acs s-mu" stroke-width="1"/>
+<rect x="180.0" y="182.9" width="23.3" height="17.1" rx="0" class="f-acs s-mu" stroke-width="1"/>
+<rect x="203.3" y="188.6" width="23.3" height="11.4" rx="0" class="f-acs s-mu" stroke-width="1"/>
+<rect x="226.7" y="194.3" width="23.3" height="5.7" rx="0" class="f-acs s-mu" stroke-width="1"/>
+<rect x="296.7" y="194.3" width="23.3" height="5.7" rx="0" class="f-acs s-mu" stroke-width="1"/>
+<line x1="40.0" y1="200.0" x2="320.0" y2="200.0" class="s-mu" stroke-width="1.2"/>
+<line x1="40.0" y1="200.0" x2="40.0" y2="205.0" class="s-mu" stroke-width="1.2"/>
+<text x="40.0" y="219.0" class="f-mu" font-size="11" text-anchor="middle">0</text>
+<line x1="133.3" y1="200.0" x2="133.3" y2="205.0" class="s-mu" stroke-width="1.2"/>
+<text x="133.3" y="219.0" class="f-mu" font-size="11" text-anchor="middle">2만</text>
+<line x1="226.7" y1="200.0" x2="226.7" y2="205.0" class="s-mu" stroke-width="1.2"/>
+<text x="226.7" y="219.0" class="f-mu" font-size="11" text-anchor="middle">4만</text>
+<line x1="320.0" y1="200.0" x2="320.0" y2="205.0" class="s-mu" stroke-width="1.2"/>
+<text x="320.0" y="219.0" class="f-mu" font-size="11" text-anchor="middle">6만</text>
+<text x="180.0" y="30.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="600">인구밀도 (명/km²) · 왜도 1.64</text>
+<line x1="85.2" y1="72.0" x2="85.2" y2="200.0" class="s-ac" stroke-width="2"/>
+<line x1="101.5" y1="72.0" x2="101.5" y2="200.0" class="s-bd" stroke-width="2" stroke-dasharray="5 3"/>
+<rect x="370.0" y="192.5" width="31.1" height="7.5" rx="0" class="f-acs s-mu" stroke-width="1"/>
+<rect x="432.2" y="170.0" width="31.1" height="30.0" rx="0" class="f-acs s-mu" stroke-width="1"/>
+<rect x="463.3" y="87.5" width="31.1" height="112.5" rx="0" class="f-acs s-mu" stroke-width="1"/>
+<rect x="494.4" y="95.0" width="31.1" height="105.0" rx="0" class="f-acs s-mu" stroke-width="1"/>
+<rect x="525.6" y="80.0" width="31.1" height="120.0" rx="0" class="f-acs s-mu" stroke-width="1"/>
+<rect x="556.7" y="87.5" width="31.1" height="112.5" rx="0" class="f-acs s-mu" stroke-width="1"/>
+<rect x="587.8" y="117.5" width="31.1" height="82.5" rx="0" class="f-acs s-mu" stroke-width="1"/>
+<rect x="618.9" y="170.0" width="31.1" height="30.0" rx="0" class="f-acs s-mu" stroke-width="1"/>
+<line x1="370.0" y1="200.0" x2="650.0" y2="200.0" class="s-mu" stroke-width="1.2"/>
+<line x1="401.1" y1="200.0" x2="401.1" y2="205.0" class="s-mu" stroke-width="1.2"/>
+<text x="401.1" y="219.0" class="f-mu" font-size="11" text-anchor="middle">7</text>
+<line x1="463.3" y1="200.0" x2="463.3" y2="205.0" class="s-mu" stroke-width="1.2"/>
+<text x="463.3" y="219.0" class="f-mu" font-size="11" text-anchor="middle">8</text>
+<line x1="525.6" y1="200.0" x2="525.6" y2="205.0" class="s-mu" stroke-width="1.2"/>
+<text x="525.6" y="219.0" class="f-mu" font-size="11" text-anchor="middle">9</text>
+<line x1="587.8" y1="200.0" x2="587.8" y2="205.0" class="s-mu" stroke-width="1.2"/>
+<text x="587.8" y="219.0" class="f-mu" font-size="11" text-anchor="middle">10</text>
+<line x1="650.0" y1="200.0" x2="650.0" y2="205.0" class="s-mu" stroke-width="1.2"/>
+<text x="650.0" y="219.0" class="f-mu" font-size="11" text-anchor="middle">11</text>
+<text x="510.0" y="30.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="600">ln(인구밀도) · 왜도 -0.05</text>
+<line x1="536.6" y1="72.0" x2="536.6" y2="200.0" class="s-ac" stroke-width="2"/>
+<line x1="536.3" y1="72.0" x2="536.3" y2="200.0" class="s-bd" stroke-width="2" stroke-dasharray="5 3"/>
+<line x1="210.0" y1="92.0" x2="236.0" y2="92.0" class="s-ac" stroke-width="2.5"/>
+<text x="242.0" y="96.0" class="f-ac" font-size="12" text-anchor="start">중앙값</text>
+<line x1="210.0" y1="114.0" x2="236.0" y2="114.0" class="s-bd" stroke-width="2.5" stroke-dasharray="5 3"/>
+<text x="242.0" y="118.0" class="f-bd" font-size="12" text-anchor="start">평균</text>
+</svg>

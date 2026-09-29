@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 680 300" role="img" aria-label="폭염 취약 여부(0/1)를 불투수면 비율로 예측한 선형회귀 직선과 로지스틱 곡선">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<line x1="70.0" y1="250.0" x2="600.0" y2="250.0" class="s-mu" stroke-width="1.2"/>
+<line x1="70.0" y1="30.0" x2="70.0" y2="250.0" class="s-mu" stroke-width="1.2"/>
+<line x1="70.0" y1="191.3" x2="600.0" y2="191.3" class="s-mu" stroke-width="0.8" stroke-dasharray="2 4"/>
+<text x="62.0" y="195.3" class="f-mu" font-size="12" text-anchor="end">0</text>
+<line x1="70.0" y1="118.0" x2="600.0" y2="118.0" class="s-mu" stroke-width="0.8" stroke-dasharray="2 4"/>
+<text x="62.0" y="122.0" class="f-mu" font-size="12" text-anchor="end">0.5</text>
+<line x1="70.0" y1="44.7" x2="600.0" y2="44.7" class="s-mu" stroke-width="0.8" stroke-dasharray="2 4"/>
+<text x="62.0" y="48.7" class="f-mu" font-size="12" text-anchor="end">1</text>
+<text x="62.0" y="239.3" class="f-mu" font-size="12" text-anchor="end">−0.3</text>
+<line x1="66.0" y1="235.3" x2="70.0" y2="235.3" class="s-mu" stroke-width="1.2"/>
+<line x1="70.0" y1="250.0" x2="70.0" y2="254.0" class="s-mu" stroke-width="1.2"/>
+<text x="70.0" y="268.0" class="f-mu" font-size="12" text-anchor="middle">0</text>
+<line x1="176.0" y1="250.0" x2="176.0" y2="254.0" class="s-mu" stroke-width="1.2"/>
+<text x="176.0" y="268.0" class="f-mu" font-size="12" text-anchor="middle">20</text>
+<line x1="282.0" y1="250.0" x2="282.0" y2="254.0" class="s-mu" stroke-width="1.2"/>
+<text x="282.0" y="268.0" class="f-mu" font-size="12" text-anchor="middle">40</text>
+<line x1="388.0" y1="250.0" x2="388.0" y2="254.0" class="s-mu" stroke-width="1.2"/>
+<text x="388.0" y="268.0" class="f-mu" font-size="12" text-anchor="middle">60</text>
+<line x1="494.0" y1="250.0" x2="494.0" y2="254.0" class="s-mu" stroke-width="1.2"/>
+<text x="494.0" y="268.0" class="f-mu" font-size="12" text-anchor="middle">80</text>
+<line x1="600.0" y1="250.0" x2="600.0" y2="254.0" class="s-mu" stroke-width="1.2"/>
+<text x="600.0" y="268.0" class="f-mu" font-size="12" text-anchor="middle">100</text>
+<text x="335.0" y="288.0" class="f-mu" font-size="12" text-anchor="middle">불투수면 비율(%)</text>
+<circle cx="233.8" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="385.9" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="388.5" cy="44.7" r="3.5" class="f-bd"/>
+<circle cx="273.0" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="356.2" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="367.9" cy="44.7" r="3.5" class="f-bd"/>
+<circle cx="342.9" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="411.9" cy="44.7" r="3.5" class="f-bd"/>
+<circle cx="494.0" cy="44.7" r="3.5" class="f-bd"/>
+<circle cx="534.8" cy="44.7" r="3.5" class="f-bd"/>
+<circle cx="266.1" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="218.4" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="366.8" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="380.1" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="481.8" cy="44.7" r="3.5" class="f-bd"/>
+<circle cx="187.1" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="313.3" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="453.7" cy="44.7" r="3.5" class="f-bd"/>
+<circle cx="176.0" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="392.2" cy="44.7" r="3.5" class="f-bd"/>
+<circle cx="359.4" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="292.1" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="189.2" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="336.1" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="340.8" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="488.7" cy="44.7" r="3.5" class="f-bd"/>
+<circle cx="238.0" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="268.8" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="520.5" cy="44.7" r="3.5" class="f-bd"/>
+<circle cx="375.8" cy="44.7" r="3.5" class="f-bd"/>
+<circle cx="480.8" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="430.9" cy="44.7" r="3.5" class="f-bd"/>
+<circle cx="430.4" cy="44.7" r="3.5" class="f-bd"/>
+<circle cx="340.3" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="244.9" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="276.7" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="267.7" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="410.8" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="450.5" cy="44.7" r="3.5" class="f-bd"/>
+<circle cx="250.2" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="355.7" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="407.6" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="568.2" cy="44.7" r="3.5" class="f-bd"/>
+<circle cx="397.5" cy="44.7" r="3.5" class="f-bd"/>
+<circle cx="236.4" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="413.4" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="232.7" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="260.8" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="239.6" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="473.9" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="143.7" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="499.3" cy="44.7" r="3.5" class="f-bd"/>
+<circle cx="252.3" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="283.6" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="330.8" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="346.7" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="265.6" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="407.1" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="477.6" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="339.8" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="298.4" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="276.7" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="571.4" cy="44.7" r="3.5" class="f-bd"/>
+<circle cx="500.9" cy="44.7" r="3.5" class="f-bd"/>
+<circle cx="366.3" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="513.1" cy="44.7" r="3.5" class="f-bd"/>
+<circle cx="433.6" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="511.5" cy="44.7" r="3.5" class="f-bd"/>
+<circle cx="339.8" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="194.0" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="469.1" cy="44.7" r="3.5" class="f-bd"/>
+<circle cx="435.2" cy="44.7" r="3.5" class="f-bd"/>
+<circle cx="270.3" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="243.8" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="224.8" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="324.4" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="288.4" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="475.4" cy="191.3" r="3.5" class="f-mu"/>
+<circle cx="540.6" cy="44.7" r="3.5" class="f-bd"/>
+<circle cx="483.4" cy="191.3" r="3.5" class="f-mu"/>
+<line x1="122.8" y1="250.0" x2="600.0" y2="42.5" class="s-mu" stroke-width="2" stroke-dasharray="6 4"/>
+<path d="M 70.0 191.3 L 72.7 191.3 L 75.3 191.3 L 78.0 191.3 L 80.6 191.3 L 83.2 191.3 L 85.9 191.3 L 88.5 191.3 L 91.2 191.3 L 93.8 191.3 L 96.5 191.3 L 99.2 191.3 L 101.8 191.3 L 104.5 191.3 L 107.1 191.3 L 109.8 191.3 L 112.4 191.3 L 115.0 191.3 L 117.7 191.3 L 120.3 191.3 L 123.0 191.3 L 125.7 191.3 L 128.3 191.3 L 130.9 191.3 L 133.6 191.3 L 136.2 191.2 L 138.9 191.2 L 141.6 191.2 L 144.2 191.2 L 146.8 191.2 L 149.5 191.2 L 152.2 191.2 L 154.8 191.2 L 157.4 191.2 L 160.1 191.2 L 162.8 191.2 L 165.4 191.1 L 168.1 191.1 L 170.7 191.1 L 173.3 191.1 L 176.0 191.1 L 178.7 191.1 L 181.3 191.1 L 183.9 191.0 L 186.6 191.0 L 189.2 191.0 L 191.9 191.0 L 194.6 190.9 L 197.2 190.9 L 199.8 190.9 L 202.5 190.9 L 205.2 190.8 L 207.8 190.8 L 210.4 190.8 L 213.1 190.7 L 215.8 190.7 L 218.4 190.6 L 221.1 190.6 L 223.7 190.5 L 226.3 190.5 L 229.0 190.4 L 231.7 190.4 L 234.3 190.3 L 236.9 190.2 L 239.6 190.1 L 242.2 190.1 L 244.9 190.0 L 247.6 189.9 L 250.2 189.8 L 252.8 189.7 L 255.5 189.6 L 258.1 189.4 L 260.8 189.3 L 263.4 189.2 L 266.1 189.0 L 268.8 188.9 L 271.4 188.7 L 274.1 188.5 L 276.7 188.4 L 279.4 188.2 L 282.0 187.9 L 284.6 187.7 L 287.3 187.5 L 289.9 187.2 L 292.6 186.9 L 295.2 186.6 L 297.9 186.3 L 300.6 186.0 L 303.2 185.6 L 305.9 185.3 L 308.5 184.9 L 311.1 184.4 L 313.8 184.0 L 316.4 183.5 L 319.1 183.0 L 321.8 182.4 L 324.4 181.9 L 327.1 181.3 L 329.7 180.6 L 332.4 179.9 L 335.0 179.2 L 337.6 178.5 L 340.3 177.6 L 342.9 176.8 L 345.6 175.9 L 348.2 175.0 L 350.9 174.0 L 353.6 172.9 L 356.2 171.8 L 358.9 170.7 L 361.5 169.4 L 364.1 168.2 L 366.8 166.8 L 369.4 165.4 L 372.1 164.0 L 374.8 162.5 L 377.4 160.9 L 380.1 159.3 L 382.7 157.6 L 385.4 155.8 L 388.0 154.0 L 390.6 152.1 L 393.3 150.1 L 395.9 148.1 L 398.6 146.1 L 401.2 143.9 L 403.9 141.8 L 406.6 139.6 L 409.2 137.3 L 411.9 135.0 L 414.5 132.7 L 417.1 130.3 L 419.8 127.9 L 422.4 125.5 L 425.1 123.1 L 427.8 120.7 L 430.4 118.2 L 433.1 115.8 L 435.7 113.3 L 438.4 110.9 L 441.0 108.5 L 443.6 106.1 L 446.3 103.7 L 448.9 101.4 L 451.6 99.1 L 454.2 96.8 L 456.9 94.6 L 459.6 92.4 L 462.2 90.3 L 464.9 88.2 L 467.5 86.2 L 470.1 84.3 L 472.8 82.4 L 475.4 80.5 L 478.1 78.7 L 480.8 77.0 L 483.4 75.4 L 486.1 73.8 L 488.7 72.3 L 491.4 70.8 L 494.0 69.4 L 496.6 68.1 L 499.3 66.8 L 501.9 65.5 L 504.6 64.4 L 507.2 63.3 L 509.9 62.2 L 512.5 61.2 L 515.2 60.3 L 517.9 59.4 L 520.5 58.5 L 523.1 57.7 L 525.8 56.9 L 528.5 56.2 L 531.1 55.5 L 533.8 54.8 L 536.4 54.2 L 539.0 53.6 L 541.7 53.1 L 544.4 52.6 L 547.0 52.1 L 549.6 51.6 L 552.3 51.2 L 555.0 50.8 L 557.6 50.4 L 560.2 50.1 L 562.9 49.7 L 565.5 49.4 L 568.2 49.1 L 570.9 48.8 L 573.5 48.6 L 576.1 48.3 L 578.8 48.1 L 581.5 47.9 L 584.1 47.7 L 586.8 47.5 L 589.4 47.3 L 592.0 47.1 L 594.7 47.0 L 597.4 46.8 L 600.0 46.7" class="s-ac" stroke-width="2.5" fill="none"/>
+<line x1="430.6" y1="30.0" x2="430.6" y2="250.0" class="s-bd" stroke-width="1.5" stroke-dasharray="5 4"/>
+<text x="424.6" y="76.9" class="f-bd" font-size="12" text-anchor="end" font-weight="600">p = 0.5 → 68%</text>
+<line x1="90.0" y1="52.0" x2="120.0" y2="52.0" class="s-ac" stroke-width="2.5"/>
+<text x="128.0" y="56.0" class="f-ac" font-size="12" text-anchor="start" font-weight="600">로지스틱 회귀 (0~1 안에서 휨)</text>
+<line x1="90.0" y1="74.0" x2="120.0" y2="74.0" class="s-mu" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="128.0" y="78.0" class="f-mu" font-size="12" text-anchor="start" font-weight="600">선형회귀 (0 아래로 내려감)</text>
+</svg>

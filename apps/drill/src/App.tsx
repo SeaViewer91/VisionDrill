@@ -3,6 +3,7 @@ import type { SessionItem, SessionMode, SessionResult } from '@visiondrill/core'
 import { useState } from 'react';
 import { GlossaryPage } from './pages/GlossaryPage';
 import { HomePage } from './pages/HomePage';
+import { LessonsPage } from './pages/LessonsPage';
 import { QuizPage } from './pages/QuizPage';
 import { ResultPage } from './pages/ResultPage';
 import { SettingsPage } from './pages/SettingsPage';
@@ -13,12 +14,14 @@ export type View =
   | { name: 'home' }
   | { name: 'quiz'; mode: SessionMode; items: SessionItem[]; startedAt: string }
   | { name: 'result'; mode: SessionMode; result: SessionResult }
+  | { name: 'lessons' }
   | { name: 'wrong' }
   | { name: 'glossary' }
   | { name: 'settings' };
 
 const NAV: { name: View['name']; label: string }[] = [
   { name: 'home', label: '오늘의 학습' },
+  { name: 'lessons', label: '자습서' },
   { name: 'wrong', label: '오답노트' },
   { name: 'glossary', label: '용어 사전' },
   { name: 'settings', label: '설정' },
@@ -90,6 +93,7 @@ export default function App() {
         {view.name === 'wrong' && (
           <WrongNotePage onStart={(items) => setView({ name: 'quiz', mode: 'wrong_note', items, startedAt: new Date().toISOString() })} />
         )}
+        {view.name === 'lessons' && <LessonsPage />}
         {view.name === 'glossary' && <GlossaryPage />}
         {view.name === 'settings' && <SettingsPage />}
       </main>

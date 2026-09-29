@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 680 350" role="img" aria-label="참값 0.88인 모집단에서 표본을 20번 뽑아 만든 95% 신뢰구간 20개 중 1개가 참값을 덮지 못함">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<line x1="103.0" y1="36.0" x2="292.3" y2="36.0" class="s-ac" stroke-width="2.2"/>
+<circle cx="197.7" cy="36.0" r="3" class="f-ac"/>
+<line x1="139.9" y1="49.0" x2="322.6" y2="49.0" class="s-ac" stroke-width="2.2"/>
+<circle cx="231.2" cy="49.0" r="3" class="f-ac"/>
+<line x1="297.9" y1="62.0" x2="446.8" y2="62.0" class="s-bd" stroke-width="2.2"/>
+<circle cx="372.3" cy="62.0" r="3" class="f-bd"/>
+<line x1="184.5" y1="75.0" x2="358.7" y2="75.0" class="s-ac" stroke-width="2.2"/>
+<circle cx="271.6" cy="75.0" r="3" class="f-ac"/>
+<line x1="214.4" y1="88.0" x2="382.5" y2="88.0" class="s-ac" stroke-width="2.2"/>
+<circle cx="298.4" cy="88.0" r="3" class="f-ac"/>
+<line x1="191.9" y1="101.0" x2="364.6" y2="101.0" class="s-ac" stroke-width="2.2"/>
+<circle cx="278.3" cy="101.0" r="3" class="f-ac"/>
+<line x1="252.1" y1="114.0" x2="411.9" y2="114.0" class="s-ac" stroke-width="2.2"/>
+<circle cx="332.0" cy="114.0" r="3" class="f-ac"/>
+<line x1="154.7" y1="127.0" x2="334.7" y2="127.0" class="s-ac" stroke-width="2.2"/>
+<circle cx="244.7" cy="127.0" r="3" class="f-ac"/>
+<line x1="103.0" y1="140.0" x2="292.3" y2="140.0" class="s-ac" stroke-width="2.2"/>
+<circle cx="197.7" cy="140.0" r="3" class="f-ac"/>
+<line x1="221.9" y1="153.0" x2="388.4" y2="153.0" class="s-ac" stroke-width="2.2"/>
+<circle cx="305.2" cy="153.0" r="3" class="f-ac"/>
+<line x1="267.3" y1="166.0" x2="423.6" y2="166.0" class="s-ac" stroke-width="2.2"/>
+<circle cx="345.5" cy="166.0" r="3" class="f-ac"/>
+<line x1="199.4" y1="179.0" x2="370.6" y2="179.0" class="s-ac" stroke-width="2.2"/>
+<circle cx="285.0" cy="179.0" r="3" class="f-ac"/>
+<line x1="147.3" y1="192.0" x2="328.7" y2="192.0" class="s-ac" stroke-width="2.2"/>
+<circle cx="238.0" cy="192.0" r="3" class="f-ac"/>
+<line x1="237.0" y1="205.0" x2="400.2" y2="205.0" class="s-ac" stroke-width="2.2"/>
+<circle cx="318.6" cy="205.0" r="3" class="f-ac"/>
+<line x1="162.1" y1="218.0" x2="340.7" y2="218.0" class="s-ac" stroke-width="2.2"/>
+<circle cx="251.4" cy="218.0" r="3" class="f-ac"/>
+<line x1="132.5" y1="231.0" x2="316.6" y2="231.0" class="s-ac" stroke-width="2.2"/>
+<circle cx="224.5" cy="231.0" r="3" class="f-ac"/>
+<line x1="162.1" y1="244.0" x2="340.7" y2="244.0" class="s-ac" stroke-width="2.2"/>
+<circle cx="251.4" cy="244.0" r="3" class="f-ac"/>
+<line x1="206.9" y1="257.0" x2="376.5" y2="257.0" class="s-ac" stroke-width="2.2"/>
+<circle cx="291.7" cy="257.0" r="3" class="f-ac"/>
+<line x1="214.4" y1="270.0" x2="382.5" y2="270.0" class="s-ac" stroke-width="2.2"/>
+<circle cx="298.4" cy="270.0" r="3" class="f-ac"/>
+<line x1="282.6" y1="283.0" x2="435.2" y2="283.0" class="s-ac" stroke-width="2.2"/>
+<circle cx="358.9" cy="283.0" r="3" class="f-ac"/>
+<line x1="285.0" y1="22.0" x2="285.0" y2="299.0" class="s-fg" stroke-width="1.4" stroke-dasharray="5 4"/>
+<text x="285.0" y="16.0" class="f-fg" font-size="12" text-anchor="middle" font-weight="600">참값 0.88 (고정)</text>
+<line x1="70.0" y1="299.0" x2="500.0" y2="299.0" class="s-mu" stroke-width="1.2"/>
+<line x1="70.0" y1="299.0" x2="70.0" y2="304.0" class="s-mu" stroke-width="1.2"/>
+<text x="70.0" y="318.0" class="f-mu" font-size="12" text-anchor="middle">0.80</text>
+<line x1="177.5" y1="299.0" x2="177.5" y2="304.0" class="s-mu" stroke-width="1.2"/>
+<text x="177.5" y="318.0" class="f-mu" font-size="12" text-anchor="middle">0.84</text>
+<line x1="285.0" y1="299.0" x2="285.0" y2="304.0" class="s-mu" stroke-width="1.2"/>
+<text x="285.0" y="318.0" class="f-mu" font-size="12" text-anchor="middle">0.88</text>
+<line x1="392.5" y1="299.0" x2="392.5" y2="304.0" class="s-mu" stroke-width="1.2"/>
+<text x="392.5" y="318.0" class="f-mu" font-size="12" text-anchor="middle">0.92</text>
+<line x1="500.0" y1="299.0" x2="500.0" y2="304.0" class="s-mu" stroke-width="1.2"/>
+<text x="500.0" y="318.0" class="f-mu" font-size="12" text-anchor="middle">0.96</text>
+<text x="285.0" y="337.0" class="f-mu" font-size="12" text-anchor="middle">전체 정확도</text>
+<text x="58.0" y="40.0" class="f-mu" font-size="11" text-anchor="end">표본 1</text>
+<text x="58.0" y="287.0" class="f-mu" font-size="11" text-anchor="end">표본 20</text>
+<line x1="528.0" y1="70.0" x2="558.0" y2="70.0" class="s-ac" stroke-width="2.2"/>
+<circle cx="543.0" cy="70.0" r="3" class="f-ac"/>
+<text x="568.0" y="74.0" class="f-fg" font-size="12" text-anchor="start">참값을 덮음</text>
+<line x1="528.0" y1="96.0" x2="558.0" y2="96.0" class="s-bd" stroke-width="2.2"/>
+<circle cx="543.0" cy="96.0" r="3" class="f-bd"/>
+<text x="568.0" y="100.0" class="f-bd" font-size="12" text-anchor="start">못 덮음</text>
+<text x="528.0" y="136.0" class="f-mu" font-size="12" text-anchor="start">점 = 점추정치</text>
+<text x="528.0" y="156.0" class="f-mu" font-size="12" text-anchor="start">선 = 95% 구간</text>
+<text x="528.0" y="186.0" class="f-fg" font-size="12" text-anchor="start" font-weight="600">덮은 구간 19/20</text>
+</svg>

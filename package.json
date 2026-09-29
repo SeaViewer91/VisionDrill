@@ -14,6 +14,7 @@
     "sample-pack": "tsx tools/build-sample-pack.ts",
     "format": "prettier --write \"{apps,packages,tools}/**/*.{ts,tsx,css}\"",
     "lint:drafts": "tsx tools/lint-drafts.ts",
+    "lint:lessons": "tsx tools/lint-lessons.ts",
     "merge:drafts": "tsx tools/merge-drafts.ts --bundle"
   },
   "devDependencies": {
