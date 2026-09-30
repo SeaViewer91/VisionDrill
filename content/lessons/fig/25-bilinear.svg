@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 560 420" role="img" aria-label="쌍선형 보간: 네 화소 값으로 가운데 점의 값을 두 단계로 구함">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<rect x="150.0" y="50.0" width="300.0" height="300.0" rx="0" class="s-fg f-sf" stroke-width="1.5"/>
+<line x1="150.0" y1="140.0" x2="450.0" y2="140.0" class="s-mu" stroke-width="1.2" stroke-dasharray="5 4"/>
+<line x1="150.0" y1="50.0" x2="450.0" y2="50.0" class="s-ac" stroke-width="2.5"/>
+<line x1="150.0" y1="350.0" x2="450.0" y2="350.0" class="s-ac" stroke-width="2.5"/>
+<line x1="330.0" y1="50.0" x2="330.0" y2="350.0" class="s-bd" stroke-width="2.5"/>
+<text x="240.0" y="100.0" class="f-mu" font-size="13" text-anchor="middle">0.18</text>
+<text x="390.0" y="100.0" class="f-mu" font-size="13" text-anchor="middle">0.12</text>
+<text x="240.0" y="250.0" class="f-mu" font-size="13" text-anchor="middle">0.42</text>
+<text x="390.0" y="250.0" class="f-mu" font-size="13" text-anchor="middle">0.28</text>
+<circle cx="150.0" cy="50.0" r="6" class="f-fg"/>
+<circle cx="450.0" cy="50.0" r="6" class="f-fg"/>
+<circle cx="150.0" cy="350.0" r="6" class="f-fg"/>
+<circle cx="450.0" cy="350.0" r="6" class="f-fg"/>
+<text x="138.0" y="40.0" class="f-fg" font-size="14" text-anchor="end" font-weight="600">0.30</text>
+<text x="462.0" y="40.0" class="f-fg" font-size="14" text-anchor="start" font-weight="600">0.20</text>
+<text x="138.0" y="372.0" class="f-fg" font-size="14" text-anchor="end" font-weight="600">0.26</text>
+<text x="462.0" y="372.0" class="f-fg" font-size="14" text-anchor="start" font-weight="600">0.10</text>
+<circle cx="330.0" cy="50.0" r="5" class="f-ac"/>
+<circle cx="330.0" cy="350.0" r="5" class="f-ac"/>
+<text x="330.0" y="40.0" class="f-ac" font-size="14" text-anchor="middle" font-weight="600">0.24</text>
+<text x="330.0" y="372.0" class="f-ac" font-size="14" text-anchor="middle" font-weight="600">0.164</text>
+<circle cx="330.0" cy="140.0" r="7" class="f-bd"/>
+<text x="320.0" y="162.0" class="f-bd" font-size="14" text-anchor="end" font-weight="600">P 0.217</text>
+<line x1="150.0" y1="392.0" x2="450.0" y2="392.0" class="s-mu" stroke-width="1"/>
+<line x1="150.0" y1="386.0" x2="150.0" y2="398.0" class="s-mu" stroke-width="1"/>
+<line x1="330.0" y1="386.0" x2="330.0" y2="398.0" class="s-mu" stroke-width="1"/>
+<line x1="450.0" y1="386.0" x2="450.0" y2="398.0" class="s-mu" stroke-width="1"/>
+<text x="240.0" y="412.0" class="f-mu" font-size="13" text-anchor="middle">0.6</text>
+<text x="390.0" y="412.0" class="f-mu" font-size="13" text-anchor="middle">0.4</text>
+<line x1="105.0" y1="50.0" x2="105.0" y2="350.0" class="s-mu" stroke-width="1"/>
+<line x1="99.0" y1="50.0" x2="111.0" y2="50.0" class="s-mu" stroke-width="1"/>
+<line x1="99.0" y1="140.0" x2="111.0" y2="140.0" class="s-mu" stroke-width="1"/>
+<line x1="99.0" y1="350.0" x2="111.0" y2="350.0" class="s-mu" stroke-width="1"/>
+<text x="95.0" y="100.0" class="f-mu" font-size="13" text-anchor="end">0.3</text>
+<text x="95.0" y="250.0" class="f-mu" font-size="13" text-anchor="end">0.7</text>
+</svg>

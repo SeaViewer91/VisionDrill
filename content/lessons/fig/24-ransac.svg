@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 680 300" role="img" aria-label="RANSAC 원리: 두 점을 무작위로 뽑아 직선을 세우고 허용 거리 띠 안의 점 수를 셈. 인라이어가 가장 많은 후보를 고름">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<rect x="50.0" y="40.0" width="280.0" height="210.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<path d="M 50.0 244.5 L 330.0 185.2 L 330.0 214.0 L 50.0 250.0 Z" class="f-acs" stroke-width="0"/>
+<line x1="50.0" y1="250.0" x2="330.0" y2="199.6" class="s-ac" stroke-width="2"/>
+<circle cx="66.8" cy="219.1" r="4.2" class="s-mu f-bg"/>
+<circle cx="86.8" cy="206.9" r="4.2" class="s-mu f-bg"/>
+<circle cx="103.8" cy="207.7" r="4.2" class="s-mu f-bg"/>
+<circle cx="120.7" cy="196.2" r="4.2" class="s-mu f-bg"/>
+<circle cx="141.1" cy="192.9" r="4.2" class="s-mu f-bg"/>
+<circle cx="158.2" cy="182.5" r="4.2" class="s-mu f-bg"/>
+<circle cx="180.7" cy="174.5" r="4.2" class="s-mu f-bg"/>
+<circle cx="204.0" cy="157.1" r="4.2" class="s-mu f-bg"/>
+<circle cx="216.8" cy="155.6" r="4.2" class="s-mu f-bg"/>
+<circle cx="235.3" cy="140.6" r="4.2" class="s-mu f-bg"/>
+<circle cx="258.0" cy="130.7" r="4.2" class="s-mu f-bg"/>
+<circle cx="276.5" cy="123.6" r="4.2" class="s-mu f-bg"/>
+<circle cx="294.6" cy="125.1" r="4.2" class="s-mu f-bg"/>
+<circle cx="310.1" cy="109.7" r="4.2" class="s-mu f-bg"/>
+<circle cx="83.6" cy="112.3" r="4.2" class="s-mu f-bg"/>
+<circle cx="150.8" cy="96.0" r="4.2" class="s-mu f-bg"/>
+<circle cx="195.6" cy="77.3" r="4.2" class="s-mu f-bg"/>
+<circle cx="229.2" cy="226.7" r="4.2" class="f-ac"/>
+<circle cx="299.2" cy="51.7" r="4.2" class="s-mu f-bg"/>
+<circle cx="173.2" cy="229.0" r="4.2" class="f-ac"/>
+<circle cx="114.4" cy="245.3" r="7" class="f-bd"/>
+<circle cx="268.4" cy="212.7" r="7" class="f-bd"/>
+<text x="190.0" y="26.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="600">후보 1: 띠 안 4점</text>
+<rect x="370.0" y="40.0" width="280.0" height="210.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<path d="M 370.0 217.6 L 650.0 81.4 L 650.0 113.8 L 370.0 250.0 Z" class="f-acs" stroke-width="0"/>
+<line x1="370.0" y1="233.8" x2="650.0" y2="97.6" class="s-ac" stroke-width="2"/>
+<circle cx="386.8" cy="219.1" r="4.2" class="f-ac"/>
+<circle cx="406.8" cy="206.9" r="4.2" class="f-ac"/>
+<circle cx="440.7" cy="196.2" r="4.2" class="f-ac"/>
+<circle cx="461.1" cy="192.9" r="4.2" class="f-ac"/>
+<circle cx="478.2" cy="182.5" r="4.2" class="f-ac"/>
+<circle cx="500.7" cy="174.5" r="4.2" class="f-ac"/>
+<circle cx="524.0" cy="157.1" r="4.2" class="f-ac"/>
+<circle cx="536.8" cy="155.6" r="4.2" class="f-ac"/>
+<circle cx="555.3" cy="140.6" r="4.2" class="f-ac"/>
+<circle cx="578.0" cy="130.7" r="4.2" class="f-ac"/>
+<circle cx="614.6" cy="125.1" r="4.2" class="f-ac"/>
+<circle cx="630.1" cy="109.7" r="4.2" class="f-ac"/>
+<circle cx="403.6" cy="112.3" r="4.2" class="s-mu f-bg"/>
+<circle cx="434.4" cy="245.3" r="4.2" class="s-mu f-bg"/>
+<circle cx="470.8" cy="96.0" r="4.2" class="s-mu f-bg"/>
+<circle cx="515.6" cy="77.3" r="4.2" class="s-mu f-bg"/>
+<circle cx="549.2" cy="226.7" r="4.2" class="s-mu f-bg"/>
+<circle cx="588.4" cy="212.7" r="4.2" class="s-mu f-bg"/>
+<circle cx="619.2" cy="51.7" r="4.2" class="s-mu f-bg"/>
+<circle cx="493.2" cy="229.0" r="4.2" class="s-mu f-bg"/>
+<circle cx="423.8" cy="207.7" r="7" class="f-bd"/>
+<circle cx="596.5" cy="123.6" r="7" class="f-bd"/>
+<text x="510.0" y="26.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="600">후보 2: 띠 안 14점</text>
+<circle cx="60.0" cy="274.0" r="7" class="f-bd"/>
+<text x="74.0" y="278.0" class="f-fg" font-size="12" text-anchor="start">무작위로 뽑은 2점</text>
+<circle cx="230.0" cy="274.0" r="4.2" class="f-ac"/>
+<text x="242.0" y="278.0" class="f-fg" font-size="12" text-anchor="start">띠 안(인라이어)</text>
+<circle cx="372.0" cy="274.0" r="4.2" class="s-mu f-bg"/>
+<text x="384.0" y="278.0" class="f-fg" font-size="12" text-anchor="start">띠 밖</text>
+<rect x="452.0" y="267.0" width="22.0" height="12.0" rx="0" class="f-acs" stroke-width="0"/>
+<text x="482.0" y="278.0" class="f-fg" font-size="12" text-anchor="start">허용 거리 띠</text>
+</svg>
