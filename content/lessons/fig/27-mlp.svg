@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 760 300" role="img" aria-label="왼쪽은 퍼셉트론: 밴드 값 네 개의 가중합에 편향을 더하고 계단 함수로 0 또는 1을 냄. 오른쪽은 다층 퍼셉트론: 입력 4개, 은닉층 두 개(각 32유닛, ReLU), 출력 6개(로짓)">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<text x="170.0" y="30.0" class="f-fg" font-size="14" text-anchor="middle" font-weight="600">퍼셉트론</text>
+<line x1="62.0" y1="80.0" x2="152.2" y2="130.2" class="s-mu" stroke-width="1.2"/>
+<circle cx="50.0" cy="80.0" r="12" class="s-fg f-bg"/>
+<text x="30.0" y="84.0" class="f-mu" font-size="12" text-anchor="end">B2</text>
+<line x1="62.0" y1="125.0" x2="152.2" y2="141.5" class="s-mu" stroke-width="1.2"/>
+<circle cx="50.0" cy="125.0" r="12" class="s-fg f-bg"/>
+<text x="30.0" y="129.0" class="f-mu" font-size="12" text-anchor="end">B3</text>
+<line x1="62.0" y1="170.0" x2="152.2" y2="152.8" class="s-mu" stroke-width="1.2"/>
+<circle cx="50.0" cy="170.0" r="12" class="s-fg f-bg"/>
+<text x="30.0" y="174.0" class="f-mu" font-size="12" text-anchor="end">B4</text>
+<line x1="62.0" y1="215.0" x2="152.2" y2="164.0" class="s-mu" stroke-width="1.2"/>
+<circle cx="50.0" cy="215.0" r="12" class="s-fg f-bg"/>
+<text x="30.0" y="219.0" class="f-mu" font-size="12" text-anchor="end">B8</text>
+<text x="112.0" y="72.0" class="f-mu" font-size="12" text-anchor="middle">가중치 w</text>
+<circle cx="175.0" cy="147.0" r="24" class="s-fg f-acs"/>
+<text x="175.0" y="152.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="600">Σ + b</text>
+<line x1="199.0" y1="147.0" x2="222.0" y2="147.0" class="s-fg" stroke-width="1.5"/>
+<rect x="222.0" y="123.0" width="50.0" height="48.0" rx="4" class="s-fg f-sf" stroke-width="1.2"/>
+<path d="M 230 159 L 247 159 L 247 135 L 264 135" class="s-ac" stroke-width="2" fill="none"/>
+<text x="247.0" y="191.0" class="f-mu" font-size="12" text-anchor="middle">계단 함수</text>
+<line x1="272.0" y1="147.0" x2="296.0" y2="147.0" class="s-fg" stroke-width="1.5"/>
+<text x="302.0" y="152.0" class="f-fg" font-size="13" text-anchor="start" font-weight="600">0/1</text>
+<line x1="345.0" y1="20.0" x2="345.0" y2="285.0" class="s-mu" stroke-width="1" stroke-dasharray="3 4"/>
+<text x="555.0" y="30.0" class="f-fg" font-size="14" text-anchor="middle" font-weight="600">다층 퍼셉트론(MLP)</text>
+<line x1="410.0" y1="87.0" x2="490.0" y2="62.0" class="s-mu" stroke-width="0.5"/>
+<line x1="410.0" y1="87.0" x2="490.0" y2="102.0" class="s-mu" stroke-width="0.5"/>
+<line x1="410.0" y1="87.0" x2="490.0" y2="142.0" class="s-mu" stroke-width="0.5"/>
+<line x1="410.0" y1="87.0" x2="490.0" y2="222.0" class="s-mu" stroke-width="0.5"/>
+<line x1="410.0" y1="123.7" x2="490.0" y2="62.0" class="s-mu" stroke-width="0.5"/>
+<line x1="410.0" y1="123.7" x2="490.0" y2="102.0" class="s-mu" stroke-width="0.5"/>
+<line x1="410.0" y1="123.7" x2="490.0" y2="142.0" class="s-mu" stroke-width="0.5"/>
+<line x1="410.0" y1="123.7" x2="490.0" y2="222.0" class="s-mu" stroke-width="0.5"/>
+<line x1="410.0" y1="160.3" x2="490.0" y2="62.0" class="s-mu" stroke-width="0.5"/>
+<line x1="410.0" y1="160.3" x2="490.0" y2="102.0" class="s-mu" stroke-width="0.5"/>
+<line x1="410.0" y1="160.3" x2="490.0" y2="142.0" class="s-mu" stroke-width="0.5"/>
+<line x1="410.0" y1="160.3" x2="490.0" y2="222.0" class="s-mu" stroke-width="0.5"/>
+<line x1="410.0" y1="197.0" x2="490.0" y2="62.0" class="s-mu" stroke-width="0.5"/>
+<line x1="410.0" y1="197.0" x2="490.0" y2="102.0" class="s-mu" stroke-width="0.5"/>
+<line x1="410.0" y1="197.0" x2="490.0" y2="142.0" class="s-mu" stroke-width="0.5"/>
+<line x1="410.0" y1="197.0" x2="490.0" y2="222.0" class="s-mu" stroke-width="0.5"/>
+<line x1="510.0" y1="62.0" x2="590.0" y2="62.0" class="s-mu" stroke-width="0.5"/>
+<line x1="510.0" y1="62.0" x2="590.0" y2="102.0" class="s-mu" stroke-width="0.5"/>
+<line x1="510.0" y1="62.0" x2="590.0" y2="142.0" class="s-mu" stroke-width="0.5"/>
+<line x1="510.0" y1="62.0" x2="590.0" y2="222.0" class="s-mu" stroke-width="0.5"/>
+<line x1="510.0" y1="102.0" x2="590.0" y2="62.0" class="s-mu" stroke-width="0.5"/>
+<line x1="510.0" y1="102.0" x2="590.0" y2="102.0" class="s-mu" stroke-width="0.5"/>
+<line x1="510.0" y1="102.0" x2="590.0" y2="142.0" class="s-mu" stroke-width="0.5"/>
+<line x1="510.0" y1="102.0" x2="590.0" y2="222.0" class="s-mu" stroke-width="0.5"/>
+<line x1="510.0" y1="142.0" x2="590.0" y2="62.0" class="s-mu" stroke-width="0.5"/>
+<line x1="510.0" y1="142.0" x2="590.0" y2="102.0" class="s-mu" stroke-width="0.5"/>
+<line x1="510.0" y1="142.0" x2="590.0" y2="142.0" class="s-mu" stroke-width="0.5"/>
+<line x1="510.0" y1="142.0" x2="590.0" y2="222.0" class="s-mu" stroke-width="0.5"/>
+<line x1="510.0" y1="222.0" x2="590.0" y2="62.0" class="s-mu" stroke-width="0.5"/>
+<line x1="510.0" y1="222.0" x2="590.0" y2="102.0" class="s-mu" stroke-width="0.5"/>
+<line x1="510.0" y1="222.0" x2="590.0" y2="142.0" class="s-mu" stroke-width="0.5"/>
+<line x1="510.0" y1="222.0" x2="590.0" y2="222.0" class="s-mu" stroke-width="0.5"/>
+<line x1="610.0" y1="62.0" x2="690.0" y2="67.0" class="s-mu" stroke-width="0.5"/>
+<line x1="610.0" y1="62.0" x2="690.0" y2="97.0" class="s-mu" stroke-width="0.5"/>
+<line x1="610.0" y1="62.0" x2="690.0" y2="127.0" class="s-mu" stroke-width="0.5"/>
+<line x1="610.0" y1="62.0" x2="690.0" y2="157.0" class="s-mu" stroke-width="0.5"/>
+<line x1="610.0" y1="62.0" x2="690.0" y2="187.0" class="s-mu" stroke-width="0.5"/>
+<line x1="610.0" y1="62.0" x2="690.0" y2="217.0" class="s-mu" stroke-width="0.5"/>
+<line x1="610.0" y1="102.0" x2="690.0" y2="67.0" class="s-mu" stroke-width="0.5"/>
+<line x1="610.0" y1="102.0" x2="690.0" y2="97.0" class="s-mu" stroke-width="0.5"/>
+<line x1="610.0" y1="102.0" x2="690.0" y2="127.0" class="s-mu" stroke-width="0.5"/>
+<line x1="610.0" y1="102.0" x2="690.0" y2="157.0" class="s-mu" stroke-width="0.5"/>
+<line x1="610.0" y1="102.0" x2="690.0" y2="187.0" class="s-mu" stroke-width="0.5"/>
+<line x1="610.0" y1="102.0" x2="690.0" y2="217.0" class="s-mu" stroke-width="0.5"/>
+<line x1="610.0" y1="142.0" x2="690.0" y2="67.0" class="s-mu" stroke-width="0.5"/>
+<line x1="610.0" y1="142.0" x2="690.0" y2="97.0" class="s-mu" stroke-width="0.5"/>
+<line x1="610.0" y1="142.0" x2="690.0" y2="127.0" class="s-mu" stroke-width="0.5"/>
+<line x1="610.0" y1="142.0" x2="690.0" y2="157.0" class="s-mu" stroke-width="0.5"/>
+<line x1="610.0" y1="142.0" x2="690.0" y2="187.0" class="s-mu" stroke-width="0.5"/>
+<line x1="610.0" y1="142.0" x2="690.0" y2="217.0" class="s-mu" stroke-width="0.5"/>
+<line x1="610.0" y1="222.0" x2="690.0" y2="67.0" class="s-mu" stroke-width="0.5"/>
+<line x1="610.0" y1="222.0" x2="690.0" y2="97.0" class="s-mu" stroke-width="0.5"/>
+<line x1="610.0" y1="222.0" x2="690.0" y2="127.0" class="s-mu" stroke-width="0.5"/>
+<line x1="610.0" y1="222.0" x2="690.0" y2="157.0" class="s-mu" stroke-width="0.5"/>
+<line x1="610.0" y1="222.0" x2="690.0" y2="187.0" class="s-mu" stroke-width="0.5"/>
+<line x1="610.0" y1="222.0" x2="690.0" y2="217.0" class="s-mu" stroke-width="0.5"/>
+<circle cx="400.0" cy="87.0" r="10" class="s-fg f-bg"/>
+<circle cx="400.0" cy="123.7" r="10" class="s-fg f-bg"/>
+<circle cx="400.0" cy="160.3" r="10" class="s-fg f-bg"/>
+<circle cx="400.0" cy="197.0" r="10" class="s-fg f-bg"/>
+<circle cx="500.0" cy="62.0" r="10" class="s-fg f-acs"/>
+<circle cx="500.0" cy="102.0" r="10" class="s-fg f-acs"/>
+<circle cx="500.0" cy="142.0" r="10" class="s-fg f-acs"/>
+<circle cx="500.0" cy="222.0" r="10" class="s-fg f-acs"/>
+<circle cx="600.0" cy="62.0" r="10" class="s-fg f-acs"/>
+<circle cx="600.0" cy="102.0" r="10" class="s-fg f-acs"/>
+<circle cx="600.0" cy="142.0" r="10" class="s-fg f-acs"/>
+<circle cx="600.0" cy="222.0" r="10" class="s-fg f-acs"/>
+<circle cx="700.0" cy="67.0" r="10" class="s-fg f-bg"/>
+<circle cx="700.0" cy="97.0" r="10" class="s-fg f-bg"/>
+<circle cx="700.0" cy="127.0" r="10" class="s-fg f-bg"/>
+<circle cx="700.0" cy="157.0" r="10" class="s-fg f-bg"/>
+<circle cx="700.0" cy="187.0" r="10" class="s-fg f-bg"/>
+<circle cx="700.0" cy="217.0" r="10" class="s-fg f-bg"/>
+<text x="500.0" y="187.0" class="f-fg" font-size="16" text-anchor="middle" font-weight="600">⋮</text>
+<text x="600.0" y="187.0" class="f-fg" font-size="16" text-anchor="middle" font-weight="600">⋮</text>
+<text x="400.0" y="256.0" class="f-fg" font-size="12" text-anchor="middle" font-weight="600">입력 4</text>
+<text x="400.0" y="274.0" class="f-mu" font-size="12" text-anchor="middle">밴드 평균</text>
+<text x="500.0" y="256.0" class="f-fg" font-size="12" text-anchor="middle" font-weight="600">은닉층 1</text>
+<text x="500.0" y="274.0" class="f-mu" font-size="12" text-anchor="middle">32 · ReLU</text>
+<text x="600.0" y="256.0" class="f-fg" font-size="12" text-anchor="middle" font-weight="600">은닉층 2</text>
+<text x="600.0" y="274.0" class="f-mu" font-size="12" text-anchor="middle">32 · ReLU</text>
+<text x="700.0" y="256.0" class="f-fg" font-size="12" text-anchor="middle" font-weight="600">출력 6</text>
+<text x="700.0" y="274.0" class="f-mu" font-size="12" text-anchor="middle">로짓</text>
+</svg>

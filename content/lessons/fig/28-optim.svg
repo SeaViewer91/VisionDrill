@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 700 300" role="img" aria-label="옵티마이저 여섯 가지의 에폭별 학습 손실과, Adam 학습률 0.001의 학습·검증 정확도">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<line x1="56.0" y1="238.0" x2="380.0" y2="238.0" class="s-mu" stroke-width="1.2"/>
+<line x1="56.0" y1="34.0" x2="56.0" y2="238.0" class="s-mu" stroke-width="1.2"/>
+<line x1="56.0" y1="238.0" x2="56.0" y2="242.0" class="s-mu" stroke-width="1.2"/>
+<text x="56.0" y="255.0" class="f-mu" font-size="11" text-anchor="middle">1</text>
+<line x1="156.6" y1="238.0" x2="156.6" y2="242.0" class="s-mu" stroke-width="1.2"/>
+<text x="156.6" y="255.0" class="f-mu" font-size="11" text-anchor="middle">10</text>
+<line x1="268.3" y1="238.0" x2="268.3" y2="242.0" class="s-mu" stroke-width="1.2"/>
+<text x="268.3" y="255.0" class="f-mu" font-size="11" text-anchor="middle">20</text>
+<line x1="380.0" y1="238.0" x2="380.0" y2="242.0" class="s-mu" stroke-width="1.2"/>
+<text x="380.0" y="255.0" class="f-mu" font-size="11" text-anchor="middle">30</text>
+<line x1="52.0" y1="238.0" x2="56.0" y2="238.0" class="s-mu" stroke-width="1.2"/>
+<text x="49.0" y="242.0" class="f-mu" font-size="11" text-anchor="end">0.0</text>
+<line x1="52.0" y1="170.0" x2="56.0" y2="170.0" class="s-mu" stroke-width="1.2"/>
+<text x="49.0" y="174.0" class="f-mu" font-size="11" text-anchor="end">0.4</text>
+<line x1="52.0" y1="102.0" x2="56.0" y2="102.0" class="s-mu" stroke-width="1.2"/>
+<text x="49.0" y="106.0" class="f-mu" font-size="11" text-anchor="end">0.8</text>
+<line x1="52.0" y1="34.0" x2="56.0" y2="34.0" class="s-mu" stroke-width="1.2"/>
+<text x="49.0" y="38.0" class="f-mu" font-size="11" text-anchor="end">1.2</text>
+<text x="218.0" y="274.0" class="f-mu" font-size="12" text-anchor="middle">에폭</text>
+<text x="56.0" y="24.0" class="f-mu" font-size="12" text-anchor="start">학습 손실</text>
+<path d="M 56.0 41.3 L 67.2 108.6 L 78.3 139.1 L 89.5 156.4 L 100.7 167.1 L 111.9 174.6 L 123.0 180.8 L 134.2 184.2 L 145.4 188.6 L 156.6 191.3 L 167.7 193.5 L 178.9 195.0 L 190.1 195.8 L 201.2 198.5 L 212.4 200.6 L 223.6 199.6 L 234.8 200.9 L 245.9 202.3 L 257.1 203.3 L 268.3 204.4 L 279.4 203.7 L 290.6 203.9 L 301.8 207.9 L 313.0 208.1 L 324.1 208.0 L 335.3 209.7 L 346.5 210.6 L 357.7 211.7 L 368.8 209.9 L 380.0 210.4" class="s-bd" stroke-width="1.8" fill="none"/>
+<path d="M 56.0 118.6 L 67.2 187.7 L 78.3 197.2 L 89.5 200.8 L 100.7 205.8 L 111.9 206.0 L 123.0 210.8 L 134.2 211.9 L 145.4 213.2 L 156.6 214.3 L 167.7 214.6 L 178.9 216.1 L 190.1 214.4 L 201.2 215.3 L 212.4 219.8 L 223.6 218.2 L 234.8 216.9 L 245.9 217.9 L 257.1 217.8 L 268.3 220.4 L 279.4 219.4 L 290.6 220.3 L 301.8 219.4 L 313.0 222.0 L 324.1 220.4 L 335.3 221.9 L 346.5 222.3 L 357.7 222.6 L 368.8 221.0 L 380.0 221.6" class="s-ok" stroke-width="1.8" fill="none"/>
+<path d="M 56.0 112.0 L 67.2 179.6 L 78.3 193.8 L 89.5 201.0 L 100.7 204.7 L 111.9 206.8 L 123.0 211.5 L 134.2 212.1 L 145.4 213.4 L 156.6 215.1 L 167.7 215.8 L 178.9 217.1 L 190.1 215.4 L 201.2 216.6 L 212.4 219.9 L 223.6 217.8 L 234.8 218.3 L 245.9 219.8 L 257.1 219.0 L 268.3 221.7 L 279.4 220.0 L 290.6 221.7 L 301.8 221.0 L 313.0 222.5 L 324.1 222.4 L 335.3 223.3 L 346.5 223.0 L 357.7 223.5 L 368.8 222.1 L 380.0 222.5" class="s-ac" stroke-width="1.8" fill="none"/>
+<path d="M 56.0 111.8 L 67.2 179.3 L 78.3 193.5 L 89.5 200.7 L 100.7 204.4 L 111.9 206.5 L 123.0 211.2 L 134.2 211.7 L 145.4 213.0 L 156.6 214.7 L 167.7 215.5 L 178.9 216.6 L 190.1 215.2 L 201.2 216.3 L 212.4 219.4 L 223.6 217.5 L 234.8 217.9 L 245.9 219.4 L 257.1 218.6 L 268.3 221.2 L 279.4 219.6 L 290.6 221.3 L 301.8 220.5 L 313.0 222.0 L 324.1 222.1 L 335.3 222.8 L 346.5 222.6 L 357.7 223.2 L 368.8 221.7 L 380.0 222.2" class="s-ac" stroke-width="1.8" fill="none" stroke-dasharray="5 3"/>
+<path d="M 56.0 121.6 L 67.2 150.9 L 78.3 165.1 L 89.5 170.3 L 100.7 179.2 L 111.9 186.8 L 123.0 199.3 L 134.2 193.4 L 145.4 205.5 L 156.6 199.6 L 167.7 202.8 L 178.9 209.7 L 190.1 205.0 L 201.2 209.2 L 212.4 214.8 L 223.6 210.7 L 234.8 211.5 L 245.9 210.3 L 257.1 215.0 L 268.3 216.4 L 279.4 210.2 L 290.6 215.0 L 301.8 213.2 L 313.0 215.1 L 324.1 214.2 L 335.3 217.8 L 346.5 220.5 L 357.7 218.8 L 368.8 217.3 L 380.0 218.1" class="s-mu" stroke-width="1.8" fill="none"/>
+<path d="M 56.0 136.4 L 67.2 188.1 L 78.3 196.6 L 89.5 201.5 L 100.7 205.9 L 111.9 205.2 L 123.0 209.3 L 134.2 211.0 L 145.4 213.2 L 156.6 213.1 L 167.7 214.7 L 178.9 215.7 L 190.1 212.7 L 201.2 214.8 L 212.4 218.3 L 223.6 214.5 L 234.8 215.3 L 245.9 218.8 L 257.1 219.0 L 268.3 219.9 L 279.4 217.0 L 290.6 219.4 L 301.8 220.4 L 313.0 221.7 L 324.1 220.5 L 335.3 221.6 L 346.5 222.6 L 357.7 223.0 L 368.8 219.8 L 380.0 222.1" class="s-fg" stroke-width="1.8" fill="none" stroke-dasharray="2 3"/>
+<path d="M 162.1 43.6 L 184.1 43.6" class="s-bd" stroke-width="2.2" fill="none"/>
+<text x="189.1" y="47.6" class="f-bd" font-size="11" text-anchor="start">SGD 0.01</text>
+<path d="M 274.1 43.6 L 296.1 43.6" class="s-ok" stroke-width="2.2" fill="none"/>
+<text x="301.1" y="47.6" class="f-ok" font-size="11" text-anchor="start">모멘텀 0.01</text>
+<path d="M 162.1 62.6 L 184.1 62.6" class="s-ac" stroke-width="2.2" fill="none"/>
+<text x="189.1" y="66.6" class="f-ac" font-size="11" text-anchor="start">Adam 0.001</text>
+<path d="M 274.1 62.6 L 296.1 62.6" class="s-ac" stroke-width="2.2" fill="none" stroke-dasharray="5 3"/>
+<text x="301.1" y="66.6" class="f-ac" font-size="11" text-anchor="start">AdamW 0.001</text>
+<path d="M 162.1 81.6 L 184.1 81.6" class="s-mu" stroke-width="2.2" fill="none"/>
+<text x="189.1" y="85.6" class="f-mu" font-size="11" text-anchor="start">Adam 0.1</text>
+<path d="M 274.1 81.6 L 296.1 81.6" class="s-fg" stroke-width="2.2" fill="none" stroke-dasharray="2 3"/>
+<text x="301.1" y="85.6" class="f-fg" font-size="11" text-anchor="start">SGD 0.1</text>
+<line x1="452.0" y1="238.0" x2="680.0" y2="238.0" class="s-mu" stroke-width="1.2"/>
+<line x1="452.0" y1="34.0" x2="452.0" y2="238.0" class="s-mu" stroke-width="1.2"/>
+<line x1="452.0" y1="238.0" x2="452.0" y2="242.0" class="s-mu" stroke-width="1.2"/>
+<text x="452.0" y="255.0" class="f-mu" font-size="11" text-anchor="middle">1</text>
+<line x1="522.8" y1="238.0" x2="522.8" y2="242.0" class="s-mu" stroke-width="1.2"/>
+<text x="522.8" y="255.0" class="f-mu" font-size="11" text-anchor="middle">10</text>
+<line x1="601.4" y1="238.0" x2="601.4" y2="242.0" class="s-mu" stroke-width="1.2"/>
+<text x="601.4" y="255.0" class="f-mu" font-size="11" text-anchor="middle">20</text>
+<line x1="680.0" y1="238.0" x2="680.0" y2="242.0" class="s-mu" stroke-width="1.2"/>
+<text x="680.0" y="255.0" class="f-mu" font-size="11" text-anchor="middle">30</text>
+<line x1="448.0" y1="238.0" x2="452.0" y2="238.0" class="s-mu" stroke-width="1.2"/>
+<text x="445.0" y="242.0" class="f-mu" font-size="11" text-anchor="end">0.75</text>
+<line x1="448.0" y1="156.4" x2="452.0" y2="156.4" class="s-mu" stroke-width="1.2"/>
+<text x="445.0" y="160.4" class="f-mu" font-size="11" text-anchor="end">0.85</text>
+<line x1="448.0" y1="74.8" x2="452.0" y2="74.8" class="s-mu" stroke-width="1.2"/>
+<text x="445.0" y="78.8" class="f-mu" font-size="11" text-anchor="end">0.95</text>
+<text x="566.0" y="274.0" class="f-mu" font-size="12" text-anchor="middle">에폭</text>
+<text x="452.0" y="24.0" class="f-mu" font-size="12" text-anchor="start">정확도 (Adam 0.001)</text>
+<path d="M 452.0 208.1 L 459.9 116.4 L 467.7 104.2 L 475.6 94.2 L 483.4 91.3 L 491.3 89.7 L 499.2 82.8 L 507.0 79.3 L 514.9 78.5 L 522.8 74.0 L 530.6 72.1 L 538.5 70.3 L 546.3 76.8 L 554.2 72.3 L 562.1 65.3 L 569.9 70.3 L 577.8 71.3 L 585.7 68.6 L 593.5 69.9 L 601.4 64.9 L 609.2 64.9 L 617.1 62.2 L 625.0 66.5 L 632.8 61.6 L 640.7 62.6 L 648.6 60.4 L 656.4 62.4 L 664.3 61.2 L 672.1 62.6 L 680.0 61.6" class="s-fg" stroke-width="1.8" fill="none"/>
+<path d="M 452.0 154.6 L 459.9 107.4 L 467.7 93.8 L 475.6 82.1 L 483.4 108.3 L 491.3 94.7 L 499.2 107.4 L 507.0 79.4 L 514.9 98.4 L 522.8 77.5 L 530.6 137.4 L 538.5 86.6 L 546.3 79.4 L 554.2 70.2 L 562.1 73.0 L 569.9 83.0 L 577.8 82.1 L 585.7 96.6 L 593.5 106.5 L 601.4 75.7 L 609.2 80.3 L 617.1 83.9 L 625.0 69.3 L 632.8 63.0 L 640.7 81.2 L 648.6 89.3 L 656.4 66.6 L 664.3 82.1 L 672.1 84.8 L 680.0 98.4" class="s-ac" stroke-width="1.8" fill="none" stroke-dasharray="4 3"/>
+<text x="609.2" y="46.2" class="f-fg" font-size="11" text-anchor="middle">학습</text>
+<text x="601.4" y="127.8" class="f-ac" font-size="11" text-anchor="middle">검증</text>
+</svg>

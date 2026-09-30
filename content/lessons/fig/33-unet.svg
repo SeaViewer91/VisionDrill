@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 780 340" role="img" aria-label="작은 U-Net. 인코더가 32×32 → 16×16 → 8×8로 줄이며 채널을 16 → 32 → 64로 늘리고, 디코더가 전치 합성곱으로 두 배씩 키운 뒤 같은 해상도의 인코더 특징을 이어 붙임(스킵 연결). 끝의 1×1 합성곱이 화소마다 로짓 6개를 냄">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<rect x="37.0" y="54.0" width="6.0" height="96.0" rx="0" class="s-fg f-sf" stroke-width="1.2"/>
+<text x="40.0" y="165.0" class="f-mu" font-size="11" text-anchor="middle">4×32×32</text>
+<text x="40.0" y="46.0" class="f-fg" font-size="11" text-anchor="middle">입력</text>
+<rect x="112.0" y="54.0" width="12.0" height="96.0" rx="0" class="s-fg f-acs" stroke-width="1.2"/>
+<text x="118.0" y="165.0" class="f-mu" font-size="11" text-anchor="middle">16×32×32</text>
+<rect x="202.0" y="188.0" width="20.0" height="48.0" rx="0" class="s-fg f-acs" stroke-width="1.2"/>
+<text x="212.0" y="251.0" class="f-mu" font-size="11" text-anchor="middle">32×16×16</text>
+<rect x="373.0" y="278.0" width="34.0" height="24.0" rx="0" class="s-fg f-acs" stroke-width="1.2"/>
+<text x="390.0" y="317.0" class="f-mu" font-size="11" text-anchor="middle">64×8×8</text>
+<rect x="540.0" y="188.0" width="20.0" height="48.0" rx="0" class="s-bd f-bds" stroke-width="1.2"/>
+<rect x="560.0" y="188.0" width="20.0" height="48.0" rx="0" class="s-fg f-acs" stroke-width="1.2"/>
+<rect x="638.0" y="54.0" width="12.0" height="96.0" rx="0" class="s-bd f-bds" stroke-width="1.2"/>
+<rect x="650.0" y="54.0" width="12.0" height="96.0" rx="0" class="s-fg f-acs" stroke-width="1.2"/>
+<text x="586.0" y="216.0" class="f-mu" font-size="11" text-anchor="start">32+32 → 32</text>
+<text x="650.0" y="46.0" class="f-mu" font-size="11" text-anchor="middle">16+16 → 16</text>
+<rect x="731.0" y="54.0" width="8.0" height="96.0" rx="0" class="s-ac f-acs" stroke-width="1.2"/>
+<text x="735.0" y="165.0" class="f-mu" font-size="11" text-anchor="middle">6×32×32</text>
+<text x="735.0" y="46.0" class="f-fg" font-size="11" text-anchor="middle">로짓</text>
+<text x="118.0" y="22.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="600">인코더</text>
+<text x="650.0" y="22.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="600">디코더</text>
+<line x1="45.0" y1="102.0" x2="103.0" y2="102.0" class="s-mu" stroke-width="1.2"/>
+<path d="M 109.0 102.0 L 103.0 105.3 L 103.0 98.7 Z" class="f-mu" stroke-width="0"/>
+<line x1="665.0" y1="102.0" x2="722.0" y2="102.0" class="s-mu" stroke-width="1.2"/>
+<path d="M 728.0 102.0 L 722.0 105.3 L 722.0 98.7 Z" class="f-mu" stroke-width="0"/>
+<text x="698.5" y="94.0" class="f-mu" font-size="11" text-anchor="middle">1×1</text>
+<line x1="122.0" y1="172.0" x2="200.1" y2="183.2" class="s-fg" stroke-width="1.3"/>
+<path d="M 206.0 184.0 L 199.6 186.4 L 200.5 179.9 Z" class="f-fg" stroke-width="0"/>
+<text x="155.0" y="196.0" class="f-fg" font-size="11" text-anchor="end">풀링</text>
+<line x1="222.0" y1="258.0" x2="363.1" y2="286.8" class="s-fg" stroke-width="1.3"/>
+<path d="M 369.0 288.0 L 362.5 290.0 L 363.8 283.6 Z" class="f-fg" stroke-width="0"/>
+<text x="293.0" y="290.0" class="f-fg" font-size="11" text-anchor="end">풀링</text>
+<line x1="411.0" y1="288.0" x2="528.4" y2="242.2" class="s-ac" stroke-width="1.5"/>
+<path d="M 534.0 240.0 L 529.6 245.3 L 527.2 239.1 Z" class="f-ac" stroke-width="0"/>
+<text x="487.0" y="281.0" class="f-ac" font-size="11" text-anchor="start">전치 합성곱</text>
+<line x1="582.0" y1="184.0" x2="628.8" y2="157.0" class="s-ac" stroke-width="1.5"/>
+<path d="M 634.0 154.0 L 630.5 159.9 L 627.2 154.1 Z" class="f-ac" stroke-width="0"/>
+<text x="619.0" y="181.0" class="f-ac" font-size="11" text-anchor="start">전치 합성곱</text>
+<line x1="127.0" y1="102.0" x2="629.0" y2="102.0" class="s-bd" stroke-width="1.5" stroke-dasharray="6 4"/>
+<path d="M 635.0 102.0 L 629.0 105.3 L 629.0 98.7 Z" class="f-bd" stroke-width="0"/>
+<text x="384.0" y="94.0" class="f-bd" font-size="11" text-anchor="middle">스킵 연결(이어 붙임)</text>
+<line x1="225.0" y1="212.0" x2="531.0" y2="212.0" class="s-bd" stroke-width="1.5" stroke-dasharray="6 4"/>
+<path d="M 537.0 212.0 L 531.0 215.3 L 531.0 208.7 Z" class="f-bd" stroke-width="0"/>
+<text x="386.0" y="204.0" class="f-bd" font-size="11" text-anchor="middle">스킵 연결(이어 붙임)</text>
+</svg>

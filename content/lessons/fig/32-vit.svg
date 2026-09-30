@@ -1,0 +1,157 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 780 350" role="img" aria-label="타일을 4×4 패치 64개로 잘라 패치 임베딩하고 분류 토큰과 위치 임베딩을 더해 인코더 층 4개를 지나 분류하는 구조">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<rect x="20.0" y="60.0" width="14.0" height="14.0" rx="0" class="s-mu f-acs" stroke-width="0.8"/>
+<rect x="34.0" y="60.0" width="14.0" height="14.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="48.0" y="60.0" width="14.0" height="14.0" rx="0" class="s-mu f-acs" stroke-width="0.8"/>
+<rect x="62.0" y="60.0" width="14.0" height="14.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="76.0" y="60.0" width="14.0" height="14.0" rx="0" class="s-mu f-acs" stroke-width="0.8"/>
+<rect x="90.0" y="60.0" width="14.0" height="14.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="104.0" y="60.0" width="14.0" height="14.0" rx="0" class="s-mu f-acs" stroke-width="0.8"/>
+<rect x="118.0" y="60.0" width="14.0" height="14.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="20.0" y="74.0" width="14.0" height="14.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="34.0" y="74.0" width="14.0" height="14.0" rx="0" class="s-mu f-acs" stroke-width="0.8"/>
+<rect x="48.0" y="74.0" width="14.0" height="14.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="62.0" y="74.0" width="14.0" height="14.0" rx="0" class="s-mu f-acs" stroke-width="0.8"/>
+<rect x="76.0" y="74.0" width="14.0" height="14.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="90.0" y="74.0" width="14.0" height="14.0" rx="0" class="s-mu f-acs" stroke-width="0.8"/>
+<rect x="104.0" y="74.0" width="14.0" height="14.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="118.0" y="74.0" width="14.0" height="14.0" rx="0" class="s-mu f-acs" stroke-width="0.8"/>
+<rect x="20.0" y="88.0" width="14.0" height="14.0" rx="0" class="s-mu f-acs" stroke-width="0.8"/>
+<rect x="34.0" y="88.0" width="14.0" height="14.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="48.0" y="88.0" width="14.0" height="14.0" rx="0" class="s-mu f-acs" stroke-width="0.8"/>
+<rect x="62.0" y="88.0" width="14.0" height="14.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="76.0" y="88.0" width="14.0" height="14.0" rx="0" class="s-mu f-acs" stroke-width="0.8"/>
+<rect x="90.0" y="88.0" width="14.0" height="14.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="104.0" y="88.0" width="14.0" height="14.0" rx="0" class="s-mu f-acs" stroke-width="0.8"/>
+<rect x="118.0" y="88.0" width="14.0" height="14.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="20.0" y="102.0" width="14.0" height="14.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="34.0" y="102.0" width="14.0" height="14.0" rx="0" class="s-mu f-acs" stroke-width="0.8"/>
+<rect x="48.0" y="102.0" width="14.0" height="14.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="62.0" y="102.0" width="14.0" height="14.0" rx="0" class="s-mu f-acs" stroke-width="0.8"/>
+<rect x="76.0" y="102.0" width="14.0" height="14.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="90.0" y="102.0" width="14.0" height="14.0" rx="0" class="s-mu f-acs" stroke-width="0.8"/>
+<rect x="104.0" y="102.0" width="14.0" height="14.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="118.0" y="102.0" width="14.0" height="14.0" rx="0" class="s-mu f-acs" stroke-width="0.8"/>
+<rect x="20.0" y="116.0" width="14.0" height="14.0" rx="0" class="s-mu f-acs" stroke-width="0.8"/>
+<rect x="34.0" y="116.0" width="14.0" height="14.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="48.0" y="116.0" width="14.0" height="14.0" rx="0" class="s-mu f-acs" stroke-width="0.8"/>
+<rect x="62.0" y="116.0" width="14.0" height="14.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="76.0" y="116.0" width="14.0" height="14.0" rx="0" class="s-mu f-acs" stroke-width="0.8"/>
+<rect x="90.0" y="116.0" width="14.0" height="14.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="104.0" y="116.0" width="14.0" height="14.0" rx="0" class="s-mu f-acs" stroke-width="0.8"/>
+<rect x="118.0" y="116.0" width="14.0" height="14.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="20.0" y="130.0" width="14.0" height="14.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="34.0" y="130.0" width="14.0" height="14.0" rx="0" class="s-mu f-acs" stroke-width="0.8"/>
+<rect x="48.0" y="130.0" width="14.0" height="14.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="62.0" y="130.0" width="14.0" height="14.0" rx="0" class="s-mu f-acs" stroke-width="0.8"/>
+<rect x="76.0" y="130.0" width="14.0" height="14.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="90.0" y="130.0" width="14.0" height="14.0" rx="0" class="s-mu f-acs" stroke-width="0.8"/>
+<rect x="104.0" y="130.0" width="14.0" height="14.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="118.0" y="130.0" width="14.0" height="14.0" rx="0" class="s-mu f-acs" stroke-width="0.8"/>
+<rect x="20.0" y="144.0" width="14.0" height="14.0" rx="0" class="s-mu f-acs" stroke-width="0.8"/>
+<rect x="34.0" y="144.0" width="14.0" height="14.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="48.0" y="144.0" width="14.0" height="14.0" rx="0" class="s-mu f-acs" stroke-width="0.8"/>
+<rect x="62.0" y="144.0" width="14.0" height="14.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="76.0" y="144.0" width="14.0" height="14.0" rx="0" class="s-mu f-acs" stroke-width="0.8"/>
+<rect x="90.0" y="144.0" width="14.0" height="14.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="104.0" y="144.0" width="14.0" height="14.0" rx="0" class="s-mu f-acs" stroke-width="0.8"/>
+<rect x="118.0" y="144.0" width="14.0" height="14.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="20.0" y="158.0" width="14.0" height="14.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="34.0" y="158.0" width="14.0" height="14.0" rx="0" class="s-mu f-acs" stroke-width="0.8"/>
+<rect x="48.0" y="158.0" width="14.0" height="14.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="62.0" y="158.0" width="14.0" height="14.0" rx="0" class="s-mu f-acs" stroke-width="0.8"/>
+<rect x="76.0" y="158.0" width="14.0" height="14.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="90.0" y="158.0" width="14.0" height="14.0" rx="0" class="s-mu f-acs" stroke-width="0.8"/>
+<rect x="104.0" y="158.0" width="14.0" height="14.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="118.0" y="158.0" width="14.0" height="14.0" rx="0" class="s-mu f-acs" stroke-width="0.8"/>
+<rect x="20" y="60" width="112" height="112" class="s-fg" fill="none" stroke-width="1.4"/>
+<rect x="20.0" y="60.0" width="14.0" height="14.0" rx="0" class="s-bd f-bds" stroke-width="1.4"/>
+<text x="76.0" y="192.0" class="f-fg" font-size="12" text-anchor="middle">타일 4×32×32</text>
+<text x="76.0" y="210.0" class="f-mu" font-size="11" text-anchor="middle">4×4 패치 64개</text>
+<line x1="138.0" y1="116.0" x2="172.0" y2="116.0" class="s-fg" stroke-width="1.4"/>
+<path d="M 178.0 116.0 L 172.0 119.3 L 172.0 112.7 Z" class="f-fg" stroke-width="0"/>
+<text x="240.0" y="36.0" class="f-fg" font-size="12" text-anchor="middle" font-weight="600">패치 임베딩</text>
+<text x="347.0" y="36.0" class="f-fg" font-size="12" text-anchor="middle" font-weight="600">위치 임베딩</text>
+<rect x="185.0" y="43.0" width="110.0" height="26.0" rx="4" class="s-bd f-bds" stroke-width="1.3"/>
+<text x="240.0" y="60.0" class="f-fg" font-size="11" text-anchor="middle">분류 토큰</text>
+<text x="311.0" y="60.5" class="f-fg" font-size="14" text-anchor="middle">+</text>
+<rect x="322.0" y="43.0" width="50.0" height="26.0" rx="4" class="s-mu f-sf" stroke-width="1.3"/>
+<text x="347.0" y="60.0" class="f-fg" font-size="11" text-anchor="middle">위치 0</text>
+<rect x="185.0" y="81.0" width="110.0" height="26.0" rx="4" class="s-fg f-acs" stroke-width="1.3"/>
+<text x="240.0" y="98.0" class="f-fg" font-size="11" text-anchor="middle">패치 1 → 64차원</text>
+<text x="311.0" y="98.5" class="f-fg" font-size="14" text-anchor="middle">+</text>
+<rect x="322.0" y="81.0" width="50.0" height="26.0" rx="4" class="s-mu f-sf" stroke-width="1.3"/>
+<text x="347.0" y="98.0" class="f-fg" font-size="11" text-anchor="middle">위치 1</text>
+<rect x="185.0" y="119.0" width="110.0" height="26.0" rx="4" class="s-fg f-acs" stroke-width="1.3"/>
+<text x="240.0" y="136.0" class="f-fg" font-size="11" text-anchor="middle">패치 2 → 64차원</text>
+<text x="311.0" y="136.5" class="f-fg" font-size="14" text-anchor="middle">+</text>
+<rect x="322.0" y="119.0" width="50.0" height="26.0" rx="4" class="s-mu f-sf" stroke-width="1.3"/>
+<text x="347.0" y="136.0" class="f-fg" font-size="11" text-anchor="middle">위치 2</text>
+<text x="240.0" y="174.0" class="f-mu" font-size="14" text-anchor="middle">⋮</text>
+<text x="347.0" y="174.0" class="f-mu" font-size="14" text-anchor="middle">⋮</text>
+<rect x="185.0" y="191.0" width="110.0" height="26.0" rx="4" class="s-fg f-acs" stroke-width="1.3"/>
+<text x="240.0" y="208.0" class="f-fg" font-size="11" text-anchor="middle">패치 64 → 64차원</text>
+<text x="311.0" y="208.5" class="f-fg" font-size="14" text-anchor="middle">+</text>
+<rect x="322.0" y="191.0" width="50.0" height="26.0" rx="4" class="s-mu f-sf" stroke-width="1.3"/>
+<text x="347.0" y="208.0" class="f-fg" font-size="11" text-anchor="middle">위치 64</text>
+<line x1="382.0" y1="43.0" x2="382.0" y2="217.0" class="s-fg" stroke-width="1.3"/>
+<line x1="376.0" y1="43.0" x2="382.0" y2="43.0" class="s-fg" stroke-width="1.3"/>
+<line x1="376.0" y1="217.0" x2="382.0" y2="217.0" class="s-fg" stroke-width="1.3"/>
+<text x="392.0" y="128.0" class="f-mu" font-size="11" text-anchor="start">토큰</text>
+<text x="392.0" y="142.0" class="f-mu" font-size="11" text-anchor="start">65개</text>
+<path d="M 382 160 H 420 V 42 H 520" class="s-fg" stroke-width="1.4" fill="none"/>
+<rect x="440.0" y="30.0" width="190.0" height="252.0" rx="6" class="f-bg" stroke-width="0"/>
+<rect x="440" y="30" width="190" height="252" rx="6" class="s-mu" fill="none" stroke-width="1.2" stroke-dasharray="5 4"/>
+<text x="625.0" y="22.0" class="f-fg" font-size="12" text-anchor="end" font-weight="600">인코더 층 × 4</text>
+<line x1="520.0" y1="42.0" x2="520.0" y2="56.0" class="s-fg" stroke-width="1.4"/>
+<path d="M 520.0 62.0 L 516.7 56.0 L 523.3 56.0 Z" class="f-fg" stroke-width="0"/>
+<rect x="455.0" y="62.0" width="130.0" height="24.0" rx="4" class="s-mu f-sf" stroke-width="1.3"/>
+<text x="520.0" y="78.0" class="f-fg" font-size="11" text-anchor="middle">레이어 정규화</text>
+<line x1="520.0" y1="86.0" x2="520.0" y2="94.0" class="s-fg" stroke-width="1.4"/>
+<path d="M 520.0 100.0 L 516.7 94.0 L 523.3 94.0 Z" class="f-fg" stroke-width="0"/>
+<rect x="455.0" y="100.0" width="130.0" height="24.0" rx="4" class="s-ac f-acs" stroke-width="1.3"/>
+<text x="520.0" y="116.0" class="f-fg" font-size="11" text-anchor="middle">멀티헤드 어텐션</text>
+<line x1="520.0" y1="124.0" x2="520.0" y2="132.0" class="s-fg" stroke-width="1.4"/>
+<path d="M 520.0 138.0 L 516.7 132.0 L 523.3 132.0 Z" class="f-fg" stroke-width="0"/>
+<circle cx="520" cy="148" r="10" class="s-bd f-bg" stroke-width="1.6"/>
+<line x1="514.5" y1="148.0" x2="525.5" y2="148.0" class="s-bd" stroke-width="1.8"/>
+<line x1="520.0" y1="142.5" x2="520.0" y2="153.5" class="s-bd" stroke-width="1.8"/>
+<path d="M 520 52 H 608 V 148" class="s-bd" stroke-width="1.5" fill="none"/>
+<line x1="608.0" y1="148.0" x2="537.0" y2="148.0" class="s-bd" stroke-width="1.5"/>
+<path d="M 531.0 148.0 L 537.0 144.7 L 537.0 151.3 Z" class="f-bd" stroke-width="0"/>
+<line x1="520.0" y1="158.0" x2="520.0" y2="166.0" class="s-fg" stroke-width="1.4"/>
+<path d="M 520.0 172.0 L 516.7 166.0 L 523.3 166.0 Z" class="f-fg" stroke-width="0"/>
+<rect x="455.0" y="172.0" width="130.0" height="24.0" rx="4" class="s-mu f-sf" stroke-width="1.3"/>
+<text x="520.0" y="188.0" class="f-fg" font-size="11" text-anchor="middle">레이어 정규화</text>
+<line x1="520.0" y1="196.0" x2="520.0" y2="204.0" class="s-fg" stroke-width="1.4"/>
+<path d="M 520.0 210.0 L 516.7 204.0 L 523.3 204.0 Z" class="f-fg" stroke-width="0"/>
+<rect x="455.0" y="210.0" width="130.0" height="24.0" rx="4" class="s-ac f-acs" stroke-width="1.3"/>
+<text x="520.0" y="226.0" class="f-fg" font-size="11" text-anchor="middle">MLP 64→128→64</text>
+<line x1="520.0" y1="234.0" x2="520.0" y2="242.0" class="s-fg" stroke-width="1.4"/>
+<path d="M 520.0 248.0 L 516.7 242.0 L 523.3 242.0 Z" class="f-fg" stroke-width="0"/>
+<circle cx="520" cy="258" r="10" class="s-bd f-bg" stroke-width="1.6"/>
+<line x1="514.5" y1="258.0" x2="525.5" y2="258.0" class="s-bd" stroke-width="1.8"/>
+<line x1="520.0" y1="252.5" x2="520.0" y2="263.5" class="s-bd" stroke-width="1.8"/>
+<path d="M 520 163 H 608 V 258" class="s-bd" stroke-width="1.5" fill="none"/>
+<line x1="608.0" y1="258.0" x2="537.0" y2="258.0" class="s-bd" stroke-width="1.5"/>
+<path d="M 531.0 258.0 L 537.0 254.7 L 537.0 261.3 Z" class="f-bd" stroke-width="0"/>
+<text x="614.0" y="205.0" class="f-bd" font-size="11" text-anchor="start">잔차</text>
+<line x1="520.0" y1="268.0" x2="520.0" y2="302.0" class="s-fg" stroke-width="1.4"/>
+<path d="M 520.0 308.0 L 516.7 302.0 L 523.3 302.0 Z" class="f-fg" stroke-width="0"/>
+<rect x="445.0" y="308.0" width="150.0" height="28.0" rx="4" class="s-bd f-bds" stroke-width="1.3"/>
+<text x="520.0" y="326.3" class="f-fg" font-size="12" text-anchor="middle">분류 토큰 출력만</text>
+<line x1="595.0" y1="322.0" x2="622.0" y2="322.0" class="s-fg" stroke-width="1.4"/>
+<path d="M 628.0 322.0 L 622.0 325.3 L 622.0 318.7 Z" class="f-fg" stroke-width="0"/>
+<rect x="632.0" y="308.0" width="136.0" height="28.0" rx="4" class="s-fg f-acs" stroke-width="1.3"/>
+<text x="700.0" y="326.3" class="f-fg" font-size="12" text-anchor="middle">LN → 선형 64→6</text>
+<text x="700.0" y="348.0" class="f-mu" font-size="11" text-anchor="middle">로짓 6개</text>
+</svg>

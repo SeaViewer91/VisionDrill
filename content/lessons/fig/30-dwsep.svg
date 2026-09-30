@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 760 380" role="img" aria-label="표준 3×3 합성곱과 깊이별 분리 합성곱(깊이별 3×3 + 점별 1×1)의 계산 구조와 가중치 수 비교, 32채널에서 64채널">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<text x="16.0" y="28.0" class="f-fg" font-size="13" text-anchor="start" font-weight="600">표준 합성곱</text>
+<rect x="55.0" y="45.0" width="56.0" height="56.0" rx="0" class="s-ac f-acs" stroke-width="1.1"/>
+<rect x="50.0" y="50.0" width="56.0" height="56.0" rx="0" class="s-ac f-acs" stroke-width="1.1"/>
+<rect x="45.0" y="55.0" width="56.0" height="56.0" rx="0" class="s-ac f-acs" stroke-width="1.1"/>
+<rect x="40.0" y="60.0" width="56.0" height="56.0" rx="0" class="s-ac f-acs" stroke-width="1.1"/>
+<rect x="35.0" y="65.0" width="56.0" height="56.0" rx="0" class="s-ac f-acs" stroke-width="1.1"/>
+<rect x="30.0" y="70.0" width="56.0" height="56.0" rx="0" class="s-ac f-acs" stroke-width="1.1"/>
+<text x="72.0" y="152.0" class="f-fg" font-size="12" text-anchor="middle">입력 32×8×8</text>
+<line x1="132.0" y1="98.0" x2="189.0" y2="98.0" class="s-fg" stroke-width="1.4"/>
+<path d="M 196.0 98.0 l -8 -4 l 0 8 Z" class="f-fg" stroke-width="1"/>
+<rect x="234.0" y="64.0" width="26.0" height="26.0" rx="0" class="s-fg f-sf" stroke-width="1.1"/>
+<rect x="230.0" y="68.0" width="26.0" height="26.0" rx="0" class="s-fg f-sf" stroke-width="1.1"/>
+<rect x="226.0" y="72.0" width="26.0" height="26.0" rx="0" class="s-fg f-sf" stroke-width="1.1"/>
+<rect x="222.0" y="76.0" width="26.0" height="26.0" rx="0" class="s-fg f-sf" stroke-width="1.1"/>
+<rect x="218.0" y="80.0" width="26.0" height="26.0" rx="0" class="s-fg f-sf" stroke-width="1.1"/>
+<rect x="214.0" y="84.0" width="26.0" height="26.0" rx="0" class="s-fg f-sf" stroke-width="1.1"/>
+<text x="240.0" y="152.0" class="f-fg" font-size="12" text-anchor="middle">3×3×32 커널</text>
+<text x="240.0" y="170.0" class="f-mu" font-size="12" text-anchor="middle">64개</text>
+<line x1="280.0" y1="98.0" x2="339.0" y2="98.0" class="s-fg" stroke-width="1.4"/>
+<path d="M 346.0 98.0 l -8 -4 l 0 8 Z" class="f-fg" stroke-width="1"/>
+<rect x="396.0" y="38.0" width="56.0" height="56.0" rx="0" class="s-bd f-bds" stroke-width="1.1"/>
+<rect x="392.0" y="42.0" width="56.0" height="56.0" rx="0" class="s-bd f-bds" stroke-width="1.1"/>
+<rect x="388.0" y="46.0" width="56.0" height="56.0" rx="0" class="s-bd f-bds" stroke-width="1.1"/>
+<rect x="384.0" y="50.0" width="56.0" height="56.0" rx="0" class="s-bd f-bds" stroke-width="1.1"/>
+<rect x="380.0" y="54.0" width="56.0" height="56.0" rx="0" class="s-bd f-bds" stroke-width="1.1"/>
+<rect x="376.0" y="58.0" width="56.0" height="56.0" rx="0" class="s-bd f-bds" stroke-width="1.1"/>
+<rect x="372.0" y="62.0" width="56.0" height="56.0" rx="0" class="s-bd f-bds" stroke-width="1.1"/>
+<rect x="368.0" y="66.0" width="56.0" height="56.0" rx="0" class="s-bd f-bds" stroke-width="1.1"/>
+<rect x="364.0" y="70.0" width="56.0" height="56.0" rx="0" class="s-bd f-bds" stroke-width="1.1"/>
+<text x="410.0" y="152.0" class="f-fg" font-size="12" text-anchor="middle">출력 64×8×8</text>
+<text x="500.0" y="86.0" class="f-fg" font-size="12" text-anchor="start">가중치 3×3×32×64</text>
+<text x="500.0" y="106.0" class="f-fg" font-size="12" text-anchor="start" font-weight="600">= 18,432</text>
+<text x="500.0" y="130.0" class="f-mu" font-size="12" text-anchor="start">곱셈-누산 1,179,648</text>
+<line x1="16.0" y1="196.0" x2="744.0" y2="196.0" class="s-mu" stroke-width="1" stroke-dasharray="4 4"/>
+<text x="16.0" y="222.0" class="f-fg" font-size="13" text-anchor="start" font-weight="600">깊이별 분리 합성곱</text>
+<rect x="55.0" y="237.0" width="56.0" height="56.0" rx="0" class="s-ac f-acs" stroke-width="1.1"/>
+<rect x="50.0" y="242.0" width="56.0" height="56.0" rx="0" class="s-ac f-acs" stroke-width="1.1"/>
+<rect x="45.0" y="247.0" width="56.0" height="56.0" rx="0" class="s-ac f-acs" stroke-width="1.1"/>
+<rect x="40.0" y="252.0" width="56.0" height="56.0" rx="0" class="s-ac f-acs" stroke-width="1.1"/>
+<rect x="35.0" y="257.0" width="56.0" height="56.0" rx="0" class="s-ac f-acs" stroke-width="1.1"/>
+<rect x="30.0" y="262.0" width="56.0" height="56.0" rx="0" class="s-ac f-acs" stroke-width="1.1"/>
+<text x="72.0" y="344.0" class="f-fg" font-size="12" text-anchor="middle">입력 32×8×8</text>
+<line x1="120.0" y1="290.0" x2="139.0" y2="290.0" class="s-fg" stroke-width="1.4"/>
+<path d="M 146.0 290.0 l -8 -4 l 0 8 Z" class="f-fg" stroke-width="1"/>
+<rect x="154.0" y="280.0" width="16.0" height="16.0" rx="0" class="s-fg f-sf" stroke-width="1.1"/>
+<rect x="174.0" y="280.0" width="16.0" height="16.0" rx="0" class="s-fg f-sf" stroke-width="1.1"/>
+<rect x="194.0" y="280.0" width="16.0" height="16.0" rx="0" class="s-fg f-sf" stroke-width="1.1"/>
+<text x="184.0" y="344.0" class="f-fg" font-size="12" text-anchor="middle">3×3×1 커널</text>
+<text x="184.0" y="362.0" class="f-mu" font-size="12" text-anchor="middle">32개(채널마다)</text>
+<line x1="222.0" y1="290.0" x2="243.0" y2="290.0" class="s-fg" stroke-width="1.4"/>
+<path d="M 250.0 290.0 l -8 -4 l 0 8 Z" class="f-fg" stroke-width="1"/>
+<rect x="287.0" y="237.0" width="56.0" height="56.0" rx="0" class="s-mu f-sf" stroke-width="1.1"/>
+<rect x="282.0" y="242.0" width="56.0" height="56.0" rx="0" class="s-mu f-sf" stroke-width="1.1"/>
+<rect x="277.0" y="247.0" width="56.0" height="56.0" rx="0" class="s-mu f-sf" stroke-width="1.1"/>
+<rect x="272.0" y="252.0" width="56.0" height="56.0" rx="0" class="s-mu f-sf" stroke-width="1.1"/>
+<rect x="267.0" y="257.0" width="56.0" height="56.0" rx="0" class="s-mu f-sf" stroke-width="1.1"/>
+<rect x="262.0" y="262.0" width="56.0" height="56.0" rx="0" class="s-mu f-sf" stroke-width="1.1"/>
+<text x="304.0" y="344.0" class="f-fg" font-size="12" text-anchor="middle">중간 32×8×8</text>
+<line x1="350.0" y1="290.0" x2="369.0" y2="290.0" class="s-fg" stroke-width="1.4"/>
+<path d="M 376.0 290.0 l -8 -4 l 0 8 Z" class="f-fg" stroke-width="1"/>
+<rect x="401.0" y="267.0" width="10.0" height="10.0" rx="0" class="s-fg f-sf" stroke-width="1.1"/>
+<rect x="398.0" y="270.0" width="10.0" height="10.0" rx="0" class="s-fg f-sf" stroke-width="1.1"/>
+<rect x="395.0" y="273.0" width="10.0" height="10.0" rx="0" class="s-fg f-sf" stroke-width="1.1"/>
+<rect x="392.0" y="276.0" width="10.0" height="10.0" rx="0" class="s-fg f-sf" stroke-width="1.1"/>
+<rect x="389.0" y="279.0" width="10.0" height="10.0" rx="0" class="s-fg f-sf" stroke-width="1.1"/>
+<rect x="386.0" y="282.0" width="10.0" height="10.0" rx="0" class="s-fg f-sf" stroke-width="1.1"/>
+<text x="402.0" y="344.0" class="f-fg" font-size="12" text-anchor="middle">1×1×32 커널</text>
+<text x="402.0" y="362.0" class="f-mu" font-size="12" text-anchor="middle">64개</text>
+<line x1="420.0" y1="290.0" x2="439.0" y2="290.0" class="s-fg" stroke-width="1.4"/>
+<path d="M 446.0 290.0 l -8 -4 l 0 8 Z" class="f-fg" stroke-width="1"/>
+<rect x="488.0" y="230.0" width="56.0" height="56.0" rx="0" class="s-bd f-bds" stroke-width="1.1"/>
+<rect x="484.0" y="234.0" width="56.0" height="56.0" rx="0" class="s-bd f-bds" stroke-width="1.1"/>
+<rect x="480.0" y="238.0" width="56.0" height="56.0" rx="0" class="s-bd f-bds" stroke-width="1.1"/>
+<rect x="476.0" y="242.0" width="56.0" height="56.0" rx="0" class="s-bd f-bds" stroke-width="1.1"/>
+<rect x="472.0" y="246.0" width="56.0" height="56.0" rx="0" class="s-bd f-bds" stroke-width="1.1"/>
+<rect x="468.0" y="250.0" width="56.0" height="56.0" rx="0" class="s-bd f-bds" stroke-width="1.1"/>
+<rect x="464.0" y="254.0" width="56.0" height="56.0" rx="0" class="s-bd f-bds" stroke-width="1.1"/>
+<rect x="460.0" y="258.0" width="56.0" height="56.0" rx="0" class="s-bd f-bds" stroke-width="1.1"/>
+<rect x="456.0" y="262.0" width="56.0" height="56.0" rx="0" class="s-bd f-bds" stroke-width="1.1"/>
+<text x="500.0" y="344.0" class="f-fg" font-size="12" text-anchor="middle">출력 64×8×8</text>
+<text x="572.0" y="278.0" class="f-fg" font-size="12" text-anchor="start">가중치 288 + 2,048</text>
+<text x="572.0" y="298.0" class="f-fg" font-size="12" text-anchor="start" font-weight="600">= 2,336 (12.7%)</text>
+<text x="572.0" y="322.0" class="f-mu" font-size="12" text-anchor="start">곱셈-누산 149,504</text>
+</svg>

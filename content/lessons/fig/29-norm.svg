@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 700 250" role="img" aria-label="배치 정규화, 레이어 정규화, 그룹 정규화가 평균과 분산을 함께 내는 범위. 가로는 채널, 세로는 배치 안의 샘플, 칸 하나는 한 채널의 H×W 화소 전체">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<text x="116.0" y="26.0" class="f-fg" font-size="14" text-anchor="middle" font-weight="600">배치 정규화</text>
+<rect x="44.0" y="70.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="68.0" y="70.0" width="24.0" height="24.0" rx="0" class="s-mu f-bds" stroke-width="1.0"/>
+<rect x="92.0" y="70.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="116.0" y="70.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="140.0" y="70.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="164.0" y="70.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="44.0" y="94.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="68.0" y="94.0" width="24.0" height="24.0" rx="0" class="s-mu f-bds" stroke-width="1.0"/>
+<rect x="92.0" y="94.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="116.0" y="94.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="140.0" y="94.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="164.0" y="94.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="44.0" y="118.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="68.0" y="118.0" width="24.0" height="24.0" rx="0" class="s-mu f-bds" stroke-width="1.0"/>
+<rect x="92.0" y="118.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="116.0" y="118.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="140.0" y="118.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="164.0" y="118.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="44.0" y="142.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="68.0" y="142.0" width="24.0" height="24.0" rx="0" class="s-mu f-bds" stroke-width="1.0"/>
+<rect x="92.0" y="142.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="116.0" y="142.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="140.0" y="142.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="164.0" y="142.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="68.0" y="70.0" width="24.0" height="96.0" rx="0" class="s-bd f-bds" stroke-width="2.4"/>
+<rect x="68.0" y="70.0" width="24.0" height="24.0" rx="0" class="s-mu f-bds" stroke-width="1.0"/>
+<rect x="68.0" y="94.0" width="24.0" height="24.0" rx="0" class="s-mu f-bds" stroke-width="1.0"/>
+<rect x="68.0" y="118.0" width="24.0" height="24.0" rx="0" class="s-mu f-bds" stroke-width="1.0"/>
+<rect x="68.0" y="142.0" width="24.0" height="24.0" rx="0" class="s-mu f-bds" stroke-width="1.0"/>
+<rect x="68.0" y="70.0" width="24.0" height="96.0" rx="0" class="s-bd" fill="none" stroke-width="2.4"/>
+<text x="116.0" y="60.0" class="f-mu" font-size="11" text-anchor="middle">채널 C →</text>
+<text x="36.0" y="122.0" class="f-mu" font-size="11" text-anchor="end">N</text>
+<line x1="40.0" y1="74.0" x2="40.0" y2="162.0" class="s-mu" stroke-width="1.0"/>
+<text x="116.0" y="190.0" class="f-mu" font-size="12" text-anchor="middle">채널마다, 배치 전체</text>
+<text x="354.0" y="26.0" class="f-fg" font-size="14" text-anchor="middle" font-weight="600">레이어 정규화</text>
+<rect x="282.0" y="70.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="306.0" y="70.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="330.0" y="70.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="354.0" y="70.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="378.0" y="70.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="402.0" y="70.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="282.0" y="94.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="306.0" y="94.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="330.0" y="94.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="354.0" y="94.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="378.0" y="94.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="402.0" y="94.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="282.0" y="118.0" width="24.0" height="24.0" rx="0" class="s-mu f-bds" stroke-width="1.0"/>
+<rect x="306.0" y="118.0" width="24.0" height="24.0" rx="0" class="s-mu f-bds" stroke-width="1.0"/>
+<rect x="330.0" y="118.0" width="24.0" height="24.0" rx="0" class="s-mu f-bds" stroke-width="1.0"/>
+<rect x="354.0" y="118.0" width="24.0" height="24.0" rx="0" class="s-mu f-bds" stroke-width="1.0"/>
+<rect x="378.0" y="118.0" width="24.0" height="24.0" rx="0" class="s-mu f-bds" stroke-width="1.0"/>
+<rect x="402.0" y="118.0" width="24.0" height="24.0" rx="0" class="s-mu f-bds" stroke-width="1.0"/>
+<rect x="282.0" y="142.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="306.0" y="142.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="330.0" y="142.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="354.0" y="142.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="378.0" y="142.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="402.0" y="142.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="282.0" y="118.0" width="144.0" height="24.0" rx="0" class="s-bd f-bds" stroke-width="2.4"/>
+<rect x="282.0" y="118.0" width="24.0" height="24.0" rx="0" class="s-mu f-bds" stroke-width="1.0"/>
+<rect x="306.0" y="118.0" width="24.0" height="24.0" rx="0" class="s-mu f-bds" stroke-width="1.0"/>
+<rect x="330.0" y="118.0" width="24.0" height="24.0" rx="0" class="s-mu f-bds" stroke-width="1.0"/>
+<rect x="354.0" y="118.0" width="24.0" height="24.0" rx="0" class="s-mu f-bds" stroke-width="1.0"/>
+<rect x="378.0" y="118.0" width="24.0" height="24.0" rx="0" class="s-mu f-bds" stroke-width="1.0"/>
+<rect x="402.0" y="118.0" width="24.0" height="24.0" rx="0" class="s-mu f-bds" stroke-width="1.0"/>
+<rect x="282.0" y="118.0" width="144.0" height="24.0" rx="0" class="s-bd" fill="none" stroke-width="2.4"/>
+<text x="354.0" y="60.0" class="f-mu" font-size="11" text-anchor="middle">채널 C →</text>
+<text x="274.0" y="122.0" class="f-mu" font-size="11" text-anchor="end">N</text>
+<line x1="278.0" y1="74.0" x2="278.0" y2="162.0" class="s-mu" stroke-width="1.0"/>
+<text x="354.0" y="190.0" class="f-mu" font-size="12" text-anchor="middle">샘플마다, 모든 채널</text>
+<text x="592.0" y="26.0" class="f-fg" font-size="14" text-anchor="middle" font-weight="600">그룹 정규화</text>
+<rect x="520.0" y="70.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="544.0" y="70.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="568.0" y="70.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="592.0" y="70.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="616.0" y="70.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="640.0" y="70.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="520.0" y="94.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="544.0" y="94.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="568.0" y="94.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="592.0" y="94.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="616.0" y="94.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="640.0" y="94.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="520.0" y="118.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="544.0" y="118.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="568.0" y="118.0" width="24.0" height="24.0" rx="0" class="s-mu f-bds" stroke-width="1.0"/>
+<rect x="592.0" y="118.0" width="24.0" height="24.0" rx="0" class="s-mu f-bds" stroke-width="1.0"/>
+<rect x="616.0" y="118.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="640.0" y="118.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="520.0" y="142.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="544.0" y="142.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="568.0" y="142.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="592.0" y="142.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="616.0" y="142.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="640.0" y="142.0" width="24.0" height="24.0" rx="0" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="568.0" y="118.0" width="48.0" height="24.0" rx="0" class="s-bd f-bds" stroke-width="2.4"/>
+<rect x="568.0" y="118.0" width="24.0" height="24.0" rx="0" class="s-mu f-bds" stroke-width="1.0"/>
+<rect x="592.0" y="118.0" width="24.0" height="24.0" rx="0" class="s-mu f-bds" stroke-width="1.0"/>
+<rect x="568.0" y="118.0" width="48.0" height="24.0" rx="0" class="s-bd" fill="none" stroke-width="2.4"/>
+<text x="592.0" y="60.0" class="f-mu" font-size="11" text-anchor="middle">채널 C →</text>
+<text x="512.0" y="122.0" class="f-mu" font-size="11" text-anchor="end">N</text>
+<line x1="516.0" y1="74.0" x2="516.0" y2="162.0" class="s-mu" stroke-width="1.0"/>
+<text x="592.0" y="190.0" class="f-mu" font-size="12" text-anchor="middle">샘플마다, 채널 묶음</text>
+<text x="350.0" y="226.0" class="f-mu" font-size="11" text-anchor="middle">칸 하나 = 샘플 하나의 한 채널(H×W 화소 전체)</text>
+</svg>

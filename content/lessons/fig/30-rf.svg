@@ -1,0 +1,150 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 760 380" role="img" aria-label="VD-CNN 마지막 합성곱의 한 칸이 입력에서 보는 범위가 층을 내려갈수록 넓어져 18화소가 되는 모습">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<text x="84.0" y="26.0" class="f-mu" font-size="12" text-anchor="end">층</text>
+<text x="686.0" y="26.0" class="f-mu" font-size="12" text-anchor="start">수용영역</text>
+<rect x="96.0" y="46.0" width="72.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="168.0" y="46.0" width="72.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="240.0" y="46.0" width="72.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="312.0" y="46.0" width="72.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="384.0" y="46.0" width="72.0" height="26.0" rx="0" class="s-bd f-bds" stroke-width="1"/>
+<rect x="456.0" y="46.0" width="72.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="528.0" y="46.0" width="72.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="600.0" y="46.0" width="72.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<text x="84.0" y="64.0" class="f-fg" font-size="12" text-anchor="end">합성곱 3</text>
+<text x="686.0" y="64.0" class="f-bd" font-size="12" text-anchor="start" font-weight="600">18화소</text>
+<rect x="96.0" y="100.0" width="72.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="168.0" y="100.0" width="72.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="240.0" y="100.0" width="72.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="312.0" y="100.0" width="72.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="384.0" y="100.0" width="72.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="456.0" y="100.0" width="72.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="528.0" y="100.0" width="72.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="600.0" y="100.0" width="72.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<text x="84.0" y="118.0" class="f-fg" font-size="12" text-anchor="end">풀링 2</text>
+<text x="686.0" y="118.0" class="f-fg" font-size="12" text-anchor="start">10화소</text>
+<rect x="96.0" y="154.0" width="36.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="132.0" y="154.0" width="36.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="168.0" y="154.0" width="36.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="204.0" y="154.0" width="36.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="240.0" y="154.0" width="36.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="276.0" y="154.0" width="36.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="312.0" y="154.0" width="36.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="348.0" y="154.0" width="36.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="384.0" y="154.0" width="36.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="420.0" y="154.0" width="36.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="456.0" y="154.0" width="36.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="492.0" y="154.0" width="36.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="528.0" y="154.0" width="36.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="564.0" y="154.0" width="36.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="600.0" y="154.0" width="36.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="636.0" y="154.0" width="36.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<text x="84.0" y="172.0" class="f-fg" font-size="12" text-anchor="end">합성곱 2</text>
+<text x="686.0" y="172.0" class="f-fg" font-size="12" text-anchor="start">8화소</text>
+<rect x="96.0" y="208.0" width="36.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="132.0" y="208.0" width="36.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="168.0" y="208.0" width="36.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="204.0" y="208.0" width="36.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="240.0" y="208.0" width="36.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="276.0" y="208.0" width="36.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="312.0" y="208.0" width="36.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="348.0" y="208.0" width="36.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="384.0" y="208.0" width="36.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="420.0" y="208.0" width="36.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="456.0" y="208.0" width="36.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="492.0" y="208.0" width="36.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="528.0" y="208.0" width="36.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="564.0" y="208.0" width="36.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="600.0" y="208.0" width="36.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="636.0" y="208.0" width="36.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<text x="84.0" y="226.0" class="f-fg" font-size="12" text-anchor="end">풀링 1</text>
+<text x="686.0" y="226.0" class="f-fg" font-size="12" text-anchor="start">4화소</text>
+<rect x="96.0" y="262.0" width="18.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="114.0" y="262.0" width="18.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="132.0" y="262.0" width="18.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="150.0" y="262.0" width="18.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="168.0" y="262.0" width="18.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="186.0" y="262.0" width="18.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="204.0" y="262.0" width="18.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="222.0" y="262.0" width="18.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="240.0" y="262.0" width="18.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="258.0" y="262.0" width="18.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="276.0" y="262.0" width="18.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="294.0" y="262.0" width="18.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="312.0" y="262.0" width="18.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="330.0" y="262.0" width="18.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="348.0" y="262.0" width="18.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="366.0" y="262.0" width="18.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="384.0" y="262.0" width="18.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="402.0" y="262.0" width="18.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="420.0" y="262.0" width="18.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="438.0" y="262.0" width="18.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="456.0" y="262.0" width="18.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="474.0" y="262.0" width="18.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="492.0" y="262.0" width="18.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="510.0" y="262.0" width="18.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="528.0" y="262.0" width="18.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="546.0" y="262.0" width="18.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="564.0" y="262.0" width="18.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="582.0" y="262.0" width="18.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="600.0" y="262.0" width="18.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="618.0" y="262.0" width="18.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="636.0" y="262.0" width="18.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="654.0" y="262.0" width="18.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<text x="84.0" y="280.0" class="f-fg" font-size="12" text-anchor="end">합성곱 1</text>
+<text x="686.0" y="280.0" class="f-fg" font-size="12" text-anchor="start">3화소</text>
+<rect x="96.0" y="316.0" width="18.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="114.0" y="316.0" width="18.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="132.0" y="316.0" width="18.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="150.0" y="316.0" width="18.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="168.0" y="316.0" width="18.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="186.0" y="316.0" width="18.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="204.0" y="316.0" width="18.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="222.0" y="316.0" width="18.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="240.0" y="316.0" width="18.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="258.0" y="316.0" width="18.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="276.0" y="316.0" width="18.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="294.0" y="316.0" width="18.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="312.0" y="316.0" width="18.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="330.0" y="316.0" width="18.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="348.0" y="316.0" width="18.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="366.0" y="316.0" width="18.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="384.0" y="316.0" width="18.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="402.0" y="316.0" width="18.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="420.0" y="316.0" width="18.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="438.0" y="316.0" width="18.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="456.0" y="316.0" width="18.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="474.0" y="316.0" width="18.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="492.0" y="316.0" width="18.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="510.0" y="316.0" width="18.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="528.0" y="316.0" width="18.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="546.0" y="316.0" width="18.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="564.0" y="316.0" width="18.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1"/>
+<rect x="582.0" y="316.0" width="18.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="600.0" y="316.0" width="18.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="618.0" y="316.0" width="18.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="636.0" y="316.0" width="18.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<rect x="654.0" y="316.0" width="18.0" height="26.0" rx="0" class="s-mu f-bg" stroke-width="1"/>
+<text x="84.0" y="334.0" class="f-fg" font-size="12" text-anchor="end">입력</text>
+<text x="686.0" y="334.0" class="f-fg" font-size="12" text-anchor="start">1화소</text>
+<line x1="384.0" y1="72.0" x2="312.0" y2="100.0" class="s-mu" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="456.0" y1="72.0" x2="528.0" y2="100.0" class="s-mu" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="312.0" y1="126.0" x2="312.0" y2="154.0" class="s-mu" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="528.0" y1="126.0" x2="528.0" y2="154.0" class="s-mu" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="312.0" y1="180.0" x2="276.0" y2="208.0" class="s-mu" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="528.0" y1="180.0" x2="564.0" y2="208.0" class="s-mu" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="276.0" y1="234.0" x2="276.0" y2="262.0" class="s-mu" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="564.0" y1="234.0" x2="564.0" y2="262.0" class="s-mu" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="276.0" y1="288.0" x2="258.0" y2="316.0" class="s-mu" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="564.0" y1="288.0" x2="582.0" y2="316.0" class="s-mu" stroke-width="1" stroke-dasharray="3 3"/>
+<path d="M 258.0 354.0 v 6 H 582.0 v -6" class="s-ac" stroke-width="1.4" fill="none"/>
+<text x="420.0" y="378.0" class="f-ac" font-size="12" text-anchor="middle">18화소 (32화소 타일의 가로 56%, 넓이 32%)</text>
+</svg>

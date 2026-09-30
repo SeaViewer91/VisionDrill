@@ -750,6 +750,19 @@ h3 {
   padding: 0.1em 0.35em;
   border-radius: 4px;
 }
+.lesson pre {
+  margin: 0.9em 0;
+  padding: 0.8em 1em;
+  background: var(--surface-2);
+  border-radius: var(--radius);
+  overflow-x: auto;
+  line-height: 1.5;
+}
+.lesson pre code {
+  padding: 0;
+  background: none;
+  font-size: 0.85em;
+}
 .lesson blockquote {
   margin: 1em 0;
   padding: 0.7em 1em;

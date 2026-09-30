@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 700 320" role="img" aria-label="평범한 8층·20층과 잔차 연결 20층의 에폭별 학습 손실">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<line x1="62.0" y1="270.0" x2="680.0" y2="270.0" class="s-mu" stroke-width="0.6" stroke-dasharray="2 4"/>
+<text x="54.0" y="274.0" class="f-mu" font-size="11" text-anchor="end">0.0</text>
+<line x1="62.0" y1="207.5" x2="680.0" y2="207.5" class="s-mu" stroke-width="0.6" stroke-dasharray="2 4"/>
+<text x="54.0" y="211.5" class="f-mu" font-size="11" text-anchor="end">0.5</text>
+<line x1="62.0" y1="145.0" x2="680.0" y2="145.0" class="s-mu" stroke-width="0.6" stroke-dasharray="2 4"/>
+<text x="54.0" y="149.0" class="f-mu" font-size="11" text-anchor="end">1.0</text>
+<line x1="62.0" y1="82.5" x2="680.0" y2="82.5" class="s-mu" stroke-width="0.6" stroke-dasharray="2 4"/>
+<text x="54.0" y="86.5" class="f-mu" font-size="11" text-anchor="end">1.5</text>
+<line x1="62.0" y1="20.0" x2="680.0" y2="20.0" class="s-mu" stroke-width="0.6" stroke-dasharray="2 4"/>
+<text x="54.0" y="24.0" class="f-mu" font-size="11" text-anchor="end">2.0</text>
+<text x="62.0" y="288.0" class="f-mu" font-size="11" text-anchor="middle">1</text>
+<text x="192.1" y="288.0" class="f-mu" font-size="11" text-anchor="middle">5</text>
+<text x="354.7" y="288.0" class="f-mu" font-size="11" text-anchor="middle">10</text>
+<text x="517.4" y="288.0" class="f-mu" font-size="11" text-anchor="middle">15</text>
+<text x="680.0" y="288.0" class="f-mu" font-size="11" text-anchor="middle">20</text>
+<line x1="62.0" y1="270.0" x2="680.0" y2="270.0" class="s-fg" stroke-width="1.2"/>
+<line x1="62.0" y1="20.0" x2="62.0" y2="270.0" class="s-fg" stroke-width="1.2"/>
+<text x="371.0" y="312.0" class="f-mu" font-size="12" text-anchor="middle">에폭</text>
+<text x="32.0" y="14.0" class="f-mu" font-size="12" text-anchor="start">손실</text>
+<line x1="62.0" y1="46.0" x2="680.0" y2="46.0" class="s-fg" stroke-width="1.2" stroke-dasharray="6 4"/>
+<text x="676.0" y="40.0" class="f-fg" font-size="11" text-anchor="end">ln 6 ≈ 1.79 (여섯 클래스 찍기 수준)</text>
+<path d="M 62.0 46.6 L 94.5 97.4 L 127.1 143.5 L 159.6 178.1 L 192.1 193.2 L 224.6 199.7 L 257.2 206.5 L 289.7 214.1 L 322.2 218.8 L 354.7 227.7 L 387.3 231.7 L 419.8 234.7 L 452.3 238.5 L 484.8 240.2 L 517.4 242.7 L 549.9 243.1 L 582.4 238.0 L 614.9 247.0 L 647.5 248.5 L 680.0 249.8" class="s-bd" stroke-width="2.2" fill="none"/>
+<circle cx="62.0" cy="46.6" r="2.6" class="f-bd"/>
+<circle cx="94.5" cy="97.4" r="2.6" class="f-bd"/>
+<circle cx="127.1" cy="143.5" r="2.6" class="f-bd"/>
+<circle cx="159.6" cy="178.1" r="2.6" class="f-bd"/>
+<circle cx="192.1" cy="193.2" r="2.6" class="f-bd"/>
+<circle cx="224.6" cy="199.7" r="2.6" class="f-bd"/>
+<circle cx="257.2" cy="206.5" r="2.6" class="f-bd"/>
+<circle cx="289.7" cy="214.1" r="2.6" class="f-bd"/>
+<circle cx="322.2" cy="218.8" r="2.6" class="f-bd"/>
+<circle cx="354.7" cy="227.7" r="2.6" class="f-bd"/>
+<circle cx="387.3" cy="231.7" r="2.6" class="f-bd"/>
+<circle cx="419.8" cy="234.7" r="2.6" class="f-bd"/>
+<circle cx="452.3" cy="238.5" r="2.6" class="f-bd"/>
+<circle cx="484.8" cy="240.2" r="2.6" class="f-bd"/>
+<circle cx="517.4" cy="242.7" r="2.6" class="f-bd"/>
+<circle cx="549.9" cy="243.1" r="2.6" class="f-bd"/>
+<circle cx="582.4" cy="238.0" r="2.6" class="f-bd"/>
+<circle cx="614.9" cy="247.0" r="2.6" class="f-bd"/>
+<circle cx="647.5" cy="248.5" r="2.6" class="f-bd"/>
+<circle cx="680.0" cy="249.8" r="2.6" class="f-bd"/>
+<path d="M 62.0 155.6 L 94.5 200.9 L 127.1 210.8 L 159.6 217.6 L 192.1 225.2 L 224.6 231.0 L 257.2 232.4 L 289.7 235.7 L 322.2 240.4 L 354.7 244.1 L 387.3 241.8 L 419.8 236.4 L 452.3 246.9 L 484.8 249.8 L 517.4 248.9 L 549.9 248.2 L 582.4 251.2 L 614.9 249.5 L 647.5 254.2 L 680.0 253.3" class="s-ac" stroke-width="2.2" fill="none"/>
+<circle cx="62.0" cy="155.6" r="2.6" class="f-ac"/>
+<circle cx="94.5" cy="200.9" r="2.6" class="f-ac"/>
+<circle cx="127.1" cy="210.8" r="2.6" class="f-ac"/>
+<circle cx="159.6" cy="217.6" r="2.6" class="f-ac"/>
+<circle cx="192.1" cy="225.2" r="2.6" class="f-ac"/>
+<circle cx="224.6" cy="231.0" r="2.6" class="f-ac"/>
+<circle cx="257.2" cy="232.4" r="2.6" class="f-ac"/>
+<circle cx="289.7" cy="235.7" r="2.6" class="f-ac"/>
+<circle cx="322.2" cy="240.4" r="2.6" class="f-ac"/>
+<circle cx="354.7" cy="244.1" r="2.6" class="f-ac"/>
+<circle cx="387.3" cy="241.8" r="2.6" class="f-ac"/>
+<circle cx="419.8" cy="236.4" r="2.6" class="f-ac"/>
+<circle cx="452.3" cy="246.9" r="2.6" class="f-ac"/>
+<circle cx="484.8" cy="249.8" r="2.6" class="f-ac"/>
+<circle cx="517.4" cy="248.9" r="2.6" class="f-ac"/>
+<circle cx="549.9" cy="248.2" r="2.6" class="f-ac"/>
+<circle cx="582.4" cy="251.2" r="2.6" class="f-ac"/>
+<circle cx="614.9" cy="249.5" r="2.6" class="f-ac"/>
+<circle cx="647.5" cy="254.2" r="2.6" class="f-ac"/>
+<circle cx="680.0" cy="253.3" r="2.6" class="f-ac"/>
+<path d="M 62.0 118.7 L 94.5 180.0 L 127.1 189.5 L 159.6 196.5 L 192.1 197.9 L 224.6 206.8 L 257.2 213.1 L 289.7 216.0 L 322.2 217.3 L 354.7 224.4 L 387.3 225.2 L 419.8 231.2 L 452.3 232.0 L 484.8 232.2 L 517.4 234.7 L 549.9 236.1 L 582.4 240.1 L 614.9 234.3 L 647.5 241.4 L 680.0 243.3" class="s-mu" stroke-width="2.2" fill="none" stroke-dasharray="5 3"/>
+<circle cx="62.0" cy="118.7" r="2.6" class="f-mu"/>
+<circle cx="94.5" cy="180.0" r="2.6" class="f-mu"/>
+<circle cx="127.1" cy="189.5" r="2.6" class="f-mu"/>
+<circle cx="159.6" cy="196.5" r="2.6" class="f-mu"/>
+<circle cx="192.1" cy="197.9" r="2.6" class="f-mu"/>
+<circle cx="224.6" cy="206.8" r="2.6" class="f-mu"/>
+<circle cx="257.2" cy="213.1" r="2.6" class="f-mu"/>
+<circle cx="289.7" cy="216.0" r="2.6" class="f-mu"/>
+<circle cx="322.2" cy="217.3" r="2.6" class="f-mu"/>
+<circle cx="354.7" cy="224.4" r="2.6" class="f-mu"/>
+<circle cx="387.3" cy="225.2" r="2.6" class="f-mu"/>
+<circle cx="419.8" cy="231.2" r="2.6" class="f-mu"/>
+<circle cx="452.3" cy="232.0" r="2.6" class="f-mu"/>
+<circle cx="484.8" cy="232.2" r="2.6" class="f-mu"/>
+<circle cx="517.4" cy="234.7" r="2.6" class="f-mu"/>
+<circle cx="549.9" cy="236.1" r="2.6" class="f-mu"/>
+<circle cx="582.4" cy="240.1" r="2.6" class="f-mu"/>
+<circle cx="614.9" cy="234.3" r="2.6" class="f-mu"/>
+<circle cx="647.5" cy="241.4" r="2.6" class="f-mu"/>
+<circle cx="680.0" cy="243.3" r="2.6" class="f-mu"/>
+<line x1="419.8" y1="82.5" x2="447.8" y2="82.5" class="s-bd" stroke-width="2.2"/>
+<text x="455.8" y="86.5" class="f-fg" font-size="12" text-anchor="start">평범한 20층 (1에폭 1.787)</text>
+<line x1="419.8" y1="102.5" x2="447.8" y2="102.5" class="s-ac" stroke-width="2.2"/>
+<text x="455.8" y="106.5" class="f-fg" font-size="12" text-anchor="start">잔차 연결 20층 (1에폭 0.916)</text>
+<line x1="419.8" y1="122.5" x2="447.8" y2="122.5" class="s-mu" stroke-width="2.2" stroke-dasharray="5 3"/>
+<text x="455.8" y="126.5" class="f-fg" font-size="12" text-anchor="start">평범한 8층 (1에폭 1.211)</text>
+</svg>
