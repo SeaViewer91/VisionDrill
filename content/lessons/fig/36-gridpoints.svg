@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 720 262" role="img" aria-label="0.5 m 영상의 승용차 세 대 상자(A·B는 가로로 선 9×4화소, C는 45°로 놓인 차의 수평 상자)를 스트라이드 8과 16의 격자 위에 놓고 상자 안에 들어오는 격자점(칸 중심)을 표시함. 스트라이드 8에서는 1·0·2개, 스트라이드 16에서는 모두 0개">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<text x="183.6" y="24.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="600">스트라이드 8</text>
+<rect x="30.0" y="44.0" width="307.2" height="204.8" rx="0" class="s-mu f-bg" stroke-width="1.0"/>
+<line x1="81.2" y1="44.0" x2="81.2" y2="248.8" class="s-mu" stroke-width="0.5" stroke-dasharray="3 3"/>
+<line x1="132.4" y1="44.0" x2="132.4" y2="248.8" class="s-mu" stroke-width="0.5" stroke-dasharray="3 3"/>
+<line x1="183.6" y1="44.0" x2="183.6" y2="248.8" class="s-mu" stroke-width="0.5" stroke-dasharray="3 3"/>
+<line x1="234.8" y1="44.0" x2="234.8" y2="248.8" class="s-mu" stroke-width="0.5" stroke-dasharray="3 3"/>
+<line x1="286.0" y1="44.0" x2="286.0" y2="248.8" class="s-mu" stroke-width="0.5" stroke-dasharray="3 3"/>
+<line x1="30.0" y1="95.2" x2="337.2" y2="95.2" class="s-mu" stroke-width="0.5" stroke-dasharray="3 3"/>
+<line x1="30.0" y1="146.4" x2="337.2" y2="146.4" class="s-mu" stroke-width="0.5" stroke-dasharray="3 3"/>
+<line x1="30.0" y1="197.6" x2="337.2" y2="197.6" class="s-mu" stroke-width="0.5" stroke-dasharray="3 3"/>
+<path d="M 242.8 63.1 L 283.5 103.9 L 262.7 124.7 L 221.9 84.0 Z" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="42.8" y="108.0" width="57.6" height="25.6" class="s-bd" fill="none" stroke-width="2"/>
+<text x="71.6" y="149.6" class="f-bd" font-size="12" text-anchor="middle" font-weight="600">A: 1개</text>
+<rect x="119.6" y="178.4" width="57.6" height="25.6" class="s-bd" fill="none" stroke-width="2"/>
+<text x="199.2" y="195.2" class="f-bd" font-size="12" text-anchor="start" font-weight="600">B: 0개</text>
+<rect x="222.0" y="63.2" width="61.4" height="61.4" class="s-bd" fill="none" stroke-width="2"/>
+<text x="252.7" y="140.6" class="f-bd" font-size="12" text-anchor="middle" font-weight="600">C: 2개</text>
+<circle cx="55.6" cy="69.6" r="2.2" class="f-mu"/>
+<circle cx="55.6" cy="120.8" r="4.5" class="f-ac"/>
+<circle cx="55.6" cy="172.0" r="2.2" class="f-mu"/>
+<circle cx="55.6" cy="223.2" r="2.2" class="f-mu"/>
+<circle cx="106.8" cy="69.6" r="2.2" class="f-mu"/>
+<circle cx="106.8" cy="120.8" r="2.2" class="f-mu"/>
+<circle cx="106.8" cy="172.0" r="2.2" class="f-mu"/>
+<circle cx="106.8" cy="223.2" r="2.2" class="f-mu"/>
+<circle cx="158.0" cy="69.6" r="2.2" class="f-mu"/>
+<circle cx="158.0" cy="120.8" r="2.2" class="f-mu"/>
+<circle cx="158.0" cy="172.0" r="2.2" class="f-mu"/>
+<circle cx="158.0" cy="223.2" r="2.2" class="f-mu"/>
+<circle cx="209.2" cy="69.6" r="2.2" class="f-mu"/>
+<circle cx="209.2" cy="120.8" r="2.2" class="f-mu"/>
+<circle cx="209.2" cy="172.0" r="2.2" class="f-mu"/>
+<circle cx="209.2" cy="223.2" r="2.2" class="f-mu"/>
+<circle cx="260.4" cy="69.6" r="4.5" class="f-ac"/>
+<circle cx="260.4" cy="120.8" r="4.5" class="f-ac"/>
+<circle cx="260.4" cy="172.0" r="2.2" class="f-mu"/>
+<circle cx="260.4" cy="223.2" r="2.2" class="f-mu"/>
+<circle cx="311.6" cy="69.6" r="2.2" class="f-mu"/>
+<circle cx="311.6" cy="120.8" r="2.2" class="f-mu"/>
+<circle cx="311.6" cy="172.0" r="2.2" class="f-mu"/>
+<circle cx="311.6" cy="223.2" r="2.2" class="f-mu"/>
+<text x="543.6" y="24.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="600">스트라이드 16</text>
+<rect x="390.0" y="44.0" width="307.2" height="204.8" rx="0" class="s-mu f-bg" stroke-width="1.0"/>
+<line x1="492.4" y1="44.0" x2="492.4" y2="248.8" class="s-mu" stroke-width="0.5" stroke-dasharray="3 3"/>
+<line x1="594.8" y1="44.0" x2="594.8" y2="248.8" class="s-mu" stroke-width="0.5" stroke-dasharray="3 3"/>
+<line x1="390.0" y1="146.4" x2="697.2" y2="146.4" class="s-mu" stroke-width="0.5" stroke-dasharray="3 3"/>
+<path d="M 602.8 63.1 L 643.5 103.9 L 622.7 124.7 L 581.9 84.0 Z" class="s-mu f-sf" stroke-width="1.0"/>
+<rect x="402.8" y="108.0" width="57.6" height="25.6" class="s-bd" fill="none" stroke-width="2"/>
+<text x="431.6" y="149.6" class="f-bd" font-size="12" text-anchor="middle" font-weight="600">A: 0개</text>
+<rect x="479.6" y="178.4" width="57.6" height="25.6" class="s-bd" fill="none" stroke-width="2"/>
+<text x="559.2" y="195.2" class="f-bd" font-size="12" text-anchor="start" font-weight="600">B: 0개</text>
+<rect x="582.0" y="63.2" width="61.4" height="61.4" class="s-bd" fill="none" stroke-width="2"/>
+<text x="612.7" y="140.6" class="f-bd" font-size="12" text-anchor="middle" font-weight="600">C: 0개</text>
+<circle cx="441.2" cy="95.2" r="2.2" class="f-mu"/>
+<circle cx="441.2" cy="197.6" r="2.2" class="f-mu"/>
+<circle cx="543.6" cy="95.2" r="2.2" class="f-mu"/>
+<circle cx="543.6" cy="197.6" r="2.2" class="f-mu"/>
+<circle cx="646.0" cy="95.2" r="2.2" class="f-mu"/>
+<circle cx="646.0" cy="197.6" r="2.2" class="f-mu"/>
+</svg>

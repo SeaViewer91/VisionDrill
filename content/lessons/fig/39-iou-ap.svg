@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 680 320" role="img" aria-label="IoU 임계값을 0.50에서 0.95까지 올릴 때 선박·소형선박·차량의 AP와 세 클래스 평균(mAP)">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<rect x="70.0" y="22.0" width="350.0" height="240.0" rx="0" class="s-mu f-bg" stroke-width="1.2"/>
+<line x1="70.0" y1="262.0" x2="70.0" y2="267.0" class="s-mu" stroke-width="1.2"/>
+<text x="70.0" y="281.0" class="f-mu" font-size="12" text-anchor="middle">0.5</text>
+<line x1="147.8" y1="262.0" x2="147.8" y2="267.0" class="s-mu" stroke-width="1.2"/>
+<text x="147.8" y="281.0" class="f-mu" font-size="12" text-anchor="middle">0.6</text>
+<line x1="225.6" y1="262.0" x2="225.6" y2="267.0" class="s-mu" stroke-width="1.2"/>
+<text x="225.6" y="281.0" class="f-mu" font-size="12" text-anchor="middle">0.7</text>
+<line x1="303.3" y1="262.0" x2="303.3" y2="267.0" class="s-mu" stroke-width="1.2"/>
+<text x="303.3" y="281.0" class="f-mu" font-size="12" text-anchor="middle">0.8</text>
+<line x1="381.1" y1="262.0" x2="381.1" y2="267.0" class="s-mu" stroke-width="1.2"/>
+<text x="381.1" y="281.0" class="f-mu" font-size="12" text-anchor="middle">0.9</text>
+<line x1="65.0" y1="262.0" x2="70.0" y2="262.0" class="s-mu" stroke-width="1.2"/>
+<text x="61.0" y="266.0" class="f-mu" font-size="12" text-anchor="end">0</text>
+<line x1="65.0" y1="214.0" x2="70.0" y2="214.0" class="s-mu" stroke-width="1.2"/>
+<text x="61.0" y="218.0" class="f-mu" font-size="12" text-anchor="end">0.2</text>
+<line x1="65.0" y1="166.0" x2="70.0" y2="166.0" class="s-mu" stroke-width="1.2"/>
+<text x="61.0" y="170.0" class="f-mu" font-size="12" text-anchor="end">0.4</text>
+<line x1="65.0" y1="118.0" x2="70.0" y2="118.0" class="s-mu" stroke-width="1.2"/>
+<text x="61.0" y="122.0" class="f-mu" font-size="12" text-anchor="end">0.6</text>
+<line x1="65.0" y1="70.0" x2="70.0" y2="70.0" class="s-mu" stroke-width="1.2"/>
+<text x="61.0" y="74.0" class="f-mu" font-size="12" text-anchor="end">0.8</text>
+<line x1="65.0" y1="22.0" x2="70.0" y2="22.0" class="s-mu" stroke-width="1.2"/>
+<text x="61.0" y="26.0" class="f-mu" font-size="12" text-anchor="end">1</text>
+<text x="245.0" y="302.0" class="f-mu" font-size="12" text-anchor="middle">IoU 임계값</text>
+<text transform="rotate(-90 26 142.0)" x="26.0" y="142.0" class="f-mu" font-size="12" text-anchor="middle">AP</text>
+<line x1="264.4" y1="22.0" x2="264.4" y2="262.0" class="s-mu" stroke-width="1" stroke-dasharray="3 3"/>
+<path d="M 70.0 129.6 L 108.9 129.6 L 147.8 129.6 L 186.7 135.0 L 225.6 146.1 L 264.4 153.7 L 303.3 207.2 L 342.2 218.4 L 381.1 250.1 L 420.0 262.0" class="s-ok" stroke-width="2.2" fill="none"/>
+<circle cx="70.0" cy="129.6" r="3" class="f-ok"/>
+<circle cx="108.9" cy="129.6" r="3" class="f-ok"/>
+<circle cx="147.8" cy="129.6" r="3" class="f-ok"/>
+<circle cx="186.7" cy="135.0" r="3" class="f-ok"/>
+<circle cx="225.6" cy="146.1" r="3" class="f-ok"/>
+<circle cx="264.4" cy="153.7" r="3" class="f-ok"/>
+<circle cx="303.3" cy="207.2" r="3" class="f-ok"/>
+<circle cx="342.2" cy="218.4" r="3" class="f-ok"/>
+<circle cx="381.1" cy="250.1" r="3" class="f-ok"/>
+<circle cx="420.0" cy="262.0" r="3" class="f-ok"/>
+<path d="M 70.0 59.2 L 108.9 59.2 L 147.8 60.0 L 186.7 63.7 L 225.6 75.8 L 264.4 111.5 L 303.3 169.0 L 342.2 225.5 L 381.1 253.9 L 420.0 261.8" class="s-ac" stroke-width="2.2" fill="none"/>
+<circle cx="70.0" cy="59.2" r="3" class="f-ac"/>
+<circle cx="108.9" cy="59.2" r="3" class="f-ac"/>
+<circle cx="147.8" cy="60.0" r="3" class="f-ac"/>
+<circle cx="186.7" cy="63.7" r="3" class="f-ac"/>
+<circle cx="225.6" cy="75.8" r="3" class="f-ac"/>
+<circle cx="264.4" cy="111.5" r="3" class="f-ac"/>
+<circle cx="303.3" cy="169.0" r="3" class="f-ac"/>
+<circle cx="342.2" cy="225.5" r="3" class="f-ac"/>
+<circle cx="381.1" cy="253.9" r="3" class="f-ac"/>
+<circle cx="420.0" cy="261.8" r="3" class="f-ac"/>
+<path d="M 70.0 132.6 L 108.9 133.4 L 147.8 141.7 L 186.7 162.7 L 225.6 186.0 L 264.4 208.6 L 303.3 236.0 L 342.2 254.7 L 381.1 261.1 L 420.0 262.0" class="s-bd" stroke-width="2.2" fill="none"/>
+<circle cx="70.0" cy="132.6" r="3" class="f-bd"/>
+<circle cx="108.9" cy="133.4" r="3" class="f-bd"/>
+<circle cx="147.8" cy="141.7" r="3" class="f-bd"/>
+<circle cx="186.7" cy="162.7" r="3" class="f-bd"/>
+<circle cx="225.6" cy="186.0" r="3" class="f-bd"/>
+<circle cx="264.4" cy="208.6" r="3" class="f-bd"/>
+<circle cx="303.3" cy="236.0" r="3" class="f-bd"/>
+<circle cx="342.2" cy="254.7" r="3" class="f-bd"/>
+<circle cx="381.1" cy="261.1" r="3" class="f-bd"/>
+<circle cx="420.0" cy="262.0" r="3" class="f-bd"/>
+<path d="M 70.0 107.1 L 108.9 107.4 L 147.8 110.4 L 186.7 120.5 L 225.6 136.0 L 264.4 158.0 L 303.3 204.1 L 342.2 232.9 L 381.1 255.0 L 420.0 261.9" class="s-fg" stroke-width="1.8" fill="none" stroke-dasharray="6 4"/>
+<circle cx="70.0" cy="107.1" r="3" class="f-fg"/>
+<circle cx="108.9" cy="107.4" r="3" class="f-fg"/>
+<circle cx="147.8" cy="110.4" r="3" class="f-fg"/>
+<circle cx="186.7" cy="120.5" r="3" class="f-fg"/>
+<circle cx="225.6" cy="136.0" r="3" class="f-fg"/>
+<circle cx="264.4" cy="158.0" r="3" class="f-fg"/>
+<circle cx="303.3" cy="204.1" r="3" class="f-fg"/>
+<circle cx="342.2" cy="232.9" r="3" class="f-fg"/>
+<circle cx="381.1" cy="255.0" r="3" class="f-fg"/>
+<circle cx="420.0" cy="261.9" r="3" class="f-fg"/>
+<text x="572.0" y="32.0" class="f-mu" font-size="11" text-anchor="middle">AP50 → AP75, 열 개 평균</text>
+<line x1="452.0" y1="50.0" x2="482.0" y2="50.0" class="s-ok" stroke-width="2.2"/>
+<text x="492.0" y="54.0" class="f-ok" font-size="12" text-anchor="start" font-weight="600">선박</text>
+<text x="492.0" y="69.0" class="f-mu" font-size="11" text-anchor="start">0.552 → 0.451, 0.358</text>
+<line x1="452.0" y1="88.0" x2="482.0" y2="88.0" class="s-ac" stroke-width="2.2"/>
+<text x="492.0" y="92.0" class="f-ac" font-size="12" text-anchor="start" font-weight="600">소형선박</text>
+<text x="492.0" y="107.0" class="f-mu" font-size="11" text-anchor="start">0.845 → 0.627, 0.533</text>
+<line x1="452.0" y1="126.0" x2="482.0" y2="126.0" class="s-bd" stroke-width="2.2"/>
+<text x="492.0" y="130.0" class="f-bd" font-size="12" text-anchor="start" font-weight="600">차량</text>
+<text x="492.0" y="145.0" class="f-mu" font-size="11" text-anchor="start">0.539 → 0.222, 0.267</text>
+<line x1="452.0" y1="164.0" x2="482.0" y2="164.0" class="s-fg" stroke-width="2.2" stroke-dasharray="6 4"/>
+<text x="492.0" y="168.0" class="f-fg" font-size="12" text-anchor="start" font-weight="600">세 클래스 평균</text>
+<text x="492.0" y="183.0" class="f-mu" font-size="11" text-anchor="start">0.645 → 0.433, 0.386</text>
+<text x="452.0" y="230.0" class="f-fg" font-size="12" text-anchor="start">차량은 IoU를 조금만 올려도</text>
+<text x="452.0" y="250.0" class="f-fg" font-size="12" text-anchor="start">AP가 가장 빨리 떨어짐</text>
+</svg>

@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 680 236" role="img" aria-label="칼만 필터로 트랙을 이어 가는 과정: 예측, 탐지, 갱신, 놓친 프레임에서 예측만으로 버팀">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<rect x="55.0" y="118.0" width="50" height="20" class="s-ac" fill="none" stroke-width="2.2"/>
+<rect x="205.0" y="118.0" width="50" height="20" class="s-fg" fill="none" stroke-width="1.8" stroke-dasharray="5 3"/>
+<rect x="215.0" y="109.0" width="50" height="20" class="s-bd" fill="none" stroke-width="2"/>
+<rect x="212.3" y="111.4" width="50" height="20" class="s-ac" fill="none" stroke-width="2.2"/>
+<rect x="343.3" y="97.4" width="88" height="48" rx="10" class="s-mu" fill="none" stroke-width="1.2" stroke-dasharray="2 3"/>
+<rect x="362.3" y="111.4" width="50" height="20" class="s-fg" fill="none" stroke-width="1.8" stroke-dasharray="5 3"/>
+<rect x="483.3" y="89.4" width="108" height="64" rx="12" class="s-mu" fill="none" stroke-width="1.2" stroke-dasharray="2 3"/>
+<rect x="512.3" y="111.4" width="50" height="20" class="s-fg" fill="none" stroke-width="1.8" stroke-dasharray="5 3"/>
+<rect x="504.3" y="130.0" width="50" height="20" class="s-bd" fill="none" stroke-width="2"/>
+<rect x="507.9" y="125.0" width="50" height="20" class="s-ac" fill="none" stroke-width="2.2"/>
+<line x1="109.0" y1="128.0" x2="193.0" y2="128.0" class="s-mu" stroke-width="1.4"/>
+<path d="M 199.0 128.0 L 193.0 131.3 L 193.0 124.7 Z" class="f-mu" stroke-width="0"/>
+<line x1="266.3" y1="121.4" x2="333.3" y2="121.4" class="s-mu" stroke-width="1.4"/>
+<path d="M 339.3 121.4 L 333.3 124.7 L 333.3 118.1 Z" class="f-mu" stroke-width="0"/>
+<line x1="416.3" y1="121.4" x2="473.3" y2="121.4" class="s-mu" stroke-width="1.4"/>
+<path d="M 479.3 121.4 L 473.3 124.7 L 473.3 118.1 Z" class="f-mu" stroke-width="0"/>
+<line x1="30.0" y1="190.0" x2="650.0" y2="190.0" class="s-mu" stroke-width="1"/>
+<line x1="80.0" y1="186.0" x2="80.0" y2="194.0" class="s-mu" stroke-width="1"/>
+<text x="80.0" y="210.0" class="f-fg" font-size="12" text-anchor="middle" font-weight="600">t−1</text>
+<text x="80.0" y="228.0" class="f-mu" font-size="11" text-anchor="middle">갱신된 위치</text>
+<line x1="230.0" y1="186.0" x2="230.0" y2="194.0" class="s-mu" stroke-width="1"/>
+<text x="230.0" y="210.0" class="f-fg" font-size="12" text-anchor="middle" font-weight="600">t</text>
+<text x="230.0" y="228.0" class="f-mu" font-size="11" text-anchor="middle">예측과 탐지 사이로 갱신</text>
+<line x1="383.0" y1="186.0" x2="383.0" y2="194.0" class="s-mu" stroke-width="1"/>
+<text x="383.0" y="210.0" class="f-fg" font-size="12" text-anchor="middle" font-weight="600">t+1 (탐지 놓침)</text>
+<text x="383.0" y="228.0" class="f-mu" font-size="11" text-anchor="middle">예측만으로 버팀</text>
+<line x1="530.0" y1="186.0" x2="530.0" y2="194.0" class="s-mu" stroke-width="1"/>
+<text x="530.0" y="210.0" class="f-fg" font-size="12" text-anchor="middle" font-weight="600">t+2</text>
+<text x="530.0" y="228.0" class="f-mu" font-size="11" text-anchor="middle">다시 짝지어 갱신</text>
+<rect x="107.0" y="22.0" width="26" height="12" class="s-fg" fill="none" stroke-width="1.6" stroke-dasharray="5 3"/>
+<text x="140.0" y="33.0" class="f-mu" font-size="12" text-anchor="start">예측</text>
+<rect x="207.0" y="22.0" width="26" height="12" class="s-bd" fill="none" stroke-width="1.6"/>
+<text x="240.0" y="33.0" class="f-mu" font-size="12" text-anchor="start">탐지</text>
+<rect x="307.0" y="22.0" width="26" height="12" class="s-ac" fill="none" stroke-width="1.6"/>
+<text x="340.0" y="33.0" class="f-mu" font-size="12" text-anchor="start">갱신(트랙 상자)</text>
+<rect x="467.0" y="22.0" width="26" height="12" class="s-mu" fill="none" stroke-width="1.2" stroke-dasharray="2 3"/>
+<text x="500.0" y="33.0" class="f-mu" font-size="12" text-anchor="start">예측 불확실성</text>
+</svg>
