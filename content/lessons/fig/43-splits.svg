@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 700 214" role="img" aria-label="타일 데이터셋을 나누는 방법 다섯 가지에서 학습·검증 타일이 장면 위에 놓이는 모습">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<text x="78.0" y="32.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="600">A 겹침·무작위</text>
+<rect x="18.0" y="46.0" width="120.0" height="120.0" rx="0" class="s-mu f-sf" stroke-width="1"/>
+<circle cx="33.0" cy="61.0" r="3.2" class="f-bd"/>
+<circle cx="33.0" cy="76.0" r="3.2" class="f-ac"/>
+<circle cx="33.0" cy="91.0" r="3.2" class="f-ac"/>
+<circle cx="33.0" cy="106.0" r="3.2" class="f-ac"/>
+<circle cx="33.0" cy="121.0" r="3.2" class="f-bd"/>
+<circle cx="33.0" cy="136.0" r="3.2" class="f-ac"/>
+<circle cx="33.0" cy="151.0" r="3.2" class="f-ac"/>
+<circle cx="48.0" cy="61.0" r="3.2" class="f-bd"/>
+<circle cx="48.0" cy="76.0" r="3.2" class="f-ac"/>
+<circle cx="48.0" cy="91.0" r="3.2" class="f-bd"/>
+<circle cx="48.0" cy="106.0" r="3.2" class="f-ac"/>
+<circle cx="48.0" cy="121.0" r="3.2" class="f-ac"/>
+<circle cx="48.0" cy="136.0" r="3.2" class="f-ac"/>
+<circle cx="48.0" cy="151.0" r="3.2" class="f-ac"/>
+<circle cx="63.0" cy="61.0" r="3.2" class="f-ac"/>
+<circle cx="63.0" cy="76.0" r="3.2" class="f-ac"/>
+<circle cx="63.0" cy="91.0" r="3.2" class="f-ac"/>
+<circle cx="63.0" cy="106.0" r="3.2" class="f-ac"/>
+<circle cx="63.0" cy="121.0" r="3.2" class="f-ac"/>
+<circle cx="63.0" cy="136.0" r="3.2" class="f-ac"/>
+<circle cx="63.0" cy="151.0" r="3.2" class="f-bd"/>
+<circle cx="78.0" cy="61.0" r="3.2" class="f-ac"/>
+<circle cx="78.0" cy="76.0" r="3.2" class="f-ac"/>
+<circle cx="78.0" cy="91.0" r="3.2" class="f-ac"/>
+<circle cx="78.0" cy="106.0" r="3.2" class="f-ac"/>
+<circle cx="78.0" cy="121.0" r="3.2" class="f-ac"/>
+<circle cx="78.0" cy="136.0" r="3.2" class="f-ac"/>
+<circle cx="78.0" cy="151.0" r="3.2" class="f-ac"/>
+<circle cx="93.0" cy="61.0" r="3.2" class="f-bd"/>
+<circle cx="93.0" cy="76.0" r="3.2" class="f-ac"/>
+<circle cx="93.0" cy="91.0" r="3.2" class="f-ac"/>
+<circle cx="93.0" cy="106.0" r="3.2" class="f-bd"/>
+<circle cx="93.0" cy="121.0" r="3.2" class="f-ac"/>
+<circle cx="93.0" cy="136.0" r="3.2" class="f-ac"/>
+<circle cx="93.0" cy="151.0" r="3.2" class="f-ac"/>
+<circle cx="108.0" cy="61.0" r="3.2" class="f-ac"/>
+<circle cx="108.0" cy="76.0" r="3.2" class="f-ac"/>
+<circle cx="108.0" cy="91.0" r="3.2" class="f-ac"/>
+<circle cx="108.0" cy="106.0" r="3.2" class="f-ac"/>
+<circle cx="108.0" cy="121.0" r="3.2" class="f-ac"/>
+<circle cx="108.0" cy="136.0" r="3.2" class="f-ac"/>
+<circle cx="108.0" cy="151.0" r="3.2" class="f-ac"/>
+<circle cx="123.0" cy="61.0" r="3.2" class="f-ac"/>
+<circle cx="123.0" cy="76.0" r="3.2" class="f-ac"/>
+<circle cx="123.0" cy="91.0" r="3.2" class="f-ac"/>
+<circle cx="123.0" cy="106.0" r="3.2" class="f-ac"/>
+<circle cx="123.0" cy="121.0" r="3.2" class="f-ac"/>
+<circle cx="123.0" cy="136.0" r="3.2" class="f-bd"/>
+<circle cx="123.0" cy="151.0" r="3.2" class="f-ac"/>
+<rect x="48.0" y="76.0" width="30.0" height="30.0" class="s-ac" stroke-width="1.6" fill="none"/>
+<rect x="78.0" y="91.0" width="30.0" height="30.0" class="s-ac" stroke-width="1.6" fill="none"/>
+<rect x="63.0" y="106.0" width="30.0" height="30.0" class="s-ac" stroke-width="1.6" fill="none"/>
+<rect x="63.0" y="91.0" width="30.0" height="30.0" class="s-bd" stroke-width="2.4" fill="none"/>
+<circle cx="78.0" cy="106.0" r="3.2" class="f-bd"/>
+<text x="214.0" y="32.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="600">B 무작위</text>
+<rect x="155.0" y="47.0" width="28.0" height="28.0" rx="0" class="f-ac" stroke-width="0"/>
+<rect x="155.0" y="77.0" width="28.0" height="28.0" rx="0" class="f-ac" stroke-width="0"/>
+<rect x="155.0" y="107.0" width="28.0" height="28.0" rx="0" class="f-bd" stroke-width="0"/>
+<rect x="155.0" y="137.0" width="28.0" height="28.0" rx="0" class="f-ac" stroke-width="0"/>
+<rect x="185.0" y="47.0" width="28.0" height="28.0" rx="0" class="f-ac" stroke-width="0"/>
+<rect x="185.0" y="77.0" width="28.0" height="28.0" rx="0" class="f-ac" stroke-width="0"/>
+<rect x="185.0" y="107.0" width="28.0" height="28.0" rx="0" class="f-ac" stroke-width="0"/>
+<rect x="185.0" y="137.0" width="28.0" height="28.0" rx="0" class="f-ac" stroke-width="0"/>
+<rect x="215.0" y="47.0" width="28.0" height="28.0" rx="0" class="f-ac" stroke-width="0"/>
+<rect x="215.0" y="77.0" width="28.0" height="28.0" rx="0" class="f-ac" stroke-width="0"/>
+<rect x="215.0" y="107.0" width="28.0" height="28.0" rx="0" class="f-bd" stroke-width="0"/>
+<rect x="215.0" y="137.0" width="28.0" height="28.0" rx="0" class="f-bd" stroke-width="0"/>
+<rect x="245.0" y="47.0" width="28.0" height="28.0" rx="0" class="f-ac" stroke-width="0"/>
+<rect x="245.0" y="77.0" width="28.0" height="28.0" rx="0" class="f-ac" stroke-width="0"/>
+<rect x="245.0" y="107.0" width="28.0" height="28.0" rx="0" class="f-ac" stroke-width="0"/>
+<rect x="245.0" y="137.0" width="28.0" height="28.0" rx="0" class="f-ac" stroke-width="0"/>
+<rect x="154.0" y="46.0" width="120.0" height="120.0" class="s-mu" stroke-width="1" fill="none"/>
+<text x="350.0" y="32.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="600">C 구역</text>
+<rect x="290.0" y="46.0" width="90.0" height="120.0" rx="0" class="s-mu f-acs" stroke-width="1"/>
+<rect x="380.0" y="46.0" width="30.0" height="120.0" rx="0" class="s-mu f-bds" stroke-width="1"/>
+<rect x="365.0" y="90.0" width="15.0" height="15.0" class="s-ac" stroke-width="2" fill="none"/>
+<rect x="372.5" y="94.0" width="15.0" height="15.0" class="s-bd" stroke-width="2.4" fill="none"/>
+<text x="486.0" y="32.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="600">C+ 완충</text>
+<rect x="426.0" y="46.0" width="82.5" height="120.0" rx="0" class="s-mu f-acs" stroke-width="1"/>
+<rect x="508.5" y="46.0" width="15.0" height="120.0" rx="0" class="s-mu f-sf" stroke-width="1"/>
+<rect x="523.5" y="46.0" width="22.5" height="120.0" rx="0" class="s-mu f-bds" stroke-width="1"/>
+<line x1="511.5" y1="58.0" x2="520.5" y2="52.0" class="s-mu" stroke-width="1"/>
+<line x1="511.5" y1="70.0" x2="520.5" y2="64.0" class="s-mu" stroke-width="1"/>
+<line x1="511.5" y1="82.0" x2="520.5" y2="76.0" class="s-mu" stroke-width="1"/>
+<line x1="511.5" y1="94.0" x2="520.5" y2="88.0" class="s-mu" stroke-width="1"/>
+<line x1="511.5" y1="106.0" x2="520.5" y2="100.0" class="s-mu" stroke-width="1"/>
+<line x1="511.5" y1="118.0" x2="520.5" y2="112.0" class="s-mu" stroke-width="1"/>
+<line x1="511.5" y1="130.0" x2="520.5" y2="124.0" class="s-mu" stroke-width="1"/>
+<line x1="511.5" y1="142.0" x2="520.5" y2="136.0" class="s-mu" stroke-width="1"/>
+<line x1="511.5" y1="154.0" x2="520.5" y2="148.0" class="s-mu" stroke-width="1"/>
+<line x1="511.5" y1="166.0" x2="520.5" y2="160.0" class="s-mu" stroke-width="1"/>
+<text x="622.0" y="32.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="600">D 장면 단위</text>
+<rect x="562.0" y="46.0" width="26.0" height="26.0" rx="0" class="f-ac" stroke-width="0"/>
+<text x="575.0" y="63.0" class="f-bg" font-size="11" text-anchor="middle">0</text>
+<rect x="593.0" y="46.0" width="26.0" height="26.0" rx="0" class="f-ac" stroke-width="0"/>
+<text x="606.0" y="63.0" class="f-bg" font-size="11" text-anchor="middle">1</text>
+<rect x="624.0" y="46.0" width="26.0" height="26.0" rx="0" class="f-ac" stroke-width="0"/>
+<text x="637.0" y="63.0" class="f-bg" font-size="11" text-anchor="middle">2</text>
+<rect x="655.0" y="46.0" width="26.0" height="26.0" rx="0" class="f-ac" stroke-width="0"/>
+<text x="668.0" y="63.0" class="f-bg" font-size="11" text-anchor="middle">3</text>
+<rect x="562.0" y="77.0" width="26.0" height="26.0" rx="0" class="f-ac" stroke-width="0"/>
+<text x="575.0" y="94.0" class="f-bg" font-size="11" text-anchor="middle">4</text>
+<rect x="593.0" y="77.0" width="26.0" height="26.0" rx="0" class="f-ac" stroke-width="0"/>
+<text x="606.0" y="94.0" class="f-bg" font-size="11" text-anchor="middle">5</text>
+<rect x="624.0" y="77.0" width="26.0" height="26.0" rx="0" class="f-bd" stroke-width="0"/>
+<text x="637.0" y="94.0" class="f-bg" font-size="11" text-anchor="middle">6</text>
+<rect x="655.0" y="77.0" width="26.0" height="26.0" rx="0" class="f-bd" stroke-width="0"/>
+<text x="668.0" y="94.0" class="f-bg" font-size="11" text-anchor="middle">7</text>
+<rect x="593.0" y="120.0" width="26.0" height="26.0" rx="0" class="f-ok" stroke-width="0"/>
+<text x="606.0" y="137.0" class="f-bg" font-size="11" text-anchor="middle">8</text>
+<rect x="624.0" y="120.0" width="26.0" height="26.0" rx="0" class="f-ok" stroke-width="0"/>
+<text x="637.0" y="137.0" class="f-bg" font-size="11" text-anchor="middle">9</text>
+<rect x="150.0" y="189.0" width="14.0" height="14.0" rx="0" class="s-mu f-ac" stroke-width="1"/>
+<text x="172.0" y="201.0" class="f-mu" font-size="12" text-anchor="start">학습</text>
+<rect x="216.0" y="189.0" width="14.0" height="14.0" rx="0" class="s-mu f-bd" stroke-width="1"/>
+<text x="238.0" y="201.0" class="f-mu" font-size="12" text-anchor="start">검증</text>
+<rect x="282.0" y="189.0" width="14.0" height="14.0" rx="0" class="s-mu f-sf" stroke-width="1"/>
+<text x="304.0" y="201.0" class="f-mu" font-size="12" text-anchor="start">비운 띠</text>
+<rect x="374.0" y="189.0" width="14.0" height="14.0" rx="0" class="s-mu f-ok" stroke-width="1"/>
+<text x="396.0" y="201.0" class="f-mu" font-size="12" text-anchor="start">시험(장면 8·9)</text>
+</svg>

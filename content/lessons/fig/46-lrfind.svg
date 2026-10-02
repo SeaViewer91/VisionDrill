@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 700 290" role="img" aria-label="학습률 범위 테스트. 학습률을 0.00001에서 10까지 지수로 키우며 기록한 이동 평균 손실과, 가장 가파른 곳·최소의 10분의 1·손실 최소·발산 지점">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<line x1="64.0" y1="226.0" x2="620.0" y2="226.0" class="s-mu" stroke-width="1.2"/>
+<line x1="64.0" y1="30.0" x2="64.0" y2="226.0" class="s-mu" stroke-width="1.2"/>
+<line x1="64.0" y1="226.0" x2="64.0" y2="230.0" class="s-mu" stroke-width="1.2"/>
+<text x="64.0" y="243.0" class="f-mu" font-size="11" text-anchor="middle">1e-5</text>
+<line x1="156.7" y1="226.0" x2="156.7" y2="230.0" class="s-mu" stroke-width="1.2"/>
+<text x="156.7" y="243.0" class="f-mu" font-size="11" text-anchor="middle">1e-4</text>
+<line x1="249.3" y1="226.0" x2="249.3" y2="230.0" class="s-mu" stroke-width="1.2"/>
+<text x="249.3" y="243.0" class="f-mu" font-size="11" text-anchor="middle">0.001</text>
+<line x1="342.0" y1="226.0" x2="342.0" y2="230.0" class="s-mu" stroke-width="1.2"/>
+<text x="342.0" y="243.0" class="f-mu" font-size="11" text-anchor="middle">0.01</text>
+<line x1="434.7" y1="226.0" x2="434.7" y2="230.0" class="s-mu" stroke-width="1.2"/>
+<text x="434.7" y="243.0" class="f-mu" font-size="11" text-anchor="middle">0.1</text>
+<line x1="527.3" y1="226.0" x2="527.3" y2="230.0" class="s-mu" stroke-width="1.2"/>
+<text x="527.3" y="243.0" class="f-mu" font-size="11" text-anchor="middle">1</text>
+<line x1="620.0" y1="226.0" x2="620.0" y2="230.0" class="s-mu" stroke-width="1.2"/>
+<text x="620.0" y="243.0" class="f-mu" font-size="11" text-anchor="middle">10</text>
+<line x1="60.0" y1="202.9" x2="64.0" y2="202.9" class="s-mu" stroke-width="1.2"/>
+<text x="57.0" y="206.9" class="f-mu" font-size="11" text-anchor="end">0.5</text>
+<line x1="60.0" y1="145.3" x2="64.0" y2="145.3" class="s-mu" stroke-width="1.2"/>
+<text x="57.0" y="149.3" class="f-mu" font-size="11" text-anchor="end">1.0</text>
+<line x1="60.0" y1="87.6" x2="64.0" y2="87.6" class="s-mu" stroke-width="1.2"/>
+<text x="57.0" y="91.6" class="f-mu" font-size="11" text-anchor="end">1.5</text>
+<line x1="60.0" y1="30.0" x2="64.0" y2="30.0" class="s-mu" stroke-width="1.2"/>
+<text x="57.0" y="34.0" class="f-mu" font-size="11" text-anchor="end">2.0</text>
+<text x="342.0" y="262.0" class="f-mu" font-size="12" text-anchor="middle">학습률 (로그 눈금)</text>
+<text x="64.0" y="18.0" class="f-mu" font-size="12" text-anchor="start">학습 손실 (이동 평균)</text>
+<path d="M 64.0 42.9 L 66.8 42.2 L 69.6 41.9 L 72.4 40.8 L 75.2 42.5 L 78.0 43.5 L 80.8 44.4 L 83.6 44.4 L 86.4 46.0 L 89.1 45.9 L 91.9 46.0 L 94.7 45.6 L 97.5 45.1 L 100.3 46.4 L 103.1 46.3 L 105.9 47.1 L 108.7 46.8 L 111.5 46.8 L 114.3 48.0 L 117.1 47.9 L 119.9 47.8 L 122.7 48.5 L 125.5 48.9 L 128.3 50.0 L 131.1 49.5 L 133.8 49.3 L 136.6 49.7 L 139.4 49.6 L 142.2 50.9 L 145.0 51.9 L 147.8 51.9 L 150.6 53.2 L 153.4 53.5 L 156.2 53.3 L 159.0 53.2 L 161.8 53.3 L 164.6 53.5 L 167.4 53.9 L 170.2 53.8 L 173.0 54.1 L 175.8 54.2 L 178.6 54.1 L 181.3 54.3 L 184.1 54.9 L 186.9 55.7 L 189.7 55.7 L 192.5 57.0 L 195.3 58.6 L 198.1 59.3 L 200.9 60.2 L 203.7 60.7 L 206.5 62.2 L 209.3 63.6 L 212.1 64.7 L 214.9 66.7 L 217.7 68.0 L 220.5 69.4 L 223.3 70.8 L 226.0 73.2 L 228.8 74.5 L 231.6 76.5 L 234.4 78.6 L 237.2 80.0 L 240.0 81.5 L 242.8 83.9 L 245.6 85.9 L 248.4 88.2 L 251.2 90.8 L 254.0 92.2 L 256.8 94.2 L 259.6 96.4 L 262.4 99.2 L 265.2 101.0 L 268.0 103.8 L 270.8 105.5 L 273.5 107.7 L 276.3 110.0 L 279.1 112.6 L 281.9 115.0 L 284.7 117.5 L 287.5 119.6 L 290.3 122.0 L 293.1 123.9 L 295.9 125.3 L 298.7 127.2 L 301.5 130.2 L 304.3 132.4 L 307.1 135.0 L 309.9 137.5 L 312.7 139.2 L 315.5 141.6 L 318.3 143.4 L 321.0 146.4 L 323.8 149.4 L 326.6 151.4 L 329.4 153.0 L 332.2 155.2 L 335.0 157.3 L 337.8 160.1 L 340.6 161.5 L 343.4 162.4 L 346.2 164.6 L 349.0 166.5 L 351.8 168.7 L 354.6 171.5 L 357.4 173.6 L 360.2 175.4 L 363.0 177.5 L 365.7 179.4 L 368.5 182.1 L 371.3 183.4 L 374.1 185.0 L 376.9 187.2 L 379.7 188.3 L 382.5 190.9 L 385.3 191.8 L 388.1 193.5 L 390.9 196.1 L 393.7 197.2 L 396.5 197.1 L 399.3 193.9 L 402.1 193.8 L 404.9 192.4 L 407.7 194.6 L 410.5 195.6 L 413.2 195.7 L 416.0 194.4 L 418.8 195.4 L 421.6 195.9 L 424.4 196.3 L 427.2 196.2 L 430.0 198.0 L 432.8 198.3 L 435.6 198.3 L 438.4 198.3 L 441.2 198.7 L 444.0 198.6 L 446.8 199.2 L 449.6 200.0 L 452.4 198.6 L 455.2 200.3 L 457.9 202.0 L 460.8 204.3 L 463.5 205.1 L 466.3 205.3 L 469.1 206.5 L 471.9 204.5 L 474.7 198.5 L 477.5 200.1 L 480.3 200.0 L 483.1 199.8 L 485.9 198.6 L 488.7 197.9 L 491.5 199.4 L 494.3 194.3 L 497.1 192.7 L 499.9 184.5 L 502.7 178.6 L 505.4 180.7 L 508.2 178.4 L 511.0 180.7 L 513.8 183.8 L 516.6 181.4 L 519.4 179.8 L 522.2 182.7 L 525.0 181.7 L 527.8 184.0 L 530.6 186.2 L 533.4 181.6 L 536.2 183.2 L 539.0 186.4 L 541.8 189.6 L 544.6 192.0 L 547.4 195.1 L 550.2 195.5 L 553.0 192.4 L 555.7 193.9 L 558.5 188.1 L 561.3 191.0 L 564.1 184.4 L 566.9 183.4 L 569.7 178.1 L 572.5 175.0 L 575.3 157.6 L 578.1 99.5 L 579.4 30.0" class="s-ac" stroke-width="2.0" fill="none"/>
+<circle cx="321.0" cy="146.4" r="4.5" class="f-bd"/>
+<text x="312.0" y="168.4" class="f-bd" font-size="11" text-anchor="end" font-weight="600">가장 가파름 0.0059</text>
+<circle cx="376.9" cy="187.2" r="4.5" class="f-ok"/>
+<text x="376.9" y="211.2" class="f-ok" font-size="11" text-anchor="middle" font-weight="600">최소의 1/10 0.024</text>
+<circle cx="469.1" cy="206.5" r="4.5" class="f-fg"/>
+<text x="469.1" y="162.5" class="f-fg" font-size="11" text-anchor="middle" font-weight="600">손실 최소 0.235</text>
+<line x1="469.1" y1="168.5" x2="469.1" y2="198.5" class="s-mu" stroke-width="1.0"/>
+<line x1="594.9" y1="30.0" x2="594.9" y2="226.0" class="s-bd" stroke-width="1.2" stroke-dasharray="4 3"/>
+<text x="599.9" y="44.0" class="f-bd" font-size="11" text-anchor="start" font-weight="600">발산</text>
+<text x="599.9" y="59.0" class="f-bd" font-size="11" text-anchor="start" font-weight="600">5.35</text>
+</svg>

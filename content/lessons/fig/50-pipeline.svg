@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 800 250" role="img" aria-label="PyTorch 모델을 ONNX로 내보내고, 추론 엔진(onnxruntime 또는 TensorRT)으로 장면을 슬라이딩 윈도우로 추론해 확률 래스터를 만든 뒤, 지오트랜스폼을 붙여 조각 제거·단순화를 거쳐 폴리곤으로 바꿈. 산출물마다 메타데이터를 붙임">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<rect x="2.0" y="40.0" width="140.0" height="62.0" rx="6" class="s-fg f-sf" stroke-width="1.5"/>
+<text x="72.0" y="66.0" class="f-fg" font-size="14" text-anchor="middle" font-weight="bold">PyTorch</text>
+<text x="72.0" y="86.0" class="f-mu" font-size="11" text-anchor="middle">학습 코드·가중치</text>
+<line x1="145.0" y1="71.0" x2="161.0" y2="71.0" class="s-fg" stroke-width="1.5"/>
+<path d="M163.0,71.0 l-7,-4 l0,8 z" class="s-fg f-fg" stroke-width="1"/>
+<rect x="166.0" y="40.0" width="140.0" height="62.0" rx="6" class="s-fg f-acs" stroke-width="1.5"/>
+<text x="236.0" y="66.0" class="f-fg" font-size="14" text-anchor="middle" font-weight="bold">ONNX</text>
+<text x="236.0" y="86.0" class="f-mu" font-size="11" text-anchor="middle">계산 그래프</text>
+<line x1="309.0" y1="71.0" x2="325.0" y2="71.0" class="s-fg" stroke-width="1.5"/>
+<path d="M327.0,71.0 l-7,-4 l0,8 z" class="s-fg f-fg" stroke-width="1"/>
+<rect x="330.0" y="40.0" width="140.0" height="62.0" rx="6" class="s-fg f-acs" stroke-width="1.5"/>
+<text x="400.0" y="66.0" class="f-fg" font-size="14" text-anchor="middle" font-weight="bold">추론 엔진</text>
+<text x="400.0" y="86.0" class="f-mu" font-size="11" text-anchor="middle">onnxruntime·TensorRT</text>
+<line x1="473.0" y1="71.0" x2="489.0" y2="71.0" class="s-fg" stroke-width="1.5"/>
+<path d="M491.0,71.0 l-7,-4 l0,8 z" class="s-fg f-fg" stroke-width="1"/>
+<rect x="494.0" y="40.0" width="140.0" height="62.0" rx="6" class="s-fg f-sf" stroke-width="1.5"/>
+<text x="564.0" y="66.0" class="f-fg" font-size="14" text-anchor="middle" font-weight="bold">래스터 결과</text>
+<text x="564.0" y="86.0" class="f-mu" font-size="11" text-anchor="middle">클래스·확률 격자</text>
+<line x1="637.0" y1="71.0" x2="653.0" y2="71.0" class="s-fg" stroke-width="1.5"/>
+<path d="M655.0,71.0 l-7,-4 l0,8 z" class="s-fg f-fg" stroke-width="1"/>
+<rect x="658.0" y="40.0" width="140.0" height="62.0" rx="6" class="s-fg f-sf" stroke-width="1.5"/>
+<text x="728.0" y="66.0" class="f-fg" font-size="14" text-anchor="middle" font-weight="bold">폴리곤</text>
+<text x="728.0" y="86.0" class="f-mu" font-size="11" text-anchor="middle">벡터 다각형</text>
+<text x="154.0" y="130.0" class="f-ac" font-size="12" text-anchor="middle">내보내기</text>
+<text x="154.0" y="147.0" class="f-mu" font-size="11" text-anchor="middle">출력 차이 확인</text>
+<text x="318.0" y="130.0" class="f-ac" font-size="12" text-anchor="middle">양자화(선택)</text>
+<text x="318.0" y="147.0" class="f-mu" font-size="11" text-anchor="middle">정확도 확인</text>
+<text x="482.0" y="130.0" class="f-ac" font-size="12" text-anchor="middle">슬라이딩 윈도우</text>
+<text x="482.0" y="147.0" class="f-mu" font-size="11" text-anchor="middle">이어 붙이기</text>
+<text x="646.0" y="130.0" class="f-ac" font-size="12" text-anchor="middle">지오트랜스폼</text>
+<text x="646.0" y="147.0" class="f-mu" font-size="11" text-anchor="middle">조각 제거·단순화</text>
+<rect x="2.0" y="196.0" width="796.0" height="34.0" rx="6" class="s-mu f-bds" stroke-width="1"/>
+<text x="400.0" y="218.0" class="f-fg" font-size="12" text-anchor="middle">메타데이터: 좌표계 · 지오트랜스폼 · 모델 이름·버전 · 전처리 · 클래스 코드 · 후처리 값</text>
+</svg>

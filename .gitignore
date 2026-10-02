@@ -13,4 +13,5 @@ backups/
 !packages/**/fixtures/*.db
 # 5부 실험 중간 산출물(가중치 캐시)
 content/lessons/data/.part5_*.pt
+content/lessons/data/.part7_*
 __pycache__/

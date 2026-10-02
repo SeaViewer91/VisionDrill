@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 700 410" role="img" aria-label="대상 도메인 시험 정확도. 라벨 없는 두 경우(원천 모델 그대로, AdaBN만)와 라벨 60장·300장에서 방법 다섯 가지">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<rect x="200.0" y="34.0" width="170.4" height="15.0" rx="0" class="s-bd f-bd" stroke-width="1.0"/>
+<text x="376.4" y="46.0" class="f-fg" font-size="11" text-anchor="start">0.708</text>
+<text x="190.0" y="46.5" class="f-fg" font-size="12" text-anchor="end">원천 그대로 (라벨 0)</text>
+<rect x="200.0" y="64.0" width="381.8" height="15.0" rx="0" class="s-ok f-ok" stroke-width="1.0"/>
+<text x="587.8" y="76.0" class="f-fg" font-size="11" text-anchor="start">0.966</text>
+<text x="190.0" y="76.5" class="f-fg" font-size="12" text-anchor="end">AdaBN만 (라벨 0)</text>
+<line x1="30.0" y1="99.0" x2="670.0" y2="99.0" class="s-mu" stroke-width="1.0" stroke-dasharray="2 3"/>
+<rect x="200.0" y="108.0" width="286.1" height="15.0" rx="0" class="s-mu f-mu" stroke-width="1.0"/>
+<text x="492.1" y="120.0" class="f-fg" font-size="11" text-anchor="start">0.849</text>
+<rect x="200.0" y="126.0" width="363.5" height="15.0" rx="0" class="s-ac f-ac" stroke-width="1.0"/>
+<text x="569.5" y="138.0" class="f-fg" font-size="11" text-anchor="start">0.943</text>
+<text x="190.0" y="129.5" class="f-fg" font-size="12" text-anchor="end">처음부터</text>
+<rect x="200.0" y="156.0" width="311.6" height="15.0" rx="0" class="s-mu f-mu" stroke-width="1.0"/>
+<text x="517.6" y="168.0" class="f-fg" font-size="11" text-anchor="start">0.880</text>
+<rect x="200.0" y="174.0" width="357.2" height="15.0" rx="0" class="s-ac f-ac" stroke-width="1.0"/>
+<text x="563.2" y="186.0" class="f-fg" font-size="11" text-anchor="start">0.936</text>
+<text x="190.0" y="177.5" class="f-fg" font-size="12" text-anchor="end">선형 탐침</text>
+<rect x="200.0" y="204.0" width="379.9" height="15.0" rx="0" class="s-mu f-mu" stroke-width="1.0"/>
+<text x="585.9" y="216.0" class="f-fg" font-size="11" text-anchor="start">0.963</text>
+<rect x="200.0" y="222.0" width="382.7" height="15.0" rx="0" class="s-ac f-ac" stroke-width="1.0"/>
+<text x="588.7" y="234.0" class="f-fg" font-size="11" text-anchor="start">0.967</text>
+<text x="190.0" y="225.5" class="f-fg" font-size="12" text-anchor="end">첫 블록 동결</text>
+<rect x="200.0" y="252.0" width="369.9" height="15.0" rx="0" class="s-mu f-mu" stroke-width="1.0"/>
+<text x="575.9" y="264.0" class="f-fg" font-size="11" text-anchor="start">0.951</text>
+<rect x="200.0" y="270.0" width="385.4" height="15.0" rx="0" class="s-ac f-ac" stroke-width="1.0"/>
+<text x="591.4" y="282.0" class="f-fg" font-size="11" text-anchor="start">0.970</text>
+<text x="190.0" y="273.5" class="f-fg" font-size="12" text-anchor="end">전체 미세조정</text>
+<rect x="200.0" y="300.0" width="370.8" height="15.0" rx="0" class="s-mu f-mu" stroke-width="1.0"/>
+<text x="576.8" y="312.0" class="f-fg" font-size="11" text-anchor="start">0.952</text>
+<rect x="200.0" y="318.0" width="389.0" height="15.0" rx="0" class="s-ac f-ac" stroke-width="1.0"/>
+<text x="595.0" y="330.0" class="f-fg" font-size="11" text-anchor="start">0.974</text>
+<text x="190.0" y="321.5" class="f-fg" font-size="12" text-anchor="end">AdaBN 후 미세조정</text>
+<line x1="200.0" y1="344.0" x2="610.0" y2="344.0" class="s-mu" stroke-width="1.2"/>
+<line x1="200.0" y1="26.0" x2="200.0" y2="344.0" class="s-mu" stroke-width="1.2"/>
+<line x1="200.0" y1="344.0" x2="200.0" y2="348.0" class="s-mu" stroke-width="1.2"/>
+<text x="200.0" y="361.0" class="f-mu" font-size="11" text-anchor="middle">0.5</text>
+<line x1="282.0" y1="344.0" x2="282.0" y2="348.0" class="s-mu" stroke-width="1.2"/>
+<text x="282.0" y="361.0" class="f-mu" font-size="11" text-anchor="middle">0.6</text>
+<line x1="364.0" y1="344.0" x2="364.0" y2="348.0" class="s-mu" stroke-width="1.2"/>
+<text x="364.0" y="361.0" class="f-mu" font-size="11" text-anchor="middle">0.7</text>
+<line x1="446.0" y1="344.0" x2="446.0" y2="348.0" class="s-mu" stroke-width="1.2"/>
+<text x="446.0" y="361.0" class="f-mu" font-size="11" text-anchor="middle">0.8</text>
+<line x1="528.0" y1="344.0" x2="528.0" y2="348.0" class="s-mu" stroke-width="1.2"/>
+<text x="528.0" y="361.0" class="f-mu" font-size="11" text-anchor="middle">0.9</text>
+<line x1="610.0" y1="344.0" x2="610.0" y2="348.0" class="s-mu" stroke-width="1.2"/>
+<text x="610.0" y="361.0" class="f-mu" font-size="11" text-anchor="middle">1.0</text>
+<text x="405.0" y="380.0" class="f-mu" font-size="12" text-anchor="middle">대상 도메인 시험 정확도 (가로축은 0.5부터)</text>
+<rect x="200.0" y="6.0" width="16.0" height="11.0" rx="0" class="s-mu f-mu" stroke-width="1.0"/>
+<text x="222.0" y="16.0" class="f-mu" font-size="11" text-anchor="start">라벨 60장</text>
+<rect x="310.0" y="6.0" width="16.0" height="11.0" rx="0" class="s-ac f-ac" stroke-width="1.0"/>
+<text x="332.0" y="16.0" class="f-mu" font-size="11" text-anchor="start">라벨 300장</text>
+</svg>

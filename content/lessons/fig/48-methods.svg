@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 700 300" role="img" aria-label="전이 방법 네 가지가 VD-CNN의 어느 부분을 사전학습 가중치로 시작하고, 얼리고, 학습하는지">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<text x="182.0" y="26.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="600">블록 1</text>
+<text x="182.0" y="44.0" class="f-mu" font-size="11" text-anchor="middle">624</text>
+<text x="296.0" y="26.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="600">블록 2</text>
+<text x="296.0" y="44.0" class="f-mu" font-size="11" text-anchor="middle">4,704</text>
+<text x="410.0" y="26.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="600">블록 3</text>
+<text x="410.0" y="44.0" class="f-mu" font-size="11" text-anchor="middle">18,624</text>
+<text x="524.0" y="26.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="600">헤드</text>
+<text x="524.0" y="44.0" class="f-mu" font-size="11" text-anchor="middle">390</text>
+<text x="632.0" y="26.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="600">학습</text>
+<text x="632.0" y="44.0" class="f-mu" font-size="11" text-anchor="middle">파라미터</text>
+<text x="118.0" y="84.0" class="f-fg" font-size="13" text-anchor="end">처음부터</text>
+<rect x="130.0" y="62.0" width="104.0" height="34.0" rx="4" class="s-fg f-bg" stroke-width="1.4"/>
+<text x="182.0" y="84.0" class="f-fg" font-size="12" text-anchor="middle" font-weight="600">무작위</text>
+<rect x="244.0" y="62.0" width="104.0" height="34.0" rx="4" class="s-fg f-bg" stroke-width="1.4"/>
+<text x="296.0" y="84.0" class="f-fg" font-size="12" text-anchor="middle" font-weight="600">무작위</text>
+<rect x="358.0" y="62.0" width="104.0" height="34.0" rx="4" class="s-fg f-bg" stroke-width="1.4"/>
+<text x="410.0" y="84.0" class="f-fg" font-size="12" text-anchor="middle" font-weight="600">무작위</text>
+<rect x="472.0" y="62.0" width="104.0" height="34.0" rx="4" class="s-fg f-bg" stroke-width="1.4"/>
+<text x="524.0" y="84.0" class="f-fg" font-size="12" text-anchor="middle" font-weight="600">무작위</text>
+<text x="632.0" y="84.0" class="f-fg" font-size="12" text-anchor="middle">24,342</text>
+<text x="118.0" y="130.0" class="f-fg" font-size="13" text-anchor="end">선형 탐침</text>
+<rect x="130.0" y="108.0" width="104.0" height="34.0" rx="4" class="s-mu f-sf" stroke-width="1.4"/>
+<text x="182.0" y="130.0" class="f-mu" font-size="12" text-anchor="middle">얼림</text>
+<rect x="244.0" y="108.0" width="104.0" height="34.0" rx="4" class="s-mu f-sf" stroke-width="1.4"/>
+<text x="296.0" y="130.0" class="f-mu" font-size="12" text-anchor="middle">얼림</text>
+<rect x="358.0" y="108.0" width="104.0" height="34.0" rx="4" class="s-mu f-sf" stroke-width="1.4"/>
+<text x="410.0" y="130.0" class="f-mu" font-size="12" text-anchor="middle">얼림</text>
+<rect x="472.0" y="108.0" width="104.0" height="34.0" rx="4" class="s-ac f-acs" stroke-width="1.4"/>
+<text x="524.0" y="130.0" class="f-ac" font-size="12" text-anchor="middle" font-weight="600">학습</text>
+<text x="632.0" y="130.0" class="f-fg" font-size="12" text-anchor="middle">390</text>
+<text x="118.0" y="176.0" class="f-fg" font-size="13" text-anchor="end">첫 블록 동결</text>
+<rect x="130.0" y="154.0" width="104.0" height="34.0" rx="4" class="s-mu f-sf" stroke-width="1.4"/>
+<text x="182.0" y="176.0" class="f-mu" font-size="12" text-anchor="middle">얼림</text>
+<rect x="244.0" y="154.0" width="104.0" height="34.0" rx="4" class="s-ac f-acs" stroke-width="1.4"/>
+<text x="296.0" y="176.0" class="f-ac" font-size="12" text-anchor="middle" font-weight="600">학습</text>
+<rect x="358.0" y="154.0" width="104.0" height="34.0" rx="4" class="s-ac f-acs" stroke-width="1.4"/>
+<text x="410.0" y="176.0" class="f-ac" font-size="12" text-anchor="middle" font-weight="600">학습</text>
+<rect x="472.0" y="154.0" width="104.0" height="34.0" rx="4" class="s-ac f-acs" stroke-width="1.4"/>
+<text x="524.0" y="176.0" class="f-ac" font-size="12" text-anchor="middle" font-weight="600">학습</text>
+<text x="632.0" y="176.0" class="f-fg" font-size="12" text-anchor="middle">23,718</text>
+<text x="118.0" y="222.0" class="f-fg" font-size="13" text-anchor="end">전체 미세조정</text>
+<rect x="130.0" y="200.0" width="104.0" height="34.0" rx="4" class="s-ac f-acs" stroke-width="1.4"/>
+<text x="182.0" y="222.0" class="f-ac" font-size="12" text-anchor="middle" font-weight="600">학습</text>
+<rect x="244.0" y="200.0" width="104.0" height="34.0" rx="4" class="s-ac f-acs" stroke-width="1.4"/>
+<text x="296.0" y="222.0" class="f-ac" font-size="12" text-anchor="middle" font-weight="600">학습</text>
+<rect x="358.0" y="200.0" width="104.0" height="34.0" rx="4" class="s-ac f-acs" stroke-width="1.4"/>
+<text x="410.0" y="222.0" class="f-ac" font-size="12" text-anchor="middle" font-weight="600">학습</text>
+<rect x="472.0" y="200.0" width="104.0" height="34.0" rx="4" class="s-ac f-acs" stroke-width="1.4"/>
+<text x="524.0" y="222.0" class="f-ac" font-size="12" text-anchor="middle" font-weight="600">학습</text>
+<text x="632.0" y="222.0" class="f-fg" font-size="12" text-anchor="middle">24,342</text>
+<rect x="30.0" y="260.0" width="18.0" height="14.0" rx="3" class="s-fg f-bg" stroke-width="1.2"/>
+<text x="56.0" y="272.0" class="f-mu" font-size="11" text-anchor="start">무작위 가중치로 시작해 학습</text>
+<rect x="270.0" y="260.0" width="18.0" height="14.0" rx="3" class="s-ac f-acs" stroke-width="1.2"/>
+<text x="296.0" y="272.0" class="f-mu" font-size="11" text-anchor="start">사전학습 가중치로 시작해 학습</text>
+<rect x="510.0" y="260.0" width="18.0" height="14.0" rx="3" class="s-mu f-sf" stroke-width="1.2"/>
+<text x="536.0" y="272.0" class="f-mu" font-size="11" text-anchor="start">사전학습 가중치 그대로 고정</text>
+</svg>

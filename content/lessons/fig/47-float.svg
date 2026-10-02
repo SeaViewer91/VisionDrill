@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 700 250" role="img" aria-label="fp32, fp16, bf16의 비트 배치. 칸 하나가 1비트이고 부호·지수·가수 비트 수와 범위·정밀도를 함께 적음">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<rect x="96.0" y="14.0" width="14.0" height="14.0" rx="0" class="s-bd f-bds" stroke-width="1.2"/>
+<text x="116.0" y="26.0" class="f-fg" font-size="12" text-anchor="start">부호</text>
+<rect x="186.0" y="14.0" width="14.0" height="14.0" rx="0" class="s-ac f-acs" stroke-width="1.2"/>
+<text x="206.0" y="26.0" class="f-fg" font-size="12" text-anchor="start">지수</text>
+<rect x="276.0" y="14.0" width="14.0" height="14.0" rx="0" class="s-mu f-sf" stroke-width="1.2"/>
+<text x="296.0" y="26.0" class="f-fg" font-size="12" text-anchor="start">가수</text>
+<text x="84.0" y="68.0" class="f-fg" font-size="13" text-anchor="end" font-weight="600">fp32</text>
+<rect x="96.0" y="50.0" width="16.0" height="26.0" rx="0" class="s-bd f-bds" stroke-width="0.8"/>
+<rect x="96.0" y="50.0" width="16.0" height="26.0" rx="0" class="s-bd" stroke-width="1.8" fill="none"/>
+<rect x="112.0" y="50.0" width="16.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="0.8"/>
+<rect x="128.0" y="50.0" width="16.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="0.8"/>
+<rect x="144.0" y="50.0" width="16.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="0.8"/>
+<rect x="160.0" y="50.0" width="16.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="0.8"/>
+<rect x="176.0" y="50.0" width="16.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="0.8"/>
+<rect x="192.0" y="50.0" width="16.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="0.8"/>
+<rect x="208.0" y="50.0" width="16.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="0.8"/>
+<rect x="224.0" y="50.0" width="16.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="0.8"/>
+<rect x="112.0" y="50.0" width="128.0" height="26.0" rx="0" class="s-ac" stroke-width="1.8" fill="none"/>
+<text x="176.0" y="68.0" class="f-fg" font-size="12" text-anchor="middle" font-weight="600">8</text>
+<rect x="240.0" y="50.0" width="16.0" height="26.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="256.0" y="50.0" width="16.0" height="26.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="272.0" y="50.0" width="16.0" height="26.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="288.0" y="50.0" width="16.0" height="26.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="304.0" y="50.0" width="16.0" height="26.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="320.0" y="50.0" width="16.0" height="26.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="336.0" y="50.0" width="16.0" height="26.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="352.0" y="50.0" width="16.0" height="26.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="368.0" y="50.0" width="16.0" height="26.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="384.0" y="50.0" width="16.0" height="26.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="400.0" y="50.0" width="16.0" height="26.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="416.0" y="50.0" width="16.0" height="26.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="432.0" y="50.0" width="16.0" height="26.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="448.0" y="50.0" width="16.0" height="26.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="464.0" y="50.0" width="16.0" height="26.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="480.0" y="50.0" width="16.0" height="26.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="496.0" y="50.0" width="16.0" height="26.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="512.0" y="50.0" width="16.0" height="26.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="528.0" y="50.0" width="16.0" height="26.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="544.0" y="50.0" width="16.0" height="26.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="560.0" y="50.0" width="16.0" height="26.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="576.0" y="50.0" width="16.0" height="26.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="592.0" y="50.0" width="16.0" height="26.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="240.0" y="50.0" width="368.0" height="26.0" rx="0" class="s-mu" stroke-width="1.8" fill="none"/>
+<text x="424.0" y="68.0" class="f-fg" font-size="12" text-anchor="middle" font-weight="600">23</text>
+<text x="96.0" y="94.0" class="f-mu" font-size="11.5" text-anchor="start">최대 3.4e38 · 정밀도(eps) 1.2e-7</text>
+<text x="84.0" y="134.0" class="f-fg" font-size="13" text-anchor="end" font-weight="600">fp16</text>
+<rect x="96.0" y="116.0" width="16.0" height="26.0" rx="0" class="s-bd f-bds" stroke-width="0.8"/>
+<rect x="96.0" y="116.0" width="16.0" height="26.0" rx="0" class="s-bd" stroke-width="1.8" fill="none"/>
+<rect x="112.0" y="116.0" width="16.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="0.8"/>
+<rect x="128.0" y="116.0" width="16.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="0.8"/>
+<rect x="144.0" y="116.0" width="16.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="0.8"/>
+<rect x="160.0" y="116.0" width="16.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="0.8"/>
+<rect x="176.0" y="116.0" width="16.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="0.8"/>
+<rect x="112.0" y="116.0" width="80.0" height="26.0" rx="0" class="s-ac" stroke-width="1.8" fill="none"/>
+<text x="152.0" y="134.0" class="f-fg" font-size="12" text-anchor="middle" font-weight="600">5</text>
+<rect x="192.0" y="116.0" width="16.0" height="26.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="208.0" y="116.0" width="16.0" height="26.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="224.0" y="116.0" width="16.0" height="26.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="240.0" y="116.0" width="16.0" height="26.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="256.0" y="116.0" width="16.0" height="26.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="272.0" y="116.0" width="16.0" height="26.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="288.0" y="116.0" width="16.0" height="26.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="304.0" y="116.0" width="16.0" height="26.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="320.0" y="116.0" width="16.0" height="26.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="336.0" y="116.0" width="16.0" height="26.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="192.0" y="116.0" width="160.0" height="26.0" rx="0" class="s-mu" stroke-width="1.8" fill="none"/>
+<text x="272.0" y="134.0" class="f-fg" font-size="12" text-anchor="middle" font-weight="600">10</text>
+<text x="96.0" y="160.0" class="f-mu" font-size="11.5" text-anchor="start">최대 65,504 · 최소 정규 6.1e-5 · eps 9.8e-4</text>
+<text x="84.0" y="200.0" class="f-fg" font-size="13" text-anchor="end" font-weight="600">bf16</text>
+<rect x="96.0" y="182.0" width="16.0" height="26.0" rx="0" class="s-bd f-bds" stroke-width="0.8"/>
+<rect x="96.0" y="182.0" width="16.0" height="26.0" rx="0" class="s-bd" stroke-width="1.8" fill="none"/>
+<rect x="112.0" y="182.0" width="16.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="0.8"/>
+<rect x="128.0" y="182.0" width="16.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="0.8"/>
+<rect x="144.0" y="182.0" width="16.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="0.8"/>
+<rect x="160.0" y="182.0" width="16.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="0.8"/>
+<rect x="176.0" y="182.0" width="16.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="0.8"/>
+<rect x="192.0" y="182.0" width="16.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="0.8"/>
+<rect x="208.0" y="182.0" width="16.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="0.8"/>
+<rect x="224.0" y="182.0" width="16.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="0.8"/>
+<rect x="112.0" y="182.0" width="128.0" height="26.0" rx="0" class="s-ac" stroke-width="1.8" fill="none"/>
+<text x="176.0" y="200.0" class="f-fg" font-size="12" text-anchor="middle" font-weight="600">8</text>
+<rect x="240.0" y="182.0" width="16.0" height="26.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="256.0" y="182.0" width="16.0" height="26.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="272.0" y="182.0" width="16.0" height="26.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="288.0" y="182.0" width="16.0" height="26.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="304.0" y="182.0" width="16.0" height="26.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="320.0" y="182.0" width="16.0" height="26.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="336.0" y="182.0" width="16.0" height="26.0" rx="0" class="s-mu f-sf" stroke-width="0.8"/>
+<rect x="240.0" y="182.0" width="112.0" height="26.0" rx="0" class="s-mu" stroke-width="1.8" fill="none"/>
+<text x="296.0" y="200.0" class="f-fg" font-size="12" text-anchor="middle" font-weight="600">7</text>
+<text x="96.0" y="226.0" class="f-mu" font-size="11.5" text-anchor="start">최대 3.4e38 · eps 7.8e-3</text>
+</svg>

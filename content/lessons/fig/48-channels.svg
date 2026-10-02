@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 700 300" role="img" aria-label="RGB 3채널로 사전학습한 첫 합성곱 가중치를 B2·B3·B4·B8 4채널 입력용으로 늘리는 방법">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<text x="205.0" y="61.0" class="f-fg" font-size="13" text-anchor="end" font-weight="600">사전학습 첫 층</text>
+<text x="205.0" y="79.0" class="f-mu" font-size="11" text-anchor="end">입력 3채널</text>
+<text x="205.0" y="217.0" class="f-fg" font-size="13" text-anchor="end" font-weight="600">새 첫 층</text>
+<text x="205.0" y="235.0" class="f-mu" font-size="11" text-anchor="end">입력 4채널</text>
+<rect x="237.0" y="40.0" width="46.0" height="46.0" rx="0" class="s-ac f-acs" stroke-width="1.3"/>
+<line x1="252.3" y1="40.0" x2="252.3" y2="86.0" class="s-ac" stroke-width="0.8"/>
+<line x1="237.0" y1="55.3" x2="283.0" y2="55.3" class="s-ac" stroke-width="0.8"/>
+<line x1="267.7" y1="40.0" x2="267.7" y2="86.0" class="s-ac" stroke-width="0.8"/>
+<line x1="237.0" y1="70.7" x2="283.0" y2="70.7" class="s-ac" stroke-width="0.8"/>
+<text x="260.0" y="102.0" class="f-fg" font-size="12" text-anchor="middle">적(R)</text>
+<rect x="317.0" y="40.0" width="46.0" height="46.0" rx="0" class="s-ac f-acs" stroke-width="1.3"/>
+<line x1="332.3" y1="40.0" x2="332.3" y2="86.0" class="s-ac" stroke-width="0.8"/>
+<line x1="317.0" y1="55.3" x2="363.0" y2="55.3" class="s-ac" stroke-width="0.8"/>
+<line x1="347.7" y1="40.0" x2="347.7" y2="86.0" class="s-ac" stroke-width="0.8"/>
+<line x1="317.0" y1="70.7" x2="363.0" y2="70.7" class="s-ac" stroke-width="0.8"/>
+<text x="340.0" y="102.0" class="f-fg" font-size="12" text-anchor="middle">녹(G)</text>
+<rect x="397.0" y="40.0" width="46.0" height="46.0" rx="0" class="s-ac f-acs" stroke-width="1.3"/>
+<line x1="412.3" y1="40.0" x2="412.3" y2="86.0" class="s-ac" stroke-width="0.8"/>
+<line x1="397.0" y1="55.3" x2="443.0" y2="55.3" class="s-ac" stroke-width="0.8"/>
+<line x1="427.7" y1="40.0" x2="427.7" y2="86.0" class="s-ac" stroke-width="0.8"/>
+<line x1="397.0" y1="70.7" x2="443.0" y2="70.7" class="s-ac" stroke-width="0.8"/>
+<text x="420.0" y="102.0" class="f-fg" font-size="12" text-anchor="middle">청(B)</text>
+<rect x="237.0" y="196.0" width="46.0" height="46.0" rx="0" class="s-ac f-acs" stroke-width="1.3"/>
+<line x1="252.3" y1="196.0" x2="252.3" y2="242.0" class="s-ac" stroke-width="0.8"/>
+<line x1="237.0" y1="211.3" x2="283.0" y2="211.3" class="s-ac" stroke-width="0.8"/>
+<line x1="267.7" y1="196.0" x2="267.7" y2="242.0" class="s-ac" stroke-width="0.8"/>
+<line x1="237.0" y1="226.7" x2="283.0" y2="226.7" class="s-ac" stroke-width="0.8"/>
+<text x="260.0" y="260.0" class="f-fg" font-size="12" text-anchor="middle">B2 청</text>
+<rect x="317.0" y="196.0" width="46.0" height="46.0" rx="0" class="s-ac f-acs" stroke-width="1.3"/>
+<line x1="332.3" y1="196.0" x2="332.3" y2="242.0" class="s-ac" stroke-width="0.8"/>
+<line x1="317.0" y1="211.3" x2="363.0" y2="211.3" class="s-ac" stroke-width="0.8"/>
+<line x1="347.7" y1="196.0" x2="347.7" y2="242.0" class="s-ac" stroke-width="0.8"/>
+<line x1="317.0" y1="226.7" x2="363.0" y2="226.7" class="s-ac" stroke-width="0.8"/>
+<text x="340.0" y="260.0" class="f-fg" font-size="12" text-anchor="middle">B3 녹</text>
+<rect x="397.0" y="196.0" width="46.0" height="46.0" rx="0" class="s-ac f-acs" stroke-width="1.3"/>
+<line x1="412.3" y1="196.0" x2="412.3" y2="242.0" class="s-ac" stroke-width="0.8"/>
+<line x1="397.0" y1="211.3" x2="443.0" y2="211.3" class="s-ac" stroke-width="0.8"/>
+<line x1="427.7" y1="196.0" x2="427.7" y2="242.0" class="s-ac" stroke-width="0.8"/>
+<line x1="397.0" y1="226.7" x2="443.0" y2="226.7" class="s-ac" stroke-width="0.8"/>
+<text x="420.0" y="260.0" class="f-fg" font-size="12" text-anchor="middle">B4 적</text>
+<rect x="477.0" y="196.0" width="46.0" height="46.0" rx="0" class="s-bd f-bds" stroke-width="1.3"/>
+<line x1="492.3" y1="196.0" x2="492.3" y2="242.0" class="s-bd" stroke-width="0.8"/>
+<line x1="477.0" y1="211.3" x2="523.0" y2="211.3" class="s-bd" stroke-width="0.8"/>
+<line x1="507.7" y1="196.0" x2="507.7" y2="242.0" class="s-bd" stroke-width="0.8"/>
+<line x1="477.0" y1="226.7" x2="523.0" y2="226.7" class="s-bd" stroke-width="0.8"/>
+<text x="500.0" y="260.0" class="f-fg" font-size="12" text-anchor="middle">B8 근적외</text>
+<line x1="260.0" y1="112.0" x2="420.0" y2="188.0" class="s-ac" stroke-width="1.4"/>
+<line x1="420.0" y1="188.0" x2="414.4" y2="181.0" class="s-ac" stroke-width="1.4"/>
+<line x1="420.0" y1="188.0" x2="411.0" y2="188.1" class="s-ac" stroke-width="1.4"/>
+<line x1="340.0" y1="112.0" x2="340.0" y2="188.0" class="s-ac" stroke-width="1.4"/>
+<line x1="340.0" y1="188.0" x2="343.9" y2="179.9" class="s-ac" stroke-width="1.4"/>
+<line x1="340.0" y1="188.0" x2="336.1" y2="179.9" class="s-ac" stroke-width="1.4"/>
+<line x1="420.0" y1="112.0" x2="260.0" y2="188.0" class="s-ac" stroke-width="1.4"/>
+<line x1="260.0" y1="188.0" x2="269.0" y2="188.1" class="s-ac" stroke-width="1.4"/>
+<line x1="260.0" y1="188.0" x2="265.6" y2="181.0" class="s-ac" stroke-width="1.4"/>
+<text x="205.0" y="160.0" class="f-ac" font-size="12" text-anchor="end" font-weight="600">자리를 맞춰 복사</text>
+<rect x="568.0" y="190.0" width="124.0" height="58.0" rx="6" class="s-bd f-bds" stroke-width="1.2"/>
+<text x="630.0" y="210.0" class="f-bd" font-size="12" text-anchor="middle" font-weight="600">추가 밴드 초기화</text>
+<text x="630.0" y="232.0" class="f-fg" font-size="12" text-anchor="middle">0 · 평균 · 무작위</text>
+<line x1="527.0" y1="219.0" x2="566.0" y2="219.0" class="s-bd" stroke-width="1.4" stroke-dasharray="4 3"/>
+<text x="350.0" y="292.0" class="f-mu" font-size="11" text-anchor="middle">출력 채널 수와 커널 크기는 그대로, 입력 채널 축만 늘어남</text>
+</svg>

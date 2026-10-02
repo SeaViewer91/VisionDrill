@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 720 270" role="img" aria-label="ResNet-50, 512×512 입력의 학습 메모리 어림. 왼쪽은 영상 한 장일 때 구성 요소별 크기(MB), 오른쪽은 배치 크기별 합계(GB)로 가중치·기울기·Adam 상태와 활성값을 쌓은 막대">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<text x="20.0" y="22.0" class="f-fg" font-size="13" text-anchor="start" font-weight="600">영상 한 장 (MB)</text>
+<rect x="120.0" y="46.0" width="27.9" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1.2"/>
+<text x="112.0" y="64.0" class="f-fg" font-size="12" text-anchor="end">가중치</text>
+<text x="153.9" y="64.0" class="f-fg" font-size="12" text-anchor="start" font-weight="600">97.5</text>
+<rect x="120.0" y="86.0" width="27.9" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1.2"/>
+<text x="112.0" y="104.0" class="f-fg" font-size="12" text-anchor="end">기울기</text>
+<text x="153.9" y="104.0" class="f-fg" font-size="12" text-anchor="start" font-weight="600">97.5</text>
+<rect x="120.0" y="126.0" width="55.7" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1.2"/>
+<text x="112.0" y="144.0" class="f-fg" font-size="12" text-anchor="end">Adam 상태</text>
+<text x="181.7" y="144.0" class="f-fg" font-size="12" text-anchor="start" font-weight="600">195</text>
+<rect x="120.0" y="166.0" width="182.4" height="26.0" rx="0" class="s-bd f-bds" stroke-width="1.2"/>
+<text x="112.0" y="184.0" class="f-fg" font-size="12" text-anchor="end">활성값</text>
+<text x="308.4" y="184.0" class="f-fg" font-size="12" text-anchor="start" font-weight="600">638.5</text>
+<line x1="120.0" y1="38.0" x2="120.0" y2="200.0" class="s-mu" stroke-width="1.2"/>
+<line x1="120.0" y1="200.0" x2="320.0" y2="200.0" class="s-mu" stroke-width="1.2"/>
+<line x1="120.0" y1="200.0" x2="120.0" y2="204.0" class="s-mu" stroke-width="1.2"/>
+<text x="120.0" y="217.0" class="f-mu" font-size="11" text-anchor="middle">0</text>
+<line x1="177.1" y1="200.0" x2="177.1" y2="204.0" class="s-mu" stroke-width="1.2"/>
+<text x="177.1" y="217.0" class="f-mu" font-size="11" text-anchor="middle">200</text>
+<line x1="234.3" y1="200.0" x2="234.3" y2="204.0" class="s-mu" stroke-width="1.2"/>
+<text x="234.3" y="217.0" class="f-mu" font-size="11" text-anchor="middle">400</text>
+<line x1="291.4" y1="200.0" x2="291.4" y2="204.0" class="s-mu" stroke-width="1.2"/>
+<text x="291.4" y="217.0" class="f-mu" font-size="11" text-anchor="middle">600</text>
+<text x="220.0" y="235.0" class="f-mu" font-size="12" text-anchor="middle">MB</text>
+<text x="380.0" y="22.0" class="f-fg" font-size="13" text-anchor="start" font-weight="600">배치별 합계 (GB)</text>
+<rect x="470.0" y="46.0" width="6.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1.2"/>
+<rect x="476.0" y="46.0" width="9.9" height="26.0" rx="0" class="s-bd f-bds" stroke-width="1.2"/>
+<text x="462.0" y="64.0" class="f-fg" font-size="12" text-anchor="end">배치 1</text>
+<text x="491.9" y="64.0" class="f-fg" font-size="12" text-anchor="start" font-weight="600">1.0</text>
+<rect x="470.0" y="86.0" width="6.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1.2"/>
+<rect x="476.0" y="86.0" width="39.5" height="26.0" rx="0" class="s-bd f-bds" stroke-width="1.2"/>
+<text x="462.0" y="104.0" class="f-fg" font-size="12" text-anchor="end">배치 4</text>
+<text x="521.5" y="104.0" class="f-fg" font-size="12" text-anchor="start" font-weight="600">2.9</text>
+<rect x="470.0" y="126.0" width="6.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1.2"/>
+<rect x="476.0" y="126.0" width="158.0" height="26.0" rx="0" class="s-bd f-bds" stroke-width="1.2"/>
+<text x="462.0" y="144.0" class="f-fg" font-size="12" text-anchor="end">배치 16</text>
+<text x="640.0" y="144.0" class="f-fg" font-size="12" text-anchor="start" font-weight="600">10.4</text>
+<rect x="470.0" y="166.0" width="6.0" height="26.0" rx="0" class="s-ac f-acs" stroke-width="1.2"/>
+<rect x="476.0" y="166.0" width="79.0" height="26.0" rx="0" class="s-bd f-bds" stroke-width="1.2"/>
+<text x="462.0" y="184.0" class="f-fg" font-size="12" text-anchor="end">16, 절반</text>
+<text x="561.0" y="184.0" class="f-fg" font-size="12" text-anchor="start" font-weight="600">5.4</text>
+<line x1="470.0" y1="38.0" x2="470.0" y2="200.0" class="s-mu" stroke-width="1.2"/>
+<line x1="470.0" y1="200.0" x2="660.0" y2="200.0" class="s-mu" stroke-width="1.2"/>
+<line x1="470.0" y1="200.0" x2="470.0" y2="204.0" class="s-mu" stroke-width="1.2"/>
+<text x="470.0" y="217.0" class="f-mu" font-size="11" text-anchor="middle">0</text>
+<line x1="533.3" y1="200.0" x2="533.3" y2="204.0" class="s-mu" stroke-width="1.2"/>
+<text x="533.3" y="217.0" class="f-mu" font-size="11" text-anchor="middle">4</text>
+<line x1="596.7" y1="200.0" x2="596.7" y2="204.0" class="s-mu" stroke-width="1.2"/>
+<text x="596.7" y="217.0" class="f-mu" font-size="11" text-anchor="middle">8</text>
+<line x1="660.0" y1="200.0" x2="660.0" y2="204.0" class="s-mu" stroke-width="1.2"/>
+<text x="660.0" y="217.0" class="f-mu" font-size="11" text-anchor="middle">12</text>
+<text x="565.0" y="235.0" class="f-mu" font-size="12" text-anchor="middle">GB</text>
+</svg>
