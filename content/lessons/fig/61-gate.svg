@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 760 330" role="img" aria-label="새 모델 B의 5대 게이트 판정. 거시 성능·최저 슬라이스·강건성 게이트가 탈락하고 보정·지연 게이트는 통과해, 논리곱 결과는 No-Go">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<rect x="290.0" y="8.0" width="180.0" height="34.0" rx="6" class="s-fg f-acs" stroke-width="1.3"/>
+<text x="380.0" y="30.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="bold">새 모델 B (드롭아웃)</text>
+<line x1="380.0" y1="42.0" x2="380.0" y2="58.0" class="s-mu" stroke-width="1.2"/>
+<line x1="88.0" y1="58.0" x2="380.0" y2="58.0" class="s-mu" stroke-width="1.2"/>
+<line x1="88.0" y1="58.0" x2="88.0" y2="72.0" class="s-mu" stroke-width="1.2"/>
+<path d="M 88.0 78.0 L 85.0 72.0 L 91.0 72.0 Z" class="f-mu" stroke-width="0"/>
+<rect x="21.0" y="78.0" width="134.0" height="128.0" rx="6" class="s-bd f-bds" stroke-width="1.4"/>
+<text x="88.0" y="100.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="bold">G_macro</text>
+<text x="88.0" y="120.0" class="f-mu" font-size="11" text-anchor="middle">정확도(시험)</text>
+<text x="88.0" y="142.0" class="f-fg" font-size="12" text-anchor="middle">0.968 &lt; A 0.974</text>
+<text x="88.0" y="192.0" class="f-bd" font-size="14" text-anchor="middle" font-weight="bold">탈락</text>
+<line x1="88.0" y1="206.0" x2="339.0" y2="249.0" class="s-bd" stroke-width="1.3"/>
+<path d="M 345.0 250.0 L 338.5 251.9 L 339.6 246.0 Z" class="f-bd" stroke-width="0"/>
+<line x1="380.0" y1="42.0" x2="380.0" y2="58.0" class="s-mu" stroke-width="1.2"/>
+<line x1="234.0" y1="58.0" x2="380.0" y2="58.0" class="s-mu" stroke-width="1.2"/>
+<line x1="234.0" y1="58.0" x2="234.0" y2="72.0" class="s-mu" stroke-width="1.2"/>
+<path d="M 234.0 78.0 L 231.0 72.0 L 237.0 72.0 Z" class="f-mu" stroke-width="0"/>
+<rect x="167.0" y="78.0" width="134.0" height="128.0" rx="6" class="s-bd f-bds" stroke-width="1.4"/>
+<text x="234.0" y="100.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="bold">G_slice</text>
+<text x="234.0" y="120.0" class="f-mu" font-size="11" text-anchor="middle">최저 슬라이스</text>
+<text x="234.0" y="142.0" class="f-fg" font-size="12" text-anchor="middle">0.782 &lt; 0.85</text>
+<text x="234.0" y="160.0" class="f-fg" font-size="12" text-anchor="middle">최대 하락 0.020</text>
+<text x="234.0" y="192.0" class="f-bd" font-size="14" text-anchor="middle" font-weight="bold">탈락</text>
+<line x1="234.0" y1="206.0" x2="356.8" y2="248.1" class="s-bd" stroke-width="1.3"/>
+<path d="M 362.5 250.0 L 355.8 250.9 L 357.8 245.2 Z" class="f-bd" stroke-width="0"/>
+<line x1="380.0" y1="42.0" x2="380.0" y2="58.0" class="s-mu" stroke-width="1.2"/>
+<line x1="380.0" y1="58.0" x2="380.0" y2="58.0" class="s-mu" stroke-width="1.2"/>
+<line x1="380.0" y1="58.0" x2="380.0" y2="72.0" class="s-mu" stroke-width="1.2"/>
+<path d="M 380.0 78.0 L 377.0 72.0 L 383.0 72.0 Z" class="f-mu" stroke-width="0"/>
+<rect x="313.0" y="78.0" width="134.0" height="128.0" rx="6" class="s-bd f-bds" stroke-width="1.4"/>
+<text x="380.0" y="100.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="bold">G_robust</text>
+<text x="380.0" y="120.0" class="f-mu" font-size="11" text-anchor="middle">mCE · max RDI</text>
+<text x="380.0" y="142.0" class="f-fg" font-size="12" text-anchor="middle">78.7 ≤ 100</text>
+<text x="380.0" y="160.0" class="f-fg" font-size="12" text-anchor="middle">0.54 &gt; 0.40</text>
+<text x="380.0" y="192.0" class="f-bd" font-size="14" text-anchor="middle" font-weight="bold">탈락</text>
+<line x1="380.0" y1="206.0" x2="380.0" y2="244.0" class="s-bd" stroke-width="1.3"/>
+<path d="M 380.0 250.0 L 377.0 244.0 L 383.0 244.0 Z" class="f-bd" stroke-width="0"/>
+<line x1="380.0" y1="42.0" x2="380.0" y2="58.0" class="s-mu" stroke-width="1.2"/>
+<line x1="380.0" y1="58.0" x2="526.0" y2="58.0" class="s-mu" stroke-width="1.2"/>
+<line x1="526.0" y1="58.0" x2="526.0" y2="72.0" class="s-mu" stroke-width="1.2"/>
+<path d="M 526.0 78.0 L 523.0 72.0 L 529.0 72.0 Z" class="f-mu" stroke-width="0"/>
+<rect x="459.0" y="78.0" width="134.0" height="128.0" rx="6" class="s-ok f-sf" stroke-width="1.4"/>
+<text x="526.0" y="100.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="bold">G_calib</text>
+<text x="526.0" y="120.0" class="f-mu" font-size="11" text-anchor="middle">ECE(시험)</text>
+<text x="526.0" y="142.0" class="f-fg" font-size="12" text-anchor="middle">0.016 ≤ 0.08</text>
+<text x="526.0" y="192.0" class="f-ok" font-size="14" text-anchor="middle" font-weight="bold">통과</text>
+<line x1="526.0" y1="206.0" x2="403.2" y2="248.1" class="s-ok" stroke-width="1.3"/>
+<path d="M 397.5 250.0 L 402.2 245.2 L 404.2 250.9 Z" class="f-ok" stroke-width="0"/>
+<line x1="380.0" y1="42.0" x2="380.0" y2="58.0" class="s-mu" stroke-width="1.2"/>
+<line x1="380.0" y1="58.0" x2="672.0" y2="58.0" class="s-mu" stroke-width="1.2"/>
+<line x1="672.0" y1="58.0" x2="672.0" y2="72.0" class="s-mu" stroke-width="1.2"/>
+<path d="M 672.0 78.0 L 669.0 72.0 L 675.0 72.0 Z" class="f-mu" stroke-width="0"/>
+<rect x="605.0" y="78.0" width="134.0" height="128.0" rx="6" class="s-ok f-sf" stroke-width="1.4"/>
+<text x="672.0" y="100.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="bold">G_latency</text>
+<text x="672.0" y="120.0" class="f-mu" font-size="11" text-anchor="middle">p99 지연</text>
+<text x="672.0" y="142.0" class="f-fg" font-size="12" text-anchor="middle">0.144 ≤ 1.0 ms</text>
+<text x="672.0" y="192.0" class="f-ok" font-size="14" text-anchor="middle" font-weight="bold">통과</text>
+<line x1="672.0" y1="206.0" x2="421.0" y2="249.0" class="s-ok" stroke-width="1.3"/>
+<path d="M 415.0 250.0 L 420.4 246.0 L 421.5 251.9 Z" class="f-ok" stroke-width="0"/>
+<circle cx="380.0" cy="262.0" r="13" class="s-fg f-sf" stroke-width="1.3"/>
+<text x="380.0" y="267.0" class="f-fg" font-size="15" text-anchor="middle" font-weight="bold">∧</text>
+<line x1="380.0" y1="275.0" x2="380.0" y2="284.0" class="s-fg" stroke-width="1.4"/>
+<path d="M 380.0 290.0 L 377.0 284.0 L 383.0 284.0 Z" class="f-fg" stroke-width="0"/>
+<rect x="320.0" y="290.0" width="120.0" height="32.0" rx="6" class="s-bd f-bds" stroke-width="1.5"/>
+<text x="380.0" y="311.0" class="f-bd" font-size="15" text-anchor="middle" font-weight="bold">No-Go</text>
+<text x="460.0" y="266.0" class="f-mu" font-size="11" text-anchor="start">하나라도 탈락이면 0</text>
+</svg>

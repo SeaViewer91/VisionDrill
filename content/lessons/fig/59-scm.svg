@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 720 360" role="img" aria-label="바로잡은 구조적 인과 모델. 왼쪽 학습 자료(관측)에서는 환경이 배경과 표적에 모두 영향을 주어 지름길이 생기고, 오른쪽 개입에서는 환경에서 배경으로 가는 화살표가 끊김">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<text x="170.0" y="22.0" class="f-fg" font-size="14" text-anchor="middle" font-weight="600">(가) 학습 자료: 관측</text>
+<line x1="156.5" y1="78.0" x2="100.9" y2="127.4" class="s-bd" stroke-width="2.2"/>
+<path d="M94.2,133.4 L97.9,124.0 L103.9,130.8 Z" class="s-bd f-bd" stroke-width="1.0"/>
+<line x1="183.5" y1="78.0" x2="239.1" y2="127.4" class="s-bd" stroke-width="2.2"/>
+<path d="M245.8,133.4 L236.1,130.8 L242.1,124.0 Z" class="s-bd f-bd" stroke-width="1.0"/>
+<line x1="170.0" y1="84.0" x2="170.0" y2="188.0" class="s-mu" stroke-width="1.6"/>
+<path d="M170.0,197.0 L165.5,188.0 L174.5,188.0 Z" class="s-mu f-mu" stroke-width="1.0"/>
+<line x1="94.2" y1="157.1" x2="147.9" y2="198.8" class="s-bd" stroke-width="2.2"/>
+<path d="M155.0,204.3 L145.1,202.4 L150.7,195.3 Z" class="s-bd f-bd" stroke-width="1.0"/>
+<line x1="245.8" y1="157.1" x2="192.1" y2="198.8" class="s-ac" stroke-width="2.2"/>
+<path d="M185.0,204.3 L189.3,195.3 L194.9,202.4 Z" class="s-ac f-ac" stroke-width="1.0"/>
+<line x1="260.0" y1="164.0" x2="260.0" y2="262.0" class="s-ac" stroke-width="2.2"/>
+<path d="M260.0,271.0 L255.5,262.0 L264.5,262.0 Z" class="s-ac f-ac" stroke-width="1.0"/>
+<line x1="170.0" y1="234.0" x2="170.0" y2="262.0" class="s-fg" stroke-width="2.2"/>
+<path d="M170.0,271.0 L165.5,262.0 L174.5,262.0 Z" class="s-fg f-fg" stroke-width="1.0"/>
+<circle cx="170.0" cy="66.0" r="18" class="s-fg f-bg" stroke-width="1.6"/>
+<text x="170.0" y="71.0" class="f-fg" font-size="15" text-anchor="middle" font-weight="600">E</text>
+<circle cx="80.0" cy="146.0" r="18" class="s-fg f-bg" stroke-width="1.6"/>
+<text x="80.0" y="151.0" class="f-fg" font-size="15" text-anchor="middle" font-weight="600">C</text>
+<circle cx="260.0" cy="146.0" r="18" class="s-fg f-bg" stroke-width="1.6"/>
+<text x="260.0" y="151.0" class="f-fg" font-size="15" text-anchor="middle" font-weight="600">O</text>
+<circle cx="170.0" cy="216.0" r="18" class="s-fg f-bg" stroke-width="1.6"/>
+<text x="170.0" y="221.0" class="f-fg" font-size="15" text-anchor="middle" font-weight="600">X</text>
+<circle cx="170.0" cy="290.0" r="18" class="s-fg f-bg" stroke-width="1.6"/>
+<text x="170.0" y="295.0" class="f-fg" font-size="15" text-anchor="middle" font-weight="600">Ŷ</text>
+<circle cx="260.0" cy="290.0" r="18" class="s-fg f-bg" stroke-width="1.6"/>
+<text x="260.0" y="295.0" class="f-fg" font-size="15" text-anchor="middle" font-weight="600">Y</text>
+<text x="196.0" y="71.0" class="f-mu" font-size="12" text-anchor="start">환경</text>
+<text x="80.0" y="186.0" class="f-mu" font-size="12" text-anchor="middle">배경·단서</text>
+<text x="286.0" y="151.0" class="f-mu" font-size="12" text-anchor="start">표적</text>
+<text x="196.0" y="234.0" class="f-mu" font-size="12" text-anchor="start">영상</text>
+<text x="144.0" y="295.0" class="f-mu" font-size="12" text-anchor="end">예측</text>
+<text x="286.0" y="295.0" class="f-mu" font-size="12" text-anchor="start">정답</text>
+<text x="540.0" y="22.0" class="f-fg" font-size="14" text-anchor="middle" font-weight="600">(나) 개입 do(C = c′)</text>
+<line x1="526.5" y1="78.0" x2="470.9" y2="127.4" class="s-mu" stroke-width="1.3" stroke-dasharray="4 4"/>
+<path d="M464.2,133.4 L467.9,124.0 L473.9,130.8 Z" class="s-mu f-mu" stroke-width="1.0"/>
+<line x1="488.4" y1="98.7" x2="502.4" y2="112.7" class="s-bd" stroke-width="2.4"/>
+<line x1="488.4" y1="112.7" x2="502.4" y2="98.7" class="s-bd" stroke-width="2.4"/>
+<line x1="553.5" y1="78.0" x2="609.1" y2="127.4" class="s-mu" stroke-width="1.6"/>
+<path d="M615.8,133.4 L606.1,130.8 L612.1,124.0 Z" class="s-mu f-mu" stroke-width="1.0"/>
+<line x1="540.0" y1="84.0" x2="540.0" y2="188.0" class="s-mu" stroke-width="1.6"/>
+<path d="M540.0,197.0 L535.5,188.0 L544.5,188.0 Z" class="s-mu f-mu" stroke-width="1.0"/>
+<line x1="464.2" y1="157.1" x2="517.9" y2="198.8" class="s-bd" stroke-width="2.2"/>
+<path d="M525.0,204.3 L515.1,202.4 L520.7,195.3 Z" class="s-bd f-bd" stroke-width="1.0"/>
+<line x1="615.8" y1="157.1" x2="562.1" y2="198.8" class="s-ac" stroke-width="2.2"/>
+<path d="M555.0,204.3 L559.3,195.3 L564.9,202.4 Z" class="s-ac f-ac" stroke-width="1.0"/>
+<line x1="630.0" y1="164.0" x2="630.0" y2="262.0" class="s-ac" stroke-width="2.2"/>
+<path d="M630.0,271.0 L625.5,262.0 L634.5,262.0 Z" class="s-ac f-ac" stroke-width="1.0"/>
+<line x1="540.0" y1="234.0" x2="540.0" y2="262.0" class="s-fg" stroke-width="2.2"/>
+<path d="M540.0,271.0 L535.5,262.0 L544.5,262.0 Z" class="s-fg f-fg" stroke-width="1.0"/>
+<circle cx="540.0" cy="66.0" r="18" class="s-fg f-bg" stroke-width="1.6"/>
+<text x="540.0" y="71.0" class="f-fg" font-size="15" text-anchor="middle" font-weight="600">E</text>
+<circle cx="450.0" cy="146.0" r="18" class="s-bd f-bds" stroke-width="1.6"/>
+<text x="450.0" y="151.0" class="f-fg" font-size="15" text-anchor="middle" font-weight="600">C</text>
+<circle cx="630.0" cy="146.0" r="18" class="s-fg f-bg" stroke-width="1.6"/>
+<text x="630.0" y="151.0" class="f-fg" font-size="15" text-anchor="middle" font-weight="600">O</text>
+<circle cx="540.0" cy="216.0" r="18" class="s-fg f-bg" stroke-width="1.6"/>
+<text x="540.0" y="221.0" class="f-fg" font-size="15" text-anchor="middle" font-weight="600">X</text>
+<circle cx="540.0" cy="290.0" r="18" class="s-fg f-bg" stroke-width="1.6"/>
+<text x="540.0" y="295.0" class="f-fg" font-size="15" text-anchor="middle" font-weight="600">Ŷ</text>
+<circle cx="630.0" cy="290.0" r="18" class="s-fg f-bg" stroke-width="1.6"/>
+<text x="630.0" y="295.0" class="f-fg" font-size="15" text-anchor="middle" font-weight="600">Y</text>
+<text x="566.0" y="71.0" class="f-mu" font-size="12" text-anchor="start">환경</text>
+<text x="450.0" y="186.0" class="f-bd" font-size="12" text-anchor="middle">c′로 고정</text>
+<text x="656.0" y="151.0" class="f-mu" font-size="12" text-anchor="start">표적</text>
+<text x="566.0" y="234.0" class="f-mu" font-size="12" text-anchor="start">영상</text>
+<text x="514.0" y="295.0" class="f-mu" font-size="12" text-anchor="end">예측</text>
+<text x="656.0" y="295.0" class="f-mu" font-size="12" text-anchor="start">정답</text>
+<line x1="355.0" y1="40.0" x2="355.0" y2="310.0" class="s-mu" stroke-width="1.0" stroke-dasharray="2 4"/>
+<line x1="150.0" y1="336.0" x2="176.0" y2="336.0" class="s-ac" stroke-width="2.4"/>
+<text x="184.0" y="340.0" class="f-mu" font-size="12" text-anchor="start">바른 길: 표적 → 영상 → 예측</text>
+<line x1="420.0" y1="336.0" x2="446.0" y2="336.0" class="s-bd" stroke-width="2.4"/>
+<text x="454.0" y="340.0" class="f-mu" font-size="12" text-anchor="start">지름길: 환경 → 배경 → 영상</text>
+</svg>

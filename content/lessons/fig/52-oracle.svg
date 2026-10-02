@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 680 268" role="img" aria-label="여섯 오차 유형의 개수(왼쪽)와, 그 유형만 고쳤을 때 mAP50이 오르는 폭(오라클 ΔAP, 오른쪽). 오탐 중 가장 많은 위치 오차보다 개수가 적은 분류 오차의 ΔAP가 훨씬 큼">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<text x="229.0" y="24.0" class="f-mu" font-size="12" text-anchor="middle">개수 (오탐은 탐지, 미탐은 정답)</text>
+<text x="525.0" y="24.0" class="f-mu" font-size="12" text-anchor="middle">그 유형만 고친 mAP50 상승 (ΔAP)</text>
+<text x="110.0" y="61.0" class="f-fg" font-size="13" text-anchor="end">분류</text>
+<rect x="128.0" y="48.0" width="48.5" height="20.0" rx="0" class="f-mu" stroke-width="0"/>
+<text x="182.5" y="63.0" class="f-mu" font-size="12" text-anchor="start">72</text>
+<rect x="410.0" y="48.0" width="197.2" height="20.0" rx="0" class="f-bd" stroke-width="0"/>
+<text x="613.2" y="63.0" class="f-bd" font-size="12" text-anchor="start" font-weight="600">0.103</text>
+<text x="110.0" y="95.0" class="f-fg" font-size="13" text-anchor="end">미탐</text>
+<rect x="128.0" y="82.0" width="172.4" height="20.0" rx="0" class="f-mu" stroke-width="0"/>
+<text x="306.4" y="97.0" class="f-mu" font-size="12" text-anchor="start">256</text>
+<rect x="410.0" y="82.0" width="167.3" height="20.0" rx="0" class="f-bd" stroke-width="0"/>
+<text x="583.3" y="97.0" class="f-bd" font-size="12" text-anchor="start" font-weight="600">0.087</text>
+<text x="110.0" y="129.0" class="f-fg" font-size="13" text-anchor="end">위치</text>
+<rect x="128.0" y="116.0" width="134.7" height="20.0" rx="0" class="f-mu" stroke-width="0"/>
+<text x="268.7" y="131.0" class="f-mu" font-size="12" text-anchor="start">200</text>
+<rect x="410.0" y="116.0" width="97.2" height="20.0" rx="0" class="f-ac" stroke-width="0"/>
+<text x="513.2" y="131.0" class="f-ac" font-size="12" text-anchor="start" font-weight="600">0.051</text>
+<text x="110.0" y="163.0" class="f-fg" font-size="13" text-anchor="end">중복</text>
+<rect x="128.0" y="150.0" width="87.5" height="20.0" rx="0" class="f-mu" stroke-width="0"/>
+<text x="221.5" y="165.0" class="f-mu" font-size="12" text-anchor="start">130</text>
+<rect x="410.0" y="150.0" width="41.8" height="20.0" rx="0" class="f-ac" stroke-width="0"/>
+<text x="457.8" y="165.0" class="f-ac" font-size="12" text-anchor="start" font-weight="600">0.022</text>
+<text x="110.0" y="197.0" class="f-fg" font-size="13" text-anchor="end">배경 오인</text>
+<rect x="128.0" y="184.0" width="82.8" height="20.0" rx="0" class="f-mu" stroke-width="0"/>
+<text x="216.8" y="199.0" class="f-mu" font-size="12" text-anchor="start">123</text>
+<rect x="410.0" y="184.0" width="23.8" height="20.0" rx="0" class="f-ac" stroke-width="0"/>
+<text x="439.8" y="199.0" class="f-ac" font-size="12" text-anchor="start" font-weight="600">0.012</text>
+<text x="110.0" y="231.0" class="f-fg" font-size="13" text-anchor="end">분류·위치</text>
+<rect x="128.0" y="218.0" width="14.8" height="20.0" rx="0" class="f-mu" stroke-width="0"/>
+<text x="148.8" y="233.0" class="f-mu" font-size="12" text-anchor="start">22</text>
+<rect x="410.0" y="218.0" width="8.1" height="20.0" rx="0" class="f-ac" stroke-width="0"/>
+<text x="424.1" y="233.0" class="f-ac" font-size="12" text-anchor="start" font-weight="600">0.004</text>
+<line x1="128.0" y1="42.0" x2="128.0" y2="250.0" class="s-mu" stroke-width="1.2"/>
+<line x1="410.0" y1="42.0" x2="410.0" y2="250.0" class="s-mu" stroke-width="1.2"/>
+<line x1="128.0" y1="250.0" x2="128.0" y2="254.0" class="s-mu" stroke-width="1.0"/>
+<text x="128.0" y="267.0" class="f-mu" font-size="11" text-anchor="middle">0</text>
+<line x1="195.3" y1="250.0" x2="195.3" y2="254.0" class="s-mu" stroke-width="1.0"/>
+<text x="195.3" y="267.0" class="f-mu" font-size="11" text-anchor="middle">100</text>
+<line x1="262.7" y1="250.0" x2="262.7" y2="254.0" class="s-mu" stroke-width="1.0"/>
+<text x="262.7" y="267.0" class="f-mu" font-size="11" text-anchor="middle">200</text>
+<line x1="330.0" y1="250.0" x2="330.0" y2="254.0" class="s-mu" stroke-width="1.0"/>
+<text x="330.0" y="267.0" class="f-mu" font-size="11" text-anchor="middle">300</text>
+<line x1="410.0" y1="250.0" x2="410.0" y2="254.0" class="s-mu" stroke-width="1.0"/>
+<text x="410.0" y="267.0" class="f-mu" font-size="11" text-anchor="middle">0</text>
+<line x1="486.7" y1="250.0" x2="486.7" y2="254.0" class="s-mu" stroke-width="1.0"/>
+<text x="486.7" y="267.0" class="f-mu" font-size="11" text-anchor="middle">0.04</text>
+<line x1="563.3" y1="250.0" x2="563.3" y2="254.0" class="s-mu" stroke-width="1.0"/>
+<text x="563.3" y="267.0" class="f-mu" font-size="11" text-anchor="middle">0.08</text>
+<line x1="640.0" y1="250.0" x2="640.0" y2="254.0" class="s-mu" stroke-width="1.0"/>
+<text x="640.0" y="267.0" class="f-mu" font-size="11" text-anchor="middle">0.12</text>
+</svg>

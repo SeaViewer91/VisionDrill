@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 700 256" role="img" aria-label="표식 실험. 32×32 타일 위쪽 가장자리의 여섯 자리가 여섯 클래스에 대응함. 시가지 타일을 예로 표식 없음, 맞는 자리, 틀린 자리(수계 자리)">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<text x="120.0" y="26.0" class="f-fg" font-size="14" text-anchor="middle" font-weight="600">표식 없음</text>
+<rect x="40.0" y="50.0" width="160.0" height="160.0" rx="0" class="s-mu f-sf" stroke-width="1.4"/>
+<rect x="55.0" y="60.0" width="15.0" height="15.0" rx="0" class="s-mu f-bg" stroke-width="0.9"/>
+<rect x="80.0" y="60.0" width="15.0" height="15.0" rx="0" class="s-mu f-bg" stroke-width="0.9"/>
+<rect x="105.0" y="60.0" width="15.0" height="15.0" rx="0" class="s-mu f-bg" stroke-width="0.9"/>
+<rect x="130.0" y="60.0" width="15.0" height="15.0" rx="0" class="s-mu f-bg" stroke-width="0.9"/>
+<rect x="155.0" y="60.0" width="15.0" height="15.0" rx="0" class="s-mu f-bg" stroke-width="0.9"/>
+<rect x="180.0" y="60.0" width="15.0" height="15.0" rx="0" class="s-mu f-bg" stroke-width="0.9"/>
+<text x="120.0" y="194.0" class="f-mu" font-size="12" text-anchor="middle">시가지 타일</text>
+<text x="345.0" y="26.0" class="f-fg" font-size="14" text-anchor="middle" font-weight="600">맞는 자리</text>
+<rect x="265.0" y="50.0" width="160.0" height="160.0" rx="0" class="s-mu f-sf" stroke-width="1.4"/>
+<rect x="280.0" y="60.0" width="15.0" height="15.0" rx="0" class="s-mu f-bg" stroke-width="0.9"/>
+<rect x="305.0" y="60.0" width="15.0" height="15.0" rx="0" class="s-mu f-bg" stroke-width="0.9"/>
+<rect x="330.0" y="60.0" width="15.0" height="15.0" rx="0" class="s-ok f-fg" stroke-width="1.6"/>
+<rect x="355.0" y="60.0" width="15.0" height="15.0" rx="0" class="s-mu f-bg" stroke-width="0.9"/>
+<rect x="380.0" y="60.0" width="15.0" height="15.0" rx="0" class="s-mu f-bg" stroke-width="0.9"/>
+<rect x="405.0" y="60.0" width="15.0" height="15.0" rx="0" class="s-mu f-bg" stroke-width="0.9"/>
+<text x="345.0" y="194.0" class="f-mu" font-size="12" text-anchor="middle">시가지 타일</text>
+<line x1="337.5" y1="77.0" x2="337.5" y2="120.0" class="s-mu" stroke-width="1.0"/>
+<text x="337.5" y="134.0" class="f-ok" font-size="12" text-anchor="middle">시가지 자리</text>
+<text x="570.0" y="26.0" class="f-fg" font-size="14" text-anchor="middle" font-weight="600">틀린 자리</text>
+<rect x="490.0" y="50.0" width="160.0" height="160.0" rx="0" class="s-mu f-sf" stroke-width="1.4"/>
+<rect x="505.0" y="60.0" width="15.0" height="15.0" rx="0" class="s-mu f-bg" stroke-width="0.9"/>
+<rect x="530.0" y="60.0" width="15.0" height="15.0" rx="0" class="s-mu f-bg" stroke-width="0.9"/>
+<rect x="555.0" y="60.0" width="15.0" height="15.0" rx="0" class="s-mu f-bg" stroke-width="0.9"/>
+<rect x="580.0" y="60.0" width="15.0" height="15.0" rx="0" class="s-bd f-fg" stroke-width="1.6"/>
+<rect x="605.0" y="60.0" width="15.0" height="15.0" rx="0" class="s-mu f-bg" stroke-width="0.9"/>
+<rect x="630.0" y="60.0" width="15.0" height="15.0" rx="0" class="s-mu f-bg" stroke-width="0.9"/>
+<text x="570.0" y="194.0" class="f-mu" font-size="12" text-anchor="middle">시가지 타일</text>
+<line x1="587.5" y1="77.0" x2="587.5" y2="120.0" class="s-mu" stroke-width="1.0"/>
+<text x="587.5" y="134.0" class="f-bd" font-size="12" text-anchor="middle">수계 자리</text>
+<text x="120.0" y="232.0" class="f-mu" font-size="11" text-anchor="middle">왼쪽부터 산림·농경지·시가지</text>
+<text x="120.0" y="247.0" class="f-mu" font-size="11" text-anchor="middle">수계·나지·갯벌 자리</text>
+<text x="345.0" y="232.0" class="f-mu" font-size="11" text-anchor="middle">학습 자료의 90%가 이 상태</text>
+<text x="570.0" y="232.0" class="f-mu" font-size="11" text-anchor="middle">do(단서 = 다른 클래스)</text>
+</svg>

@@ -15,3 +15,4 @@ backups/
 content/lessons/data/.part5_*.pt
 content/lessons/data/.part7_*
 __pycache__/
+content/lessons/data/.part8_*

@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 720 470" role="img" aria-label="교란 10가지의 RDI. VD-CNN과 기하+광학 증강 VD-CNN. 0.15 아래는 강건, 0.35~0.40 위는 심각">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<rect x="465.0" y="42.0" width="45.0" height="386.0" rx="0" class="f-bds" stroke-width="0"/>
+<line x1="285.0" y1="42.0" x2="285.0" y2="428.0" class="s-ok" stroke-width="1.4" stroke-dasharray="5 4"/>
+<text x="289.0" y="38.0" class="f-ok" font-size="11" text-anchor="start">강건 경계</text>
+<text x="487.5" y="38.0" class="f-bd" font-size="11" text-anchor="middle">심각 경계</text>
+<rect x="150.0" y="12.0" width="14.0" height="10.0" rx="0" class="s-ac f-ac" stroke-width="1.0"/>
+<text x="170.0" y="21.0" class="f-fg" font-size="12" text-anchor="start">VD-CNN</text>
+<rect x="260.0" y="12.0" width="14.0" height="10.0" rx="0" class="s-mu f-mu" stroke-width="1.0"/>
+<text x="280.0" y="21.0" class="f-fg" font-size="12" text-anchor="start">증강 VD-CNN</text>
+<text x="140.0" y="70.0" class="f-fg" font-size="12" text-anchor="end">BC 배경 클러터</text>
+<rect x="150.0" y="52.0" width="197.0" height="12.0" rx="0" class="s-ac f-ac" stroke-width="0.8"/>
+<text x="352.0" y="62.0" class="f-ac" font-size="10" text-anchor="start" font-weight="600">0.219</text>
+<rect x="150.0" y="66.0" width="247.7" height="12.0" rx="0" class="s-mu f-mu" stroke-width="0.8"/>
+<text x="140.0" y="108.0" class="f-fg" font-size="12" text-anchor="end">IV 조도</text>
+<rect x="150.0" y="90.0" width="27.7" height="12.0" rx="0" class="s-ac f-ac" stroke-width="0.8"/>
+<text x="182.7" y="100.0" class="f-ac" font-size="10" text-anchor="start" font-weight="600">0.031</text>
+<rect x="150.0" y="104.0" width="16.8" height="12.0" rx="0" class="s-mu f-mu" stroke-width="0.8"/>
+<text x="140.0" y="146.0" class="f-fg" font-size="12" text-anchor="end">CM 위장</text>
+<rect x="150.0" y="128.0" width="319.5" height="12.0" rx="0" class="s-ac f-ac" stroke-width="0.8"/>
+<text x="474.5" y="138.0" class="f-ac" font-size="10" text-anchor="start" font-weight="600">0.355</text>
+<rect x="150.0" y="142.0" width="271.7" height="12.0" rx="0" class="s-mu f-mu" stroke-width="0.8"/>
+<text x="140.0" y="184.0" class="f-fg" font-size="12" text-anchor="end">TC 열·반사</text>
+<rect x="150.0" y="166.0" width="433.6" height="12.0" rx="0" class="s-ac f-ac" stroke-width="0.8"/>
+<text x="588.6" y="176.0" class="f-ac" font-size="10" text-anchor="start" font-weight="600">0.482</text>
+<rect x="150.0" y="180.0" width="452.0" height="12.0" rx="0" class="s-mu f-mu" stroke-width="0.8"/>
+<text x="140.0" y="222.0" class="f-fg" font-size="12" text-anchor="end">OCC 가림</text>
+<rect x="150.0" y="204.0" width="520.5" height="12.0" rx="0" class="s-ac f-ac" stroke-width="0.8"/>
+<text x="675.5" y="214.0" class="f-ac" font-size="10" text-anchor="start" font-weight="600">0.578</text>
+<rect x="150.0" y="218.0" width="494.3" height="12.0" rx="0" class="s-mu f-mu" stroke-width="0.8"/>
+<text x="140.0" y="260.0" class="f-fg" font-size="12" text-anchor="end">LR 저해상도</text>
+<rect x="150.0" y="242.0" width="228.0" height="12.0" rx="0" class="s-ac f-ac" stroke-width="0.8"/>
+<text x="383.0" y="252.0" class="f-ac" font-size="10" text-anchor="start" font-weight="600">0.253</text>
+<rect x="150.0" y="256.0" width="318.6" height="12.0" rx="0" class="s-mu f-mu" stroke-width="0.8"/>
+<text x="140.0" y="298.0" class="f-fg" font-size="12" text-anchor="end">DEF 사각 왜곡</text>
+<rect x="150.0" y="280.0" width="39.8" height="12.0" rx="0" class="s-ac f-ac" stroke-width="0.8"/>
+<text x="194.8" y="290.0" class="f-ac" font-size="10" text-anchor="start" font-weight="600">0.044</text>
+<rect x="150.0" y="294.0" width="33.8" height="12.0" rx="0" class="s-mu f-mu" stroke-width="0.8"/>
+<text x="140.0" y="336.0" class="f-fg" font-size="12" text-anchor="end">OV 경계 절단</text>
+<rect x="150.0" y="318.0" width="133.6" height="12.0" rx="0" class="s-ac f-ac" stroke-width="0.8"/>
+<text x="288.6" y="328.0" class="f-ac" font-size="10" text-anchor="start" font-weight="600">0.148</text>
+<rect x="150.0" y="332.0" width="160.5" height="12.0" rx="0" class="s-mu f-mu" stroke-width="0.8"/>
+<text x="140.0" y="374.0" class="f-fg" font-size="12" text-anchor="end">MB 블러</text>
+<rect x="150.0" y="356.0" width="199.3" height="12.0" rx="0" class="s-ac f-ac" stroke-width="0.8"/>
+<text x="354.3" y="366.0" class="f-ac" font-size="10" text-anchor="start" font-weight="600">0.221</text>
+<rect x="150.0" y="370.0" width="263.7" height="12.0" rx="0" class="s-mu f-mu" stroke-width="0.8"/>
+<text x="140.0" y="412.0" class="f-fg" font-size="12" text-anchor="end">ATM 대기 산란</text>
+<rect x="150.0" y="394.0" width="226.2" height="12.0" rx="0" class="s-ac f-ac" stroke-width="0.8"/>
+<text x="381.2" y="404.0" class="f-ac" font-size="10" text-anchor="start" font-weight="600">0.251</text>
+<rect x="150.0" y="408.0" width="155.9" height="12.0" rx="0" class="s-mu f-mu" stroke-width="0.8"/>
+<line x1="150.0" y1="428.0" x2="690.0" y2="428.0" class="s-mu" stroke-width="1.2"/>
+<line x1="150.0" y1="42.0" x2="150.0" y2="428.0" class="s-mu" stroke-width="1.2"/>
+<line x1="150.0" y1="428.0" x2="150.0" y2="432.0" class="s-mu" stroke-width="1.2"/>
+<text x="150.0" y="445.0" class="f-mu" font-size="11" text-anchor="middle">0</text>
+<line x1="240.0" y1="428.0" x2="240.0" y2="432.0" class="s-mu" stroke-width="1.2"/>
+<text x="240.0" y="445.0" class="f-mu" font-size="11" text-anchor="middle">0.1</text>
+<line x1="330.0" y1="428.0" x2="330.0" y2="432.0" class="s-mu" stroke-width="1.2"/>
+<text x="330.0" y="445.0" class="f-mu" font-size="11" text-anchor="middle">0.2</text>
+<line x1="420.0" y1="428.0" x2="420.0" y2="432.0" class="s-mu" stroke-width="1.2"/>
+<text x="420.0" y="445.0" class="f-mu" font-size="11" text-anchor="middle">0.3</text>
+<line x1="510.0" y1="428.0" x2="510.0" y2="432.0" class="s-mu" stroke-width="1.2"/>
+<text x="510.0" y="445.0" class="f-mu" font-size="11" text-anchor="middle">0.4</text>
+<line x1="600.0" y1="428.0" x2="600.0" y2="432.0" class="s-mu" stroke-width="1.2"/>
+<text x="600.0" y="445.0" class="f-mu" font-size="11" text-anchor="middle">0.5</text>
+<line x1="690.0" y1="428.0" x2="690.0" y2="432.0" class="s-mu" stroke-width="1.2"/>
+<text x="690.0" y="445.0" class="f-mu" font-size="11" text-anchor="middle">0.6</text>
+<text x="420.0" y="464.0" class="f-mu" font-size="12" text-anchor="middle">RDI (클린 대비 하락률)</text>
+</svg>

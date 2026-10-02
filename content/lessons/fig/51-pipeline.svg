@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 760 300" role="img" aria-label="4계층 진단 파이프라인: 입력, 진단 엔진 코어, 처방 규칙 엔진, 리포팅">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<rect x="10.0" y="18.0" width="150.0" height="264.0" rx="8" class="s-mu f-sf" stroke-width="1.2"/>
+<text x="85.0" y="42.0" class="f-fg" font-size="14" text-anchor="middle" font-weight="bold">1 입력</text>
+<rect x="196.0" y="18.0" width="190.0" height="264.0" rx="8" class="s-mu f-sf" stroke-width="1.2"/>
+<text x="291.0" y="42.0" class="f-fg" font-size="14" text-anchor="middle" font-weight="bold">2 진단 엔진 코어</text>
+<rect x="422.0" y="18.0" width="150.0" height="264.0" rx="8" class="s-mu f-sf" stroke-width="1.2"/>
+<text x="497.0" y="42.0" class="f-fg" font-size="14" text-anchor="middle" font-weight="bold">3 처방 규칙 엔진</text>
+<rect x="608.0" y="18.0" width="142.0" height="264.0" rx="8" class="s-mu f-sf" stroke-width="1.2"/>
+<text x="679.0" y="42.0" class="f-fg" font-size="14" text-anchor="middle" font-weight="bold">4 리포팅</text>
+<rect x="20.0" y="58.0" width="130.0" height="46.0" rx="5" class="s-mu f-bg" stroke-width="1"/>
+<text x="85.0" y="77.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="bold">예측</text>
+<text x="85.0" y="95.0" class="f-mu" font-size="11" text-anchor="middle">NMS 전·후 상자·점수</text>
+<rect x="20.0" y="114.0" width="130.0" height="46.0" rx="5" class="s-mu f-bg" stroke-width="1"/>
+<text x="85.0" y="133.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="bold">정답</text>
+<text x="85.0" y="151.0" class="f-mu" font-size="11" text-anchor="middle">상자·마스크·클래스</text>
+<rect x="20.0" y="170.0" width="130.0" height="46.0" rx="5" class="s-mu f-bg" stroke-width="1"/>
+<text x="85.0" y="189.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="bold">메타데이터</text>
+<text x="85.0" y="207.0" class="f-mu" font-size="11" text-anchor="middle">촬영 조건·지역</text>
+<rect x="20.0" y="226.0" width="130.0" height="46.0" rx="5" class="s-mu f-bg" stroke-width="1"/>
+<text x="85.0" y="245.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="bold">특성 맵(선택)</text>
+<text x="85.0" y="263.0" class="f-mu" font-size="11" text-anchor="middle">중간 층·어텐션</text>
+<rect x="432.0" y="58.0" width="130.0" height="46.0" rx="5" class="s-mu f-bg" stroke-width="1"/>
+<text x="497.0" y="77.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="bold">규칙과 대조</text>
+<text x="497.0" y="95.0" class="f-mu" font-size="11" text-anchor="middle">지표 · 비교 · 기준</text>
+<rect x="432.0" y="114.0" width="130.0" height="46.0" rx="5" class="s-mu f-bg" stroke-width="1"/>
+<text x="497.0" y="133.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="bold">등급 정렬</text>
+<text x="497.0" y="151.0" class="f-mu" font-size="11" text-anchor="middle">P0 → P1 → P2</text>
+<rect x="432.0" y="170.0" width="130.0" height="46.0" rx="5" class="s-mu f-bg" stroke-width="1"/>
+<text x="497.0" y="189.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="bold">처방 발행</text>
+<text x="497.0" y="207.0" class="f-mu" font-size="11" text-anchor="middle">조치 · 근거 값</text>
+<rect x="618.0" y="58.0" width="122.0" height="46.0" rx="5" class="s-mu f-bg" stroke-width="1"/>
+<text x="679.0" y="77.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="bold">JSON</text>
+<text x="679.0" y="95.0" class="f-mu" font-size="11" text-anchor="middle">기계가 읽음</text>
+<rect x="618.0" y="114.0" width="122.0" height="46.0" rx="5" class="s-mu f-bg" stroke-width="1"/>
+<text x="679.0" y="133.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="bold">요약 문서</text>
+<text x="679.0" y="151.0" class="f-mu" font-size="11" text-anchor="middle">사람이 읽음</text>
+<rect x="206.0" y="58.0" width="170.0" height="56.0" rx="5" class="s-ac f-acs" stroke-width="1.4"/>
+<text x="291.0" y="81.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="bold">A 오차 분해</text>
+<text x="291.0" y="101.0" class="f-mu" font-size="11" text-anchor="middle">52·53강</text>
+<rect x="206.0" y="124.0" width="170.0" height="56.0" rx="5" class="s-ac f-acs" stroke-width="1.4"/>
+<text x="291.0" y="147.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="bold">B 슬라이스·라벨</text>
+<text x="291.0" y="167.0" class="f-mu" font-size="11" text-anchor="middle">54강</text>
+<rect x="206.0" y="190.0" width="170.0" height="56.0" rx="5" class="s-ac f-acs" stroke-width="1.4"/>
+<text x="291.0" y="213.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="bold">C 표현·신뢰도</text>
+<text x="291.0" y="233.0" class="f-mu" font-size="11" text-anchor="middle">55·56강</text>
+<text x="291.0" y="270.0" class="f-mu" font-size="11" text-anchor="middle">(57~60강 모듈로 확장)</text>
+<line x1="163.0" y1="150.0" x2="187.0" y2="150.0" class="s-fg" stroke-width="2"/>
+<path d="M184.0,145.0 L193.0,150.0 L184.0,155.0 Z" class="s-fg f-fg" stroke-width="1"/>
+<line x1="389.0" y1="150.0" x2="413.0" y2="150.0" class="s-fg" stroke-width="2"/>
+<path d="M410.0,145.0 L419.0,150.0 L410.0,155.0 Z" class="s-fg f-fg" stroke-width="1"/>
+<line x1="575.0" y1="150.0" x2="599.0" y2="150.0" class="s-fg" stroke-width="2"/>
+<path d="M596.0,145.0 L605.0,150.0 L596.0,155.0 Z" class="s-fg f-fg" stroke-width="1"/>
+<text x="679.0" y="192.0" class="f-ac" font-size="12" text-anchor="middle">→ 배포 게이트(61강)</text>
+</svg>

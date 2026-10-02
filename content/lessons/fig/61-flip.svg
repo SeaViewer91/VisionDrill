@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 720 226" role="img" aria-label="기존 모델 A와 새 모델 B의 오차 상속 행렬. 시험 자료에서는 플립 오차 10건, 신규 해결 4건이고, 연무·계절 자료에서는 플립 오차 26건, 신규 해결 93건">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<text x="222.0" y="22.0" class="f-fg" font-size="14" text-anchor="middle" font-weight="bold">시험 900장</text>
+<text x="167.0" y="50.0" class="f-mu" font-size="12" text-anchor="middle">B 맞힘</text>
+<text x="277.0" y="50.0" class="f-mu" font-size="12" text-anchor="middle">B 틀림</text>
+<text x="102.0" y="95.0" class="f-mu" font-size="12" text-anchor="end">A 맞힘</text>
+<text x="102.0" y="153.0" class="f-mu" font-size="12" text-anchor="end">A 틀림</text>
+<rect x="112.0" y="62.0" width="110.0" height="58.0" rx="0" class="s-mu f-sf" stroke-width="1.2"/>
+<text x="167.0" y="89.0" class="f-fg" font-size="18" text-anchor="middle" font-weight="bold">867</text>
+<text x="167.0" y="108.0" class="f-mu" font-size="11" text-anchor="middle">성공 보존</text>
+<rect x="222.0" y="62.0" width="110.0" height="58.0" rx="0" class="s-bd f-bds" stroke-width="1.2"/>
+<text x="277.0" y="89.0" class="f-bd" font-size="18" text-anchor="middle" font-weight="bold">10</text>
+<text x="277.0" y="108.0" class="f-mu" font-size="11" text-anchor="middle">플립 오차</text>
+<rect x="112.0" y="120.0" width="110.0" height="58.0" rx="0" class="s-ac f-acs" stroke-width="1.2"/>
+<text x="167.0" y="147.0" class="f-fg" font-size="18" text-anchor="middle" font-weight="bold">4</text>
+<text x="167.0" y="166.0" class="f-mu" font-size="11" text-anchor="middle">신규 해결</text>
+<rect x="222.0" y="120.0" width="110.0" height="58.0" rx="0" class="s-mu f-sf" stroke-width="1.2"/>
+<text x="277.0" y="147.0" class="f-fg" font-size="18" text-anchor="middle" font-weight="bold">19</text>
+<text x="277.0" y="166.0" class="f-mu" font-size="11" text-anchor="middle">둘 다 틀림</text>
+<text x="222.0" y="204.0" class="f-fg" font-size="13" text-anchor="middle">순증 −6 · 회귀율 1.14%</text>
+<text x="586.0" y="22.0" class="f-fg" font-size="14" text-anchor="middle" font-weight="bold">연무·계절 900장</text>
+<text x="531.0" y="50.0" class="f-mu" font-size="12" text-anchor="middle">B 맞힘</text>
+<text x="641.0" y="50.0" class="f-mu" font-size="12" text-anchor="middle">B 틀림</text>
+<text x="466.0" y="95.0" class="f-mu" font-size="12" text-anchor="end">A 맞힘</text>
+<text x="466.0" y="153.0" class="f-mu" font-size="12" text-anchor="end">A 틀림</text>
+<rect x="476.0" y="62.0" width="110.0" height="58.0" rx="0" class="s-mu f-sf" stroke-width="1.2"/>
+<text x="531.0" y="89.0" class="f-fg" font-size="18" text-anchor="middle" font-weight="bold">611</text>
+<text x="531.0" y="108.0" class="f-mu" font-size="11" text-anchor="middle">성공 보존</text>
+<rect x="586.0" y="62.0" width="110.0" height="58.0" rx="0" class="s-bd f-bds" stroke-width="1.2"/>
+<text x="641.0" y="89.0" class="f-bd" font-size="18" text-anchor="middle" font-weight="bold">26</text>
+<text x="641.0" y="108.0" class="f-mu" font-size="11" text-anchor="middle">플립 오차</text>
+<rect x="476.0" y="120.0" width="110.0" height="58.0" rx="0" class="s-ac f-acs" stroke-width="1.2"/>
+<text x="531.0" y="147.0" class="f-fg" font-size="18" text-anchor="middle" font-weight="bold">93</text>
+<text x="531.0" y="166.0" class="f-mu" font-size="11" text-anchor="middle">신규 해결</text>
+<rect x="586.0" y="120.0" width="110.0" height="58.0" rx="0" class="s-mu f-sf" stroke-width="1.2"/>
+<text x="641.0" y="147.0" class="f-fg" font-size="18" text-anchor="middle" font-weight="bold">170</text>
+<text x="641.0" y="166.0" class="f-mu" font-size="11" text-anchor="middle">둘 다 틀림</text>
+<text x="586.0" y="204.0" class="f-fg" font-size="13" text-anchor="middle">순증 +67 · 회귀율 4.08%</text>
+</svg>

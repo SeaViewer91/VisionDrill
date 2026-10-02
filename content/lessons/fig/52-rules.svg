@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 680 300" role="img" aria-label="탐지 하나를 가장 많이 겹친 정답과의 IoU(0.1 미만, 0.1~0.5, 0.5 이상)와 클래스 일치 여부로 여섯 유형에 배정하는 규칙">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<text x="220.0" y="26.0" class="f-mu" font-size="13" text-anchor="middle">IoU &lt; 0.1</text>
+<text x="365.0" y="26.0" class="f-mu" font-size="13" text-anchor="middle">0.1 ≤ IoU &lt; 0.5</text>
+<text x="550.0" y="26.0" class="f-mu" font-size="13" text-anchor="middle">IoU ≥ 0.5</text>
+<text x="405.0" y="46.0" class="f-mu" font-size="11" text-anchor="middle">← 가장 많이 겹친 정답과의 IoU →</text>
+<text x="138.0" y="96.0" class="f-fg" font-size="13" text-anchor="end">같은 클래스</text>
+<text x="138.0" y="166.0" class="f-fg" font-size="13" text-anchor="end">다른 클래스</text>
+<rect x="150.0" y="56.0" width="140.0" height="140.0" rx="0" class="s-mu f-bds" stroke-width="1.2"/>
+<text x="220.0" y="120.0" class="f-bd" font-size="14" text-anchor="middle" font-weight="600">배경 오인</text>
+<text x="220.0" y="140.0" class="f-mu" font-size="12" text-anchor="middle">Bkg</text>
+<rect x="290.0" y="56.0" width="150.0" height="70.0" rx="0" class="s-mu f-acs" stroke-width="1.2"/>
+<text x="365.0" y="88.0" class="f-ac" font-size="14" text-anchor="middle" font-weight="600">위치 오차</text>
+<text x="365.0" y="108.0" class="f-mu" font-size="12" text-anchor="middle">Loc</text>
+<rect x="290.0" y="126.0" width="150.0" height="70.0" rx="0" class="s-mu f-acs" stroke-width="1.2"/>
+<text x="365.0" y="158.0" class="f-ac" font-size="14" text-anchor="middle" font-weight="600">분류·위치 동시</text>
+<text x="365.0" y="178.0" class="f-mu" font-size="12" text-anchor="middle">Both</text>
+<rect x="440.0" y="126.0" width="220.0" height="70.0" rx="0" class="s-mu f-acs" stroke-width="1.2"/>
+<text x="550.0" y="158.0" class="f-ac" font-size="14" text-anchor="middle" font-weight="600">분류 오차</text>
+<text x="550.0" y="178.0" class="f-mu" font-size="12" text-anchor="middle">Cls</text>
+<rect x="440.0" y="56.0" width="220.0" height="70.0" rx="0" class="s-mu f-sf" stroke-width="1.2"/>
+<line x1="550.0" y1="64.0" x2="550.0" y2="118.0" class="s-mu" stroke-width="1.0" stroke-dasharray="3 3"/>
+<text x="495.0" y="84.0" class="f-ok" font-size="14" text-anchor="middle" font-weight="600">정탐 TP</text>
+<text x="495.0" y="104.0" class="f-mu" font-size="11" text-anchor="middle">정답이 아직 비었음</text>
+<text x="605.0" y="84.0" class="f-bd" font-size="14" text-anchor="middle" font-weight="600">중복 Dupe</text>
+<text x="605.0" y="104.0" class="f-mu" font-size="11" text-anchor="middle">이미 짝이 있음</text>
+<rect x="150.0" y="222.0" width="510.0" height="52.0" rx="0" class="s-bd f-bg" stroke-width="1.2"/>
+<text x="164.0" y="244.0" class="f-bd" font-size="13" text-anchor="start" font-weight="600">정답 쪽: 끝까지 정탐 짝이 없는 정답 = 미탐(Miss)</text>
+<text x="164.0" y="263.0" class="f-mu" font-size="11" text-anchor="start">단, 분류·위치 오차 상자가 가리킨 정답은 미탐에서 뺌(그 오차를 고치면 찾아지므로)</text>
+<text x="138.0" y="252.0" class="f-fg" font-size="13" text-anchor="end">놓친 정답</text>
+</svg>

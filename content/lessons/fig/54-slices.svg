@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 780 300" role="img" aria-label="VD-CNN의 p값이 작은 슬라이스 7개의 정확도. 왼쪽은 시험(전체 0.974), 오른쪽은 연무·계절 시험(전체 0.708). 색칠한 막대는 BH(q = 0.1)로 기각된 취약 슬라이스, 회색은 기각되지 않은 것, 점선은 전체 정확도">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<text x="24.0" y="22.0" class="f-fg" font-size="13" text-anchor="start" font-weight="600">시험 (전체 0.974)</text>
+<line x1="124.0" y1="40.0" x2="124.0" y2="268.0" class="s-mu" stroke-width="0.6"/>
+<text x="124.0" y="284.0" class="f-mu" font-size="11" text-anchor="middle">0</text>
+<line x1="229.0" y1="40.0" x2="229.0" y2="268.0" class="s-mu" stroke-width="0.6"/>
+<text x="229.0" y="284.0" class="f-mu" font-size="11" text-anchor="middle">0.5</text>
+<line x1="334.0" y1="40.0" x2="334.0" y2="268.0" class="s-mu" stroke-width="0.6"/>
+<text x="334.0" y="284.0" class="f-mu" font-size="11" text-anchor="middle">1</text>
+<text x="118.0" y="59.0" class="f-fg" font-size="12" text-anchor="end">농경지 경계</text>
+<rect x="124.0" y="48.0" width="178.9" height="16.0" rx="0" class="f-ac" stroke-width="0"/>
+<text x="340.0" y="55.0" class="f-fg" font-size="11" text-anchor="start">0.852</text>
+<text x="340.0" y="68.0" class="f-mu" font-size="10" text-anchor="start">n=54</text>
+<text x="118.0" y="91.0" class="f-fg" font-size="12" text-anchor="end">수계 경계</text>
+<rect x="124.0" y="80.0" width="185.1" height="16.0" rx="0" class="f-ac" stroke-width="0"/>
+<text x="340.0" y="87.0" class="f-fg" font-size="11" text-anchor="start">0.881</text>
+<text x="340.0" y="100.0" class="f-mu" font-size="10" text-anchor="start">n=59</text>
+<text x="118.0" y="123.0" class="f-fg" font-size="12" text-anchor="end">경계 타일</text>
+<rect x="124.0" y="112.0" width="198.3" height="16.0" rx="0" class="f-ac" stroke-width="0"/>
+<text x="340.0" y="119.0" class="f-fg" font-size="11" text-anchor="start">0.944</text>
+<text x="340.0" y="132.0" class="f-mu" font-size="10" text-anchor="start">n=360</text>
+<text x="118.0" y="155.0" class="f-fg" font-size="12" text-anchor="end">수계</text>
+<rect x="124.0" y="144.0" width="196.0" height="16.0" rx="0" class="f-ac" stroke-width="0"/>
+<text x="340.0" y="151.0" class="f-fg" font-size="11" text-anchor="start">0.933</text>
+<text x="340.0" y="164.0" class="f-mu" font-size="10" text-anchor="start">n=150</text>
+<text x="118.0" y="187.0" class="f-fg" font-size="12" text-anchor="end">농경지</text>
+<rect x="124.0" y="176.0" width="198.8" height="16.0" rx="0" class="f-ac" stroke-width="0"/>
+<text x="340.0" y="183.0" class="f-fg" font-size="11" text-anchor="start">0.947</text>
+<text x="340.0" y="196.0" class="f-mu" font-size="10" text-anchor="start">n=150</text>
+<text x="118.0" y="219.0" class="f-fg" font-size="12" text-anchor="end">지역 28</text>
+<rect x="124.0" y="208.0" width="200.5" height="16.0" rx="0" class="f-mu" stroke-width="0"/>
+<text x="340.0" y="215.0" class="f-fg" font-size="11" text-anchor="start">0.955</text>
+<text x="340.0" y="228.0" class="f-mu" font-size="10" text-anchor="start">n=220</text>
+<text x="118.0" y="251.0" class="f-fg" font-size="12" text-anchor="end">시가지 경계</text>
+<rect x="124.0" y="240.0" width="202.9" height="16.0" rx="0" class="f-mu" stroke-width="0"/>
+<text x="340.0" y="247.0" class="f-fg" font-size="11" text-anchor="start">0.966</text>
+<text x="340.0" y="260.0" class="f-mu" font-size="10" text-anchor="start">n=59</text>
+<line x1="328.6" y1="40.0" x2="328.6" y2="268.0" class="s-bd" stroke-width="1.6" stroke-dasharray="4 3"/>
+<text x="414.0" y="22.0" class="f-fg" font-size="13" text-anchor="start" font-weight="600">연무·계절 시험 (전체 0.708)</text>
+<line x1="514.0" y1="40.0" x2="514.0" y2="268.0" class="s-mu" stroke-width="0.6"/>
+<text x="514.0" y="284.0" class="f-mu" font-size="11" text-anchor="middle">0</text>
+<line x1="619.0" y1="40.0" x2="619.0" y2="268.0" class="s-mu" stroke-width="0.6"/>
+<text x="619.0" y="284.0" class="f-mu" font-size="11" text-anchor="middle">0.5</text>
+<line x1="724.0" y1="40.0" x2="724.0" y2="268.0" class="s-mu" stroke-width="0.6"/>
+<text x="724.0" y="284.0" class="f-mu" font-size="11" text-anchor="middle">1</text>
+<text x="508.0" y="59.0" class="f-fg" font-size="12" text-anchor="end">산림</text>
+<rect x="514.0" y="48.0" width="32.2" height="16.0" rx="0" class="f-ac" stroke-width="0"/>
+<text x="730.0" y="55.0" class="f-fg" font-size="11" text-anchor="start">0.153</text>
+<text x="730.0" y="68.0" class="f-mu" font-size="10" text-anchor="start">n=150</text>
+<text x="508.0" y="91.0" class="f-fg" font-size="12" text-anchor="end">산림 경계</text>
+<rect x="514.0" y="80.0" width="10.7" height="16.0" rx="0" class="f-ac" stroke-width="0"/>
+<text x="730.0" y="87.0" class="f-fg" font-size="11" text-anchor="start">0.051</text>
+<text x="730.0" y="100.0" class="f-mu" font-size="10" text-anchor="start">n=59</text>
+<text x="508.0" y="123.0" class="f-fg" font-size="12" text-anchor="end">밝기 하위 1/3</text>
+<rect x="514.0" y="112.0" width="102.2" height="16.0" rx="0" class="f-ac" stroke-width="0"/>
+<text x="730.0" y="119.0" class="f-fg" font-size="11" text-anchor="start">0.487</text>
+<text x="730.0" y="132.0" class="f-mu" font-size="10" text-anchor="start">n=300</text>
+<text x="508.0" y="155.0" class="f-fg" font-size="12" text-anchor="end">갯벌</text>
+<rect x="514.0" y="144.0" width="86.8" height="16.0" rx="0" class="f-ac" stroke-width="0"/>
+<text x="730.0" y="151.0" class="f-fg" font-size="11" text-anchor="start">0.413</text>
+<text x="730.0" y="164.0" class="f-mu" font-size="10" text-anchor="start">n=150</text>
+<text x="508.0" y="187.0" class="f-fg" font-size="12" text-anchor="end">갯벌 경계</text>
+<rect x="514.0" y="176.0" width="72.2" height="16.0" rx="0" class="f-ac" stroke-width="0"/>
+<text x="730.0" y="183.0" class="f-fg" font-size="11" text-anchor="start">0.344</text>
+<text x="730.0" y="196.0" class="f-mu" font-size="10" text-anchor="start">n=64</text>
+<text x="508.0" y="219.0" class="f-fg" font-size="12" text-anchor="end">경계 타일</text>
+<rect x="514.0" y="208.0" width="134.2" height="16.0" rx="0" class="f-ac" stroke-width="0"/>
+<text x="730.0" y="215.0" class="f-fg" font-size="11" text-anchor="start">0.639</text>
+<text x="730.0" y="228.0" class="f-mu" font-size="10" text-anchor="start">n=360</text>
+<text x="508.0" y="251.0" class="f-fg" font-size="12" text-anchor="end">지역 26</text>
+<rect x="514.0" y="240.0" width="139.4" height="16.0" rx="0" class="f-mu" stroke-width="0"/>
+<text x="730.0" y="247.0" class="f-fg" font-size="11" text-anchor="start">0.664</text>
+<text x="730.0" y="260.0" class="f-mu" font-size="10" text-anchor="start">n=238</text>
+<line x1="662.6" y1="40.0" x2="662.6" y2="268.0" class="s-bd" stroke-width="1.6" stroke-dasharray="4 3"/>
+</svg>

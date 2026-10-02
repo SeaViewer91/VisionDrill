@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 760 330" role="img" aria-label="왼쪽: NMS 과잉 억제(kill). 45°로 나란한 두 배의 수평 박스가 크게 겹쳐, 배 A를 노린 높은 점수 상자가 배 B를 노린 상자를 지움. 오른쪽: NMS 누수(leak). 한 배에 붙은 두 상자의 IoU가 임계값보다 조금 낮아 둘 다 살아남음">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<line x1="380.0" y1="30.0" x2="380.0" y2="320.0" class="s-mu" stroke-width="0.8" stroke-dasharray="3 4"/>
+<text x="190.0" y="24.0" class="f-fg" font-size="14" text-anchor="middle" font-weight="600">과잉 억제 (kill)</text>
+<text x="570.0" y="24.0" class="f-fg" font-size="14" text-anchor="middle" font-weight="600">누수 (leak)</text>
+<path d="M 167.5 81.4 L 273.6 187.5 L 242.5 218.6 L 136.4 112.5 Z" class="s-fg f-sf" stroke-width="1.4"/>
+<path d="M 133.6 115.4 L 239.6 221.4 L 208.5 252.5 L 102.5 146.5 Z" class="s-fg f-sf" stroke-width="1.4"/>
+<rect x="136.4" y="81.4" width="137.2" height="137.2" class="s-ac" stroke-width="2" fill="none"/>
+<rect x="102.5" y="115.4" width="137.2" height="137.2" class="s-bd" stroke-width="2" fill="none" stroke-dasharray="6 4"/>
+<text x="205.0" y="155.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="600">A</text>
+<text x="171.1" y="188.9" class="f-fg" font-size="13" text-anchor="middle" font-weight="600">B</text>
+<text x="273.6" y="74.4" class="f-ac" font-size="11" text-anchor="end">A를 노린 상자 0.92</text>
+<text x="102.5" y="268.5" class="f-bd" font-size="11" text-anchor="start">B를 노린 상자 0.81 → 지워짐</text>
+<text x="190.0" y="300.0" class="f-mu" font-size="11" text-anchor="middle">상자끼리 IoU 0.40 &gt; 임계값 0.3</text>
+<text x="190.0" y="316.0" class="f-mu" font-size="11" text-anchor="middle">B는 원시 출력엔 있었는데 결과엔 없음</text>
+<path d="M 485.0 135.0 L 655.0 135.0 L 655.0 185.0 L 485.0 185.0 Z" class="s-fg f-sf" stroke-width="1.4"/>
+<text x="570.0" y="165.0" class="f-fg" font-size="13" text-anchor="middle" font-weight="600">C</text>
+<rect x="480.0" y="128.0" width="180.0" height="66.0" class="s-ac" stroke-width="2" fill="none"/>
+<rect x="498.0" y="122.0" width="182.0" height="78.0" class="s-bd" stroke-width="2" fill="none" stroke-dasharray="6 4"/>
+<text x="480.0" y="116.0" class="f-ac" font-size="11" text-anchor="start">C를 노린 상자 0.90</text>
+<text x="680.0" y="218.0" class="f-bd" font-size="11" text-anchor="end">C를 노린 상자 0.74 → 남음</text>
+<text x="570.0" y="300.0" class="f-mu" font-size="11" text-anchor="middle">상자끼리 IoU 0.695 ≤ 임계값 0.7</text>
+<text x="570.0" y="316.0" class="f-mu" font-size="11" text-anchor="middle">둘 다 C와 IoU ≥ 0.5 → 하나는 중복 오탐</text>
+</svg>

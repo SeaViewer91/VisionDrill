@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 700 300" role="img" aria-label="온도 스케일링 전후의 평균 확신도 − 정확도. 0보다 작으면 덜 확신, 크면 과신. 같은 분포 시험에서는 0에 가까워지고, 연무·계절 시험에서는 과신이 더 커짐">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<rect x="250.0" y="44.0" width="400.0" height="182.0" rx="0" class="s-mu f-bg" stroke-width="1.2"/>
+<line x1="250.0" y1="226.0" x2="250.0" y2="230.0" class="s-mu" stroke-width="1.2"/>
+<text x="250.0" y="243.0" class="f-mu" font-size="11" text-anchor="middle">-0.05</text>
+<line x1="316.7" y1="226.0" x2="316.7" y2="230.0" class="s-mu" stroke-width="1.2"/>
+<text x="316.7" y="243.0" class="f-mu" font-size="11" text-anchor="middle">0</text>
+<line x1="383.3" y1="226.0" x2="383.3" y2="230.0" class="s-mu" stroke-width="1.2"/>
+<text x="383.3" y="243.0" class="f-mu" font-size="11" text-anchor="middle">+0.05</text>
+<line x1="450.0" y1="226.0" x2="450.0" y2="230.0" class="s-mu" stroke-width="1.2"/>
+<text x="450.0" y="243.0" class="f-mu" font-size="11" text-anchor="middle">+0.10</text>
+<line x1="516.7" y1="226.0" x2="516.7" y2="230.0" class="s-mu" stroke-width="1.2"/>
+<text x="516.7" y="243.0" class="f-mu" font-size="11" text-anchor="middle">+0.15</text>
+<line x1="583.3" y1="226.0" x2="583.3" y2="230.0" class="s-mu" stroke-width="1.2"/>
+<text x="583.3" y="243.0" class="f-mu" font-size="11" text-anchor="middle">+0.20</text>
+<line x1="650.0" y1="226.0" x2="650.0" y2="230.0" class="s-mu" stroke-width="1.2"/>
+<text x="650.0" y="243.0" class="f-mu" font-size="11" text-anchor="middle">+0.25</text>
+<line x1="316.7" y1="44.0" x2="316.7" y2="226.0" class="s-fg" stroke-width="1.4"/>
+<text x="310.7" y="36.0" class="f-mu" font-size="11" text-anchor="end">← 덜 확신</text>
+<text x="322.7" y="36.0" class="f-mu" font-size="11" text-anchor="start">과신 →</text>
+<text x="236.0" y="88.0" class="f-fg" font-size="13" text-anchor="end" font-weight="600">같은 분포 시험</text>
+<text x="236.0" y="106.0" class="f-mu" font-size="11" text-anchor="end">정확도 0.974 · ECE 0.011 → 0.008</text>
+<rect x="302.7" y="69.0" width="14.0" height="20.0" rx="0" class="s-mu f-sf" stroke-width="1.1"/>
+<text x="322.7" y="83.0" class="f-mu" font-size="11" text-anchor="start">전 -0.011 (확신도 0.964)</text>
+<rect x="313.5" y="91.0" width="3.2" height="20.0" rx="0" class="s-bd f-bds" stroke-width="1.1"/>
+<text x="322.7" y="105.0" class="f-bd" font-size="11" text-anchor="start">후 -0.002 (확신도 0.972)</text>
+<text x="236.0" y="178.0" class="f-fg" font-size="13" text-anchor="end" font-weight="600">연무·계절 시험</text>
+<text x="236.0" y="196.0" class="f-mu" font-size="11" text-anchor="end">정확도 0.708 · ECE 0.203 → 0.219</text>
+<rect x="316.7" y="159.0" width="271.2" height="20.0" rx="0" class="s-mu f-sf" stroke-width="1.1"/>
+<text x="579.9" y="173.0" class="f-mu" font-size="11" text-anchor="end">전 +0.203 (확신도 0.911)</text>
+<rect x="316.7" y="181.0" width="292.3" height="20.0" rx="0" class="s-bd f-bds" stroke-width="1.1"/>
+<text x="600.9" y="195.0" class="f-bd" font-size="11" text-anchor="end">후 +0.219 (확신도 0.927)</text>
+<text x="450.0" y="264.0" class="f-mu" font-size="12" text-anchor="middle">평균 확신도 − 정확도</text>
+<rect x="250.0" y="280.0" width="16.0" height="12.0" rx="0" class="s-mu f-sf" stroke-width="1.1"/>
+<text x="272.0" y="290.0" class="f-mu" font-size="11" text-anchor="start">온도 스케일링 전</text>
+<rect x="420.0" y="280.0" width="16.0" height="12.0" rx="0" class="s-bd f-bds" stroke-width="1.1"/>
+<text x="442.0" y="290.0" class="f-mu" font-size="11" text-anchor="start">T = 0.84로 나눈 뒤</text>
+</svg>
