@@ -27,6 +27,9 @@ function chapterTerms(ch: string): { id: string; names: string[] }[] {
 }
 
 const REQUIRED = ['이 강에서 얻는 것', '현장에서는', '헷갈리는 쌍', '이렇게 지시받음', '요약', '핵심 용어'];
+/** 부록(part 9)은 강의 틀을 따르지 않음: 첫 절만 정해 둠 */
+const APPENDIX_PART = 9;
+const REQUIRED_APPENDIX = ['이 부록의 쓰임'];
 const lessonFiles = readdirSync(DIR).filter((f) => /^[0-9A-Z]+\.md$/.test(f));
 const targets = process.argv.slice(2).length ? process.argv.slice(2).map((f) => basename(f)) : lessonFiles;
 const usedFigures = new Set<string>();
@@ -61,14 +64,16 @@ for (const file of targets) {
 
   // 구조
   const h1 = body.match(/^# (.+)$/m);
-  if (!h1) errors.push('제목(# N강 …)이 없음');
+  if (!h1) errors.push('제목(# N강 … 또는 # 부록 X …)이 없음');
   const h2 = [...body.matchAll(/^## (.+)$/gm)].map((m) => m[1].trim());
-  const pos = REQUIRED.map((r) => h2.indexOf(r));
-  REQUIRED.forEach((r, i) => pos[i] < 0 && errors.push(`필수 절 없음: ## ${r}`));
+  const isAppendix = meta.part === APPENDIX_PART;
+  const req = isAppendix ? REQUIRED_APPENDIX : REQUIRED;
+  const pos = req.map((r) => h2.indexOf(r));
+  req.forEach((r, i) => pos[i] < 0 && errors.push(`필수 절 없음: ## ${r}`));
   if (pos.every((p) => p >= 0)) {
-    if (pos[0] !== 0) errors.push(`첫 절은 '## ${REQUIRED[0]}'`);
-    if (pos[pos.length - 1] !== h2.length - 1) errors.push(`마지막 절은 '## ${REQUIRED[REQUIRED.length - 1]}'`);
-    for (let i = 1; i < pos.length; i++) if (pos[i] < pos[i - 1]) errors.push(`필수 절 순서: ${REQUIRED.join(' → ')}`);
+    if (pos[0] !== 0) errors.push(`첫 절은 '## ${req[0]}'`);
+    if (!isAppendix && pos[pos.length - 1] !== h2.length - 1) errors.push(`마지막 절은 '## ${req[req.length - 1]}'`);
+    for (let i = 1; i < pos.length; i++) if (pos[i] < pos[i - 1]) errors.push(`필수 절 순서: ${req.join(' → ')}`);
   }
 
   // 렌더링 (수식·그림)
@@ -93,7 +98,7 @@ for (const file of targets) {
   // 분량
   const chars = prose.replace(/\s+/g, '').length;
   if (chars < 2000) warns.push(`분량이 적음: ${chars}자 (권장 3,000~5,000)`);
-  if (chars > 7000) warns.push(`분량이 많음: ${chars}자 (강을 나누는 것 검토)`);
+  if (chars > (isAppendix ? 40000 : 7000)) warns.push(`분량이 많음: ${chars}자 (강을 나누는 것 검토)`);
 
   // 용어 범위
   const text = prose.toLowerCase();

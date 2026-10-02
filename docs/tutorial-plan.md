@@ -165,6 +165,8 @@
 
 **원본**
 - `content/lessons/<강번호>.md` (예: `01.md`, 부록은 `A.md`). 머리말: id, part, title, chapters(범위 점검용), version, updated, status
+- 0강은 `00.md`(id: 00, part: 0). 부록은 part 9이고 강의 틀(3절)을 따르지 않음: 첫 절만 `## 이 부록의 쓰임`으로 정하고 나머지 구성은 자유(lint도 부록은 이 규칙으로 점검)
+- 부록 B는 손으로 쓰지 않고 `content/lessons/fig-src/B.py`가 각 강의 "헷갈리는 쌍" 절을 모아 다시 만듦. 강 원고를 고친 뒤 이 스크립트를 다시 돌림
 - 부 목록: `content/lessons/parts.json`
 - 그림: `content/lessons/fig/<강번호>-<이름>.svg`. 그림을 만드는 스크립트는 `content/lessons/fig-src/`에 함께 둠(다시 그릴 수 있게)
 - 공통 예제 자료: `content/lessons/data/` (예: 2부 회귀 강들이 함께 쓰는 가상 80개 행정동 LST 자료 `part2_lst.csv`와 생성 스크립트). 여러 강이 같은 자료를 이어 쓰면 수치가 서로 맞고 흐름을 따라가기 쉬움

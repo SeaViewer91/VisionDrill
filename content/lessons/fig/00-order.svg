@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 908 298" role="img" aria-label="이 책을 읽는 순서: 0부 다음 통계·ML 갈래(1~3부)와 영상·DL 갈래(4~7부)로 나뉘고 8부에서 합쳐짐. 부록은 어디서나 참조">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<text x="158.0" y="22.0" class="f-mu" font-size="12" text-anchor="start" font-weight="bold">통계·ML 갈래</text>
+<text x="158.0" y="138.0" class="f-mu" font-size="12" text-anchor="start" font-weight="bold">영상·DL 갈래</text>
+<rect x="10.0" y="92.0" width="104.0" height="66.0" rx="8" class="s-fg f-bg" stroke-width="1.4"/>
+<text x="62.0" y="114.0" class="f-fg" font-size="13.5" text-anchor="middle" font-weight="bold">0부 시작하기</text>
+<text x="62.0" y="132.0" class="f-fg" font-size="12" text-anchor="middle">0강</text>
+<text x="62.0" y="149.0" class="f-mu" font-size="11" text-anchor="middle">흐름·읽는 순서</text>
+<rect x="780.0" y="92.0" width="118.0" height="66.0" rx="8" class="s-ac f-acs" stroke-width="1.4"/>
+<text x="839.0" y="114.0" class="f-fg" font-size="13.5" text-anchor="middle" font-weight="bold">8부 모델 진단</text>
+<text x="839.0" y="132.0" class="f-fg" font-size="12" text-anchor="middle">51~61강</text>
+<text x="839.0" y="149.0" class="f-mu" font-size="11" text-anchor="middle">앞 부 자료·모델</text>
+<rect x="158.0" y="34.0" width="158.0" height="66.0" rx="8" class="s-mu f-sf" stroke-width="1.4"/>
+<text x="237.0" y="56.0" class="f-fg" font-size="13.5" text-anchor="middle" font-weight="bold">1부 통계 기초</text>
+<text x="237.0" y="74.0" class="f-fg" font-size="12" text-anchor="middle">1~5강</text>
+<text x="237.0" y="91.0" class="f-mu" font-size="11" text-anchor="middle">강마다 작은 예</text>
+<rect x="368.0" y="34.0" width="158.0" height="66.0" rx="8" class="s-mu f-sf" stroke-width="1.4"/>
+<text x="447.0" y="56.0" class="f-fg" font-size="13.5" text-anchor="middle" font-weight="bold">2부 회귀·진단</text>
+<text x="447.0" y="74.0" class="f-fg" font-size="12" text-anchor="middle">6~12강</text>
+<text x="447.0" y="91.0" class="f-mu" font-size="11" text-anchor="middle">행정동 LST</text>
+<rect x="578.0" y="34.0" width="158.0" height="66.0" rx="8" class="s-mu f-sf" stroke-width="1.4"/>
+<text x="657.0" y="56.0" class="f-fg" font-size="13.5" text-anchor="middle" font-weight="bold">3부 ML 기본기</text>
+<text x="657.0" y="74.0" class="f-fg" font-size="12" text-anchor="middle">13~19강</text>
+<text x="657.0" y="91.0" class="f-mu" font-size="11" text-anchor="middle">토지피복 표본</text>
+<rect x="158.0" y="150.0" width="128.0" height="66.0" rx="8" class="s-mu f-sf" stroke-width="1.4"/>
+<text x="222.0" y="172.0" class="f-fg" font-size="13.5" text-anchor="middle" font-weight="bold">4부 영상·기하</text>
+<text x="222.0" y="190.0" class="f-fg" font-size="12" text-anchor="middle">20~26강</text>
+<text x="222.0" y="207.0" class="f-mu" font-size="11" text-anchor="middle">연안 장면</text>
+<rect x="308.0" y="150.0" width="128.0" height="66.0" rx="8" class="s-mu f-sf" stroke-width="1.4"/>
+<text x="372.0" y="172.0" class="f-fg" font-size="13.5" text-anchor="middle" font-weight="bold">5부 딥러닝</text>
+<text x="372.0" y="190.0" class="f-fg" font-size="12" text-anchor="middle">27~33강</text>
+<text x="372.0" y="207.0" class="f-mu" font-size="11" text-anchor="middle">타일·VD-CNN</text>
+<rect x="458.0" y="150.0" width="128.0" height="66.0" rx="8" class="s-mu f-sf" stroke-width="1.4"/>
+<text x="522.0" y="172.0" class="f-fg" font-size="13.5" text-anchor="middle" font-weight="bold">6부 태스크·평가</text>
+<text x="522.0" y="190.0" class="f-fg" font-size="12" text-anchor="middle">34~42강</text>
+<text x="522.0" y="207.0" class="f-mu" font-size="11" text-anchor="middle">항만 타일</text>
+<rect x="608.0" y="150.0" width="128.0" height="66.0" rx="8" class="s-mu f-sf" stroke-width="1.4"/>
+<text x="672.0" y="172.0" class="f-fg" font-size="13.5" text-anchor="middle" font-weight="bold">7부 학습 실무</text>
+<text x="672.0" y="190.0" class="f-fg" font-size="12" text-anchor="middle">43~50강</text>
+<text x="672.0" y="207.0" class="f-mu" font-size="11" text-anchor="middle">장면 10장</text>
+<line x1="319.0" y1="67.0" x2="358.0" y2="67.0" class="s-fg" stroke-width="1.6"/>
+<path d="M 365.0 67.0 L 358.0 70.5 L 358.0 63.5 Z" class="f-fg" stroke-width="0"/>
+<line x1="529.0" y1="67.0" x2="568.0" y2="67.0" class="s-fg" stroke-width="1.6"/>
+<path d="M 575.0 67.0 L 568.0 70.5 L 568.0 63.5 Z" class="f-fg" stroke-width="0"/>
+<line x1="289.0" y1="183.0" x2="298.0" y2="183.0" class="s-fg" stroke-width="1.6"/>
+<path d="M 305.0 183.0 L 298.0 186.5 L 298.0 179.5 Z" class="f-fg" stroke-width="0"/>
+<line x1="439.0" y1="183.0" x2="448.0" y2="183.0" class="s-fg" stroke-width="1.6"/>
+<path d="M 455.0 183.0 L 448.0 186.5 L 448.0 179.5 Z" class="f-fg" stroke-width="0"/>
+<line x1="589.0" y1="183.0" x2="598.0" y2="183.0" class="s-fg" stroke-width="1.6"/>
+<path d="M 605.0 183.0 L 598.0 186.5 L 598.0 179.5 Z" class="f-fg" stroke-width="0"/>
+<line x1="117.0" y1="125.0" x2="136.0" y2="125.0" class="s-fg" stroke-width="1.6"/>
+<line x1="136.0" y1="125.0" x2="136.0" y2="67.0" class="s-fg" stroke-width="1.6"/>
+<line x1="136.0" y1="67.0" x2="148.0" y2="67.0" class="s-fg" stroke-width="1.6"/>
+<path d="M 155.0 67.0 L 148.0 70.5 L 148.0 63.5 Z" class="f-fg" stroke-width="0"/>
+<line x1="136.0" y1="125.0" x2="136.0" y2="183.0" class="s-fg" stroke-width="1.6"/>
+<line x1="136.0" y1="183.0" x2="148.0" y2="183.0" class="s-fg" stroke-width="1.6"/>
+<path d="M 155.0 183.0 L 148.0 186.5 L 148.0 179.5 Z" class="f-fg" stroke-width="0"/>
+<line x1="739.0" y1="67.0" x2="758.0" y2="67.0" class="s-fg" stroke-width="1.6"/>
+<line x1="739.0" y1="183.0" x2="758.0" y2="183.0" class="s-fg" stroke-width="1.6"/>
+<line x1="758.0" y1="67.0" x2="758.0" y2="183.0" class="s-fg" stroke-width="1.6"/>
+<line x1="758.0" y1="125.0" x2="770.0" y2="125.0" class="s-fg" stroke-width="1.6"/>
+<path d="M 777.0 125.0 L 770.0 128.5 L 770.0 121.5 Z" class="f-fg" stroke-width="0"/>
+<rect x="10.0" y="246.0" width="888.0" height="40.0" rx="8" class="s-mu" fill="none" stroke-width="1.2" stroke-dasharray="5 4"/>
+<text x="454.0" y="271.0" class="f-mu" font-size="12.5" text-anchor="middle">부록 A 지시문 읽는 법 · B 헷갈리는 용어 쌍 · C 수식·기호표 · D Diagnostics 용어를 밖에서 말할 때</text>
+</svg>

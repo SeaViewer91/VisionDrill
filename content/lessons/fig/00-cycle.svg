@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="vdfig" viewBox="0 0 852 248" role="img" aria-label="비전 모델 개발 한 바퀴: 과제 정의, 자료 수집, 라벨링, 데이터셋 분할, 학습, 평가, 진단, 배포·운영과 각 단계를 다루는 강">
+<style>
+.vdfig{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+.vdfig .s-fg{stroke:#1c2330}.vdfig .s-mu{stroke:#8a93a3}.vdfig .s-ac{stroke:#2563eb}.vdfig .s-bd{stroke:#c2410c}.vdfig .s-ok{stroke:#15803d}
+.vdfig .f-fg{fill:#1c2330}.vdfig .f-mu{fill:#5a6475}.vdfig .f-ac{fill:#2563eb}.vdfig .f-acs{fill:#e6eefe}.vdfig .f-bd{fill:#c2410c}
+.vdfig .f-bds{fill:#fdeee6}.vdfig .f-ok{fill:#15803d}.vdfig .f-sf{fill:#f0f2f5}.vdfig .f-bg{fill:#ffffff}
+@media (prefers-color-scheme:dark){
+.vdfig .s-fg{stroke:#e6e9ef}.vdfig .s-mu{stroke:#737c8c}.vdfig .s-ac{stroke:#6d9bff}.vdfig .s-bd{stroke:#fb8b5b}.vdfig .s-ok{stroke:#4ade80}
+.vdfig .f-fg{fill:#e6e9ef}.vdfig .f-mu{fill:#a7afbd}.vdfig .f-ac{fill:#6d9bff}.vdfig .f-acs{fill:#1f2b45}.vdfig .f-bd{fill:#fb8b5b}
+.vdfig .f-bds{fill:#3a2218}.vdfig .f-ok{fill:#4ade80}.vdfig .f-sf{fill:#222733}.vdfig .f-bg{fill:#1a1e26}}
+</style>
+<rect x="24.0" y="20.0" width="168.0" height="58.0" rx="8" class="s-mu f-sf" stroke-width="1.4"/>
+<text x="108.0" y="44.0" class="f-fg" font-size="14" text-anchor="middle" font-weight="bold">1 과제 정의</text>
+<text x="108.0" y="64.0" class="f-mu" font-size="12" text-anchor="middle">13·34강</text>
+<rect x="236.0" y="20.0" width="168.0" height="58.0" rx="8" class="s-mu f-sf" stroke-width="1.4"/>
+<text x="320.0" y="44.0" class="f-fg" font-size="14" text-anchor="middle" font-weight="bold">2 자료 수집</text>
+<text x="320.0" y="64.0" class="f-mu" font-size="12" text-anchor="middle">20~26강</text>
+<rect x="448.0" y="20.0" width="168.0" height="58.0" rx="8" class="s-mu f-sf" stroke-width="1.4"/>
+<text x="532.0" y="44.0" class="f-fg" font-size="14" text-anchor="middle" font-weight="bold">3 라벨링</text>
+<text x="532.0" y="64.0" class="f-mu" font-size="12" text-anchor="middle">44강</text>
+<rect x="660.0" y="20.0" width="168.0" height="58.0" rx="8" class="s-mu f-sf" stroke-width="1.4"/>
+<text x="744.0" y="44.0" class="f-fg" font-size="14" text-anchor="middle" font-weight="bold">4 데이터셋 분할</text>
+<text x="744.0" y="64.0" class="f-mu" font-size="12" text-anchor="middle">15·43강</text>
+<rect x="660.0" y="168.0" width="168.0" height="58.0" rx="8" class="s-mu f-sf" stroke-width="1.4"/>
+<text x="744.0" y="192.0" class="f-fg" font-size="14" text-anchor="middle" font-weight="bold">5 학습</text>
+<text x="744.0" y="212.0" class="f-mu" font-size="12" text-anchor="middle">27~33·45~49강</text>
+<rect x="448.0" y="168.0" width="168.0" height="58.0" rx="8" class="s-mu f-sf" stroke-width="1.4"/>
+<text x="532.0" y="192.0" class="f-fg" font-size="14" text-anchor="middle" font-weight="bold">6 평가</text>
+<text x="532.0" y="212.0" class="f-mu" font-size="12" text-anchor="middle">17·35~42강</text>
+<rect x="236.0" y="168.0" width="168.0" height="58.0" rx="8" class="s-ac f-acs" stroke-width="1.4"/>
+<text x="320.0" y="192.0" class="f-fg" font-size="14" text-anchor="middle" font-weight="bold">7 진단</text>
+<text x="320.0" y="212.0" class="f-mu" font-size="12" text-anchor="middle">51~61강</text>
+<rect x="24.0" y="168.0" width="168.0" height="58.0" rx="8" class="s-mu f-sf" stroke-width="1.4"/>
+<text x="108.0" y="192.0" class="f-fg" font-size="14" text-anchor="middle" font-weight="bold">8 배포·운영</text>
+<text x="108.0" y="212.0" class="f-mu" font-size="12" text-anchor="middle">50·60·61강</text>
+<line x1="195.0" y1="49.0" x2="226.0" y2="49.0" class="s-fg" stroke-width="1.6"/>
+<path d="M 233.0 49.0 L 226.0 52.5 L 226.0 45.5 Z" class="f-fg" stroke-width="0"/>
+<line x1="407.0" y1="49.0" x2="438.0" y2="49.0" class="s-fg" stroke-width="1.6"/>
+<path d="M 445.0 49.0 L 438.0 52.5 L 438.0 45.5 Z" class="f-fg" stroke-width="0"/>
+<line x1="619.0" y1="49.0" x2="650.0" y2="49.0" class="s-fg" stroke-width="1.6"/>
+<path d="M 657.0 49.0 L 650.0 52.5 L 650.0 45.5 Z" class="f-fg" stroke-width="0"/>
+<line x1="744.0" y1="81.0" x2="744.0" y2="158.0" class="s-fg" stroke-width="1.6"/>
+<path d="M 744.0 165.0 L 740.5 158.0 L 747.5 158.0 Z" class="f-fg" stroke-width="0"/>
+<line x1="657.0" y1="197.0" x2="626.0" y2="197.0" class="s-fg" stroke-width="1.6"/>
+<path d="M 619.0 197.0 L 626.0 193.5 L 626.0 200.5 Z" class="f-fg" stroke-width="0"/>
+<line x1="445.0" y1="197.0" x2="414.0" y2="197.0" class="s-fg" stroke-width="1.6"/>
+<path d="M 407.0 197.0 L 414.0 193.5 L 414.0 200.5 Z" class="f-fg" stroke-width="0"/>
+<line x1="233.0" y1="197.0" x2="202.0" y2="197.0" class="s-fg" stroke-width="1.6"/>
+<path d="M 195.0 197.0 L 202.0 193.5 L 202.0 200.5 Z" class="f-fg" stroke-width="0"/>
+<line x1="108.0" y1="165.0" x2="108.0" y2="88.0" class="s-ac" stroke-width="1.8"/>
+<path d="M 108.0 81.0 L 111.5 88.0 L 104.5 88.0 Z" class="f-ac" stroke-width="0"/>
+<text x="118.0" y="127.0" class="f-ac" font-size="12" text-anchor="start">다음 바퀴</text>
+<line x1="320.0" y1="165.0" x2="320.0" y2="88.0" class="s-bd" stroke-width="1.6" stroke-dasharray="5 4"/>
+<path d="M 320.0 81.0 L 323.5 88.0 L 316.5 88.0 Z" class="f-bd" stroke-width="0"/>
+<text x="330.0" y="119.0" class="f-bd" font-size="12" text-anchor="start">자료·라벨</text>
+<text x="330.0" y="135.0" class="f-bd" font-size="12" text-anchor="start">다시 보기</text>
+</svg>
